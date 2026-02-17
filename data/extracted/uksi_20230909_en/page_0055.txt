@@ -1,0 +1,44 @@
+Local land charges
+62. The functions of local authorities under the Local Land Charges Act 1975(a), as they relate
+to higher-risk buildings, are prescribed for the purposes of paragraph (b) of the definition of
+“relevant function” in paragraph 2(5) of Schedule 3 to the Building Safety Act 2022.
+Consequential amendment to the Regulatory Reform (Fire Safety) Order 2005
+63. In article 22A(3) of the Regulatory Reform (Fire Safety) Order 2005(b) (provision of
+information to new responsible person), after sub-paragraph (e) insert—
+“(ea) any information given under regulation 38 or 39 of the Building (Higher-Risk
+Buildings Procedures) (England) Regulations 2023 (fire safety information);”.
+Consequential amendments to the Community Infrastructure Levy Regulations 2010
+64.—(1) The Community Infrastructure Levy Regulations 2010(c) are amended as follows.
+(2) In regulation 2(1) (interpretation) in the definition of “compliance certificate”—
+(a) omit “either”;
+(b) omit “or” at the end of paragraph (a) and insert—
+“(aa) regulation 44 (completion certificate applications: decisions) of the Building
+(Higher-Risk Buildings Procedures) (England) Regulations 2023, or”.
+Consequential amendments to the Building Safety (Responsible Actors Scheme and
+Prohibitions) Regulations 2023
+65.—(1) The Building Safety (Responsible Actors Scheme and Prohibitions) Regulations
+2023(d) are amended as follows.
+(2) In regulation 33 (building control prohibitions)—
+(a) in paragraph (1) after “34,” insert “34A,”;
+(b) in paragraph (4)—
+(i) after sub-paragraph (e) insert—
+“(ea) an application for a certificate under regulation 40 (completion certificate
+applications) or regulation 45 (partial completion certificates) of the Building
+(Higher-Risk Buildings Procedures) (England) Regulations 2023;”;
+(ii) after sub-paragraph (f) insert—
+“(fa)an application for a certificate under regulation 47 (regularisation of unauthorised
+building work) of the Building (Higher-Risk Buildings Procedures) (England)
+Regulations 2023;”;
+(c) in paragraph (6)—
+(i) after sub-paragraph (b) insert—
+“(ba) a certificate under regulation 44 (completion certificate applications: decisions)
+of the Building (Higher-Risk Buildings Procedures) (England) Regulations 2023;”;
+(ii) after sub-paragraph (c) insert—
+“(ca) a certificate under regulation 45 (partial completion certificates) of the Building
+(Higher-Risk Buildings Procedures) (England) Regulations 2023;”;
+(iii) after sub-paragraph (f) insert—
+(a) 1975 c. 76.
+(b) S.I. 2005/1541. Article 22A was inserted by section 156(8) of the Building Safety Act 2022 (c. 30).
+(c) S.I. 2010/948. The definition of “compliance certificate” was inserted by S.I. 2014/385.
+(d) S.I. 2023/753.
+55

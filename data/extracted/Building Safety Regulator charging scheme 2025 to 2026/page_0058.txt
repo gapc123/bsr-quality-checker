@@ -1,0 +1,14 @@
+4-step process
+To set charges, HSE follows a 4-step activity-based costing process to cost the direct time
+required to deliver the relevant direct recoverable activities.
+1: Salary costs
+Identify the total forecast volume of effort and total payroll cost (salary, employers’ national
+insurance and employers’ superannuation) of the individuals involved in the direct delivery of the
+activity. This is calculated as an average hourly rate per grade and assumes a total of 220
+available days in a working year allowing for weekends, leave and other absences.
+2: Attributable costs
+This is costed staff effort that is directly linked to the chargeable activity and is material enough
+to justify direct attribution of the costs (for example, training and development effort linked to a
+specific capability, management oversight, guidance, cost of travel time, and direct
+administrative and management support).
+3: Indirect costs

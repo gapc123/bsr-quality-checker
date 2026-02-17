@@ -1,0 +1,44 @@
+(i) identifies the decision to be reviewed (including the date of the decision and any
+reference number included on the decision), and
+(ii) sets out the reasons the person considers the decision should be reviewed;
+(e) any information that is available to the person giving the notice, that may have been
+relevant to the regulator’s original decision but was not available at the time the original
+decision was made.
+(5) The regulator must notify the person who required a review of the outcome of the review
+within 13 weeks beginning with the day after the day on which the person gives a notice under
+section 25(2) of the 2022 Act.
+(6) A notice that the review has upheld the decision must give the reasons for that decision.
+(7) If the review varies the decision the regulator must issue a new decision.
+(8) If requested by the person requiring the review, the regulator must provide a paper copy of
+the decision of the review.
+Appeal in relation to reviewed decisions
+49.—(1) A person may appeal to the First-tier Tribunal against the decision of the regulator of a
+kind referred to in regulation 48(1) (review of regulator’s decisions) provided that the appeal is
+made within 21 relevant days beginning with the day after the day on which the regulator notifies
+the person of its decision under regulation 48(5)(a).
+(2) The First-tier Tribunal may allow an appeal under paragraph (1) only if it is satisfied that the
+decision appealed against was wrong on one or more of the following grounds—
+(a) that the decision was based on an error of fact;
+(b) that the decision was wrong in law;
+(c) that the decision was unreasonable;
+(d) that the decision was made without following the procedures set out in the 1984 Act or
+regulations made under that Act.
+(3) If the First-tier Tribunal allows an appeal it may quash or vary the decision.
+Section 30A prescribed applications
+50.—(1) The following applications are prescribed(b) for the purposes of section 30A(1) of the
+1984 Act, and are accordingly applications that may be determined by the Secretary of State in the
+circumstances described in that section—
+(a) a building control approval application for HRB work;
+(b) a building control approval application for a stage of HRB work;
+(c) a building control approval application for work to existing HRB;
+(d) a change control application;
+(e) a completion certificate application;
+(f) a partial completion certificate application.
+(2) An application may not be made to the Secretary of State under section 30A of the 1984 Act
+where, in relation to the original application(c), the regulator has notified the person who made the
+original application that the original application is not valid.
+(a) Section 26 of the Building Safety Act 2022 provides a decision must be reviewed under section 25 before an appeal is
+made.
+(b) See section 126 of the Building Act 1984 for the meaning of “prescribed”.
+(c) See section 30A(1) of the Building Act 1984 for the definition of “the original application”.
+49

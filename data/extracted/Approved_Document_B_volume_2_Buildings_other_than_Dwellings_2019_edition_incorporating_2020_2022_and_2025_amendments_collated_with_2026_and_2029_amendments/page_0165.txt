@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+C B
+2029 amendment – effective from 2 September 2029
+B5 Tests and assessments should be carried out by organisations with the necessary expertise. For
+example, organisations listed as ‘notified bodies’ in accordance with the European Construction
+Products Regulation or laboratories accredited by the United Kingdom Accreditation Service (UKAS)
+for the relevant test standard can be assumed to have the necessary expertise.
+NOTE: Standard fire tests do not directly measure fire hazard. They measure or assess the response
+of a material or system to exposure to one or more aspects of fire conditions. Performance in fire
+tests is only one of a number of factors that should be taken into account.
+Reaction to fire
+B6 Reaction to fire relates to the degree to which a product will contribute, by its own decomposition,
+to a fire under specified conditions. Products, other than floorings, are classified as A1, A2, B, C, D,
+E or F (with class A1 being the highest performance and F being the lowest) in accordance with BS
+EN 13501-1. Class F is assigned when a product fails to attain class E. Untested products cannot be
+classified in accordance with BS EN 13501-1.
+Materials covered by the Classification Without Further Testing (CWFT) process can be found by
+accessing the European Commission’s website https://eur-lex.europa.eu/.
+B7 The classes of reaction to fire performance of A2, B, C, D and E are accompanied by additional
+classifications related to the production of smoke (s1, s2, s3), with s1 indicating the lowest
+production, and/or flaming droplets/particles (d0, d1, d2), with d0 indicating the lowest production.
+NOTE: When a classification includes s3, d2 this means that there is no limit set for smoke
+production and/or flaming droplets/particles.
+B8 To reduce the testing burden on manufacturers, BS EN 13238 defines a number of standard
+substrates that produce test results representative of different end use applications. The
+classification for reaction to fire achieved during testing is only valid when the product is used
+within this direct field of application, i.e. when the product is fixed to a substrate of that class in
+its end use. The standard substrate selected for testing should take account of the intended end
+use applications (field of application) of the product and represent end use substrates that have a
+density of a minimum of 75% of the standard substrate’s nominal density.
+B9 Standard substrates include gypsum plasterboard (BS EN 520) with a density of 700+/-100kg/m3,
+calcium silicate board (BS EN 14306) 870+/-50kg/m3 and fibre-cement board 1800+/-200kg/m3.
+NOTE: Standard calcium silicate board is not representative of gypsum plasterboard end use (due
+to the paper layer), but would be representative of most gypsum plasters (with densities of more
+than 650kg/m3).
+NOTE: Classifications based on tests using a plasterboard substrate would also be acceptable for
+products bonded to a gypsum plaster end use substrate.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 153
+O N L I N E V E R S I O N

@@ -1,0 +1,17 @@
+O N L I N E V E R S I O N
+D
+Appendix D: Methods of measurement
+Occupant number
+D1 The number of occupants of a room, storey, building or part of a building is either of the following.
+a. The maximum number of people it is designed to hold.
+b. In buildings other than dwellings, the number of people calculated by dividing the area of
+a room or storey(s) (m2) by a floor space factor (m2 per person) such as given in Table D1 for
+guidance.
+D2 Counters and display units should be included when measuring area. All of the following should be
+excluded.
+a. Stair enclosures.
+b. Lifts.
+c. Sanitary accommodation.
+d. Any other fixed part of the building structure.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 175
+O N L I N E V E R S I O N

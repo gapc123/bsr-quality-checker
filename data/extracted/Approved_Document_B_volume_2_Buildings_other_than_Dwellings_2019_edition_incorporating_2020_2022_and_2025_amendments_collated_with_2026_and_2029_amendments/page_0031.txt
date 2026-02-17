@@ -1,0 +1,30 @@
+O N L I N E V E R S I O N
+B1
+Table 2.3 Widths of escape routes and exits
+Maximum number of people Minimum width (mm)(1)(2)(3)
+60 750(4)
+110 850
+220 1050
+More than 220 5 per person(5)
+NOTES:
+1. See Appendix D for methods of measurement.
+2. Widths may need to be increased to meet guidance in Approved Document M.
+3. Widths less than 1050mm should not be interpolated.
+4. M ay be reduced to 530mm for gangways between fixed storage racking, other than in public areas of ‘shop and
+commercial’ (purpose group 4) buildings.
+5. 5mm/person does not apply to an opening serving fewer than 220 people.
+Calculating exit capacity
+2.21 Where multiple storey exits are available, fire might prevent one from being used. Remaining exits
+need to be wide enough for all occupants, so when using Table 2.3, the largest exit should be
+discounted.
+Stairs should be at least as wide as any storey exit leading onto them. While some stairs are not
+subject to discounting (paragraphs 3.14 and 3.15), because the stairs will be available for other floors,
+the storey exits onto them are.
+2.22 To calculate how many people two or more available exits (after discounting) can accommodate,
+add together the maximum numbers of people that each exit width can accommodate.
+For example, three exits each 850mm wide accommodate 3×110 = 330 people.
+2.23 If a ground floor storey exit and a stair share a final exit (via a ground floor lobby), then the final exit
+should be wide enough to evacuate people at a maximum flow rate equal to or greater than from
+the storey exit and stair combined (Diagram 2.6).
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 19
+O N L I N E V E R S I O N

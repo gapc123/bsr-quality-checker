@@ -1,0 +1,27 @@
+● any storeys where the floor (finished floor surface) is at or above ground level
+● any storey where any part of the ceiling is at or above ground level
+● any mezzanine or gallery floor with an internal floor area that is at least 50% of the
+largest floor above or below it (excluding those below ground level)
+Do not include:
+● any storey where the whole ceiling is below ground level
+● the roof
+● any floor that is used only for machinery or plant rooms
+● any mezzanine or gallery floor with an internal floor area that is less than 50% of the
+internal floor area of the largest floor above or below it (excluding those below ground
+level)
+Intended use of the building and each storey
+Provide the primary intended use of the building once the building work is completed, such as:
+● care, residential or nursing home
+● hospital
+● student accommodation
+● other residential institution like a prison or boarding school
+● residential dwellings, like flats or maisonettes
+● office
+● industrial, like a factory
+● retail or commercial
+● any other non-residential use, like a car park
+Provide a brief description of each storey (in 2,000 characters). For example, ‘ground and storey
+1: retail and commercial’. If your building has more than one structure, provide details for all
+structures.
+Site and drainage
+Local enactments

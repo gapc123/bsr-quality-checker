@@ -1,0 +1,24 @@
+Making changes to the project after approval
+If your building control application is approved, the documents you uploaded for the application are
+known as the ‘agreed documents’.
+You must comply with the agreed documents throughout the build. Any change to an agreed
+document is known as a ‘controlled change’. You must:
+● manage and assess each change in accordance with your change control plan
+● record each change in your change control log
+You must tell BSR about any:
+● change of client, principal designer or principal contractor
+● changes in contact details connected to the application, including the email address you
+use to access the online application
+● ‘notifiable’ or ‘major’ changes to the project
+If you want to make a major change, building work must stop on that part of the project until BSR
+gives building control approval for the change.
+Read the guidance about making changes to a higher-risk building project. It tells you:
+● what notifiable and major changes are
+● about the change control process
+● how to submit changes to BSR
+Completion certificates
+When building work is completed, you must apply for a completion certificate. If you submitted a
+partial completion strategy as part of your application, you must apply for partial completion
+certificates in accordance with the strategy.
+BSR will issue you a completion certificate if they are satisfied the work meets all relevant building
+regulations.

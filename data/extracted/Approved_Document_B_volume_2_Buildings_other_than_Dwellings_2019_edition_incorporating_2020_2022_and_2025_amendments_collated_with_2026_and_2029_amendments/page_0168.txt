@@ -1,0 +1,48 @@
+O N L I N E V E R S I O N
+B C
+2029 amendment – effective from 2 September 2029
+B22 Fire resistance is measured in minutes. This relates to time elapsed in a standard test and should not
+be confused with real time.
+B23 The fire resistance necessary for different circumstances is set out in the following tables.
+a. Table B1 gives the specific requirements for each element of structure.
+b. Table B2 sets out the minimum periods of fire resistance for elements of structure.
+c. Table B3 sets out limitations on the use of uninsulated fire resisting glazed elements.
+B24 This document uses the European classification system (REI) for fire resistance set out in BS EN
+13501-2 to 4. Fire resistance is expressed as REI X, where X is the period of fire resistance in minutes
+in terms of loadbearing capacity (R), integrity (E) and insulation (I). Products or systems cannot
+typically assume a European class unless they have been tested and classified accordingly.
+B25 Products or systems achieving the European classification (REI) should be specified wherever
+possible. However, there may be some products or systems that have been assessed as being
+capable of meeting a fire resistance performance classification. When assessed, products or systems
+should follow the relevant test standards to indicate their fire resistance performance in terms of
+loadbearing capacity, integrity and insulation based on the recommendations of paragraphs B1 to
+B5. In those situations, the performance classifications given in Table B1 and Table B2 may be used.
+Table B1 Specific provisions of the test for fire resistance of elements of structure, etc.
+Part of building Minimum provisions when tested and classified Type of exposure
+to the relevant European standard (minutes)(1)
+or assessed following the recommendations of
+paragraphs B1 to B5 (minutes)(2)
+Loadbearing Integrity Insulation
+capacity(3)
+1. Structural frame, beam or column. See Table B2 Not applicable Not applicable Exposed faces
+2. Loadbearing wall See Table B2 Not applicable Not applicable Each side
+separately
+(for a wall which is also described in
+any of the following items, the more
+onerous guidance should be applied).
+3. Floors(4)
+a. between a shop and flat above 60 min or 60 min or 60 min or From underside(5)
+see Table B2 see Table B2 see Table B2
+(whichever is (whichever is (whichever is
+greater) greater) greater)
+b. in upper storey of two storey 30 min 15 min 15 min From underside (5)
+dwellinghouse (but not over garage
+or basement)
+c. any other floor – including See Table B2 See Table B2 See Table B2 From underside (5)
+compartment floors.
+4. Roofs
+a. any part forming an escape route 30 min 30 min 30 min From underside (5)
+b. any roof that performs the function See Table B2 See Table B2 See Table B2 From underside (5)
+of a floor.
+156 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

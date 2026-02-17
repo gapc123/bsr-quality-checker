@@ -1,0 +1,38 @@
+F1(2), R39O, NRL I4N4E V E R S I O N
+Section 4: Commissioning and providing
+information
+Commissioning of ventilation systems
+4.1 Mechanical ventilation systems must be commissioned to provide adequate ventilation. A
+commissioning notice must be given to the building control body.
+4.2 Commissioning should be carried out in accordance with CIBSE’s Commissioning Code M.
+4.3 Ventilation ductwork commissioning should take account of guidance in BESA’s DW 144 for metal
+ductwork, DW 154 for plastic ductwork and DW 143 for ductwork air leakage testing.
+NOTE: When mechanical ventilation is commissioned, the use of fuel and power should also be
+considered in accordance with Part L of the Building Regulations (L1(b) of Schedule 1). Installers
+may provide notice of commissioning to cover Part F (F1(2) of Schedule 1) and Part L in the same
+document.
+Operating and maintenance instructions
+4.4 Sufficient information about the ventilation system and its maintenance requirements must be
+given to the building owner to allow the system to be operated effectively. This should include
+both design flow rates and maintenance requirements.
+4.5 For new and existing buildings other than dwellings, information should be provided in a new or
+existing building log book. The log book should follow the guidance in CIBSE’s TM31. Guidance on
+building log books is given in Approved Document L, Volume 2: Buildings other than dwellings.
+4.6 A copy of the completed commissioning sheet should be given to the owner of the building.
+4.7 The operation and maintenance information should contain specific instructions for the end user
+on how and when to use the ventilation system, including information on the intended uses for the
+available fan settings. Information should also be provided to suggest when, and how, the system
+components should be cleaned and maintained.
+4.8 The following information should be provided where relevant.
+a. Manufacturer’s contact details.
+b. That background ventilators allow fresh air into the building and should be left open.
+c. The location of automatic controls and how to set them.
+d. The location of manual controls for the on/off and high rate settings for a mechanical
+ventilation system and how to use them.
+e. How cleaning and maintenance of the system and its components should be carried out. This
+includes the location and specification of filters and how to assess when to replace filters.
+f. How to access ducts for cleaning, how to undertake cleaning of plant and ducts and the
+intervals at which cleaning should be undertaken.
+22
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

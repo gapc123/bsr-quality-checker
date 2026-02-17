@@ -1,0 +1,25 @@
+Do not upload a construction phase health and safety plan instead of a construction
+control plan. If you do, your application can be rejected.
+Competent person scheme work
+If some of the project’s building work is being carried out under a competent person scheme,
+provide the name of each scheme provider. In the construction control plan you must set out
+how you will monitor and manage the scheme work.
+If all of the project’s building work is being carried out under a competent person scheme, you
+do not need to apply for building control approval.
+Competence declaration
+Upload the competence declaration signed by the client. It must confirm that the client has:
+● taken all reasonable steps to check that the principal designer and principal
+contractor are competent to carry out their duties
+● asked those working on the project if they have been issued with a serious sanction
+in the last 5 years
+If any individuals or organisations have been issued with a serious sanction in the last 5 years,
+then the competence declaration must also state:
+● who those individuals or organisations are
+● what the serious sanctions are
+● what considerations the client has made about the serious sanctions in relation to the
+work
+Read the guidance about design and building work: meeting building requirements it tells you
+more about:
+● the duty of the client to appoint competent individuals and organisations
+● serious sanctions
+● the competence requirements for those working on the project

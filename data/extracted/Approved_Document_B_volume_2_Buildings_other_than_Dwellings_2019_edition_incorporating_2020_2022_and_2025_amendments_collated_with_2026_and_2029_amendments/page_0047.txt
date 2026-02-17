@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B1
+3.20 Phased evacuation in buildings with a storey over 30m in height introduces the potential for
+escaping people to impede firefighters entering and operating within the building. This can be
+addressed by consulting with the fire and rescue service about special management procedures.
+In very tall buildings, typically with a storey over 45m in height, physical measures may need to be
+incorporated, such as by discounting a stair.
+3.21 A building (or part of a building) designed for phased evacuation should satisfy all of the following
+criteria.
+a. At each storey except a top storey, stairs should be approached through a protected lobby or
+protected corridor.
+b. At each storey, the lifts should be approached through a protected lobby (see paragraph 5.37).
+c. Every floor should be a compartment floor (REI depending on height and use of the building).
+d. If there is a storey over 30m above ground level, the building should be protected throughout by
+an automatic sprinkler system in accordance with Appendix E.
+e. The building should be fitted with an appropriate fire warning system conforming to at least the
+L3 standard given in BS 5839-1.
+f. An internal speech communication system should provide communication between a
+control point at fire and rescue service access level and a fire warden on every storey. The
+recommendations for phased evacuation provided in BS 5839-1 should be followed. Where it is
+deemed appropriate to install a voice alarm, this should be in accordance with BS 5839-8.
+3.22 The minimum width of stairs needed for phased evacuation is given in Table 3.3.
+Table 3.3 Minimum width of stairs designed for phased evacuation
+Maximum number of people in any storey Stair width (mm)
+100 1000
+120 1100
+130 1200
+140 1300
+150 1400
+160 1500
+170 1600
+180 1700
+190 1800
+NOTES:
+1. This table assumes a phased evacuation of the fire floor first followed by evacuation of not more than two floors at
+a time.
+2. Unless a central handrail is provided, stairs with a rise of more than 30m should be a maximum width of 1400mm
+(see paragraph 3.10).
+3. As an alternative to using this table, the minimum width (in mm) may be calculated from:
+(P×10) – 100
+where P = the number of people on the most heavily occupied storey.
+However, the minimum width of a stair should be 1000mm.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 35
+O N L I N E V E R S I O N

@@ -1,0 +1,55 @@
+C O N L I N E V E R S I O N
+Appendix C: CO monitoring
+2
+NOTE: The guidance in this appendix is based on the Scientific Advisory Group for Emergencies
+(SAGE) EMG/SPI-B advisory group paper Application of CO monitoring as an approach to managing
+2
+ventilation to mitigate SARS-CoV-2 transmission.
+People exhale carbon dioxide (CO ) when they breathe out. If there is a build-up of CO in an area it can
+2 2
+indicate that ventilation needs to be improved.
+Checking levels of CO using a monitor can help to identify areas that are poorly ventilated.
+2
+Types of CO monitor to use
+2
+Many different types of CO monitor are available. The most appropriate portable devices for use in the
+2
+workplace are non-dispersive infrared (NDIR) CO monitors.
+2
+How to use a CO monitor
+2
+The level of CO in the air will vary within an indoor space. It is best to place CO monitors at head height
+2 2
+and away from windows, doors or air supply openings.
+Monitors that are positioned too close to people may give a misleadingly high reading due to the CO in
+2
+exhaled breath. Monitors should therefore be positioned at least 500mm away from room occupants.
+Measured levels of CO within a space can vary throughout the day due to changes in number of
+2
+occupants, activities being performed or ventilation rates in the space. The opening and closing of doors
+and windows can also have an effect.
+The amount of CO in the air is measured in parts per million (ppm). If measurements in an occupied space
+2
+seem very low (far below 400ppm) or very high (over 1500ppm), it is possible that the monitor is not in a
+suitable location. The monitor may need to be moved to another position within the space, to get a more
+accurate reading.
+Instantaneous or ‘snapshot’ CO readings can be misleading, so several measurements should be taken
+2
+throughout the day. The frequency of measurements should be sufficient to ensure that changes in the
+use of the room or space throughout the day are represented in the readings. Levels of CO may also vary
+2
+throughout the year, as outdoor temperatures, and therefore behaviour relating to opening windows and
+doors, change.
+How to get the most accurate readings
+a. Check that monitors are within the recommended calibration period.
+b. Follow the manufacturer’s instructions, including allowing the appropriate warm-up time for the
+device to stabilise
+c. Know how to use the monitor correctly, including the time needed to provide a reading.
+d. Take measurements at key times throughout the working day.
+e. Record CO readings, number of occupants, the type of ventilation in use at the time and the date.
+2
+These will help you use the CO records to decide if an area is poorly ventilated.
+2
+30
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

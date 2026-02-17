@@ -1,0 +1,52 @@
+O N L I N E V E R S I O N
+C
+2029 amendment – effective from 2 September 2029
+C11 Except for doorsets listed in paragraph C12, all fire doorsets should be marked with one of the
+following fire safety signs, complying with BS 5499-5, as appropriate.
+a. To be kept closed when not in use – mark ‘Fire door keep shut’.
+b. To be kept locked when not in use – mark ‘Fire door keep locked shut’.
+c. Held open by an automatic release mechanism or free swing device – mark ‘Automatic fire
+door keep clear’.
+C12 The following fire doorsets are not required to comply with paragraph C11.
+a. Doors to and within flats and dwellinghouses.
+b. Bedroom doors in ‘residential (other)’ (purpose group 2(b)) premises.
+c. Lift entrance/landing doors.
+C13 The performance of some doorsets set out in Table C1 is linked to the minimum periods of fire
+resistance for elements of structure given in Tables B1 and B2. Limitations on the use of uninsulated
+glazing in fire doorsets are given in Table B3.
+C14 Recommendations for the specification, design, construction, installation and maintenance of fire
+doorsets constructed with non-metallic door leaves are given in BS 8214.
+Guidance on timber fire resisting doorsets, in relation to the new European test standard, may be
+found in Timber Fire Resisting Doorsets: Maintaining Performance Under the New European Test
+Standard published by the Timber Research and Development Association (TRADA).
+Guidance for metal doors is given in Code of Practice for Fire Resisting Metal Doorsets published
+by the Door and Shutter Manufacturers’ Association (DSMA).
+C15 Hardware used on fire doors can significantly affect their performance in a fire. Notwithstanding
+the guidance in this approved document, guidance is available in Hardware for Fire and Escape
+Doors published by the Door and Hardware Federation (DHF) and Guild of Architectural
+Ironmongers (GAI).
+Table C1 Provisions for fire doorsets
+Position of doorset Minimum fire resistance of doorset in terms of
+integrity (minutes) when tested and classified to the
+relevant European standard(1) or assessed following the
+recommendations of paragraph B1 to B5 and C1(2)
+1. In a compartment wall separating buildings Same as for the wall in which the door is fitted, but a
+minimum of 60 minutes
+2. In a compartment wall:
+a. if it separates a flat from a space in common 30 minutes S (3)
+a
+use
+b. e nclosing a protected shaft forming a stairway 30 minutes S (3)
+a
+or an evacuation shaft wholly or partly above
+the adjoining ground in a building used for
+flats, other residential, assembly and recreation,
+or office purposes
+c. enclosing a protected shaft forming a stairway Half the period of fire resistance of the wall in which it is
+or an evacuation shaft not described in (b) fitted, but 30 minutes minimum and with suffix S (3)
+a
+above
+d. enclosing a protected shaft forming a lift or Half the period of fire resistance of the wall in which it is
+service shaft fitted, but 30 minutes minimum
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 173
+O N L I N E V E R S I O N

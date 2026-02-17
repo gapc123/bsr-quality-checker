@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B1
+Access to storey exits
+2.14 Where a storey has more than one escape stair, it should be planned so that it is not necessary to
+pass through one stair to reach another. However, it would be acceptable to pass through one stair’s
+protected lobby to reach another stair.
+Separation of circulation routes from protected stairways
+2.15 Where they serve protected stairways that are part of primary circulation routes, self-closing
+fire doors should be fitted with an automatic release mechanism, to avoid them being rendered
+ineffective by misuse. Otherwise, the stair (and any associated exit passageway) should not form
+part of the primary circulation route between different parts of the building at the same level.
+Storeys divided into different uses
+2.16 If a storey contains areas for consuming food and/or drink, and where that is not the main use of
+the building, then both of the following apply.
+a. A minimum of two escape routes should be provided from each area, except from inner rooms
+that meet the conditions in paragraph 2.11.
+b. Those escape routes should lead directly to a storey exit without entering a kitchen or similar
+area of high fire hazard.
+Storeys divided into different occupancies
+2.17 Where a storey is divided into areas of occupancy under separate ownership or tenancy, then both
+of the following apply.
+a. The means of escape from each occupancy should not pass through any other occupancy.
+b. If a common corridor or circulation space is on the escape route, one of the following
+should apply.
+i. It should be a protected corridor.
+ii. A suitable automatic fire detection and alarm system should be installed throughout
+the storey.
+Width of escape routes and exits
+2.18 The width of escape routes and exits should meet the provisions in Table 2.3, as well as the
+guidance in Approved Document M.
+2.19 If the maximum number of people likely to use the escape route and exit is not known, it should be
+calculated using the occupant number guidance in Appendix D.
+2.20 Guidance on the spacing of fixed seating for auditoria is given in Annex D of BS 9999.
+18 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

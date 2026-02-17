@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+B1
+5.13 Any door opening towards a corridor or a stair should be recessed to prevent its swing encroaching
+on the effective width.
+Vision panels in doors
+5.14 Doors should contain vision panels in both of the following situations.
+a. Where doors on escape routes divide corridors.
+b. Where doors are hung to swing both ways.
+Approved Document M contains guidance about vision panels in doors across accessible corridors
+and Approved Document K contains guidance about the safety of glazing.
+Revolving and automatic doors
+5.15 Where revolving doors, automatic doors and turnstiles are placed across escape routes they should
+comply with one of the following.
+a. They are automatic doors of the required width and comply with one of the following conditions.
+i. Their failsafe system provides outward opening from any open position.
+ii. They have a monitored failsafe system to open the doors if the mains electricity supply fails.
+iii. They failsafe to the open position if the power fails.
+b. Non-automatic swing doors of the required width are provided immediately adjacent to the
+revolving or automatic door or turnstile.
+General provisions
+Headroom in escape routes
+5.16 Escape routes should have a minimum clear headroom of 2m. The only projections allowed below
+this height are door frames.
+Flooring of escape routes
+5.17 Escape route floor finishes should minimise their slipperiness when wet. Finishes include the treads
+of steps and surfaces of ramps and landings.
+Ramps and sloping floors
+5.18 A ramp forming part of an escape route should meet the provisions in Approved Document M. Any
+sloping floor or tier should have a pitch of not more than 35 degrees to the horizontal.
+5.19 Guidance for where there is fixed seating is given in both of the following.
+a. Approved Documents K and M give guidance on the design of ramps and associated landings,
+and on aisles and gangways where there is fixed seating.
+b. Section 2 of this document refers to Annex D of BS 9999, which gives guidance on the design of
+means of escape in places with fixed seating.
+Final exits
+5.20 The width of a final exit should be at least the same as the minimum required width of the escape
+route it serves.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 49
+O N L I N E V E R S I O N

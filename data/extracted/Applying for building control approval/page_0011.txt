@@ -1,0 +1,27 @@
+● you’ll manage and assess each controlled change in accordance with your change
+control plan
+● controlled changes will be recorded in your change control log
+How to record changes: change control log
+The principal contractor must create and maintain a change control log. It should record
+changes made to the project throughout the build. You’ll be asked to submit the change control
+log when you apply for a completion certificate.
+For each controlled change, the following should be recorded in the change control log:
+● the name of the individual recording the change
+● a description of the change
+● why you are making the change, for example, a change of design approach or
+availability of materials
+● whether the change is a recordable change, a notifiable change or a major change
+● a list of the name and occupation of each person, if any, whose advice was sought in
+relation to the proposed change and a summary of any advice given
+● an assessment of which agreed document is affected by the proposed change and
+confirmation that a revised version has been produced
+In the change control log, explain how building regulations will still be met after the change is
+carried out. You must set out how the:
+● building work will still comply with all applicable building regulations
+● management of the project will still comply with all applicable building regulations
+For each change explain how any updates to the strategies, policies and procedures in the
+agreed documents have been shared and recorded in accordance with the golden thread of
+information.
+If a change relates to a mandatory occurrence report, include details about it in the change
+control log.
+How to make changes: change control process

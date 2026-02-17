@@ -1,0 +1,54 @@
+O N L I N E V E R S I O N F1(1)
+Table 1.1 Ventilation for buildings other than offices and car parks
+Building/space/ Regulations and guidance (also see CIBSE’s Guide A and Appendices D and E)
+activity
+Animal rooms CIBSE Guide B2 Ventilation and Ductwork (2016)
+Code of Practice for the Housing and Care of Animals Bred, Supplied or Used for Scientific Purposes
+(Home Office, 2014)
+Building services Dangerous Substances and Explosive Atmospheres Regulations 2002
+plant rooms
+Provision for emergency ventilation to control dispersal of contaminating gas releases (e.g.
+refrigerant leak) is given in paragraphs 23 to 25 of HSE Guidance Note HSG 202 General Ventilation
+in the Workplace – Guidance for Employers.
+BS EN 378-3 Refrigerating systems and heat pumps. Safety and environmental requirements –
+Installation site and personal protection
+Follow manufacturers’ guidance for adequate provision of air for service equipment.
+Catering and HSE Catering Information Sheet No. 10: Ventilation in catering kitchens (2017)
+commercial
+BESA DW 172 Specification for Kitchen Ventilation Systems (2018)
+kitchens
+CIBSE Guide B2 Ventilation and Ductwork (2016)
+Cleanrooms CIBSE Guide B2 Ventilation and Ductwork (2016)
+Common Either:
+spaces(1)
+a. natural ventilation by appropriately located ventilation opening(s) with a total opening area of
+at least 1/50 of the floor area of the common space
+b. mechanical ventilation installed to provide a supply of fresh air of 0.5 litres per second per m2
+of floor area.
+Data centres CIBSE Guide B2 Ventilation and Ductwork (2016)
+Dealing rooms CIBSE Guide B2 Ventilation and Ductwork (2016)
+Factories and Control of Substances Hazardous to Health (COSHH) Regulations 2002
+workshops
+Factories Act 1961
+Health and Safety at Work etc. Act 1974
+BESA TR 40 Guide to Good Practice for Local Exhaust Ventilation (2020)
+CIBSE Guide B2 Ventilation and Ductwork (2016)
+NOTE: Requirements are often exceeded by other criteria, such as the ventilation requirements of
+the particular manufacturing process.
+Farms Welfare of Farmed Animals (England) Regulations 2007
+BS 5502 Buildings and structures for agriculture
+Gymnasiums Sport England Design Guidance Note: Fitness and Exercise Spaces (2008)
+Healthcare CIBSE Guide B2 Ventilation and Ductwork (2016)
+buildings: non-
+NHS Activity DataBase
+surgical
+Health Technical Memorandum (HTM) 03-01 (Department of Health)
+Health Building Notes (HBN) – various (Department of Health)
+Hospitals CIBSE Guide B2 Ventilation and Ductwork (2016)
+NHS Activity DataBase
+Health Technical Memorandum (HTM) 03-01 (Department of Health)
+Health Building Notes (HBN) – various (Department of Health)
+Hotels CIBSE Guide B2 Ventilation and Ductwork (2016)
+13
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

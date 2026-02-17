@@ -1,0 +1,38 @@
+Building Control Approval Application for a New
+Higher-Risk Building (Gateway 2)
+APPLICATION DOCUMENT MANAGEMENT AND SUBMISSION
+1. INTRODUCTION
+1.1. Under the new Building Safety Regime for a new Higher-Risk Building (HRB), an
+applicant must pass through three gateway points: Planning (Gateway 1)
+(hospitals and care homes are excluded from the definition of a relevant building);
+Building Control Approval (Gateway 2); and Building Control Completion
+(Gateway 3). This process is summarised in the Building Safety Regime for a
+new Higher-Risk Building.
+1.2. The applicant, either the client or someone authorised to act on their behalf,
+should submit and manage a new HRB - Building Control Approval application
+(Gateway 2) online to the Building Safety Regulator (BSR). This requires
+submission of an application and supporting documents (and plans). The
+documents required for a valid application are set out in Build UK - Validation
+of Applications for Building Control Approval.
+1.3. Clear and logical document organisation within the application submission not
+only contributes to a clear and comprehensive application but provides an easy
+to navigate framework for the BSR and their Multi-Disciplinary Teams (MDTs) to
+assess compliance.
+1.4. This guidance note outlines best practice for document management and
+submission for a Building Control Approval application.
+2. PRINCIPLES
+2.1. Information for an application should be provided in an easy to navigate
+framework aligned with the relevant legislation.
+2.2. The document structure should set out a clear hierarchy of folders, sub-folders
+and files.
+2.3. A clear naming convention for folders, sub-folders and files should be followed.
+2.4. Submitting more documents than is needed will not mean that the application is
+better, in fact it may lead to the need for a longer assessment process.
+3. USE OF FOLDER AND SUB-FOLDER STRUCTURES
+3.1. The BSR online application portal has been updated with a new functionality, to
+allow applicants to submit documents in a folder structure. This offers greater
+flexibility on presentation of the application and allows related documents to be
+clustered.
+3.2. Within the portal, an applicant is prompted to upload the Accompanying
+Documents as files into separate pre-set folders.
+Back to contents page Page 20

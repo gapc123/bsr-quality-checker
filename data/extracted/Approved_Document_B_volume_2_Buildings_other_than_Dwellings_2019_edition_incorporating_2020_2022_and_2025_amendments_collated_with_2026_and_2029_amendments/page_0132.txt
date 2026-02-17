@@ -1,0 +1,61 @@
+B5
+Diagram 17.2 Provision of firefighting shafts
+120 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+m81
+>
+m01
+>
+m5.7
+>
+O N L I N E V E R S I O N
+See para 17.2
+Buildings in which firefighting shafts should be provided,
+showing which storeys need to be served
+a. Any building b. Any building c. ‘Shop and d. Any building
+commercial’,
+The upper storeys The basement The basement
+‘assembly and
+in any building storeys in any storeys in any
+recreation’ and
+with a storey more building with a building with two
+than 18m above basement more ‘industrial’ or more
+fre service vehicle than 10m below buildings (purpose basements each
+access level fre service vehicle groups 4, 5 and 6) exceeding 900m²
+access level
+The upper storeys in
+purpose groups 4, 5 and 6
+buildings with a storey of
+900m2 or more which is
+more than 7.5m above fre
+service vehicle access level
+Fire
+service
+vehicle
+access
+level
+Two or more
+basement storeys
+each exceeding
+900m²
+NOTES:
+1. Height excludes any top storey(s) consisting
+Extent of Extent of
+exclusively of plant rooms.
+frefghting frefghting
+stair lift
+2. Firefghting shafts should serve all foors
+through which they pass.
+Location of firefighting shafts
+17.7 Firefighting shafts and protected stairways should be positioned such that every part of each storey
+more than 18m above the fire and rescue service vehicle access level complies with the maximum
+distances given in paragraph 17.8. Distances should be measured from the fire main outlet on a route
+suitable for laying a hose.
+NOTE: If the internal layout is not known, the distance should be measured at two-thirds of the
+direct distance.
+17.8 In any building, the hose laying distance should meet all of the following conditions.
+a. A maximum of 60m from the fire main outlet in a firefighting shaft (see Diagram 17.3).
+b. Additionally, where sprinklers have not been provided in accordance with Appendix E, the
+hose laying distance should be a maximum of 45m from a fire main outlet in a protected shaft
+(although this does not imply that the protected shaft needs to be designed as a firefighting
+shaft (see Diagram 17.3).
+O N L I N E V E R S I O N

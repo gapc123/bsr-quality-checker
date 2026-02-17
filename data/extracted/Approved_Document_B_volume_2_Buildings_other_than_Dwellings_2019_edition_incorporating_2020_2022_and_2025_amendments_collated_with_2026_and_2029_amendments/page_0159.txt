@@ -1,0 +1,47 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Table B2 Minimum periods of fire resistance
+Purpose group of building Minimum periods of fire resistance(1) (minutes) in a:
+Basement storey* Ground or upper storey
+including floor over
+Depth (m) of the lowest Height (m) of top floor above ground, in a building or
+basement separated part of a building
+More than Up to 10 Up to 5 Up to 11 Up to 18 Up to 30 More than
+10 30
+1. Residential:
+a. Block of flats
+– without sprinkler 90 min 60 min 30 min† 60 min+§ Not Not Not
+system permitted(2) permitted(2) permitted(2)
+– with sprinkler system(3) 90 min 60 min 30 min† 60 min+§ 60 min+§ 90 min+ 120 min+
+b. and c. Dwellinghouse Not 30 min*† 30 min† 60 min(5) 60 min(5) Not Not
+applicable(4) applicable(4) applicable(4)
+2. Residential
+a. Institutional 90 min 60 min 30 min† 60 min 60 min 90 min 120 min‡
+b. Other residential 90 min 60 min 30 min† 60 min 60 min 90 min 120 min‡
+3. Office:
+– without sprinkler 90 min 60 min 30 min† 60 min 60 min 90 min Not
+system permitted(6)
+– with sprinkler system(3) 60 min 60 min 30 min† 30 min† 30 min† 60 min 120 min‡
+4. Shop and commercial:
+– without sprinkler 90 min 60 min 60 min 60 min 60 min 90 min Not
+system permitted(6)
+– with sprinkler system(3) 60 min 60 min 30 min† 60 min 60 min 60 min 120 min‡
+5. Assembly and
+recreation:
+– without sprinkler 90 min 60 min 60 min 60 min 60 min 90 min Not
+system permitted(6)
+– with sprinkler system(3) 60 min 60 min 30 min† 60 min 60 min 60 min 120 min‡
+6. Industrial:
+– without sprinkler 120 min 90 min 60 min 90 min 90 min 120 min Not
+system permitted(6)
+– with sprinkler system(3) 90 min 60 min 30 min† 60 min 60 min 90 min 120 min‡
+7. Storage and other non-
+residential:
+a. any building or part not
+described elsewhere:
+– without sprinkler 120 min 90 min 60 min 90 min 90 min 120 min Not
+system permitted(6)
+– with sprinkler system(3) 90 min 60 min 30 min† 60 min 60 min 90 min 120 min‡
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 147
+O N L I N E V E R S I O N

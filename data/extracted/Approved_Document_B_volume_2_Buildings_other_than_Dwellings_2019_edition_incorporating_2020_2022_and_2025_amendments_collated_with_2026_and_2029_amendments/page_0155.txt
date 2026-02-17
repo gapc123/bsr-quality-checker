@@ -1,0 +1,49 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Table B1 Continued
+Part of building Minimum Alternative minimum provisions when tested to the Type of
+provisions when relevant part of BS 476(2) (minutes) exposure
+tested to the
+Loadbearing Integrity Insulation
+relevant European
+capacity(3)
+standard
+(minutes)(1)
+4. Roofs
+a. any part forming an REI 30 30 min 30 min 30 min From
+escape route underside(5)
+b. any roof that REI see Table B2 See Table B2 See Table B2 See Table B2 From
+performs the underside(5)
+function of a floor.
+5. External walls
+a. any part a maximum REI see Table B2 See Table B2 See Table B2 See Table B2 Each side
+of 1000mm from any separately
+point on the relevant
+boundary(6)
+b. any part a minimum RE see Table B2 See Table B2 See Table B2 15 min From inside
+of 1000mm from the and I 15 the building
+relevant boundary(6)
+c. any part beside an RE 30 30 min 30 min No From inside
+external escape route provision(7) (8) the building
+(Section 2 Diagram
+2.7 of Approved
+Document B Volume
+1 and Section 3,
+Diagram 3.4).
+6. Compartment walls
+Separating either:
+a. a flat from any other REI 60 or 60 min or 60 min or 60 min or Each side
+part of the building see Table B2 see Table B2 see Table B2 see Table B2 separately
+(see paragraph 7.1 of (whichever is less) (whichever is (whichever is (whichever is
+Approved Document less) less) less)
+B Volume 1)
+b. occupancies. REI 60 or 60 min or 60 min or 60 min or Each side
+see Table B2 see Table B2 see Table B2 see Table B2 separately
+(whichever is less) (whichever is (whichever is (whichever is
+less) less) less)
+7. Compartment walls REI see Table B2 See Table B2 See Table B2 See Table B2 Each side
+(other than in item 6 separately
+or item 10).
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 143
+O N L I N E V E R S I O N

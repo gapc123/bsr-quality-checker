@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+B3
+Openings in compartmentation
+Openings in compartment walls separating buildings or occupancies
+8.30 Openings in a compartment wall common to two or more buildings, or between different
+occupancies in the same building, should be limited to those for either of the following.
+a. A fire doorset providing a means of escape, which has the same fire resistance as the wall and is
+fitted in accordance with the provisions in Appendix C.
+b. The passage of a pipe that complies with the provisions in Section 10.
+Openings in other compartment walls or in compartment floors
+8.31 Openings should be limited to those for any of the following.
+a. Fire doorsets fitted in accordance with the provisions in Appendix C.
+b. Pipes, ventilation ducts, service cables, chimneys, appliance ventilation ducts or ducts encasing
+one or more flue pipes, complying with the provisions in Section 10.
+c. Refuse chutes of class A1 construction.
+d. Atria designed in accordance with Annexes B and C of BS 9999.
+e. Protected shafts that conform to the provisions in the following paragraphs.
+Protected shafts
+8.32 Any stair or other shaft passing directly from one compartment to another should be enclosed
+in a protected shaft. Protected shafts should be used for the following only, but may also include
+sanitary accommodation and washrooms.
+a. Stairs.
+b. Lifts.
+c. Escalators.
+d. Chutes.
+e. Ducts.
+f. Pipes.
+g. Additional provisions apply for both of the following.
+i. Protected shafts that are protected stairways: Sections 2 to 5.
+ii. Stairs that are also firefighting stairs: Section 17.
+Construction of protected shafts
+8.33 The construction enclosing a protected shaft (Diagram 8.3) should do all of the following.
+a. Form a complete barrier to fire between the compartments connected by the shaft.
+b. Have the appropriate fire resistance given in Appendix B, Table B1, except for uninsulated glazed
+screens that meet the provisions of paragraph 8.34.
+c. Satisfy the provisions for ventilation and the treatment of openings in paragraphs 8.38 and 8.39.
+72 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,40 @@
+Building Control Approval Application for a New
+Higher-Risk Building (Gateway 2)
+APPLICATION DOCUMENT MANAGEMENT AND SUBMISSION
+3.3. At the Drawings and Plans stage on the portal, an applicant is now able to
+upload sub-folders. Sub-folders should be created on an applicant’s own system
+and simply uploaded when requested by the portal.
+3.4. The number of sub-folders should be proportionate but there are no constraints
+on sub-folder creation or the number of files within each sub-folder.
+3.5. Annex 6A provides an example folder and sub-folder structure that may be used
+through an Application Folder Structure and Contents Schedule.
+3.6. Sub-folders can be any size but should only contain PDFs. Other file types cannot
+be uploaded.
+3.7. Sub-folder names should only use letters, numbers, spaces, hyphens and
+underscores. Do not use special characters.
+4. FILE NAMING CONVENTIONS
+4.1. A file reference should be clearly identifiable.
+4.2. A file must be:
+• PDF format;
+• Smaller than 1GB; and
+• Named using only letters, numbers, spaces, hyphens and underscores. Do
+not use special characters.
+4.3. Use a clear file title describing what a document or plan relates to. The aim is to
+avoid a file needing to be opened to identify what it is.
+4.4. If a document is referred to in legislation, then use this exact wording as a clear
+file name (e.g. Target Emissions Rating).
+4.5. Non-statutory recommended documents (e.g. Application Project Brief) should
+also be clearly titled.
+4.6. Typical file names that should be used are:
+File Titles - Statutory Documents File Titles - Non-Statutory Documents
+Site Plan Application Folder Structure and Contents Schedule
+Drawings and Plans Application Information Schedule
+Competence Declaration Application Project Brief
+Construction Control Plan Application Strategy
+Change Control Plan
+Mandatory Occurrence Reporting Plan
+Building Regulations Compliance Statement
+Fire and Emergency File
+Partial Completion Strategy
+Client Authorisation Statement
+Back to contents page Page 21

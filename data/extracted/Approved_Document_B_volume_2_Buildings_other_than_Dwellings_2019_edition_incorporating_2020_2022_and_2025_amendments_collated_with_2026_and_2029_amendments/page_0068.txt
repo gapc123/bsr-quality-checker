@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+B2
+c. The underside of a gallery.
+d. The underside of a roof exposed to the room below.
+6.6 For the purposes of this requirement, a ceiling does not include any of the following.
+a. Trap doors and their frames.
+b. The frames of windows or rooflights and frames in which glazing is fitted.
+c. Architraves, cover moulds, picture rails, exposed beams and similar narrow members.
+Fire resisting ceilings
+6.7 The need for cavity barriers in concealed floor or roof spaces can be reduced by installing a fire
+resisting ceiling (minimum EI 30) below the cavity, complying with Diagram 9.3.
+Rooflights
+6.8 Rooflights should meet the following classifications, according to material. No guidance for
+European fire test performance is currently available, because there is no generally accepted test and
+classification procedure.
+a. Non-plastic rooflights should meet the relevant classification in Table 6.1.
+b. Plastic rooflights, if the limitations in Table 6.2 and Table 14.2 are observed, should be a minimum
+class D-s3, d2 rating. Otherwise they should meet the relevant classification in
+Table 6.1.
+Special applications
+6.9 Any flexible membrane covering a structure, other than an air-supported structure, should comply
+with Appendix A of BS 7157.
+6.10 Guidance on the use of PTFE-based materials for tension-membrane roofs and structures is given in
+BRE report BR 274.
+Fire behaviour of insulating core panels used internally
+6.11 Insulating core panels consist of an inner core of insulation sandwiched between, and bonded to, a
+membrane, such as galvanised steel or aluminium.
+Where they are used internally they can present particular problems with regard to fire spread, and
+should meet all of the following conditions.
+a. Panels should be sealed to prevent exposure of the core to a fire. This includes at joints and
+where services penetrate the panel.
+b. In high fire risk areas, such as kitchens, places of special fire hazard, or in proximity to where hot
+works occur, only class A1 cored panels should be used.
+c. Fixing systems for all panels should be designed to take account of the potential for the panel
+to delaminate. For instance, where panels are used to form a suspended ceiling, the fixing should
+pass through the panel and support it from the lower face.
+56 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

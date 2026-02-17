@@ -1,0 +1,41 @@
+F1(1) O N L I N E V E R S I O N
+Section 1: Ventilation provision
+General
+1.1 The aim of requirement F1(1) is to protect the health of occupants of the building by providing
+adequate ventilation. Without adequate ventilation, mould and internal air pollution might become
+hazardous to health.
+NOTE: The guidance in this approved document is not designed to deal with the products of
+tobacco smoking or vaping.
+1.2 The building should provide the ventilation rates given in this section.
+1.3 Other ventilation solutions may be used, if it can be shown to the building control body that they
+satisfy requirement F1(1).
+1.4 The ventilation rates set out in this approved document have been designed to meet the indoor
+pollutant levels in Appendix B where the outside air is of reasonable quality. In areas where the
+outside air is not of reasonable quality, Section 2 provides guidance on limiting the entry of
+external air pollutants.
+Noise
+1.5 Mechanical ventilation systems, including both continuous and intermittent mechanical ventilation,
+should be designed and installed to minimise noise. This includes doing all of the following.
+a. Correctly sizing and jointing ducts.
+b. Ensuring that equipment is appropriately and securely fixed, such as using resilient mountings
+where noise carried by the structure of the building could be a problem.
+c. Selecting appropriate equipment, including following paragraph 1.6.
+1.6 For mechanical ventilation systems, fan units should be appropriately sized so that fans operating
+in normal background ventilation mode are not overly noisy. This might require fans to be sized so
+that they do not operate near maximum capacity when in normal background ventilation mode.
+1.7 Account should be taken of outside noise when considering whether openable windows are
+appropriate for purge ventilation.
+NOTE: Although there is no requirement to undertake noise testing, achieving the levels in the
+following guidance would ensure good acoustic conditions. The average A-weighted sound pressure
+level for a ventilator operating under normal conditions and not at boost rates should not exceed
+both of the following.
+a. 30dB L * for noise-sensitive rooms (e.g. bedrooms and living rooms) when a continuous
+Aeq,T
+mechanical ventilation system is running on its minimum low rate.
+b. 45dB L * in less noise-sensitive rooms (e.g. kitchens and bathrooms) when a continuous
+Aeq,T
+operation system is running at the minimum high rate or an intermittent operation system is
+running.
+6
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,38 @@
+F1(1) O N L I N E V E R S I O N
+Equivalent area of ventilators
+1.15 The size of background ventilators (including trickle ventilators) is given in this approved document
+as an equivalent area in mm2, not as a free area. BS EN 13141-1 includes a method of measuring the
+equivalent area of background ventilator openings.
+1.16 Background ventilators should have the equivalent area marked where it will be easy to see from
+inside the dwelling when installed, to aid verification by building control bodies.
+Extract ventilation
+1.17 Extract ventilation to the outside should be provided in all of the following spaces.
+a. Kitchens.
+b. Utility rooms.
+c. Bathrooms.
+d. Sanitary accommodation.
+1.18 Extract ventilation can be intermittent or continuous.
+1.19 Minimum extract ventilation rates in litres per second (l/s) for intermittent operation extract
+systems are given in Table 1.1. Minimum extract ventilation rates for continuous operation extract
+systems are given in Table 1.2.
+1.20 Extract ventilation terminals and fans, not including cooker extract hoods, should be installed to
+comply with both of the following conditions.
+a. As high as is practicable in the room.
+b. A maximum of 400mm below the ceiling.
+1.21 Where a cooker hood is used to extract to the outside, the height of the extract hood above the
+hob surface should be either as specified in the manufacturer’s instructions or, if no specification is
+available, between 650mm and 750mm.
+Table 1.1 Minimum extract ventilation rates for intermittent extract systems
+Room Intermittent extract rate (l/s)
+Kitchen (cooker hood extracting to the outside)(1) 30
+Kitchen (no cooker hood or cooker hood does not extract to the outside)(2) 60
+Utility room 30
+Bathroom 15
+Sanitary accommodation(3) 6
+NOTES:
+1. See Diagram 1.1.
+2. See Diagram 1.2.
+3. As an alternative for sanitary accommodation, the purge ventilation guidance may be used.
+8
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

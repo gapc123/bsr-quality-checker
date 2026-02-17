@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B1
+Escape over flat roofs
+2.31 Where a storey or part of a building has multiple escape routes available, one may be over a flat
+roof if it does not serve a ‘residential (institutional)’ (purpose group 2(a)) building, or part of a
+building intended for use by members of the public.
+2.32 Where an escape route over a flat roof is provided, the roof should comply with all of the following.
+a. It should be part of the same building from which escape is being made.
+b. The route across the roof should lead to a storey exit or external escape route.
+c. The part of the roof forming the escape route and its supporting structure, together with any
+opening within 3m of the escape route, should be fire resisting (minimum REI 30).
+d. The route should be clearly defined and guarded by walls and/or protective barriers to protect
+from falling.
+Residential care homes
+General provisions
+2.33 The choice of fire safety strategy depends on the way a building is designed, furnished, staffed and
+managed, and on the level of dependency of the residents.
+2.34 In care homes for the elderly, some or all residents are likely to need help to evacuate. Buildings
+should generally be designed for progressive horizontal evacuation (PHE) in accordance with
+paragraphs 2.35 to 2.46.
+For other care home types, the most appropriate of either a PHE or simultaneous evacuation
+strategy should be identified. The approach adopted in the design of a building must be recorded
+and communicated to the building management team, who can adopt procedures compatible with
+the building design.
+Planning for progressive horizontal evacuation
+2.35 The guidance below on PHE is for care homes where the provisions of the Firecode documents do
+not apply (see paragraph 0.10).
+PHE requires areas used for the care of residents to be divided into protected areas by
+compartment walls and compartment floors. Protected areas provide a place of relative safety, from
+which further evacuation can be made if necessary.
+2.36 Each storey used for the care of residents should be divided by compartment walls into at least
+three protected areas. All floors should be compartment floors.
+2.37 Every protected area should have a minimum of two exits to adjoining protected areas. Maximum
+travel distances within a protected area should be both of the following.
+a. To the exit to the adjoining protected area: as shown in Table 2.1.
+b. From any point to a storey exit or a final exit: 64m.
+2.38 A fire in one protected area should not prevent occupants of other areas from reaching a final
+exit (Diagram 2.11). Escape routes should not pass through ancillary accommodation listed in
+paragraph 2.44.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 25
+O N L I N E V E R S I O N

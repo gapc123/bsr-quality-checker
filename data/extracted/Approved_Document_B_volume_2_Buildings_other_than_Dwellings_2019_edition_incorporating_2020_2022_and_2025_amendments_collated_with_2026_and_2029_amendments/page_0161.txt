@@ -1,0 +1,34 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Application of the fire resistance standards in Table B2
+B25 The following guidance should be used when applying the fire resistance standards in Table B2.
+a. If one element of structure supports or carries or gives stability to another, the fire resistance
+of the supporting element should be no less than the minimum period of fire resistance for the
+other element (whether that other element is loadbearing or not). In some circumstances, it may
+be reasonable to vary this principle, for example:
+i. if the supporting structure is in the open air and is not likely to be affected by the fire in
+the building
+ii. if the supporting structure is in a different compartment, with a fire-separating element
+(that has the higher standard of fire resistance) between the supporting and the separated
+structure
+iii. if a plant room on the roof needs greater fire resistance than the elements of structure that
+support it.
+b. If an element of structure forms part of more than one building or compartment, that element
+should be constructed to the standard of the higher of the relevant provisions.
+c. If, due to the slope of the ground, one side of a basement is open at ground level (allowing
+smoke to vent and providing access for firefighting) for elements of structure in that storey
+it may be appropriate to adopt the standard of fire resistance that applies to above-ground
+structures.
+d. Although most elements of structure in a single storey building may not need fire resistance, fire
+resistance is needed if one of the following applies to the element.
+i. It is part of, or supports, an external wall, and there is provision in the guidance on
+requirement B4 to limit the extent of openings and other unprotected areas in the wall.
+ii. It is part of, or supports, a compartment wall, including a wall that is common to two or
+more buildings.
+iii. It supports a gallery.
+B26 For the purposes of this paragraph, the ground storey of a building that has one or more basement
+storeys and no upper storeys may be considered as a single storey building. The fire resistance of
+the basement storeys should be that specified for basements.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 149
+O N L I N E V E R S I O N

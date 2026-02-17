@@ -1,0 +1,60 @@
+A O N L I N E V E R S I O N
+Appendix A: Key terms
+Except for the items marked * (which are from the Continuous mechanical extract ventilation
+Building Regulations 2010), these definitions apply Mechanically driven ventilation that continuously
+only to Approved Document F, Volume 1: Dwellings. extracts indoor air and discharges it to the outside.
+Air permeability The measure of airtightness of Continuous operation Uninterrupted running of a
+the building fabric. It is defined as the air leakage mechanical ventilation device, such as continuous
+rate per hour per m2 of envelope area at the test mechanical extract ventilation or mechanical
+reference pressure differential of 50Pa or 4Pa. ventilation with heat recovery. The air flow rate
+provided by mechanical ventilation need not be
+Airtightness The resistance of the building
+constant but may be varied, under either manual or
+envelope to infiltration when ventilators are closed.
+automatic control, in response to the demand for
+The greater the airtightness at a given pressure
+the removal of pollutants or water vapour.
+difference across the envelope, the lower the
+infiltration. Dwelling A self-contained unit designed to
+accommodate a single household.
+Automatic controls A system whereby a ventilation
+device is adjusted by a mechanical or electronic Equivalent area A measure of the aerodynamic
+controller that responds to a relevant stimulus. That performance of a ventilator. It is the area of a sharp-
+stimulus usually relates to the humidity of the air in edged circular orifice through which air would pass
+a room, pollutant levels, occupancy of the space or at the same volume flow rate, under an identical
+pressure difference across the device. applied pressure difference, as through the opening
+under consideration. The equivalent area of a
+Background ventilator A small ventilation opening
+background ventilator is determined at 1Pa pressure
+designed to provide controllable whole dwelling
+difference in accordance with Table 1.7.
+ventilation.
+Expert advice Advice from a suitably qualified
+Basement (in relation to a dwelling) A dwelling or a
+competent person. Examples from the ventilation
+usable part of a dwelling (i.e. a habitable room) that
+industry of a person competent to give expert
+is partly or entirely below ground level. Note that
+advice include a chartered or professional engineer,
+a cellar is distinct from a basement, in that a cellar
+a building services specialist, a specialist ventilation
+is used only for storage, heating plant or purposes
+manufacturer or members of professional trade
+other than habitation.
+bodies.
+Bathroom A room that contains a bath or
+Extract ventilation The removal of air directly
+shower and which can also include sanitary
+from an internal space or spaces to the outside.
+accommodation.
+Extract ventilation may be by natural means or by
+Building control body A local authority or an mechanical means (e.g. by an extract fan or a central
+approved inspector. system).
+Free area The geometric open area of a ventilator.
+Habitable room A room used for dwelling
+purposes but which is not solely a kitchen,
+utility room, bathroom, cellar or sanitary
+accommodation.
+36
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

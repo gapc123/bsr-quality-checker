@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+B3
+See para 8.33
+This diagram shows three common examples which illustrate the principles of the construction
+of protected shafts. The elements enclosing the shaft (unless formed by adjacent external walls)
+are compartment walls and foors.
+Fd Fire doorset
+Compartment wall
+Fd Fd Fd Fd
+External wall A B C
+Protected shaft A Protected shaft C
+is bounded on three is a services duct
+sides by compartment bounded on four sides
+walls and on the fourth by compartment walls
+side by an external wall
+Protected shaft B
+is bounded on four
+sides by compartment
+walls
+The shaft structure (including any openings) should meet the relevant provisions for both of the following:
+compartment walls (see paragraphs 8.15 to 8.31) and external walls (see Sections 12 and 13 and Diagram 3.3).
+Diagram 8.3 Construction of protected shafts
+Uninsulated glazed screens to protected shafts
+8.34 An uninsulated glazed screen may be incorporated in the enclosure to a protected shaft between a
+stair and a lobby or corridor entered from the stair. The enclosure must conform to Diagram 8.4 and
+meet all of the following conditions.
+a. The standard of fire resistance required for the protected stairway is not more than REI 60.
+b. The glazed screen complies with the following.
+i. It achieves a minimum rating of E 30.
+ii. It complies with the guidance on limits on areas of uninsulated glazing in Appendix B,
+Table B3.
+c. The lobby or corridor is enclosed with fire resisting construction achieving a minimum rating
+of REI 30.
+8.35 Where the measures in Diagram 8.4 are not provided, then both of the following apply.
+a. The enclosing walls should comply with Appendix B, Table B1.
+b. The doors should comply with Appendix B, Table B3.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 73
+O N L I N E V E R S I O N

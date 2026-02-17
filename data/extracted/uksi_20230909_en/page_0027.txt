@@ -1,0 +1,47 @@
+(cc) as far as C is aware, on the date they cease to be client, the design work, and
+the building work (if any has been carried out by that date), complies with all
+applicable requirements of the building regulations.
+(2) Subject to paragraph (3), N must—
+(a) within 28 days of the date when N becomes the client, give a notice to the regulator
+which—
+(i) states the date N became the client;
+(ii) states the date when C ceased to be the client;
+(iii) confirms N has received the documents referred to in paragraph (1);
+(iv) confirms N is aware of the requirements imposed on a client by the building
+regulations;
+(v) includes a copy of C’s statement under paragraph (1)(d), and
+(b) ensure—
+(i) a record is made of the change of client in the change control log;
+(ii) the construction control plan is revised, in accordance with regulation 18 (change
+control), to reflect the change.
+(3) Where N is not able—
+(a) to confirm they have received the documents referred to in paragraph (1), or
+(b) to provide a copy of C’s statement under paragraph (1)(d),
+then the notice sent under paragraph (2)(a) must explain the reasons for not providing the
+confirmation or not including a copy of the statement.
+(4) Where—
+(a) a trustee in bankruptcy has been appointed in relation to a client, or
+(b) C’s property (or any part of it that includes the HRB project) vests in a liquidator under
+section 145 of the Insolvency Act 1986,
+that person (IP) is not to be treated as a new client provided no building work has been carried out
+since their appointment or vesting, and where IP then disposes of C’s property to a new client
+paragraph (1) applies to IP as if—
+(i) sub-paragraphs (c) and (d) (except paragraph (bb)) were omitted, and
+(ii) where they are not able to confirm they have the documents referred to in paragraph
+(1)(a) then the notice sent under paragraph (2) by N must explain the reasons for not
+providing the confirmation.
+(5) Where—
+(a) a deputy has been appointed by the Court of Protection in relation to C’s property and
+financial affairs, or
+(b) a person has power of attorney in relation to C’s property and they intend to act in the
+capacity of the client,
+paragraph (6) applies instead of paragraph (1).
+(6) Where paragraph (5) applies, a person who has taken over as the client on behalf of C must,
+within 28 days of taking any step as a client—
+(a) give a notice to the regulator which—
+(i) states the date they took over as the client on behalf of C;
+(ii) confirms they have—
+(aa) a copy of the golden thread information;
+(bb) information (including plans, drawings and other documents) which is
+sufficient to detail the work comprised in the project;
+27

@@ -1,0 +1,19 @@
+O N L I N E V E R S I O N
+D
+Free area of smoke ventilators
+D5 The free area of a smoke ventilator should be measured by either of the following.
+a. The declared aerodynamic free area in accordance with BS EN 12101-2.
+b. The total unobstructed cross-sectional area (geometric free area), measured in the plane where
+the area is at a minimum and at right angles to the direction of air flow (Diagram D7).
+a. b.
+Free area Free area for louvred
+measured at vent = a+a+a+a+a
+1 2 3 4 5
+right angles to
+air fow
+a a a a a
+1 2 3 4 5
+90°
+Diagram D7 Free area of smoke ventilators
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 181
+O N L I N E V E R S I O N

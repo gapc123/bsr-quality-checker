@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N
+B4
+See para 13.13
+Canopy arrangement Loading bay arrangement
+2m min. Canopy 2m min.
+Relevant Relevant Loading platform
+boundary boundary
+Building line Building line
+Distance to Distance to
+relevant boundary relevant boundary
+measured from measured from
+building line building line
+NOTE: Projections from the building line, such as a canopy or a loading platform, can be ignored when
+assessing separation distance. This does not apply where the canopy is enclosed by side walls.
+Diagram 13.6 The effect of a canopy on separation distance
+Roofs
+13.15 Roofs with a pitch of more than 70 degrees to the horizontal should be assessed in accordance with
+this section. Vertical parts of a pitched roof, such as dormer windows, should be included, only if
+the slope of the roof exceeds 70 degrees.
+It is a matter of judgement whether a continuous run of dormer windows that occupies most of
+a steeply pitched roof should be treated as a wall rather than a roof.
+Portal frames
+13.16 Portal frames are often used in single storey industrial and commercial buildings where there may
+be no need for fire resistance of the structure (requirement B3). However, where a portal framed
+building is near a relevant boundary, the external wall near the boundary may need fire resistance
+to restrict the spread of fire between buildings. It is generally accepted that a portal frame acts
+as a single structural element because of the moment-resisting connections used, especially at
+the column/rafter joints. Thus, in cases where the external wall of the building cannot be wholly
+unprotected, the rafter members of the frame, as well as the column members, may need to be fire
+protected. The design method for this is set out in SCI Publication P313.
+NOTE: The recommendations in the SCI publication for designing the foundation to resist
+overturning do not need to be followed if the building is fitted with a sprinkler system in
+accordance with Appendix E.
+NOTE: Normally, portal frames of reinforced concrete can support external walls requiring a similar
+degree of fire resistance without specific provision at the base to resist overturning.
+104 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N
+B1
+Construction of escape stairs
+3.24 The flights and landings of escape stairs should be constructed of materials achieving class A2-s3, d2
+or better in all of the following situations.
+a. If the escape stair is the only stair serving the building or part of the building, unless the building
+has two or three storeys and is an office building.
+b. If the escape stair is within a basement storey.
+c. If the escape stair serves any storey that has a floor level more than 18m above ground or access
+level.
+d. If the escape stair is external, except where the stair connects the ground floor or ground level
+with a floor or flat roof a maximum of 6m above or below ground level.
+e. If the escape stair is a firefighting stair.
+Materials achieving class B-s3, d2 or worse may be added to the top horizontal surface, except on
+firefighting stairs.
+3.25 Further guidance on firefighting stairs is given in Section 17. Dimensional constraints on the design of
+stairs are given in Approved Document K.
+Single steps
+3.26 Single steps on escape routes should be prominently marked. A single step on the line of a doorway
+is acceptable, subject to paragraph 5.22.
+Helical stairs and spiral stairs
+3.27 Helical stairs and spiral stairs may form part of an escape route provided they are designed in
+accordance with BS 5395-2. If they are intended to serve members of the public, stairs should be
+type E (public) stairs.
+Fixed ladders
+3.28 Fixed ladders should not be provided as a means of escape for members of the public. They should
+only be provided where a conventional stair is impractical, such as for access to plant rooms which
+are not normally occupied.
+External walls adjacent to protected stairways
+3.29 With some configurations of external wall, a fire in one part of a building could subject the external
+wall of a protected stairway to heat (for example, where the two are adjacent at an internal angle in
+the façade, as shown in Diagram 3.3).
+3.30 If a protected stairway projects beyond, is recessed from or is in an internal angle of the adjoining
+external wall of the building, then the minimum distance between an unprotected area of the
+building enclosure and an unprotected area of the stair enclosure should be 1800mm.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 37
+O N L I N E V E R S I O N

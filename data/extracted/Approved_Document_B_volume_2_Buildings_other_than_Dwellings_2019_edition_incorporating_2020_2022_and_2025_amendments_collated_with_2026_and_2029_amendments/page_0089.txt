@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+B3
+Provision of cavity barriers
+9.2 To reduce the potential for fire spread, cavity barriers should be provided for both of the following.
+a. To divide cavities.
+b. To close the edges of cavities.
+See Diagram 9.1. Cavity barriers should not be confused with fire-stopping details (Section 10).
+Pathways around fire‑separating elements
+Junctions and edges of cavities
+9.3 Cavity barriers should be provided at all of the following locations.
+a. At the edges of cavities, including around openings (such as windows, doors and exit/entry
+points for services).
+b. At the junction between an external cavity wall and every compartment floor and compartment
+wall.
+c. At the junction between an internal cavity wall and every compartment floor, compartment wall
+or other wall or door assembly forming a fire resisting barrier.
+This does not apply where a wall meets the conditions of Diagram 9.2.
+9.4 It is not appropriate to complete a line of compartment walls by fitting cavity barriers above them.
+The compartment wall should extend to the underside of the floor or roof above.
+Protected escape routes
+9.5 If the fire resisting construction of a protected escape route is either of the following.
+a. Not carried to full storey height.
+b. At the top storey, not carried to the underside of the roof covering.
+Then the cavity above or below the fire resisting construction should be either of the following.
+i. Fitted with cavity barriers on the line of the enclosure.
+ii. For cavities above the fire resisting construction, enclosed on the lower side by a fire resisting
+ceiling (minimum EI 30) that extends throughout the building, compartment or separated part
+(see Diagram 9.3).
+Cavities affecting alternative escape routes
+9.6 In divided corridors, cavity barriers may be needed to prevent alternative escape routes being
+affected by fire and/or smoke (see paragraph 2.27 and Diagram 2.9).
+Separation of bedrooms in ‘residential (institutional)’ and ‘residential
+(other)’ buildings
+9.7 Where a cavity exists above or below a partition between bedrooms because the enclosure is not
+carried to full storey height or to the underside of the roof covering, the guidance in paragraph 9.5
+should be followed.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 77
+O N L I N E V E R S I O N

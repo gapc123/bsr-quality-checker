@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+B3
+Additional guidance
+7.4 If a loadbearing wall is any of the following, guidance in other sections may also apply.
+a. A compartment wall (including a wall common to two buildings): Section 8.
+b. Enclosing a place of special fire hazard: Section 8, paragraph 8.7.
+c. Protecting a means of escape: Sections 2 to 5.
+d. An external wall: Sections 12 and 13.
+e. Enclosing a firefighting shaft: Section 17.
+7.5 If a floor is also a compartment floor, see Section 8.
+Raised storage areas
+7.6 The normal provisions for fire resistance may be too onerous to apply to raised, free-standing floors
+(sometimes supported by racking) in single storey buildings used for industrial and storage purposes.
+The introduction of raised storage areas can alter the effective number of storeys in the building
+(see the definition of ‘storey’ in Appendix A).
+7.7 A structure that does not have the minimum fire resistance specified in Appendix B, Table B2,
+is acceptable if it satisfies all of the following conditions.
+a. The structure meets both of the following conditions.
+i. It has only one tier.
+ii. It is used for storage purposes only.
+b. The people likely to be on the floor at any one time are both of the following.
+i. Few in number.
+ii. Not members of the public.
+c. The floor is open above and below to the room or space in which it is situated.
+d. The means of escape from the floor is in accordance with Sections 2 to 5.
+e. The floor meets both of the following conditions.
+i. It is not more than 10m in width or length.
+ii. It is a maximum of half the floor area of the space in which it is situated.
+The limitations in (e) may be adjusted if any of the following apply.
+f. If the lower level has an automatic fire detection and alarm system meeting the
+recommendations of BS 5839-1, then the floor size may be increased to not more than 20m in
+either width or length.
+g. If agreed with the building control body and the fire and rescue service, then it may be possible
+to vary this dimension and area. However, the safety of firefighters and the distance they may
+need to travel over or under the floor must be considered.
+h. If the building is fitted throughout with an automatic sprinkler system complying with Appendix
+E, then no limits are set for the size of the floor.
+64 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+B1
+Section 1: Fire detection and alarm systems
+General provisions
+1.1 All buildings should have arrangements for detecting fire and raising the alarm. In most buildings,
+fires are detected by people, either by sight or smell, and therefore often nothing more is needed.
+1.2 In some small buildings/premises, the means of raising the alarm may be simple (for example, a
+shouted warning). In assessing appropriate solutions, warnings need to be heard and understood
+throughout the premises.
+Fire detection and alarm systems
+1.3 Other than for some small buildings/premises, an electrically operated fire alarm system should be
+provided. In some situations, the alarm should be operated by a fire detection system. The detailed
+specification should be compatible with the fire strategy for the building.
+NOTE: The term ‘fire alarm system’ describes the combination of components for giving an audible
+and/or other perceptible warning of fire.
+NOTE: In this document, the term ‘fire detection system’ describes any type of automatic sensor
+network and associated control and indicating equipment. Sensors may be sensitive to smoke, heat,
+gaseous combustion products or radiation. Automatic sprinkler systems can also be used to operate
+a fire alarm system.
+1.4 In ‘residential (institutional)’ and ‘residential (other)’ occupancies (purpose groups 2(a) and 2(b)),
+automatic fire detection and alarms should be provided.
+1.5 Automatic fire detection and alarm systems should be provided in non-residential occupancies
+where a fire could break out in an unoccupied part of the premises (e.g. a storage area or a part of
+the building that is not visited on a regular basis) and prejudice the means of escape from occupied
+part(s) of the premises.
+1.6 Automatic fire detection will also be necessary where fire protection systems, such as pressure
+differential systems or door releases, need to operate automatically.
+1.7 Every building design should be assessed individually. General guidance on the category of fire
+detection system that may need to be provided within a building can be found in Table A1 of
+BS 5839-1.
+1.8 Where an electrically operated fire detection and alarm system is provided, it should comply
+with BS 5839-1.
+1.9 BS 5839-1 specifies three categories of system.
+a. Category L – for the protection of life.
+b. Category M – manual fire detection and alarm systems.
+c. Category P – for property protection.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 9
+O N L I N E V E R S I O N

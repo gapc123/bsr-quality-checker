@@ -1,0 +1,23 @@
+O N L I N E V E R S I O N F1(1)
+Section 2: Minimising the ingress of external
+pollutants
+2.1 Ventilation systems should be designed to minimise the intake of external air pollutants following
+paragraphs 2.2 to 2.6 if either of the following applies.
+a. The pollutant values in the location of the building exceed any of the limits in Table 2.1. This may
+have been determined through an air quality assessment. Where modelling or monitoring data is
+required, expert advice should be sought.
+b. The building is located near to any of the following sources of significant local pollution.
+i. Road traffic, including traffic junctions and underground car parks.
+ii. Combustion plant (such as heating appliances) running on conventional fuels, most
+commonly natural gas.
+iii. Other combustion processes (for example, waste incineration, thermal oxidation abatement
+systems).
+iv. Discharges from industrial processes.
+v. Fugitive (i.e. not effectively controlled) discharges from industrial processes and other
+sources.
+vi. Exhaust discharges from building ventilation systems.
+vii. Construction and demolition sites, which are a source of particles and vaporous discharges.
+viii. Other significant sources of local air pollution which may be detrimental to health.
+15
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

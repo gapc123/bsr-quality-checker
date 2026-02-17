@@ -1,0 +1,46 @@
+(a) to a domestic client; or
+(b) to work to existing HRB which consists only of—
+(i) scheme work;
+(ii) exempt work, or
+(iii) work to which regulation 10 (notification of emergency repairs to existing HRB)
+applies.
+Insolvency etc of the client: notifications
+28.—(1) Where the client becomes aware that any of the circumstances referred to in paragraph
+(2) apply in relation to them, the client must, not more than 14 days after that date, give a notice to
+the regulator which—
+(a) states that they are the client in relation to a project;
+(b) states the name and address of the client, and where the person is a company, also the
+company registration number;
+(c) gives details which are sufficient to identify every project of the client which relates to a
+higher-risk building;
+(d) provides so much of the information referred to in the table in rule 1.6 of the Insolvency
+(England and Wales) Rules 2016 as is known to them (a).
+(2) The circumstances mentioned in paragraph (1) are—
+(a) a moratorium under Part A1 of the Insolvency Act 1986(b) has commenced;
+(b) a voluntary arrangement for the purposes of Part 1 of the Insolvency Act 1986 has been
+proposed under that Part of the Act;
+(c) a voluntary arrangement for the purposes of Part 8 of the Insolvency Act 1986 has been
+proposed and has taken effect under that Part of the Act.
+(3) Subject to paragraph (5), where a person (“P”) described in paragraph (4) is appointed in
+relation to the client then not more than 14 days after the date P is appointed P must give a notice
+to the regulator which—
+(a) states the name and address of the client in relation to which the appointment relates and
+gives details which are sufficient to identify every project of the client which relates to a
+higher-risk building;
+(b) identifies the nature of the appointment held by P in relation to the client;
+(c) states the name, address, telephone number and email address (if any) of P;
+(d) provides so much of the information referred to in the table in rule 1.6 of the Insolvency
+(England and Wales) Rules 2016 as is known to them.
+(4) The persons referred to in paragraph (3) are—
+(a) an administrator;
+(b) an administrative receiver;
+(c) a receiver appointed by the courts or by a mortgagee;
+(d) a liquidator;
+(e) a trustee in bankruptcy.
+(5) Where under section 178 or 315 of the Insolvency Act 1986 any property in relation to a
+project is disclaimed, the person disclaiming the property must, within the period of 28 days
+beginning with the date the disclaimer took effect, give the regulator a copy of the notice of
+disclaimer under rule 19.2 of the Insolvency (England and Wales) Rules 2016.
+(a) S.I. 2016/1024.
+(b) 1986 c. 45. Part A1 was inserted by section 1(1) of the Corporate Insolvency and Governance At 2020 (c. 12).
+29

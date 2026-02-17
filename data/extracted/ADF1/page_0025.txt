@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N F1(1)
+1.70 For dwellings using mechanical ventilation with heat recovery, each wet room should have a
+minimum continuous mechanical extract ventilation high rate as given in Table 1.2.
+1.71 Mechanical ventilation with heat recovery systems should be designed to avoid the moist air from
+the wet rooms recirculating to the habitable rooms.
+Background ventilators
+1.72 To avoid unintended air pathways, background ventilators should not be installed with mechanical
+ventilation with heat recovery.
+Purge ventilation
+1.73 For purge ventilation follow paragraphs 1.26 to 1.31.
+NOTE: The efficiency of mechanical ventilation with heat recovery systems should improve as the
+dwelling becomes more airtight.
+Installation of ventilation systems
+1.74 Ventilation systems should be installed to meet both of the following conditions.
+a. Comply with the guidance in this approved document.
+b. Not compromise the performance of the system.
+1.75 Adequate space should be available for access to maintain ventilation equipment.
+1.76 Rigid ducts should be used wherever possible.
+1.77 Flexible ductwork, where installed, should meet all of the following conditions.
+a. Only used for final connections.
+b. Lengths should be a maximum of 1.5m.
+c. Meet the standards of BSRIA’s BG 43/2013.
+1.78 Any flexible ducts should be installed so that the full internal diameter is maintained and flow
+resistance is minimised. This is achieved by taking both of the following actions.
+a. Pulling the duct taut.
+b. Ensuring that ductwork does not pass through orifices with a smaller diameter than the duct itself.
+1.79 Ductwork installations should be designed and installed to minimise the overall pressure losses
+within the system by taking all of the following steps.
+a. Minimising the overall length of duct.
+b. Minimising the number of bends required.
+c. Installing appropriately sized ducts for the air flow rate.
+1.80 Each air terminal should have a free area of at least 90% of the free area of its associated duct.
+17
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

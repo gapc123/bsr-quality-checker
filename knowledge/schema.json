@@ -1,0 +1,274 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BSR Document Metadata Schema",
+  "description": "Schema for extracted document metadata in the BSR Quality Checker knowledge base",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["doc_id", "title", "source", "geography_scope", "doc_type"],
+  "properties": {
+    "doc_id": {
+      "type": "string",
+      "description": "Stable hash identifier for the document (SHA-256 of filename)"
+    },
+    "filename": {
+      "type": "string",
+      "description": "Original filename"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable document title"
+    },
+    "source": {
+      "type": "string",
+      "description": "Publisher/source organization (e.g., HSE, DLUHC, GLA, CLC)"
+    },
+    "source_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Original URL if available"
+    },
+    "publication_date": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Publication date (YYYY-MM-DD)"
+    },
+    "effective_date": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Date when document came into force"
+    },
+    "version": {
+      "type": ["string", "null"],
+      "description": "Document version identifier"
+    },
+    "supersedes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Document IDs this document supersedes"
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "description": "Document ID that supersedes this document"
+    },
+    "geography_scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "England",
+          "England and Wales",
+          "UK-wide",
+          "Greater London",
+          "London boroughs",
+          "borough-specific",
+          "other"
+        ]
+      },
+      "description": "Geographic applicability"
+    },
+    "london_specific": {
+      "type": "boolean",
+      "description": "True if document contains London-specific provisions"
+    },
+    "london_triggers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "London-specific terms found (GLA, Mayor, London Plan, TfL, etc.)"
+    },
+    "topic_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "building_safety",
+          "fire_safety",
+          "higher_risk_buildings",
+          "gateway_process",
+          "golden_thread",
+          "building_control",
+          "planning",
+          "housing_supply",
+          "affordable_housing",
+          "permitted_development",
+          "enforcement",
+          "structural_safety",
+          "means_of_escape",
+          "ventilation",
+          "accessibility",
+          "charging_fees",
+          "consultation",
+          "technical_spec"
+        ]
+      },
+      "description": "Topic categories"
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": [
+        "statutory_instrument",
+        "approved_document",
+        "guidance",
+        "policy",
+        "consultation",
+        "technical_spec",
+        "charging_scheme",
+        "procedural",
+        "article",
+        "dataset_description"
+      ],
+      "description": "Document type classification"
+    },
+    "regulator": {
+      "type": ["string", "null"],
+      "description": "Regulator responsible (BSR, HSE, Local Authority, etc.)"
+    },
+    "regulated_activities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Activities this document regulates"
+    },
+    "regulated_actors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "principal_designer",
+          "principal_contractor",
+          "client",
+          "building_control",
+          "accountable_person",
+          "developer",
+          "housing_association",
+          "local_authority",
+          "fire_service",
+          "resident",
+          "building_owner",
+          "dutyholders",
+          "competent_person"
+        ]
+      },
+      "description": "Actors regulated or addressed"
+    },
+    "building_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Building types covered (HRB, residential, care home, etc.)"
+    },
+    "height_thresholds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "threshold": { "type": "string" },
+          "condition": { "type": "string" }
+        }
+      },
+      "description": "Height thresholds that trigger requirements"
+    },
+    "obligations": {
+      "type": "object",
+      "properties": {
+        "must": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": { "type": "string" },
+              "section": { "type": "string" },
+              "page": { "type": ["integer", "null"] }
+            }
+          }
+        },
+        "should": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": { "type": "string" },
+              "section": { "type": "string" },
+              "page": { "type": ["integer", "null"] }
+            }
+          }
+        },
+        "may": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": { "type": "string" },
+              "section": { "type": "string" },
+              "page": { "type": ["integer", "null"] }
+            }
+          }
+        }
+      },
+      "description": "Extracted obligations by strength"
+    },
+    "key_definitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "term": { "type": "string" },
+          "definition": { "type": "string" },
+          "section": { "type": ["string", "null"] }
+        }
+      },
+      "description": "Key terms defined in this document"
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": { "type": "string" },
+          "condition": { "type": "string" },
+          "section": { "type": ["string", "null"] }
+        }
+      },
+      "description": "Exceptions and edge cases"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "doc_ref": { "type": "string" },
+          "relationship": { "type": "string" }
+        }
+      },
+      "description": "Dependencies on other documents"
+    },
+    "decision_points": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Decisions this document influences"
+    },
+    "summary_bullets": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 10,
+      "maxItems": 20,
+      "description": "10-20 bullet summary of the document"
+    },
+    "user_impact_factors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What user characteristics would change recommendations"
+    },
+    "confidence_notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Notes on ambiguity or uncertainty in the document"
+    },
+    "extraction_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When metadata was extracted"
+    },
+    "extraction_model": {
+      "type": "string",
+      "description": "LLM model used for extraction"
+    }
+  }
+}

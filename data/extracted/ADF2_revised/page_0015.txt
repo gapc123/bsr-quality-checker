@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N F1(1)
+Access for maintenance
+1.7 Reasonable access should be provided for maintaining ventilation systems, including all of the
+following.
+a. Providing access to replace filters, fans and coils.
+b. Providing access points for cleaning ductwork.
+c. Providing access for the general maintenance of plant.
+The ventilation strategy in this approved document
+1.8 The ventilation strategy in this approved document relies on a combination of all of the following.
+a. Extract ventilation from rooms where water vapour or pollutants are likely to be released (e.g.
+bathrooms, sanitary accommodation and kitchens in buildings other than dwellings), to minimise
+their spread to the rest of the building. Ventilation fans may be either intermittent operation or
+continuous operation.
+b. Whole building ventilation to provide fresh air to the building and to dilute, disperse and
+remove water vapour and pollutants not removed by extract ventilation.
+c. Purge ventilation to remove high concentrations of pollutants and water vapour. Purge
+ventilation is used intermittently and required only for pollutants produced by occasional
+activities (e.g. fumes from painting).
+d. Monitoring of indoor air quality.
+1.9 Ventilation may be delivered through natural ventilation, mechanical ventilation or a combination
+of both.
+1.10 Naturally ventilated buildings should follow additional guidance on ventilation in CIBSE’s AM10.
+Mixed mode buildings should follow additional guidance on ventilation in CIBSE’s AM13.
+1.11 The ventilation systems in this approved document are examples of systems that comply with Part
+F of the Building Regulations. Other ventilation systems may be acceptable if they can be shown to
+meet an equal level of performance.
+Performance-based guidance
+1.12 Performance criteria for acceptable levels of moisture and pollutants are given in Appendix B.
+Ventilation rates designed to meet the performance criteria are given in this guidance or in the
+documents referred to.
+1.13 Some ventilation system designs can, in certain circumstances, result in lower ventilation rates
+than those stated in this guidance or in the documents referred to (e.g. systems with automatic
+controls). Where lower ventilation rates are proposed, expert advice should be obtained to
+demonstrate that the solution meets the performance standards in Appendix B.
+7
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

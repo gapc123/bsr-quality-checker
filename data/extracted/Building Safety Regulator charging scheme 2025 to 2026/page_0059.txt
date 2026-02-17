@@ -1,0 +1,20 @@
+Identify expenditure that can be clearly linked to specific direct activities (for example, travel and
+subsistence costs and training costs). These are included in the hourly rates rather than
+charged on an actual basis to each project.
+4: Overheads
+This category includes all the usual overheads such as:
+● infrastructure costs (for example, information technology and desktop services and
+estates and facilities management)
+● corporate services (for example, finance, procurement, HR, corporate learning and
+development, legal services, IT services, communications, senior management)
+● depreciation and impairments of relevant fixed assets
+The sum of the costs identified through steps 1 to 4 divided by the total forecast direct hours
+provides a full cost per hour rate for delivery of a specific cost recovery regime. This is a
+blended rate (meaning it includes administration and management time rather than these being
+charged separately) which seeks to recover the full cost of operating the regime.
+The accuracy of the activity assumptions and forecasts are reviewed annually and reported
+through a memorandum trading account in the HSE annual report and accounts which is
+audited by the National Audit Office.
+Where a fixed charge is applied the charge will reflect the average effort forecast to deliver an
+approval/certificate multiplied by the full cost per hour rate. Fixed charges will be used where
+the activity is relatively uniform in nature and hence there is limited risk of cross-subsidisation.

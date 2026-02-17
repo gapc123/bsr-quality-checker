@@ -1,0 +1,40 @@
+F1(1) O N L I N E V E R S I O N
+Purge ventilation
+1.59 For purge ventilation, follow paragraphs 1.26 to 1.31.
+Continuous mechanical extract ventilation
+1.60 A continuous mechanical extract ventilation system could consist of one of the following.
+a. A central extract system.
+b. Individual room extract fans.
+c. A combination of a central extract system and individual room extract fans.
+1.61 If an exhaust air terminal is located on a façade that is exposed to the prevailing wind, measures
+should be taken to minimise likely wind effects. Solutions could include the following.
+a. Ducting to another façade.
+b. Use of constant volume flow rate units.
+c. Seeking expert advice.
+Ventilation rates
+1.62 The total combined rate of continuous mechanical extract ventilation in the dwelling should be at
+least the whole dwelling ventilation rate in Table 1.3.
+1.63 Each wet room should have a minimum continuous mechanical extract ventilation high rate as given
+in Table 1.2.
+Background ventilators for continuous mechanical extract ventilation
+1.64 Where continuous mechanical extract ventilation is used, background ventilators should satisfy all
+of the following conditions.
+a. Not be in wet rooms.
+b. Provide a minimum equivalent area of 4000mm2 for each habitable room in the dwelling.
+c. Provide a minimum total number of ventilators that is the same as the number of bedrooms plus
+two ventilators (i.e. a one-bedroom dwelling should have three background ventilators, a two-
+bedroom dwelling should have four background ventilators, etc.).
+1.65 If a habitable room has no external walls, paragraphs 1.42 to 1.44 should be followed.
+Purge ventilation
+1.66 For purge ventilation, follow paragraphs 1.26 to 1.31.
+Mechanical ventilation with heat recovery
+Ventilation rates
+1.67 For dwellings using mechanical ventilation with heat recovery, each habitable room should have
+mechanical supply ventilation. The total supply air flow should be distributed proportionately to
+the volume of each habitable room.
+1.68 Mechanical supply terminals should be located and directed to avoid draughts.
+1.69 The minimum total continuous rate of mechanical ventilation with heat recovery is the whole
+dwelling ventilation rate in Table 1.3.
+16
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

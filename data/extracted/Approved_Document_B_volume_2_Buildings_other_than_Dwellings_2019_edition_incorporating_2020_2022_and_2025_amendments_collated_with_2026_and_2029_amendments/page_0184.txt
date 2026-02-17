@@ -1,0 +1,36 @@
+O N L I N E V E R S I O N
+C
+2029 amendment – effective from 2 September 2029
+C5 All fire doorsets, including to flat entrances and between a dwellinghouse and an integral garage,
+should be fitted with a self-closing device, except for all of the following.
+a. Fire doorsets to cupboards.
+b. Fire doorsets to service ducts normally locked shut.
+c. Fire doorsets within flats and dwellinghouses.
+C6 If a self-closing device would be considered to interfere with the normal approved use of the
+building, self-closing fire doors may be held open by one of the following.
+a. A fusible link, but not if the doorset is in an opening provided as a means of escape unless it
+complies with paragraph C7.
+b. An automatic release mechanism activated by an automatic fire detection and alarm system.
+c. A door closer delay device.
+C7 Two fire doorsets may be fitted in the same opening if each door is capable of closing the opening,
+so the total fire resistance is the sum of their individual resistances. If the opening is provided as a
+means of escape, both fire doorsets should be self-closing.
+If one fire doorset is capable of being easily opened by hand and has a minimum of 30 minutes’ fire
+resistance, the other fire doorset should comply with both of the following.
+a. Be fitted with an automatic self-closing device.
+b. Be held open by a fusible link.
+C8 Fire doorsets often do not provide any significant insulation. Unless providing both integrity
+and insulation in accordance with Appendix B, Table B1, a maximum of 25% of the length of a
+compartment wall should consist of door openings.
+Where it is practicable to maintain a clear space on both sides of the doorway, the above
+percentage may be greater.
+C9 Rolling shutters should be capable of manual opening and closing for firefighting purposes (see
+Section 17). Rolling shutters across a means of escape should only be released by a heat sensor, such
+as a fusible link or electric heat detector, in the immediate vicinity of the door.
+Unless a shutter is also intended to partially descend as part of a boundary to a smoke reservoir,
+shutters across a means of escape should not be closed by smoke detectors or a fire alarm system.
+C10 Unless shown to be satisfactory when tested as part of a fire doorset assembly, the essential
+components of any hinge on which a fire door is hung should be made entirely from materials that
+have a minimum melting point of 800°C.
+172 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,43 @@
+F1(1) O N L I N E V E R S I O N
+Table 1.5 Performance testing standards
+Equipment type Test standard
+Intermittent extract fans BS EN 13141-4
+Cooker hoods BS EN 13141-3
+Background ventilators without humidity control BS EN 13141-1, clauses 5.1 and 5.2
+Background ventilators should meet the performance
+standards for both of the following:
+a. air flow from outside to inside the dwelling
+b. air flow from inside the dwelling to outside
+Continuous mechanical extract ventilation systems BS EN 13141-6
+Mechanical ventilation with heat recovery BS EN 13141-7
+BS EN 13141-8 – for internal and external leakage and
+for mixing, the unit should meet at least Class U4 of the
+standard
+Control of ventilation
+1.33 Ventilation should be controllable. Controls may be either manual (i.e. operated by the occupant)
+or automatic.
+1.34 Background ventilators should be at least 1700mm above floor level, to reduce cold draughts, but
+still be easy for the occupant to reach.
+NOTE: Background ventilators are intended to normally be left open.
+1.35 Continuously running fans should be set up to operate without occupant intervention but may
+have manual or automatic controls for selecting the high rate of operation. Any manual high rate
+controls should be provided locally to the spaces being served, e.g. bathrooms and kitchens.
+Automatic controls might include sensors for humidity, occupancy/usage and pollutant release.
+1.36 Controls based on humidity sensors may be installed in moisture-generating rooms (e.g. kitchen or
+bathroom) but should not be used for sanitary accommodation, where odour is the main pollutant.
+1.37 Other types of automatic controls might be suitable. Where present, automatic controls should
+operate according to the need for ventilation in the space. Background ventilators with automatic
+controls should also have manual override.
+NOTE: Where a combustion appliance is installed, any automatic controls must also ensure that
+the ventilation provided meets the requirements of Part J of the Building Regulations.
+Ventilation systems for dwellings with basements
+1.38 In addition to paragraphs 1.12 to 1.37, the performance required for ventilation systems for dwellings
+with basements would be achieved by following the guidance in paragraphs 1.39 to 1.41.
+1.39 A dwelling that includes a basement connected to the above ground parts of the dwelling by a
+large permanent opening (e.g. an open stairway), may be treated as a multi-storey dwelling when
+following the guidance in this approved document for dwellings without basements.
+NOTE: If a basement has only one exposed façade, the guidance for natural ventilation given in this
+approved document would not be appropriate. In such cases, expert advice should be sought.
+12
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

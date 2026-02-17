@@ -1,0 +1,33 @@
+O N L I N E V E R S I O N
+B3
+Non‑residential buildings
+8.11 In buildings in a non-residential purpose group (purpose groups 3 to 7), the following should be
+compartment walls and compartment floors.
+a. Every wall needed to divide the building to observe the compartment size limits in Table 8.1
+(Diagram 8.1a).
+b. Every floor, if the building or separated part of the building (see paragraph 8.19) has a top storey
+that is more than 30m above ground level (Diagram 8.1b).
+c. The floor of the ground storey, if the building has one or more basements (Diagram 8.1c), except
+in small premises (see paragraph 4.2).
+d. The floor of every basement storey (except the lowest floor), if the building or separated part
+has a basement more than 10m below ground level (Diagram 8.1d).
+e. If the building comprises ‘shop and commercial’, ‘industrial’ or ‘storage’ premises (purpose groups
+4, 6, 7): every wall or floor dividing a building into separate occupancies (spaces used by different
+organisations, whether they fall within the same purpose group or not).
+f. See also the provision in paragraph 5.46 for store rooms in shops to be separated from retail
+areas by fire resisting construction (minimum REI 30).
+8.12 In two storey ‘shop and commercial’ or ‘industrial’ buildings (purpose groups 4 or 6), where the use of
+the upper storey is ancillary to the use of the ground storey, the ground storey may be treated as a
+single storey building for fire compartmentation purposes where all of the following apply.
+a. The area of the upper storey does not exceed the lower of:
+i. 20% of the area of the ground storey
+ii. 500m2.
+b. The upper storey is compartmented from the lower one.
+c. The upper storey has a means of escape independent of the lower storey escape routes.
+Every place of special fire hazard (see Appendix E) should be enclosed with fire resisting
+construction.
+Buildings containing one or more atria
+8.13 Detailed advice on atria in buildings is given in Annexes B and C of BS 9999. For the purposes
+of this document, BS 9999 applies only where the atrium breaches a compartment.
+66 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

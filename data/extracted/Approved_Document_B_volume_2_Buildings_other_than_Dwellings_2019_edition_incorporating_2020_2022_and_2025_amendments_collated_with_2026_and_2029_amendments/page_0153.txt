@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Roofs
+B14 Performance of the resistance of roofs to external fire exposure is measured in terms of penetration
+through the roof construction and the spread of flame over its surface.
+B15 Roof constructions are classified within the European system as B (t4), C (t4), D (t4), E (t4)
+ROOF ROOF ROOF ROOF
+or F (t4) in accordance with BS EN 13501-5. B (t4) indicates the highest performance and
+ROOF ROOF
+F (t4) the lowest.
+ROOF
+B16 BS EN 13501-5 refers to four separate roof tests. The suffix (t4) used in paragraph B15 indicates that
+Test 4 is to be used for the purposes of this approved document.
+B17 This document uses the European classification system for roof covering set out in BS EN
+13501-5; however, there may be some products or systems whose performance will need to be
+assessed based on the recommendations of paragraphs B1 to B5 as being capable of meeting that
+performance classification.
+Fire resistance
+B18 Common to all of the provisions of Part B of the Building Regulations is the property of fire
+resistance. Fire resistance is a measure of one or more of the following.
+a. Resistance to collapse (loadbearing capacity), which applies to loadbearing elements only,
+denoted R in the European classification of the resistance to fire performance.
+b. Resistance to fire penetration (integrity), denoted E in the European classification of the
+resistance to fire performance.
+c. Resistance to the transfer of excessive heat (insulation), denoted I in the European classification
+of the resistance to fire performance.
+B19 The standards of fire resistance necessary for a particular building are based on assumptions about
+the severity of fires and the consequences should an element fail. Fire severity is estimated in very
+broad terms from the use of the building (its purpose group), on the assumption that the building
+contents (which constitute the fire load) are similar for buildings with the same use.
+B20 Because the use of buildings may change, a precise estimate of fire severity based on the fire load
+due to a particular use may be misleading. Therefore if a fire engineering approach of this kind is
+adopted, the likelihood that the fire load may change in the future needs to be considered.
+B21 Performance in terms of the fire resistance to be achieved by elements of structure, doors and
+other forms of construction is classified in accordance with one of the following.
+a. BS EN 13501-2.
+b. BS EN 13501-3.
+c. BS EN 13501-4.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 141
+O N L I N E V E R S I O N

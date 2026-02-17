@@ -1,0 +1,46 @@
+“(aa) to permit the issuing by the regulator of a certificate in relation to that work
+under regulation 44 (completion certificate applications: decisions) of the Building
+(Higher-Risk Buildings Procedures) (England) Regulations 2023;”.
+(6) In regulation 37 (exception to building control prohibitions and modification of the Building
+Regulations 2010: regularisation)—
+(a) after paragraph (1) insert—
+“(1A) Where the building is a higher-risk building, a relevant purchaser is not prohibited
+from giving the regulator an application for a certificate under regulation 47 (regularisation
+of unauthorised building work) of the Building (Higher-Risk Buildings Procedures)
+(England) Regulations 2023 and the regulator is not prohibited from granting such a
+certificate.”;
+(b) after paragraph (3) insert—
+“(4) For the purposes of paragraph (1A), regulation 47 (regularisation of unauthorised
+building work) of the Building (Higher-Risk Buildings Procedures) (England) Regulations
+2023 is to have effect in relation to an application under that regulation by a relevant
+purchaser as if any work carried out by an applicable person which was not unauthorised
+building work (within the meaning set out in that regulation) were treated as if it were
+unauthorised building work.”.
+Transitional, supplementary and saving provisions
+66. The transitional, supplementary and saving provisions set out in Schedule 3 have effect.
+Signed by authority of the Secretary of State for Levelling Up, Housing and Communities
+Lee Rowley
+Parliamentary Under Secretary of State
+9th August 2023 Department for Levelling Up, Housing and Communities
+SCHEDULE 1
+Regulation 2
+Documents
+Competence declaration
+1.—(1) A competence declaration is a statement, in relation to work, that contains a declaration
+in relation to—
+(a) a principal designer (or sole or lead designer) for HRB work, a stage of HRB work or
+work to existing HRB,
+(b) a principal contractor (or sole contractor) for HRB work, a stage of HRB work or work to
+existing HRB, and
+(c) any other person appointed (A), in relation to the work, as at the date of the building
+control approval application for HRB work, a building control approval application for a
+stage of HRB work or the building control approval application for work to existing
+HRB.
+(2) In relation to a principal designer for HRB work, a stage of HRB work or work to existing
+HRB, the competence declaration must—
+(a) state that the client—
+(i) has complied with regulation 11E(2)(b) (consideration of past misconduct) of the
+2010 Regulations, and
+(ii) having taken all reasonable steps, is satisfied that the principal designer fulfils the
+requirements in regulations 11F(1) and (2) and 11G(1) of the 2010 Regulations, and
+57

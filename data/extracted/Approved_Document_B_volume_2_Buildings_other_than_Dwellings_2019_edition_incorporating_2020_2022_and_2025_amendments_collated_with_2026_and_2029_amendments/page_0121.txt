@@ -1,0 +1,58 @@
+O N L I N E V E R S I O N
+B4
+Table 14.2 Class D-s3, d2 plastic rooflights: limitations on use and boundary distance
+Minimum Space that rooflight can serve Minimum distance from any point on
+classification on relevant boundary to rooflight with an
+lower surface(1) external designation(2) of:
+E
+ROOF
+(t4) or D
+ROOF
+(t4) FROOF(t4)
+Class D-s3, d2 a. Balcony, verandah, carport, covered way or loading 6m 20m
+bay that has at least one
+longer side wholly or permanently open
+b. D etached swimming pool
+c. C onservatory, garage or outbuilding, with a
+maximum floor area of 40m2
+d. Circulation space(3) (except a protected stairway) 6m(4) 20m(4)
+e. Room(3)
+NOTES:
+None of the above designations are suitable for protected stairways.
+Polycarbonate and uPVC rooflights that achieve a class C-s3, d2 rating by test (see paragraph 14.7) may be regarded as
+having a B (t4) classification.
+ROOF
+Where Diagram 8.2a or 8.2b applies, rooflights should be a minimum of 1500m from the compartment wall.
+If double-skinned or laminate products have upper and lower surfaces of different materials, the greater distance
+applies.
+1. See also the guidance to requirement B2 in Section 6.
+2. The designation of external roof surfaces is explained in Appendix B.
+3. Single-skinned rooflight only, in the case of non-thermoplastic material.
+4. The rooflight should also meet the provisions of Diagram 14.1.
+Table 14.3 TP(a) and TP(b) thermoplastic rooflights: limitations on use and boundary distance
+Minimum Space that rooflight can serve Minimum distance from any point on
+classification on relevant boundary to rooflight with an
+lower surface(1) external surface classification(1) of:
+TP(a) TP(b)
+1. TP(a) rigid Any space except a protected stairway 6m(2) Not applicable
+2. TP(b) a. B alcony, verandah, carport, covered way or Not applicable 6m
+loading bay, which has at least one longer side
+wholly or permanently open
+b. D etached swimming pool
+c. C onservatory, garage or outbuilding, with a
+maximum floor area of 40m2
+d. Circulation space(3) (except a protected stairway) Not applicable 6m(4)
+e. Room(3)
+NOTES:
+None of the above designations are suitable for protected stairways.
+Polycarbonate and uPVC rooflights that achieve a class C-s3, d2 rating by test may be regarded as having a B (t4) designation.
+ROOF
+Where Diagram 8.2a or 8.2b applies, rooflights should be at least 1500mm from the compartment wall.
+If double-skinned or laminate products have upper and lower surfaces of different materials, the greater distance
+applies.
+1. See also the guidance to requirement B2 in Section 6.
+2. No limit in the case of any space described in 2(a), (b) and (c).
+3. Single-skinned rooflight only, in the case of non-thermoplastic material.
+4. The rooflight should also meet the provisions of Diagram 14.1.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 109
+O N L I N E V E R S I O N

@@ -1,0 +1,40 @@
+O N L I N E V E R S I O N
+B3
+Sprinklers
+8.14 Buildings within the ‘office’, ‘shop and commercial’, ‘assembly and recreation’, ‘industrial’ and ‘storage
+and other non-residential’ (except car parks for light vehicles) purpose groups (purpose groups 3
+to 7(a)) require sprinklers where there is a top storey above 30m. The sprinkler system should be
+provided in accordance with Appendix E.
+Construction of compartment walls and compartment floors
+General provisions
+8.15 All compartment walls and compartment floors should achieve both of the following.
+a. Form a complete barrier to fire between the compartments they separate.
+b. Have the appropriate fire resistance, as given in Appendix B, Table B1 and Table B2.
+8.16 Timber beams, joists, purlins and rafters may be built into or carried through a masonry or concrete
+compartment wall if the openings for them are both of the following.
+a. As small as practicable.
+b. Fire-stopped.
+If trussed rafters bridge the wall, failure of the truss due to a fire in one compartment should not
+cause failure of the truss in another compartment.
+8.17 Where services could provide a source of ignition, the risk of fire developing and spreading into
+adjacent compartments should be controlled.
+Compartment walls between buildings
+8.18 Adjoining buildings should only be separated by walls, not floors. Compartment walls common to
+two or more buildings should comply with both of the following.
+a. Run the full height of the building in a continuous vertical plane.
+b. Be continued through any roof space to the underside of the roof.
+Separated parts of buildings
+8.19 Compartment walls forming a separated part of a building should run the full height of the building
+in a continuous vertical plane.
+Separated parts can be assessed independently to determine the appropriate standard of fire
+resistance in each. The two separated parts can have different standards of fire resistance.
+Other compartment walls
+8.20 Compartment walls not described in paragraphs 8.18 and 8.19 should run the full height of the storey
+in which they are situated.
+8.21 Compartment walls in a top storey beneath a roof should be continued through the roof space.
+Junction of compartment wall or compartment floor with other walls
+8.22 At the junction with another compartment wall or an external wall, the fire resistance of the
+compartmentation should be maintained. Fire-stopping that meets the provisions in paragraphs 10.24
+to 10.29 should be provided.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 69
+O N L I N E V E R S I O N

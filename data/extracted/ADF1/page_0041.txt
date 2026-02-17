@@ -1,0 +1,39 @@
+OFN L1I(N2E) V, ERR S3I O9N, R42, R44
+d. For adjustable terminals with a fixed-volume flow fan, the following apply.
+i. The fan speed should be set to achieve the desired continuous flow rate.
+ii. The index terminal flow rate should be set with the terminal fully open and all other
+terminals should be adjusted to achieve the required flow rates at each terminal.
+NOTE: Adjusting the terminals only balances the flow. Total flow rate is governed by the fan
+control setting. Care should be taken not to close the terminals too far, because the fan unit
+will always maintain a constant volumetric flow rate. Closing the terminals will require the fan
+to work harder to achieve a given air flow rate.
+e. For fixed terminals with automatic flow adjustment at the fan unit, the fan speed should be set
+to achieve the desired continuous flow rate. The flows are balanced by automatic devices within
+the fan unit, so cannot be adjusted.
+Air flow rate testing
+4.9 The air flow rate of all mechanical ventilation fans should be tested. This includes any of the
+following.
+a. Intermittent extract fans.
+b. Cooker hoods.
+c. Continuous extract fans and/or terminals.
+d. Continuous supply fans and/or terminals.
+4.10 A calibrated air flow device with a proprietary hood should be used to measure the air flow rates
+at each room terminal following the procedure detailed below.
+a. The design air flow rates should be determined in accordance with Table 1.2.
+b. Both of the following should be confirmed.
+i. All intended background ventilators or other air transfer devices are open.
+ii. All internal and external doors and windows are closed.
+c. Air flow measurements should be performed using an air flow device that complies with all of
+the following.
+i. Has a proprietary hood attachment.
+ii. Has an accuracy of ±5%.
+iii. Has been calibrated within the last 12 months at a calibration centre accredited by the
+United Kingdom Accreditation Service (UKAS).
+d. The air flow for each extract/supply fan or terminal should be recorded in litres per second (l/s)
+on the commissioning sheet (see Part 3 of Appendix C).
+NOTE: In exceptional circumstances, the configuration of some fan units may prevent air flow rates
+from being measured. If so, evidence should be provided to assure the building control body that
+the flow rate can be determined by following the manufacturer’s guidance.
+33
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

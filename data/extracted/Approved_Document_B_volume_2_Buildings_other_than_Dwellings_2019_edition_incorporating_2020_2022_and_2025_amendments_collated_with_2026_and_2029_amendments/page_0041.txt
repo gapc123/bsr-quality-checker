@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+B1
+f. A factory comprising no more than either of the following.
+i. For low risk buildings, two storeys above the ground storey.
+ii. For normal risk buildings, one storey above the ground storey, provided the travel distance
+from every point on each storey does not exceed the distances given in Table 2.1 for escape
+in one direction only.
+g. Process plant buildings with a maximum of 10 people.
+Provision of refuges
+3.4 Refuges form part of the management plan and offer relatively safe areas for people to wait for a
+short period only. Refuges should meet the following conditions.
+a. Refuges should be provided on every storey (except ones consisting only of plant rooms) of
+each protected stairway providing an exit from that storey.
+b. Refuges do not need to be located within the stair enclosure, but should enable direct access to
+the stair.
+c. The number of refuge spaces does not need to equal the number of wheelchair users who
+may be in the building. A single refuge may be occupied by more than one person during the
+evacuation procedure.
+3.5 The following are both examples of satisfactory refuges.
+a. An enclosure such as a compartment (Diagram 3.1), protected lobby, protected corridor or
+protected stairway (Diagram 3.2).
+b. An area in the open air, such as a flat roof, balcony, podium or similar place, that meets both of
+the following.
+i. It is protected (or remote) from any fire risk.
+ii. It has its own means of escape.
+3.6 Refuges should be a minimum of 900mm × 1400mm in size and accessible by someone in a
+wheelchair. Where sited in a protected stairway, protected lobby or protected corridor, they should
+not reduce the width of the escape route or obstruct the flow of people escaping.
+3.7 Refuges should be provided with an emergency voice communication (EVC) system complying
+with BS 5839-9. It should consist of Type B outstations communicating with a master station in the
+building control room (if one exists) or next to the fire detection and alarm panel. In some buildings,
+wireless technology may be more appropriate.
+3.8 Refuges and evacuation lifts should be clearly identified. In protected lobbies and protected
+stairways there should be a blue mandatory sign worded ‘Refuge – keep clear’ in addition to fire
+safety signs.
+3.9 Paragraph 5.32 gives guidance on using lifts, including evacuation lifts, during a fire.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 29
+O N L I N E V E R S I O N

@@ -1,0 +1,36 @@
+O N L I N E V E R S I O N
+B1
+Section 5: General provisions
+Introduction
+5.1 This section applies to all buildings and deals with the design, construction and protection of escape
+routes and service installations.
+Protection of escape routes
+Fire resistance of enclosures
+5.2 Fire resistance test criteria are set out in Appendix B. Standards of performance are summarised in
+Table B1 and Table B2. Apart from specific situations described in Sections 1 and 2, and requirements
+B3 and B5, a minimum performance of REI 30 is sufficient to protect means of escape.
+Fire resistance of doors
+5.3 Fire resistance test criteria are set out in Appendix C. Standards of performance are summarised in
+Table C1.
+Fire resistance of glazed elements
+5.4 If glazed elements in fire resisting enclosures and doors can only meet the required integrity
+performance, their use is limited. These limitations depend on whether the enclosure forms part of
+a protected shaft (see Section 8) and the provisions set out in Appendix B, Table B3. If both integrity
+and insulation performance can be met, there is no restriction in this document on the use or
+amount of glass.
+5.5 Glazed elements should also comply with the following, where necessary.
+a. If the enclosure forms part of a protected shaft: Section 8.
+b. Appendix B, Table B3.
+c. Guidance on the safety of glazing: Approved Document K.
+Doors on escape routes
+5.6 Doors should be readily openable to avoid undue delay to people escaping. Doors on escape routes
+(both within and from the building) should comply with paragraphs 5.7 to 5.15. Guidance on door
+closing and ‘hold open’ devices for fire doorsets is set out in Appendix C.
+Door fastenings
+5.7 In general, doors on escape routes (whether or not the doors are fire doorsets) should be either
+of the following.
+a. Not fitted with a lock, latch or bolt fastenings.
+b. Fitted only with simple fastenings that are all of the following.
+i. Easy to operate; it should be apparent how to undo the fastening.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 47
+O N L I N E V E R S I O N

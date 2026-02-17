@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B3
+10.9 In a system that recirculates air, smoke detectors should be fitted in the extract ductwork before
+both of the following.
+a. The point where recirculated air is separated from air to be discharged to the outside.
+b. Any filters or other air cleaning equipment.
+When smoke is detected, detectors should do one of the following.
+a. Cause the system to immediately shut down.
+b. Switch the ventilation system from recirculating mode to extraction to divert smoke outside the
+building.
+10.10 Non-domestic kitchens, car parks and plant rooms should have separate and independent extraction
+systems. Extracted air should not be recirculated.
+10.11 Under fire conditions, ventilation and air-conditioning systems should be compatible with smoke
+control systems and need to be considered in their respective design.
+Ventilation ducts and flues passing through fire‑separating elements
+General provisions
+10.12 If air handling ducts pass through fire-separating elements, the fire performance of the elements
+should be maintained using one or more of the following four methods. In most ductwork systems,
+a combination of the four methods is best.
+a. Method 1 – thermally activated fire dampers.
+b. Method 2 – fire resisting enclosures.
+c. Method 3 – protection using fire resisting ductwork.
+d. Method 4 – automatically activated fire and smoke dampers triggered by smoke detectors.
+10.13 Further information on fire resisting ductwork is given in the ASFP Blue Book.
+Kitchen extract
+10.14 Methods 1 and 4 should not be used for extract ductwork serving kitchens. The likely build-up of
+grease within the duct can adversely affect dampers.
+Ducts passing through protected escape routes
+10.15 Method 1 should not be used for extract ductwork passing through the enclosures of protected
+escape routes (Diagrams 10.2 and 10.3), as large volumes of smoke can pass thermal devices without
+triggering them.
+10.16 An ES classified fire and smoke damper which is activated by a suitable fire detection system
+(method 4) may also be used for protected escape routes.
+84 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

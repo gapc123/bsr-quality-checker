@@ -1,0 +1,48 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+3.0 The golden thread for the design, construction and building work on HRBs
+• the internal linings and any • BS 9991 Fire safety in the design, Mandatory Occurrence Reporting Plan
+penetrations through them will management and use of residential – Reporting and recording occurrences of
+incidents of non-compliance that (if not
+resist excessive spread of fire and buildings - code of practice: sets
+rectified) could have resulted in serious
+smoke; out good practice in relation to
+safety risk
+• the structure is to resist premature building safety risks relating to
+collapse and contribute to the fire.54 3.58. If, during the construction phase, it
+containment of a fire; • BS 9792 Fire risk assessment is discovered that there has been an
+• the building will resist ignition from – housing – code of practice incident or a risk of an incident, which
+a fire in an adjacent building and (currently under development): if not remedied could cause either;
+will not endanger adjacent buildings sets out good practice in relation structural failure of the building or the
+from the effects of a fire in or on to building safety risks relating to spread of fire or smoke in the building,
+the building; and fire.55 that could cause serious harm to a
+significant number of people when the
+• the building design will assist
+building is in use. Then details of that
+firefighting operations.
+occurrence need to be recorded and
+3.56. Anyone carrying out design and
+reported to the BSR.
+construction work needs to have
+3.59. The client must ensure that a
+a good understanding about the
+mechanism is put in place to allow for
+fire strategy and systems – this
+those occurrences that are mandatory
+is provided through the fire and
+to report are reported by relevant
+emergency file.
+persons in the design and construction
+3.57. There are a number of standards that
+teams. The detail of this plan is to be
+provide guidance:
+set out in the Mandatory Occurrence
+• BS EN ISO 31000 Risk management Reporting Plan. This plan will form
+guidelines: sets out good practice part of the building control approval
+in relation to risk management.52 application. The information generated
+• BS 8644-1 Digital management of by the reporting requirement will
+fire safety information - code of enable lessons to be learned by the
+practice: management of digital wider industry and government.
+asset information in the built
+environment, particularly fire safety
+information.53
+32

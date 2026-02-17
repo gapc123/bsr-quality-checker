@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B3
+See para 10.15
+Ductwork enclosed in fre resisting
+construction classifed EI X in accordance
+with BS EN 13501-2 (fre exposure from the
+duct side), or fre resisting ductwork
+Ductwork classifed EIS X in accordance with
+serving area BS EN 13501-3, where X is the fre
+Fd resistance rating (in minutes) of the
+walls of the protected escape route
+Fd
+Protected stairway
+Protected lobby
+Ductwork
+serving area
+Fd Fire doorset
+Ductwork
+serving area
+Fd
+NOTE: Ventilation ducts which serve other parts
+of the building should not supply or extract air
+directly to or from a protected escape route.
+Diagram 10.2 Ductwork passing through protected escape routes – method 2 or method 3
+See para 10.15
+ES leakage rated fre and smoke damper
+conforming to BS EN 13501-3/BS EN 1366-2
+Protected stairway
+Fd
+Protected lobby
+Fd
+Smoke detection system in accordance with
+SD
+BS 5839-1 to activate ES damper
+SD SD
+Ductwork Ductwork Fd Fire doorset
+serving area serving
+area
+Fd NOTE: Ventilation ducts which serve other
+parts of the building should not supply or extract
+air directly to or from a protected escape route.
+Diagram 10.3 Ductwork passing through protected escape routes – method 4
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 85
+O N L I N E V E R S I O N

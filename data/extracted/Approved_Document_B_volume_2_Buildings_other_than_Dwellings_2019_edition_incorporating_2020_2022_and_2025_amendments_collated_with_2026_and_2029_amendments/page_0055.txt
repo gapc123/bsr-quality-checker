@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B1
+Table 4.1 Maximum travel distances in small premises
+Storey Maximum travel distance (m)
+Ground storey with a single exit 27
+Basement or first storey with a single stair 18
+Storey with more than one exit/stair 45
+NOTES:
+If the internal layout of partitions, fittings, etc. is not known, direct distances, rather than travel distances, should be
+assessed. The direct distance should be assumed to be two-thirds of the travel distance.
+The travel distance in small premises with an open stair is measured as follows.
+a. In a basement: to the foot of the stair.
+b. On a first storey: to the head of the stair.
+See para 4.6
+18m
+m ax.
+1
+8
+m
+m
+a x.
+Protected
+stairway
+Basement and/or first storey
+Protected
+27m
+m
+stairway
+ax.
+Ground storey
+NOTE: Maximum foor area in any one storey 280m2. Restricted accommodation if used as a restaurant or bar.
+Diagram 4.1 M aximum travel distances in a small two or three storey premises with a single
+protected stairway to each storey
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 43
+O N L I N E V E R S I O N

@@ -1,0 +1,52 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+2.0 The Legal Basis
+Table 1: Duties related to managing and 2.26. Enabling easy access between
+storing the golden thread (continued) people, across different teams,
+and organisations will be essential.
+Secure Throughout the lifecycle of the
+The golden thread must be secure from unauthorised access. building, information will also have
+to be transferred between different
+Transferable
+software platforms and when
+• The golden thread information must be shared electronically with other persons who
+ownership of the building changes.
+have a professional interest in a building.
+2.27. Meeting the golden thread
+• The information must be held in an electronic format that ensures that when the
+requirements will require some
+information is transferred, the person receiving this can access and read it and without
+dutyholders and accountable
+any data being lost or corrupted.
+persons to change the way they
+• Information does not have to be provided electronically to residents or owners of flats,
+approach management of information
+although some may prefer to receive information in this way.
+about buildings, ensuring that the
+Understandable
+information is recognised as being a
+• The golden thread information must be understandable to the intended users and valuable asset in itself.
+readers of the data.
+2.28. Accountable persons will also need
+• Any information provided to residents and owners of flats should include an explanation to comply with requirements around
+of any technical language used, or with plain English summaries of complex or technical
+security, commercial confidentiality
+provisions.
+and data protection when sharing
+Up to date golden thread information. These
+• So far as possible dutyholders and accountable persons are responsible for keeping the restrictions vary depending on the
+golden thread information up to date. Dutyholders and accountable person will use this person who the information is being
+up to date information to demonstrate ongoing compliance with building regulations and shared with though.
+building safety duties.
+2.29. The new building safety regime
+• Some information will not have to be kept up to date but will provide a historic record requires HRBs to be considered as
+of the building at a certain moment in time (for instance plans of the building upon
+a single system. The requirements
+completion).
+to collect golden thread information
+• Good practice encourages dutyholders and accountable persons to review their should be considered as part of the
+information to ensure it is still relevant and useful. Not all information will need to be
+wider programme of building safety
+kept permanently and when certain golden thread information is updated previous
+reforms.
+versions will not need to be retained.
+19

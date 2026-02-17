@@ -1,0 +1,43 @@
+O N L I N E V E R S I O N F1(1)
+* The noise index L is used in BS 8233, where T is the duration of the measurement. If the noise from the
+Aeq,T
+sound source is steady (i.e. fluctuating by up to 3dB), a measuring time of 1 minute will be adequate and the
+L level will be similar to the dB(A) level used elsewhere. lf the noise from the sound source fluctuates
+Aeq, 1 min
+more than this, a longer measuring time (T) may be required, but the higher portion of the fluctuating level
+should be considered, and the sound may attract more attention due to the changes in level.
+NOTE: Methods for measuring the sound power level produced by the fan unit of decentralised
+extract ventilation, centralised extract ventilation and balanced mechanical ventilation with heat
+recovery systems are described in BS EN 13141.
+Access for maintenance
+1.8 Reasonable access should be provided for maintaining ventilation systems, including all of the following.
+a. Providing access to replace filters, fans and coils.
+b. Providing access points for cleaning ductwork.
+c. Providing access for the general maintenance of the plant.
+The ventilation strategy in this approved document
+1.9 The ventilation strategy in this approved document relies on a combination of all of the following.
+a. Extract ventilation from rooms where water vapour or pollutants are likely to be released
+(e.g. bathrooms and kitchens), to minimise their spread to the rest of the building. Ventilation
+fans may be either intermittent operation or continuous operation.
+b. Whole dwelling ventilation to provide fresh air to the building and to dilute, disperse and
+remove water vapour and pollutants not removed by extract ventilation.
+c. Purge ventilation to remove high concentrations of pollutants and water vapour. Purge
+ventilation is used intermittently and required only for pollutants produced by occasional
+activities (e.g. fumes from painting).
+1.10 Ventilation may be delivered through natural ventilation, mechanical ventilation or a combination
+of both.
+1.11 The ventilation systems in this approved document are examples of systems that comply with
+Part F of the Building Regulations. Other ventilation systems may be acceptable if they can be
+shown to meet an equal level of performance.
+Performance-based guidance
+1.12 Performance criteria for acceptable levels of moisture and pollutants are given in Appendix B.
+Ventilation rates designed to meet the performance criteria are given in Tables 1.1 to 1.3.
+1.13 Ventilator sizes for the whole dwelling are also provided in Table 1.7 to help designers comply with
+Part F of the Building Regulations in common situations.
+1.14 Some ventilation system designs can, in certain circumstances, result in lower ventilation rates
+than those stated in Table 1.1 and Table 1.2 (e.g. systems with automatic controls). Where lower
+ventilation rates are proposed, expert advice should be obtained to demonstrate that the solution
+meets the performance standards in Appendix B.
+7
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

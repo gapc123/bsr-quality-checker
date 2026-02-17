@@ -1,0 +1,81 @@
+O N L I N E V E R S I O N A
+Manual controls A system whereby a ventilation Natural ventilation Ventilation provided by
+device is opened and closed, or switched on thermal, wind or diffusion effects through doors,
+and off, or its performance is adjusted by the windows or other intentional openings without
+occupants of a room or building (see automatic the use of mechanically driven equipment. For the
+controls). purposes of this approved document, a natural
+ventilation strategy may include decentralised
+*Material change of use Defined in regulation 5 as:
+extract ventilation from rooms where water vapour
+Where there is a change in the purposes for which
+or pollutants are likely to be released to minimise
+or the circumstances in which a building is used, so
+their spread to the rest of the building.
+that after that change:
+Occupiable room A room in a building other
+a. the building is used as a dwelling, where
+than a dwelling that is occupied by people,
+previously it was not;
+such as an office, workroom, classroom or hotel
+b. the building contains a flat, where previously it bedroom. The following are not occupiable rooms:
+did not; bathrooms, sanitary accommodation, utility
+rooms or rooms or spaces used solely or mainly
+c. the building is used as an hotel or a boarding
+for circulation, building services plant or storage
+house, where previously it was not;
+purposes.
+d. the building is used as an institution, where
+Passive stack ventilation (PSV) A ventilation
+previously it was not;
+system using ducts from terminals in the ceiling
+e. the building is used as a public building, where of rooms to terminals on the roof that extract air
+previously it was not; to the outside by a combination of the natural
+stack effect and the pressure effects of wind
+f. the building is not a building described in
+passing over the roof of the building. (The stack
+classes 1 to 6 in Schedule 2, where previously it
+effect is the pressure differential between inside
+was;
+and outside a building, caused by differences in
+g. the building, which contains at least one
+the density of the air due to an indoor/outdoor
+dwelling, contains a greater or lesser number of
+temperature difference.)
+dwellings than it did previously;
+Purge ventilation Manually controlled ventilation
+h. the building contains a room for residential
+of rooms or spaces at a relatively high rate to
+purposes, where previously it did not;
+rapidly dilute pollutants and/or disperse water
+i. the building, which contains at least one room vapour. Purge ventilation may be provided by
+for residential purposes, contains a greater natural means (e.g. an openable window) or
+or lesser number of such rooms than it did mechanical means (e.g. a fan).
+previously;
+Purpose-provided ventilation That part of the
+j. the building is used as a shop, where it ventilation of a building provided by ventilation
+previously was not; or devices designed into the building (e.g. background
+ventilators, PSV, extract fans, mechanical
+k. the building is a building described in regulation
+ventilation or air-conditioning systems).
+7(4)(a), where previously it was not.
+*Room for residential purposes Defined in
+Mechanical supply and extract ventilation
+regulation 2(1) as a room, or a suite of rooms,
+Any mechanically driven ventilation that both
+which is not a dwelling-house or a flat and which
+continuously supplies outdoor air to the inside
+is used by one or more persons to live and sleep
+of the building and continuously extracts indoor
+and includes a room in a hostel, an hotel, a
+air and discharges it to the outside. This includes
+boarding house, a hall of residence or a residential
+decentralised supply and extract ventilation, and
+home, but does not include a room in a hospital,
+mechanical ventilation with heat recovery (MVHR,
+or other similar establishment, used for patient
+a mechanical supply and extract ventilation system
+accommodation.
+that includes a heat recovery mechanism).
+25
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

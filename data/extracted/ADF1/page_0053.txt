@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N C
+Part 2b – Inspection of installation
+The commissioning engineer should complete this section before completing Part 3.
+2b.1 Visual inspections – general (all systems)
+What is the total installed equivalent area of background ventilators in the dwelling? mm2
+What is the total floor area of the dwelling? m2
+Does the total installed equivalent ventilator area meet the standards detailed in Table 1.7 Yes No
+or paragraph 1.57(1), as appropriate?
+Have all background ventilators been left in the open position? Yes No
+Have the correct number and location of extract fans/terminals been installed to satisfy Yes No
+the standards in Table 1.1 or Table 1.2, as appropriate?
+Is the installation complete, with no obvious defects? Yes No
+Do all internal doors have enough undercut to allow air transfer between rooms as Yes No
+detailed in paragraph 1.25 (i.e. 10mm above the floor finish or 20mm above the floor
+surface)?
+Has all protection/packaging been removed (including from background ventilators), so Yes No
+that the system is fully functional?
+Are systems clean internally and externally? Yes No
+Has the entire system been installed to allow access for routine maintenance and to Yes No
+repair/replace components?
+2b.2 Visual inspections – general (continuous mechanical extract ventilation and mechanical ventilation with heat
+recovery systems only)
+Have appropriate air terminal devices been installed to allow system balance? Yes No
+Have the heat recovery unit and all ductwork been effectively insulated and sealed for all Yes No
+heated and unheated spaces?
+Is the condensate connection complete and does the condensate drain to an appropriate Yes No
+location (mechanical ventilation with heat recovery only)?
+Are filters installed? Yes No
+For ducted systems, has the ductwork been installed so that air resistance and leakage is Yes No
+kept to a minimum?
+2b.3 Other inspections – general (all systems)
+At initial start-up, was there any abnormal sound or vibration, or unusual smell? Yes No
+During continuous operation, was there any excessive noise? Yes No
+NOTE:
+1. All references to tables and paragraphs are to Approved Document F, Volume 1: Dwellings.
+45
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

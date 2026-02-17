@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B1
+Fire protection of lift installations
+5.34 Lift wells should comply with one of the following conditions.
+a. Be sited within the enclosures of a protected stairway.
+b. Be enclosed with fire resisting construction (minimum REI 30) when in a position that might
+prejudice the means of escape.
+5.35 A lift well connecting different compartments should form a protected shaft (see Section 8).
+5.36 Lifts that rise within a large volume such as a mall or atrium and do not have a conventional well,
+such as wall-climber or feature lifts, may be at risk if they run through a smoke reservoir. Care should
+be taken to maintain the integrity of the smoke reservoir and protect people in the lift.
+5.37 In buildings designed for phased evacuation or progressive horizontal evacuation, if the lift well is
+not within the enclosures of a protected stairway, its entrance should be separated at every storey
+by a protected lobby (minimum REI 30).
+5.38 In basements and enclosed car parks, the lift should be within the enclosure of a protected
+stairway. Otherwise, the lift should be approached only via a protected lobby or protected corridor
+(minimum REI 30).
+5.39 If a lift delivers into a protected corridor or protected lobby serving sleeping accommodation and
+also serves a storey containing a high fire risk (such as a kitchen, communal areas, stores, etc.) then
+the lift should be separated from the high fire risk area(s) by a protected lobby or protected corridor
+(minimum REI 30).
+5.40 A lift shaft serving storeys above ground level should not serve any basement if either of the
+following applies.
+a. There is only one escape stair serving storeys above ground level and smoke from a basement
+fire would adversely affect escape routes in the upper storeys.
+b. The lift shaft is within the enclosure to an escape stair that terminates at ground level.
+5.41 Lift machine rooms should be sited over the lift well where possible. Where buildings or part of a
+building with only one stairway make this arrangement impractical, the lift machine room should be
+sited outside the protected stairway.
+Refuse chutes and storage
+5.42 Refuse storage chambers, refuse chutes and refuse hoppers should be sited and constructed in
+accordance with BS 5906.
+5.43 Refuse chutes and rooms for storing refuse should meet both of the following conditions.
+a. Be separated from other parts of the building by fire resisting construction (minimum REI 30
+in buildings with a top storey up to 5m above ground level; otherwise REI 60).
+b. Not be situated within a protected stairway or protected lobby.
+5.44 The approach to rooms containing refuse chutes or for storing refuse should comply with one
+of the following conditions.
+a. Be directly from the open air.
+b. Be through a protected lobby with a minimum 0.2m2 of permanent ventilation.
+5.45 Access openings to refuse storage chambers should not be sited next to escape routes or
+final exits.
+52 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

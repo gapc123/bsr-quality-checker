@@ -1,0 +1,32 @@
+O N L I N E V E R S I O N F1(1)
+1.40 A dwelling with a basement that is not connected to the rest of the dwelling above ground level
+by a large permanent opening should be considered as follows.
+a. The part of the dwelling above ground level should be considered separately.
+b. The basement should be treated separately as a single-storey dwelling above ground level.
+c. If the basement has no bedrooms, it should be treated as having one bedroom when calculating
+the ventilation required for the purposes of meeting the ventilation standards.
+1.41 A dwelling that is only a basement should be treated as a single-storey dwelling above ground
+level. In such circumstances, the guidance for dwellings without basements should be followed.
+The guidance on natural ventilation, however, is not appropriate for a dwelling that is only a
+basement.
+Ventilation of a habitable room through another room
+1.42 If a habitable room does not contain windows that can be opened (e.g. an internal room), the
+requirement to provide adequate ventilation can be met using paragraphs 1.43 and 1.44. This
+guidance can be used if the room is ventilated through either of the following.
+a. Another habitable room.
+b. A conservatory.
+1.43 The habitable room or conservatory should have openings to the outside to provide both of the
+following.
+a. Purge ventilation with a minimum total area given in paragraph 1.29, based on the combined floor
+area of the habitable rooms (or the habitable room and the conservatory).
+b. Background ventilation of at least 10,000mm2 equivalent area.
+1.44 Between the two rooms there should be a permanent opening with a minimum area of 1/20 of the
+combined floor area of the two rooms (see Diagram 1.3).
+Permanent opening based on
+1/20 of the combined floor area
+Purge ventilation opening,
+see paragraphs 1.26 to 1.31 10,000mm2 background ventilator
+Diagram 1.3 Two habitable rooms treated as one room for ventilation purposes
+13
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

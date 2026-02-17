@@ -1,0 +1,36 @@
+O N L I N E V E R S I O N
+BB11
+Single escape routes and exits
+2.6 A single escape route is acceptable for either of the following.
+a. Parts of a floor from which a storey exit can be reached within the limit for travel distance in
+one direction shown in Table 2.1 (see also paragraph 2.8), provided the following apply.
+i. For places of assembly and bars, no one room in this situation has more than 60 people.
+ii. For ‘residential (institutional)’ buildings (purpose group 2(a)), no one room in this situation has
+more than 30 people. Occupant number calculations are described in Appendix D.
+b. A storey with no more than 60 people, where the limits on travel distance in one direction only
+are satisfied (see Table 2.1).
+2.7 In many cases, the beginning of a route will not have an alternative escape route (for example, a
+single exit from a room into a corridor where escape is possible in two directions). This is acceptable
+if both of the following apply.
+a. The travel distance to the nearest storey exit is within the limits for routes where escape is
+possible in more than one direction (Table 2.1).
+b. The travel distance for the ‘one direction only’ section of the route does not exceed the limit
+for travel distance where there is no alternative escape route (Table 2.1).
+Diagram 2.1 shows how to measure travel distances from a dead end in an open storey layout.
+See para 2.7
+D
+Travel distance in a dead-end condition
+Exit
+should meet all of the following.
+A a. Angle ABD should be at least 45 degrees.
+Exit 45° min.
+b. Distance CBA or CBD (whichever is less)
+B should be no more than the maximum travel
+distance given for alternative escape routes.
+c. Distance CB should be no more than the
+maximum travel distance where there are no
+alternative escape routes.
+C
+Diagram 2.1 Travel distance in dead-end condition
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 13
+O N L I N E V E R S I O N

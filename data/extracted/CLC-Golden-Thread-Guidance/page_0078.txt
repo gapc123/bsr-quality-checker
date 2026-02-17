@@ -1,0 +1,41 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+ANNEX D - Large HRB portfolios
+Support
+The questions an accountable person can ask to implement a proportionate risk
+D1.31. Previous sections have described that management system are:
+the leadership of the accountable
+• What internal expertise and capacity do I possess?
+person should identify the levels
+• What, if any, external expertise needs to be instructed or procured?
+of resource required to implement
+a proportionate risk management • What infrastructure do I need to maintain an effective risk management system? (note
+system. This section provides that this can include personnel, as well as hardware, such as fire alarms or IT software
+systems for storing data)
+additional guidance on this matter.
+• What do I require to ensure the management system is sustainable? (e.g. what
+happens if a key staff member, company director or stakeholder leave or become ill?)
+• What happens if a critical piece of safety equipment breaks?
+• How will I sustain competence? (e.g. frequency of training for key decision makers).
+Operation
+The questions an accountable person may ask during the operational phase
+D1.32. The planning phase of the risk include:
+management system can now be • How will I ensure the people working on my building are competent to carry out those
+implemented during the operational works?
+phase. This phase will be unique to
+• How will I recognise that the plan, developed in the previous sections, is insufficient
+each building.
+and needs to change, including how does this change get recorded, to provide an audit
+trail?
+• What servicing and maintenance of the building needs to be conducted?
+• When does this need to take place, and by whom?
+• How will this activity be recorded?
+• Is there sufficient funding to enable this activity, and if not, what am I doing to mitigate
+the safety risks whilst funding is secured?
+• How will I collect, consider, action (where appropriate) and record concerns raised by
+occupants, contractors and other interested parties regarding fire and/or structural
+safety of the building?
+• How will I respond in a major fire and/or structural safety incident? (e.g. What
+processes are in place to identify all occupants? How will communication with residents
+occur? Are alternative accommodation arrangements in place? Is there a suitable
+mandatory occurrence reporting process in place? etc.)
+78

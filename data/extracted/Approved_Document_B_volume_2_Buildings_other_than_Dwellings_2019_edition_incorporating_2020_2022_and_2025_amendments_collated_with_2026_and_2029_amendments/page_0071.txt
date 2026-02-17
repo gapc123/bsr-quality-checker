@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N
+B2
+Table 6.2 Limitations applied to thermoplastic rooflights and lighting diffusers in suspended
+ceilings and class D-s3, d2 plastic rooflights(1)
+Minimum Use of space below Maximum area Maximum total area of Minimum separation
+classification of the diffusers or of each diffuser diffusers and rooflights distance between
+lower surface rooflight or rooflight(2) as a percentage of diffusers or
+(m2) floor area of the space rooflights(2) (m)
+in which the ceiling is
+located (%)
+TP(a) Any except No limit(3) No limit No limit
+protected stairway
+D-s3, d2(4) Rooms 1 50(5)(6) A distance equal to the
+or TP(b) largest plan dimension
+of the largest diffuser
+or rooflight
+(see Diagram 6.3)
+5 50(5)(6) 3(6)
+Circulation spaces 5 15(5) 3
+except protected
+stairways
+NOTES:
+1. This table does not apply to products that meet the provisions in Table 6.1.
+2. S maller rooflights and diffusers can be grouped together provided that both of the following satisfy the
+dimensions in Diagram 6.2 or 6.3.
+a. The overall size of the group.
+b. The space between one group and any others.
+3. Lighting diffusers of TP(a) flexible rating should be used only in panels of a maximum of 5m2 each. See paragraph 6.18.
+4. There are no limits on the use of class D-s3, d2 materials in small rooms. See Table 6.1.
+5. T he minimum 3m separation given in Diagram 6.2 between each 5m2 group must be maintained. Therefore, in some
+cases, it may not be possible to use the maximum percentage quoted.
+6. Class D-s3, d2 rooflights to rooms in industrial and other non-residential purpose group buildings (purpose groups
+3 to 7) may be spaced 1800mm apart provided both of the following conditions are met.
+a. The rooflights are evenly distributed.
+b. The total area of the rooflights does not exceed 20% of the area of the room.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 59
+O N L I N E V E R S I O N

@@ -1,0 +1,45 @@
+(b) work to which regulation 10 (notification of emergency repairs to existing HRB) applies.
+Mandatory occurrence reporting: reporting to the regulator
+33.—(1) Where there is a safety occurrence during the construction phase, a principal
+dutyholder must follow the reporting procedure on becoming aware of the occurrence.
+(2) For the purposes of this regulation, “the reporting procedure” means—
+(a) notifying the regulator of the safety occurrence by the quickest practicable means without
+undue delay, and
+(b) providing a written report of the occurrence containing the required information (as set
+out in paragraph (3)) to the regulator within the period of 10 days beginning with the date
+the principal dutyholder becomes aware of the safety occurrence.
+(3) The required information referred to in paragraph (2) is—
+(a) the date and time of the safety occurrence;
+(b) the address of the site at which the occurrence happened;
+(c) the name, address, telephone number and (if available) an email address of the principal
+dutyholder making the report;
+(d) the type and details of the occurrence (including the nature of the risk);
+(e) details of remedial measures or mitigation carried out.
+(4) Information provided by a person under the reporting procedure is not admissible in
+evidence against that person in criminal proceedings except—
+(a) in proceedings for an offence under section 35 of the 1984 Act (offence of contravening
+building regulations etc) relating to breach of the duty in paragraph (1),
+(b) in proceedings for an offence under section 24 of the 2022 Act (provision of false or
+misleading information to regulator),
+(c) in proceedings for an offence of perverting the course of justice, or
+(d) if in the proceedings—
+(i) in giving evidence the person makes a statement inconsistent with the information,
+and
+(ii) evidence as to the information that was provided is adduced, or a question relating to
+it is asked, by or on behalf of the person.
+(5) The requirements of this regulation do not apply to work to existing HRB which consists
+only of—
+(a) exempt work, or
+(b) work to which regulation 10 (notification of emergency repairs to existing HRB) applies.
+Mandatory occurrence reporting: defences
+34. Where a principal dutyholder has committed an offence under section 35 of the 1984 Act of
+contravening these Regulations by failing to follow the reporting procedure in relation to a safety
+occurrence as required by regulation 33 (mandatory occurrence reporting: reporting to the
+regulator), it is a defence for the principal dutyholder if it reasonably believed that the other
+principal dutyholder had—
+(a) already notified the regulator of the safety occurrence under regulation 33, and
+(b) already provided the regulator with a written report of the safety occurrence under
+regulation 33.
+Mandatory occurrence reporting: definitions
+35. In regulations 32 to 34—
+35

@@ -1,0 +1,28 @@
+Building Control Approval Application for a New
+Higher-Risk Building (Gateway 2)
+APPLICATION DOCUMENT MANAGEMENT AND SUBMISSION
+7.3. It is recommended that the applicant should submit this file in a sub-folder named
+“General Application Information” and upload this at the Drawings and Plans
+stage of the BSR portal.
+7.4. Further guidance is provided in the CLC guidance note Application Information
+Schedule.
+8. SUBMITTING A REQUEST FOR FURTHER INFORMATION
+8.1. On receipt of a Request for Further Information (RFI), an applicant should follow
+specific instructions on how to provide and submit the information. This
+information will not be re-submitted through the online portal.
+8.2. An updated Application Folder Structure and Contents Schedule must be
+provided with any new files submitted. It should highlight the:
+• New file or a file which has been amended;
+• New revision(s); and
+• New or existing sub-folder(s) that the file would relate to.
+8.3. This tracking of updated or new information is imperative to allow the BSR to
+distribute this to the correct MDT members.
+9. LINKED APPLICATIONS
+9.1. Where an application is linked to another in any way, these should be cross-
+referenced using application reference numbers.
+10. REJECTED APPLICATIONS
+10.1. If an application is rejected, the new application should reference the rejected
+application reference number e.g. Application name – Resubmission of
+BCA01234567.
+End of Note 06
+Back to contents page Page 23

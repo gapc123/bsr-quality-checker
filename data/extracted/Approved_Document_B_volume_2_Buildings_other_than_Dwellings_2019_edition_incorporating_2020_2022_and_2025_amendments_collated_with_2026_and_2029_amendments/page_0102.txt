@@ -1,0 +1,19 @@
+O N L I N E V E R S I O N
+B3
+Mechanical ventilation
+11.5 If the minimum standard of natural ventilation is not possible, a system of mechanical ventilation
+should be provided that complies with all of the following.
+a. The system should be both of the following.
+i. Independent of any other ventilating system (other than any system that provides day to
+day ventilation to the car park).
+ii. Designed to operate at 10 air changes per hour during a fire.
+b. The system should run in two parts, each of which is:
+i. capable of extracting 50% of the rates set out in item (a)
+ii. able to operate alone or with the other part
+iii. provided with an independent power supply capable of operating if the main supply fails.
+c. 50% of the outlets should be at high level and 50% at low level.
+d. The system should use E, I and S ductwork in accordance with BS EN 1366-8.
+For further information on equipment for removing hot smoke, refer to BS EN 12101-3. An alternative
+method of providing smoke ventilation from enclosed car parks is given in BS 7346-7.
+90 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

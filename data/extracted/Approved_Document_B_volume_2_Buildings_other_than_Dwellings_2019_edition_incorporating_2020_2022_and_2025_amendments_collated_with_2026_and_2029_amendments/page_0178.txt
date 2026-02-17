@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+C F
+Effective until 1 September 2029 – see 2029 amendment, page 171
+a. A fusible link, but not if the doorset is in an opening provided as a means of escape unless it
+complies with paragraph C7.
+b. An automatic release mechanism activated by an automatic fire detection and alarm system.
+c. A door closer delay device.
+C7 Two fire doorsets may be fitted in the same opening if each door is capable of closing the opening,
+so the total fire resistance is the sum of their individual resistances. If the opening is provided as a
+means of escape, both fire doorsets should be self-closing.
+If one fire doorset is capable of being easily opened by hand and has a minimum of 30 minutes’ fire
+resistance, the other fire doorset should comply with both of the following.
+a. Be fitted with an automatic self-closing device.
+b. Be held open by a fusible link.
+C8 Fire doorsets often do not provide any significant insulation. Unless providing both integrity
+and insulation in accordance with Appendix B, Table B1, a maximum of 25% of the length of a
+compartment wall should consist of door openings.
+Where it is practicable to maintain a clear space on both sides of the doorway, the above
+percentage may be greater.
+C9 Rolling shutters should be capable of manual opening and closing for firefighting purposes (see
+Section 17). Rolling shutters across a means of escape should only be released by a heat sensor, such
+as a fusible link or electric heat detector, in the immediate vicinity of the door.
+Unless a shutter is also intended to partially descend as part of a boundary to a smoke reservoir,
+shutters across a means of escape should not be closed by smoke detectors or a fire alarm system.
+C10 Unless shown to be satisfactory when tested as part of a fire doorset assembly, the essential
+components of any hinge on which a fire door is hung should be made entirely from materials that
+have a minimum melting point of 800°C.
+C11 Except for doorsets listed in paragraph C12, all fire doorsets should be marked with one of the
+following fire safety signs, complying with BS 5499-5, as appropriate.
+a. To be kept closed when not in use – mark ‘Fire door keep shut’.
+b. To be kept locked when not in use – mark ‘Fire door keep locked shut’.
+c. Held open by an automatic release mechanism or free swing device – mark ‘Automatic fire door
+keep clear’.
+All fire doorsets should be marked on both sides, except fire doorsets to cupboards and service
+ducts, which should be marked on the outside.
+C12 The following fire doorsets are not required to comply with paragraph C11.
+a. Doors to and within flats and dwellinghouses.
+b. Bedroom doors in ‘residential (other)’ (purpose group 2(b)) premises.
+c. Lift entrance/landing doors.
+C13 The performance of some doorsets set out in Table C1 is linked to the minimum periods of fire
+resistance for elements of structure given in Tables B1 and B2. Limitations on the use of uninsulated
+glazing in fire doorsets are given in Table B3.
+166 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

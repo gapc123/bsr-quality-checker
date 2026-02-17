@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B4
+Material change of use
+12.18 Regulations 5(k) and 6(3) provide that, where the use of a building is changed such that the building
+becomes a building described in regulation 7(4), the construction of the external walls, and specifed
+attachments, must be investigated and, where necessary, work must be carried out to ensure they
+only contain materials achieving class A2-s1, d0 or class A1, other than those exempted by regulation
+7(3).
+Solar shading devices
+12.19 Regulation 7(2) requires that the curtain and or slats of solar shading devices in a relevant building (as
+defned in regulation 7(4)) achieve class A1 or A2-s1, d0. The curtain of solar shading devices cannot be
+classifed as a membrane in accordance with regulation 7(3).
+12.20 Solar shading devices installed up to 4.5m above ground level are not required to meet the
+requirements of regulation 7(2).
+Additional considerations
+12.21 The provisions of regulation 7 apply in addition to requirement B4. Therefore, for buildings described
+in regulation 7(4), the potential impact of any products incorporated into or onto the external
+walls and specifed attachments should be carefully considered with regard to their number, size,
+orientation and position.
+12.22 Particular attention is drawn to the following points.
+a. Membranes used as part of the external wall construction above ground level should achieve a
+minimum of class B-s3, d0. Roofng membranes do not need to achieve a minimum of class A2-s1,
+d0 when used as part of a roof connecting to an external wall.
+b. Internal linings should comply with the guidance provided in Section 4.
+c. Any part of a roof should achieve the minimum performance as detailed in Section 12.
+d. As per regulation 7(3), window frames and glass (including laminated glass) are exempted from
+regulation 7(2). Window spandrel panels and infll panels must comply with regulation 7(2).
+e. Thermal breaks are small elements used as part of the external wall construction to restrict
+thermal bridging. There is no minimum performance for these materials. However, they should
+not span two compartments and should be limited in size to the minimum required to restrict
+the thermal bridging (the principal insulation layer is not to be regarded as a thermal break).
+f. Regulation 7(2) only applies to specifed attachments. Shop front signs and similar attachments
+are not covered by the requirements of regulation 7(2), although attention is drawn to paragraph
+12.22g.
+g. While regulation 7(2) applies to materials which become part of an external wall or specifed
+attachment, consideration should be given to other attachments to the wall which could impact
+on the risk of fre spread over the wall.
+h. Any material achieving class A1f or A2f-s1 in accordance with BS EN 13501-1 is exempted when it
+meets both of the following conditions.
+i. It forms the top horizontal foor layer of a balcony.
+ii. It is provided with an imperforate substrate under it which extends to the full size of the
+class A1f or A2f-s1 material.
+98 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

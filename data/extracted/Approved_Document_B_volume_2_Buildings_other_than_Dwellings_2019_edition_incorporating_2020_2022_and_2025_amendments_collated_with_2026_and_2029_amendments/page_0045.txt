@@ -1,0 +1,42 @@
+O N L I N E V E R S I O N
+B1
+P is the number of people that can be served
+W is the width of the stair, in metres
+N is the number of storeys served.
+Separate calculations should be made for stairs serving basement storeys and stairs serving
+upper storeys.
+The population, P, should be divided by the number of available stairs.
+The formula is useful to determine the width of stairs where people are not distributed evenly –
+either within a storey or between storeys.
+In the formula, 200W represents the number of people estimated to have left the stair after 2.5
+minutes of evacuation, and 50 (W – 0.3)(N – 1) represents the number of people estimated to be on
+the stair after 2.5 minutes of evacuation.
+Worked examples
+A 14 storey building contains 12 storeys of offices (ground + 11). The top two storeys contain flats
+that are served by separate stairs. What is the minimum width needed for the stairs that serve
+the office floors, for simultaneous evacuation? In the 11 above-ground-floor offices, 1200 people
+use the stairs. (People in the ground floor offices do not use the stairs.) In this example, two
+stairs are shown to satisfy the travel distance limitations.
+a. The population is distributed evenly
+The top office storey is at a height greater than 18m, therefore both stairs need lobby protection
+(see paragraph 3.34). Because both stairs are entered at each level via a protected lobby, both
+stairs can be assumed to be available (see paragraph 3.15).
+P = 1200/2 = 600, N = 11
+From the formula:
+600 = 200W + 50 (W – 0.3)(11 – 1)
+600 = 200W + (50W – 15)(10)
+600 = 200W + 500W – 150
+750 = 700W
+W = 1070mm
+Therefore both stairs should be at least 1070mm wide. But this needs to be increased to 1100mm,
+because the formula applies to stairs 1100mm wide or wider (see paragraph 3.18).
+This width will also be adequate when one storey exit is discounted as described in paragraph
+2.21. It also complies with paragraph 3.10a (i.e. the stair widths are not less than the minimum
+widths needed for 110 people in Table 2.3).
+b. The population is not distributed evenly
+(e.g. 1000 people occupy floors 1 to 9, and 200 occupy floors 10 and 11).
+The top office storey is at a height greater than 18m, therefore both stairs need lobby protection
+(see paragraph 3.34). Because both stairs are entered at each level via a protected lobby, both
+stairs can be assumed to be available (see paragraph 3.15).
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 33
+O N L I N E V E R S I O N

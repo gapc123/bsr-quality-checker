@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N
+B3
+Flues, etc.
+10.23 The wall of a flue, duct containing flues or appliance ventilation duct(s) should have a fire resistance
+(REI) that is at least half of any compartment wall or compartment floor it passes through or is built
+into (Diagram 10.4).
+See para 10.23
+a. Flue passing through compartment wall or floor b. Flue built into compartment wall
+Compartment
+wall or foor
+Flue Compartment Compartment
+wall wall
+Flue wall
+Flue walls should have a fre resistance of at least In each case fue walls should have a fre resistance of at least
+one half of that required for the compartment wall one half of that required for the compartment wall and be of
+or foor and be of class A1 construction. class A1 construction.
+Diagram 10.4 Flues penetrating compartment walls or floors
+Fire‑stopping
+10.24 In addition to any other provisions in this section, both of the following conditions should be met.
+a. Joints between fire-separating elements should be fire-stopped.
+b. Openings through a fire resisting element for pipes, ducts, conduits or cable should be all of the
+following.
+i. As few as possible.
+ii. As small as practicable.
+iii. Fire-stopped (allowing thermal movement in the case of a pipe or duct).
+NOTE: The fire-stopping around fire dampers, fire resisting ducts, fire and smoke dampers and
+smoke control ducts should be in accordance with the manufacturer or supplier’s installation
+instructions.
+10.25 Materials used for fire-stopping should be reinforced with (or supported by) materials rated class
+A2-s3, d2 or better to prevent displacement in both of the following cases.
+a. Where the unsupported span is greater than 100mm.
+b. Where non-rigid materials are used (unless subjected to appropriate fire resistance testing to
+show their suitability).
+10.26 Proprietary, tested fire-stopping and sealing systems are available and may be used. Different
+materials suit different situations and not all are suitable in every situation.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 87
+O N L I N E V E R S I O N

@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B5
+Buildings fitted with fire mains
+15.4 For buildings fitted with dry fire mains, both of the following apply.
+a. Access should be provided for a pumping appliance to within 18m of each fire main inlet
+connection point. Inlets should be on the face of the building.
+b. The fire main inlet connection point should be visible from the parking position of the appliance,
+and satisfy paragraph 16.10.
+15.5 For buildings fitted with wet fire mains, access for a pumping appliance should comply with both of
+the following.
+a. Within 18m, and within sight of, an entrance giving access to the fire main.
+b. Within sight of the inlet to replenish the suction tank for the fire main in an emergency.
+15.6 Where fire mains are provided in buildings for which Sections 16 and 17 make no provision, vehicle
+access may be as described in paragraphs 15.4 and 15.5, rather than Table 15.1.
+Design of access routes and hardstandings
+15.7 Access routes and hardstandings should comply with the guidance in Table 15.2. Requirements can
+only apply to the site of the works.
+It may not be reasonable to upgrade the route across a site to a small building. The building control
+body, in consultation with the fire and rescue service, should consider options from doing no work
+to upgrading certain features, such as sharp bends.
+15.8 Where access to an elevation is provided in accordance with Table 15.1, the following requirements
+should be met, depending on the building height.
+a. Buildings up to 11m, excluding small buildings (paragraph 15.1): pump appliance access should be
+provided adjacent to the building for the specified percentage of the total perimeter.
+b. Buildings over 11m: access routes should comply with the guidance in Diagram 15.2.
+15.9 Where access is provided for high reach appliances in accordance with Table 15.1, overhead
+obstructions (such as cables and branches) should be avoided in the zone shown in Diagram 15.2.
+15.10 Dead-end access routes longer than 20m require turning facilities, as in Diagram 15.3. Turning facilities
+should comply with the guidance in Table 15.2.
+Table 15.2 Typical fire and rescue service vehicle access route specification
+Appliance type Minimum Minimum Minimum Minimum Minimum Minimum
+width of road width of turning circle turning circle clearance carrying
+between gateways (m) between between height (m) capacity
+kerbs (m) kerbs (m) walls (m) (tonnes)
+Pump 3.7 3.1 16.8 19.2 3.7 12.5
+High reach 3.7 3.1 26.0 29.0 4.0 17.0
+NOTES:
+1. F ire appliances are not standardised. The building control body may, in consultation with the local fire and rescue
+service, use other dimensions.
+2. T he roadbase can be designed to 12.5 tonne capacity. Structures such as bridges should have the full 17-tonne
+capacity. The weight of high reach appliances is distributed over a number of axles, so infrequent use of a route
+designed to accommodate 12.5 tonnes should not cause damage.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 113
+O N L I N E V E R S I O N

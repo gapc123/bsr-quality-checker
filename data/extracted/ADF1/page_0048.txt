@@ -1,0 +1,43 @@
+B O N L I N E V E R S I O N
+Table B1 Indoor air pollutants guidance values(1)(2)
+Pollutant Exposure limit Exposure time
+Carbon monoxide (CO) 100mg/m3 15-minute average
+30mg/m3 1-hour average
+10mg/m3 8-hour average
+Nitrogen dioxide (NO) 200μg/m3 1-hour average
+2
+40μg/m3 1-year average
+Formaldehyde (CHO) 100μg/m3 30-minute average
+2
+10μg/m3 1-year average
+TVOC(3) 300μg/m3 8-hour average
+NOTES:
+1. No safe levels can be recommended for benzene or trichloroethylene so they have not been considered in the
+definition of ventilation rates in dwellings. The best strategy for reducing their concentration indoors may be to
+control them at source.
+2. Even if the designer and builder choose to reduce volatile organic compound (VOC) levels in dwellings by
+controlling them at source, the ventilation requirements must still be met.
+3. The total volatile organic compound (TVOC) metric is representative of all airborne indoor air VOC
+concentrations and should not be used as a direct indicator of health. The simplified metric is used as an indicator
+for the purpose of ventilation control strategies. As an alternative to the TVOC limit, individual VOC limits may
+be used where justified in accordance with the guidance in paragraph B5.
+B5 As an alternative to using TVOC, the individual VOCs may be applied where their use is supported
+by robust independent evidence. Public Health England’s Indoor Air Quality Guidelines for Selected
+Volatile Organic Compounds (VOCs) in the UK should be used. Testing against these metrics is likely
+to be more complex than testing against TVOC.
+B6 Control of bio-effluents (body odours) for people who have been exposed to the environment
+for a period of time will be achieved by an air supply rate of 4 litres per second per person
+(BS EN 16798-1).
+Assumptions used in applying performance criteria for
+dwellings in Section 1
+General
+B7 Where the guidance for less airtight dwellings is followed, dwellings are assumed to have an
+infiltration rate of 0.15 air changes per hour.
+B8 Where the guidance for highly airtight dwellings is followed, dwellings are assumed to have an
+infiltration rate of 0 air changes per hour.
+B9 Ventilation effectiveness is assumed to be 1.0 – that is, it is assumed that supply air is fully mixed
+with room air.
+CIBSE’s Guide A Environmental Design provides further information on ventilation effectiveness.
+40
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

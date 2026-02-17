@@ -1,0 +1,40 @@
+OFN L1I(N2E) V, ERR S3I O9N, R42, R44
+Regulations
+Information about ventilation
+39. (1) This regulation applies where paragraph F1(1) of Schedule 1 imposes a requirement in relation to building
+work.
+(2) The person carrying out the work shall not later than five days after the work has been completed
+give sufficient information to the owner about the building’s ventilation system and its maintenance
+requirements so that the ventilation system can be operated in such a manner as to provide adequate
+means of ventilation.
+Mechanical ventilation air flow rate testing
+42. (1) This regulation applies where paragraph F1(1) of Schedule 1 imposes a requirement in relation to the creation
+of a new dwelling by building work.
+(2) The person carrying out the work shall, for the purpose of ensuring compliance with paragraph F1(1) of
+Schedule 1—
+(a) e nsure that testing of the mechanical ventilation air flow rate is carried out in accordance with a
+procedure approved by the Secretary of State; and
+(b) g ive notice of the results of the testing to the local authority.
+(3) The notice referred to in paragraph (2)(b) shall—
+(a) r ecord the results and the data upon which they are based in a manner approved by the Secretary of
+State; and
+(b) be given to the local authority not later than five days after the final test is carried out.
+Commissioning
+44. (1) This regulation applies to building work in relation to which paragraph F1(2) of Schedule 1 imposes
+a requirement, but does not apply to the provision or extension of any fixed system for mechanical
+ventilation or any associated controls where testing and adjustment is not possible.
+(2) This regulation also applies to building work in relation to which paragraph L1(b) of Schedule 1 imposes a
+requirement, but does not apply to the provision or extension of any fixed building service where testing
+and adjustment is not possible or would not affect the energy efficiency of that fixed building service.
+(3) Where this regulation applies the person carrying out the work shall, for the purpose of ensuring
+compliance with paragraph F1(2) or L1(b) of Schedule 1, give to the local authority a notice confirming that
+the fixed building services have been commissioned in accordance with a procedure approved by the
+Secretary of State.
+(4) The notice shall be given to the local authority—
+(a) not later than the date on which the notice required by regulation 16(4) is required to be given; or
+(b) where that regulation does not apply, not more than 30 days after completion of the work.
+NOTE: Where the building control body is an approved inspector, see regulation 20 of the Building
+(Approved Inspectors etc.) Regulations 2010 (as amended).
+29
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

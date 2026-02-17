@@ -1,0 +1,34 @@
+B O N L I N E V E R S I O N
+Table B1 Indoor air pollutants guidance values(1)(2)
+Pollutant Exposure limit Exposure time Guidance
+Carbon monoxide (CO) 100mg/m3 15-minute average WHO, 2010
+30mg/m3 1-hour average WHO, 2010
+35mg/m3 8-hour average HSE, 2020
+(occupational exposure)
+Nitrogen dioxide (NO) 200μg/m3 1-hour average WHO, 2010
+2
+40μg/m3 1-year average WHO, 2010
+Formaldehyde (CHO) 100μg/m3 30-minute average WHO, 2010
+2
+10μg/m3 1-year average PHE, 2019
+TVOC(3) 300μg/m3 8-hour average ECA, 1992/WHO, 2010
+Ozone 100μg/m3 DETR, 1994
+NOTES:
+1. No safe levels can be recommended for benzene or trichloroethylene so they have not been considered in the
+definition of ventilation rates in buildings. The best strategy for reducing their concentration indoors may be to
+control them at source.
+2. Even if the designer and builder choose to reduce volatile organic compound (VOC) levels in buildings by
+controlling them at source, the ventilation requirements must still be met.
+3. The total volatile organic compound (TVOC) metric is representative of all airborne indoor air VOC
+concentrations and should not be used as a direct indicator of health. The simplified metric is used as an indicator
+for the purposes of ventilation control strategies. As an alternative to the TVOC limit, individual VOC limits may
+be used where justified in accordance with the guidance in paragraph B3.
+B3 As an alternative to using TVOC, the individual VOCs may be applied where their use is supported
+by robust independent evidence. Public Health England’s Indoor Air Quality Guidelines for Selected
+Volatile Organic Compounds (VOCs) in the UK should be used. Testing against these metrics is likely
+to be more complex than testing against TVOC.
+Where the Health and Safety Executive gives guidance for specific situations, that guidance should be
+followed in preference to the guidance given here.
+28
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

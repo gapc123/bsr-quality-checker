@@ -1,0 +1,43 @@
+O N L I N E V E R S I O N
+E C
+Effective until 1 September 2029 – see 2029 amendment, page 171
+Appendix C: Fire doorsets
+C1 All fire doorsets should have the performance shown in Table C1, based on one of the following.
+a. Fire resistance in terms of integrity, for a period of minutes, when tested to BS 476-22, e.g. FD 30.
+A suffix (S) is added for doorsets where restricted smoke leakage at ambient temperatures is needed.
+b. As determined with reference to Commission Decision 2000/367/EC regarding the classification
+of the resistance to fire performance of construction products, construction works and parts
+thereof. All fire doorsets should be classified in accordance with BS EN 13501-2, tested to the
+relevant European method from the following.
+i. BS EN 1634-1.
+ii. BS EN 1634-2.
+iii. BS EN 1634-3.
+c. As determined with reference to European Parliament and Council Directive 95/16/EC (which
+applies to lifts that permanently serve buildings and constructions and specified safety
+components) on the approximation of laws of Member States relating to lifts (‘Lifts Directive’)
+implementing the Lifts Regulations 1997 (SI 1997/831) and calling upon the harmonised standard
+BS EN 81-58.
+C2 The performance requirement is in terms of integrity (E) for a period of minutes. An additional
+classification of S is used for all doors where restricted smoke leakage at ambient temperatures is
+a
+needed.
+C3 The requirement is for test exposure from each side of the doorset separately. The exception is lift
+doors, which are tested from the landing side only.
+C4 Any test evidence used to verify the fire resistance rating of a doorset or shutter should be checked
+to ensure both of the following.
+a. It adequately demonstrates compliance.
+b. It is applicable to the complete installed assembly. Small differences in detail may significantly
+affect the rating.
+Until relevant harmonised product standards are published, for the purposes of meeting the
+Building Regulations, products tested in accordance with BS EN 1634-1 (with or without pre-fire
+test mechanical conditioning) that achieve the minimum performance in Table C1 will be deemed
+to satisfy the provisions.
+C5 All fire doorsets, including to flat entrances and between a dwellinghouse and an integral garage,
+should be fitted with a self-closing device, except for all of the following.
+a. Fire doorsets to cupboards.
+b. Fire doorsets to service ducts normally locked shut.
+c. Fire doorsets within flats and dwellinghouses.
+C6 If a self-closing device would be considered to interfere with the normal approved use of the
+building, self-closing fire doors may be held open by one of the following.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 165
+O N L I N E V E R S I O N

@@ -1,0 +1,46 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+B22 Fire resistance is measured in minutes. This relates to time elapsed in a standard test and should not
+be confused with real time.
+B23 The fire resistance necessary for different circumstances is set out in the following tables.
+a. Table B1 gives the specific requirements for each element of structure.
+b. Table B2 sets out the minimum periods of fire resistance for elements of structure.
+c. Table B3 sets out limitations on the use of uninsulated fire resisting glazed elements.
+B24 This document uses the European classification system for fire resistance set out in BS EN 13501-2
+to 4; however, there may be some products lawfully on the market using the classifcation system
+set out in previous editions. In those situations the alternative classifcations given in Table B1 can be
+used.
+Table B1 Specific provisions of the test for fire resistance of elements of structure, etc.
+Part of building Minimum Alternative minimum provisions when tested to the Type of
+provisions when relevant part of BS 476(2) (minutes) exposure
+tested to the
+Loadbearing Integrity Insulation
+relevant European
+capacity(3)
+standard
+(minutes)(1)
+1. Structural frame, R see Table B2 See Table B2 Not applicable Not applicable Exposed faces
+beam or column.
+2. Loadbearing wall (for R see Table B2 See Table B2 Not applicable Not applicable Each side
+a wall which is also separately
+described in any of
+the following items,
+the more onerous
+guidance should be
+applied).
+3. Floors(4)
+a. between a shop and REI 60 or 60 min or 60 min or 60 min or From
+flat above see Table B2 see Table B2 see Table B2 see Table B2 underside(5)
+(whichever is (whichever is (whichever is (whichever is
+greater) greater) greater) greater)
+b. in upper storey R 30 and EI 15 30 min 15 min 15 min From
+of two storey underside(5)
+dwellinghouse (but
+not over garage or
+basement)
+c. any other floor REI see Table B2 See Table B2 See Table B2 See Table B2 From
+– including underside(5)
+compartment floors.
+142 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

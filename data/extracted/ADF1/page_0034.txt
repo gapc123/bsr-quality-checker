@@ -1,0 +1,37 @@
+F1(1) O N L I N E V E R S I O N
+b. If the dwelling already has mechanical ventilation, the centralised system could be extended
+into the additional room.
+3.19 For purge ventilation in a new habitable room in a dwelling, paragraphs 1.26 to 1.31 should be
+followed.
+3.20 For a new habitable room in a dwelling, ventilation location should follow paragraphs 1.9 to 1.31,
+performance testing should follow paragraph 1.32 and controls should follow paragraphs 1.33 to 1.37.
+Addition of a conservatory to an existing building
+3.21 The guidance in this section applies to conservatories with a floor area that exceeds 30m2.
+Conservatories with a floor area that does not exceed 30m2 are exempt from the Part F
+requirements.
+3.22 The general ventilation rate for a new conservatory and, if necessary, adjoining rooms could be
+achieved using background ventilators. The guidance in paragraphs 1.42 to 1.44 should be followed
+regardless of the ventilation provisions in the existing room adjacent to the conservatory.
+3.23 For purge ventilation in a new conservatory, paragraphs 1.26 to 1.31 should be followed.
+3.24 For a new conservatory, performance testing should follow paragraph 1.32 and controls should
+follow paragraphs 1.33 to 1.37.
+Addition of a wet room to an existing dwelling
+3.25 When a wet room is added to an existing dwelling, whole dwelling ventilation should be
+extended and extract ventilation should be provided by one of the following means.
+a. Intermittent extract, as specified in Table 1.1, and a background ventilator of at
+least 5000mm2 equivalent area.
+b. Continuous extract, as specified in Table 1.2.
+c. Single-room heat recovery ventilator, as detailed in paragraph 3.26.
+3.26 If a continuously running single-room heat recovery ventilator is used in a wet room, it should
+use the minimum high rate given in Table 1.2 and 50% of this value as the continuous rate. A
+background ventilator is not required in the same room as the single-room heat recovery ventilator.
+3.27 Internal doors should allow air to move within the dwelling by providing a free area equivalent to a
+10mm undercut in a 760mm wide door. Doors should be undercut to achieve one of the following.
+a. If the floor finish is fitted: 10mm above the floor finish.
+b. If the floor finish is not fitted: 20mm above the floor surface.
+3.28 For purge ventilation in a new wet room, paragraphs 1.26 to 1.31 apply.
+3.29 For a new wet room, ventilation location should follow paragraphs 1.9 to 1.31, performance testing
+should follow paragraph 1.32 and controls should follow paragraphs 1.33 to 1.37.
+26
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

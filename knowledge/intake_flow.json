@@ -1,0 +1,303 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BSR Document Knowledge Base - User Intake Flow",
+  "description": "Conditional question flow to tailor document recommendations based on user context",
+  "version": "1.0.0",
+  "max_questions": 8,
+  "questions": [
+    {
+      "id": "q1_location",
+      "question": "Where is your building/project located?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": true,
+      "options": [
+        {"value": "london", "label": "Greater London"},
+        {"value": "england_not_london", "label": "England (outside London)"},
+        {"value": "wales", "label": "Wales"},
+        {"value": "scotland", "label": "Scotland"},
+        {"value": "northern_ireland", "label": "Northern Ireland"},
+        {"value": "unknown", "label": "Not sure / Multiple locations"}
+      ],
+      "skip_logic": null,
+      "tags_affected": ["geography_scope", "london_specific"],
+      "rationale": "Many documents have London-specific provisions (GLA, London Plan, Mayor of London policies). Some only apply to England."
+    },
+    {
+      "id": "q2_borough",
+      "question": "Which London borough?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": false,
+      "options": [
+        {"value": "city_of_london", "label": "City of London"},
+        {"value": "westminster", "label": "Westminster"},
+        {"value": "tower_hamlets", "label": "Tower Hamlets"},
+        {"value": "southwark", "label": "Southwark"},
+        {"value": "hackney", "label": "Hackney"},
+        {"value": "islington", "label": "Islington"},
+        {"value": "camden", "label": "Camden"},
+        {"value": "lambeth", "label": "Lambeth"},
+        {"value": "newham", "label": "Newham"},
+        {"value": "greenwich", "label": "Greenwich"},
+        {"value": "lewisham", "label": "Lewisham"},
+        {"value": "wandsworth", "label": "Wandsworth"},
+        {"value": "hammersmith_fulham", "label": "Hammersmith and Fulham"},
+        {"value": "kensington_chelsea", "label": "Kensington and Chelsea"},
+        {"value": "other", "label": "Other London borough"},
+        {"value": "multiple", "label": "Multiple boroughs"},
+        {"value": "unknown", "label": "Not sure"}
+      ],
+      "skip_logic": {
+        "show_if": {
+          "question_id": "q1_location",
+          "operator": "equals",
+          "value": "london"
+        }
+      },
+      "tags_affected": ["geography_scope"],
+      "rationale": "Some guidance may be borough-specific. High-rise buildings concentrated in certain boroughs."
+    },
+    {
+      "id": "q3_role",
+      "question": "What is your role?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": true,
+      "options": [
+        {"value": "developer", "label": "Developer / Client"},
+        {"value": "housing_association", "label": "Housing Association / Registered Provider"},
+        {"value": "principal_designer", "label": "Principal Designer"},
+        {"value": "principal_contractor", "label": "Principal Contractor"},
+        {"value": "architect", "label": "Architect"},
+        {"value": "fire_engineer", "label": "Fire Engineer / Consultant"},
+        {"value": "building_control", "label": "Building Control (LA or private)"},
+        {"value": "accountable_person", "label": "Accountable Person / Building Owner"},
+        {"value": "local_authority", "label": "Local Authority Officer"},
+        {"value": "consultant", "label": "Planning / Regulatory Consultant"},
+        {"value": "resident", "label": "Resident / Leaseholder"},
+        {"value": "other", "label": "Other"}
+      ],
+      "skip_logic": null,
+      "tags_affected": ["regulated_actors"],
+      "rationale": "Different documents apply to different actors. Dutyholders have specific obligations."
+    },
+    {
+      "id": "q4_building_height",
+      "question": "What is the building height?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": true,
+      "options": [
+        {"value": "under_11m", "label": "Under 11m (typically under 4 storeys)"},
+        {"value": "11m_to_18m", "label": "11m to 18m (4-6 storeys)"},
+        {"value": "18m_to_30m", "label": "18m to 30m (7-10 storeys) - Higher-Risk Building"},
+        {"value": "over_30m", "label": "Over 30m (11+ storeys) - Higher-Risk Building"},
+        {"value": "mixed", "label": "Mixed heights / phased development"},
+        {"value": "unknown", "label": "Not yet determined"}
+      ],
+      "skip_logic": null,
+      "tags_affected": ["building_types", "height_thresholds"],
+      "rationale": "18m/7 storeys is the HRB threshold triggering Gateway process and BSR oversight. 11m triggers enhanced fire safety requirements."
+    },
+    {
+      "id": "q5_building_use",
+      "question": "What is the primary building use?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": true,
+      "options": [
+        {"value": "residential_flats", "label": "Residential flats / apartments"},
+        {"value": "care_home", "label": "Care home / Supported housing"},
+        {"value": "hospital", "label": "Hospital / Healthcare"},
+        {"value": "student_accommodation", "label": "Student accommodation"},
+        {"value": "hotel", "label": "Hotel / Serviced apartments"},
+        {"value": "mixed_use", "label": "Mixed use (residential + commercial)"},
+        {"value": "office", "label": "Office (non-residential)"},
+        {"value": "other_non_residential", "label": "Other non-residential"},
+        {"value": "conversion", "label": "Conversion (change of use)"}
+      ],
+      "skip_logic": null,
+      "tags_affected": ["building_types", "topic_tags"],
+      "rationale": "HRB definition requires residential use with at least 2 dwellings. Care homes and hospitals have additional requirements."
+    },
+    {
+      "id": "q6_project_stage",
+      "question": "What stage is your project at?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": true,
+      "options": [
+        {"value": "pre_planning", "label": "Pre-planning / Feasibility"},
+        {"value": "planning_application", "label": "Planning application stage"},
+        {"value": "pre_gateway1", "label": "Pre-Gateway 1 (planning determination)"},
+        {"value": "gateway1_to_2", "label": "Between Gateway 1 and Gateway 2"},
+        {"value": "gateway2_application", "label": "Preparing Gateway 2 application"},
+        {"value": "gateway2_determination", "label": "Gateway 2 under determination"},
+        {"value": "construction", "label": "Construction phase (post Gateway 2)"},
+        {"value": "gateway3_prep", "label": "Preparing for Gateway 3 / Completion"},
+        {"value": "occupation", "label": "Building in occupation"},
+        {"value": "refurbishment", "label": "Refurbishment / Building work to existing HRB"},
+        {"value": "not_applicable", "label": "Not applicable / Non-HRB"}
+      ],
+      "skip_logic": null,
+      "tags_affected": ["topic_tags", "decision_points"],
+      "rationale": "Gateway stage determines which requirements apply and which documents are most relevant."
+    },
+    {
+      "id": "q7_specific_topic",
+      "question": "What specific topic are you researching?",
+      "type": "multi_choice",
+      "required": false,
+      "strongly_recommended": false,
+      "options": [
+        {"value": "fire_safety", "label": "Fire safety / means of escape"},
+        {"value": "structural", "label": "Structural safety"},
+        {"value": "golden_thread", "label": "Golden thread / Information management"},
+        {"value": "fees_charges", "label": "BSR fees and charges"},
+        {"value": "dutyholder_duties", "label": "Dutyholder duties and competence"},
+        {"value": "change_control", "label": "Change control / Notifiable changes"},
+        {"value": "completion", "label": "Completion / Gateway 3"},
+        {"value": "enforcement", "label": "Enforcement / Compliance"},
+        {"value": "ventilation", "label": "Ventilation requirements"},
+        {"value": "accessibility", "label": "Accessibility / Part M"},
+        {"value": "general", "label": "General overview"}
+      ],
+      "skip_logic": null,
+      "tags_affected": ["topic_tags"],
+      "rationale": "Helps filter to most relevant documents for the user's immediate need."
+    },
+    {
+      "id": "q8_existing_hrb",
+      "question": "Is this an existing occupied higher-risk building?",
+      "type": "single_choice",
+      "required": false,
+      "strongly_recommended": false,
+      "options": [
+        {"value": "yes_registered", "label": "Yes, registered with BSR"},
+        {"value": "yes_not_registered", "label": "Yes, but not yet registered"},
+        {"value": "no_new_build", "label": "No, new build"},
+        {"value": "no_not_hrb", "label": "No, not a higher-risk building"},
+        {"value": "unknown", "label": "Not sure"}
+      ],
+      "skip_logic": {
+        "show_if": {
+          "question_id": "q4_building_height",
+          "operator": "in",
+          "value": ["18m_to_30m", "over_30m"]
+        }
+      },
+      "tags_affected": ["topic_tags", "regulated_actors"],
+      "rationale": "Existing occupied HRBs have different requirements (registration, safety case, building assessment certificate) than new builds."
+    }
+  ],
+  "output_mapping": {
+    "filter_documents": {
+      "description": "Use answers to filter catalogue.json documents",
+      "rules": [
+        {
+          "condition": "q1_location != 'england' AND q1_location != 'london' AND q1_location != 'england_not_london'",
+          "action": "warn",
+          "message": "Most documents in this knowledge base apply to England only. Limited guidance available for your location."
+        },
+        {
+          "condition": "q1_location == 'london'",
+          "action": "include",
+          "filter": "london_specific == true OR 'Greater London' in geography_scope"
+        },
+        {
+          "condition": "q4_building_height in ['18m_to_30m', 'over_30m']",
+          "action": "prioritize",
+          "filter": "'higher_risk_buildings' in topic_tags OR 'gateway_process' in topic_tags"
+        },
+        {
+          "condition": "q3_role == 'housing_association'",
+          "action": "prioritize",
+          "filter": "'accountable_person' in regulated_actors OR 'housing_association' in regulated_actors"
+        },
+        {
+          "condition": "q6_project_stage in ['gateway2_application', 'gateway2_determination']",
+          "action": "prioritize",
+          "filter": "'gateway_process' in topic_tags OR 'building_control' in topic_tags"
+        },
+        {
+          "condition": "q7_specific_topic == 'fees_charges'",
+          "action": "prioritize",
+          "filter": "'charging_fees' in topic_tags"
+        },
+        {
+          "condition": "q7_specific_topic == 'golden_thread'",
+          "action": "prioritize",
+          "filter": "'golden_thread' in topic_tags"
+        },
+        {
+          "condition": "q7_specific_topic == 'fire_safety'",
+          "action": "prioritize",
+          "filter": "'fire_safety' in topic_tags OR 'means_of_escape' in topic_tags"
+        }
+      ]
+    },
+    "generate_report_sections": {
+      "description": "Determine which report sections to include based on answers",
+      "sections": [
+        {
+          "id": "applicability_summary",
+          "title": "What Applies to You",
+          "always_include": true
+        },
+        {
+          "id": "hrb_gateway_overview",
+          "title": "Higher-Risk Building Gateway Process",
+          "include_if": "q4_building_height in ['18m_to_30m', 'over_30m']"
+        },
+        {
+          "id": "london_specific",
+          "title": "London-Specific Requirements",
+          "include_if": "q1_location == 'london'"
+        },
+        {
+          "id": "dutyholder_duties",
+          "title": "Your Duties as [Role]",
+          "include_if": "q3_role is answered",
+          "dynamic_title": true
+        },
+        {
+          "id": "stage_checklist",
+          "title": "Checklist for Your Current Stage",
+          "include_if": "q6_project_stage is answered"
+        },
+        {
+          "id": "fees_estimate",
+          "title": "Indicative BSR Fees",
+          "include_if": "q4_building_height in ['18m_to_30m', 'over_30m']"
+        },
+        {
+          "id": "key_documents",
+          "title": "Key Documents to Review",
+          "always_include": true
+        },
+        {
+          "id": "missing_info",
+          "title": "Information We Still Need",
+          "always_include": true
+        }
+      ]
+    }
+  },
+  "notes": {
+    "design_principles": [
+      "Questions are optional but strongly recommended for tailored output",
+      "Skip logic reduces question burden - only ask what changes the report",
+      "Geography is highest impact - ask first",
+      "Role determines which obligations sections to highlight",
+      "Height is critical for HRB determination",
+      "Stage helps prioritize time-sensitive documents"
+    ],
+    "future_enhancements": [
+      "Add borough-specific policies when available",
+      "Add more granular fire strategy questions",
+      "Add specific building element questions (cladding, compartmentation)",
+      "Add timeline/deadline questions for urgency flagging"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+ANNEX D - Large HRB portfolios
+Information and documents D1.4. Effective management of information D1.7. Accountable persons should
+management can be achieved even when the understand which aspects of their
+information is held across more than golden thread information are likely
+D1.1. There are two different elements of
+one source, file management system, to remain static, for example fire
+the golden thread of information,
+or software programme. This means resistance standards of compartment
+information and documents. This
+that existing systems may be able to walls, and information which is
+guidance provides examples of how
+be used to meet the golden thread dynamic, for example results of
+to manage both information and
+requirements. ongoing testing and maintenance of a
+documents effectively. The examples
+D1.5. For larger organisations that manage fire suppression system or fire doors
+given are by no means exhaustive.
+a portfolio which includes a number to ensure they remain fit for purpose.
+D1.2. Accountable persons building safety of HRBs, it may be beneficial Other routine maintenance activities,
+obligations are continuous, therefore to consider how information is such as the maintenance and servicing
+at any given time the golden thread organised, structured and managed of lifts to comply with existing
+information must, as far as is to support delivery of effective asset machinery related regulations also
+possible, be an accurate reflection management across all relevant have an impact on the golden thread.
+of the current building and how it is
+buildings. This may enable trends D1.8. To ensure that information and
+managed.
+to be spotted, for example potential documents remain accurate and up
+D1.3. For the golden thread information risk factors, ease of identifying all to date, and supports those who use
+to remain true to the golden thread buildings where the risk factor is them, it is advisable to formally set
+principles throughout the lifecycle relevant and appropriate responsive out who is responsible for updating,
+of a building, it must be managed actions carried out. maintaining, and periodically reviewing
+effectively and made available to D1.6. Larger organisations may also have a them. Different teams or people may
+those who need it when they need number of teams that deliver a range be responsible for different elements
+it. There should also be a clear, of services, management or support of the information and documents.
+consistent and robust mechanism for
+to a building and the residents within. D1.9. Certain actions will require new
+recording changes and updates made
+Teams with different functions should or replacement information to be
+to the golden thread. The reasons for
+have a clear understanding of their accurately recorded. For example, the
+changes and updates may need to be
+roles and responsibilities, how they fire rating of a door will change when
+recorded, along with details of who
+relate to and impact the roles and one type of fire door with a 30-minute
+has made the changes.
+responsibilities of others and the fire rating is replaced by one with a
+potential impact of their work on the 60-minute fire rating. In terms of the
+building and meeting wider building action, it will be necessary to ensure
+safety duties. this is recorded, along with details of
+72

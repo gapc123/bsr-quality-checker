@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+B4
+Method 2
+13.20 This method may be used for buildings or compartments intended for any use and for which
+method 1 is not appropriate.
+13.21 Except for an open-sided car park in purpose group 7(b) (see paragraph 11.2), the building should
+not exceed 10m in height. Each side of the building should meet the limits in Table 13.1. Areas falling
+within the limits in Diagram 13.5 can be ignored.
+Table 13.1 Permitted unprotected areas in small buildings or compartments
+Minimum distance between side of building and relevant boundary (m) Maximum total percentage of
+unprotected area (%)
+Purpose groups
+Residential, office, assembly and Shop and commercial, industrial,
+recreation storage and other non-residential
+(1) (2) (3)
+Not applicable 1 4
+1 2 8
+2.5 5 20
+5 10 40
+7.5 15 60
+10 20 80
+12.5 25 100
+NOTES:
+1. Intermediate values may be obtained by interpolation.
+2. For buildings fitted with an automatic sprinkler system, see paragraph 13.22.
+3. For open-sided car parks in purpose group 7(b), the distances set out in column (1) may be used instead of those in
+column (2).
+4. The total percentage of unprotected area is found by dividing the total unprotected area by the area of a
+rectangle that encloses all the unprotected areas, and multiplying the result by 100.
+Sprinkler systems
+13.22 If a building is fitted throughout with a sprinkler system in accordance with Appendix E, either of
+the following is permitted.
+a. The boundary distance can be halved, to a minimum distance of 1m.
+b. The amount of unprotected area can be doubled.
+Atrium buildings
+13.23 If a building contains one or more atria, the recommendations in clause B8 of BS 9999 should be
+followed.
+106 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

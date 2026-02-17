@@ -1,0 +1,37 @@
+OFN L1I(N2E) V, ERR S3I O9N, R42, R44
+Section 4: Commissioning and providing
+information
+Air flow rate testing and commissioning of ventilation
+systems
+4.1 Mechanical ventilation systems must be commissioned to provide adequate ventilation. A
+commissioning notice must be given to the building control body.
+4.2 Air flow rates for mechanical ventilation in new dwellings must be measured. A notice of the
+measured air flow rates must be given to the building control body.
+NOTE: Paragraphs 4.1 and 4.2 apply to intermittent extract as well as continuous mechanical
+ventilation systems.
+4.3 The person responsible for commissioning should complete air flow measurement test and
+commissioning sheets including, as a minimum, all information in Part 3 of the example sheet given
+in Appendix C.
+NOTE: When mechanical ventilation is commissioned, the use of fuel and power should also be
+considered in accordance with Part L of the Building Regulations (L1(b) of Schedule 1). Installers
+may provide notice of commissioning to cover Part F (F1(2) of Schedule 1) and Part L in the same
+document.
+Inspection standards
+4.4 Ventilation systems should be inspected and tested in accordance with paragraphs 4.5 to 4.12.
+Background ventilators and intermittent extract ventilation
+4.5 For background ventilators, all of the following measures should be undertaken and the results
+recorded using the checklist in Appendix C.
+a. The minimum equivalent area for background ventilators from Table 1.7 should be identified and
+recorded.
+b. The actual equivalent area and location of installed background ventilators should be recorded.
+c. Checks should be made to determine that the background ventilator controls work and that
+they open and close correctly.
+d. The quality of the installation of the ventilator product should be checked to ensure it is
+correctly mounted within the wall or window aperture.
+4.6 For intermittent extract fans, the installer should carry out checks to establish the following.
+a. That the fans operate correctly.
+b. That the fans respond correctly to the controls provided with the installation.
+c. That any run-on timers are set to at least 15 minutes.
+31
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

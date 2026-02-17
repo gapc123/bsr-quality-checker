@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B3
+See para S10e.e5 par
+Fire-separating element
+NOTES:
+˜ 1000mm ˜ 1000mm 1 . Make the opening in the fre-separating element
+as small as possible and provide fre-stopping
+between pipe and fre-separating element.
+2 . See Table 10.1 for materials specifcation.
+3 . The sleeve should be class A1 rated.
+Pipe specifcation (b) Sleeve (or pipe)
+of specifcation (a)
+to be in contact
+Fire-stopping with pipe
+Diagram 10.1 Pipes penetrating fire-separating elements
+Table 10.1 Maximum nominal internal diameter of pipes passing through a
+fire-separating element
+Situation Pipe material and maximum nominal internal diameter (mm)
+(a) (b) (c)
+High melting point Lead, aluminium, Any other material
+metal(1) aluminium alloy,
+uPVC(2), fibre-
+cement
+1. Structure (but not a wall separating buildings) 160 110 40
+enclosing a protected shaft that is not a stairway
+or a lift shaft
+2. A ny other situation 160 40 40
+NOTES:
+1. A ny metal (such as cast iron, copper or steel) which, if exposed to a temperature of 800°C, will not soften or
+fracture to the extent that flame or hot gas will pass through the wall of the pipe.
+2. uPVC pipes that comply with either BS 4514 or BS 5255.
+Mechanical ventilation and air‑conditioning systems
+General provisions
+10.6 Ductwork should not help to transfer fire and smoke through the building. Terminals of exhaust
+points should be sited away from final exits, cladding or roofing materials achieving class B-s3, d2 or
+worse and openings into the building.
+10.7 Ventilation ducts supplying or extracting air directly to or from a protected stairway should not also
+serve other areas. A separate ventilation system should be provided for each protected stairway.
+10.8 A fire and smoke damper should be provided where ductwork enters or leaves each section of
+the protected escape route it serves. It should be operated by a smoke detector or suitable fire
+detection system. Fire and smoke dampers should close when smoke is detected. Alternatively, the
+methods set out in paragraphs 10.15 and 10.16 and Diagrams 10.2 and 10.3 may be followed.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 83
+O N L I N E V E R S I O N

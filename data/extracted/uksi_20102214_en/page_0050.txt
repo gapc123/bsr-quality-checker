@@ -1,0 +1,45 @@
+where the work does not include any work to underground drainage, and includes no
+work to the hot or cold water system or above ground drainage, which may prejudice the
+health or safety of any person on completion of the work;
+(k) in relation to an existing cold water supply—
+(i) replacing any part,
+(ii) adding an output device, or
+(iii) adding a control device;
+(l) providing a hot water storage system that has a storage vessel with a capacity not
+exceeding 15 litres, where any electrical work associated with its provision is exempt
+from the requirement to give a building notice or to deposit full plans by virtue of
+regulation 9 or 12(6)(b);
+(m) installation of thermal insulation in a roof space or loft space where—
+(i) the work consists solely of the installation of such insulation, and
+(ii) the work is not carried out in order to comply with any requirement of these
+Regulations.
+2. Work which—
+(a) is not in a kitchen, or a special location;
+(b) does not involve work on a special installation; and
+(c) consists of—
+(i) adding light fittings and switches to an existing circuit, or
+(ii) adding socket outlets and fused spurs to an existing ring or radial circuit.
+3. Work on—
+(a) telephone wiring or extra-low voltage wiring for the purposes of communications,
+information technology, signalling, control and similar purposes, where the wiring is
+not in a special location;
+(b) equipment associated with the wiring referred to in sub-paragraph (a);
+(c) pre-fabricated equipment sets and associated flexible leads with integral plug and
+socket connections.
+4. For the purposes of this Schedule—
+“kitchen” means a room or part of a room which contains a sink and food preparation
+facilities;
+“self-contained” in relation to a fixed building service means consisting of a single appliance
+and any associated controls which is neither connected to, nor forms part of, any other fixed
+building service;
+“special installation” means an electric floor or ceiling heating system, an outdoor lighting or
+electric power installation, an electricity generator, or an extra-low voltage lighting system
+which is not a pre-assembled lighting set bearing the CE marking referred to in regulation 9 of
+the Electrical Equipment (Safety) Regulations 1994(a);
+“special location” means a location within the limits of the relevant zones specified for a bath,
+a shower, a swimming or paddling pool or a hot air sauna in the Wiring Regulations,
+seventeenth edition, published by the Institution of Electrical Engineers and the British
+Standards Institution as BS 7671: 2008(b).
+(a) S.I. 1994/3260.
+(b) ISBN 978-0-86341-844-0.
+50

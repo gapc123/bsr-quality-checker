@@ -1,0 +1,33 @@
+O N L I N E V E R S I O N
+B1
+Enclosure of corridors that are not protected corridors
+2.25 If a corridor is used for a means of escape but is not a protected corridor, even though the
+enclosing partitions may have no fire resistance, both of the following should be met to inhibit the
+spread of smoke.
+a. Partitions should continue to the soffit of the structural floor above, or to a suspended ceiling.
+b. Openings into rooms from the corridor should be fitted with doors, which do not need to be
+fire doorsets.
+Open planning will not inhibit the spread of smoke, but occupants can become aware of a fire quickly.
+Division of corridors
+2.26 A corridor providing access to alternative escape route should be divided by fire doorsets fitted
+with a self-closing device (and associated screens) where both of the following apply.
+a. It is more than 12m long.
+b. It connects two or more storey exits.
+The fire doorsets (including any screens) should be approximately mid-way between the two storey
+exits. They should safeguard the route from smoke, while considering the layout of the corridor and
+any adjacent fire risks.
+2.27 For buildings other than dwellings (purpose groups 2 to 7): if a cavity exists above the enclosures to
+a corridor as described above (because the enclosures are not carried to full storey height or the
+underside of the roof covering at the top storey), the potential for smoke to bypass the enclosure
+should be restricted by one of the following methods.
+a. Method 1 – Fitting cavity barriers on the line of the enclosure(s) to and across the corridor
+(Diagram 2.9).
+b. Method 2 – Dividing the storey using fire resisting construction that passes through the line of
+the division of the corridor (Diagram 2.9). Any cavity above this division should be fitted with
+cavity barriers on the line of division of the storey and the corridor.
+c. Method 3 – Enclosing the cavity on the lower side by a fire resisting ceiling that extends
+throughout the building, compartment or separated part.
+Any door that could provide a path for smoke to bypass the division should be fitted with a self-
+closing device (but need not necessarily be fire resisting).
+22 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

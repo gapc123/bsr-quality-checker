@@ -1,0 +1,45 @@
+(a) be made in writing, signed by the applicant,
+(b) subject to paragraph (4), include the matters mentioned in paragraph (1)(a) to (e),
+(c) be accompanied by the plans referred to in paragraphs (2)(a) and (2)(b),
+(d) where Part B of Schedule 1 to the 2010 Regulations imposes a requirement in relation to
+the work, include information setting out the fire safety design principles, concepts and
+standards applied to the development including sufficient plans to show how the work
+would comply with Part B (fire safety) of Schedule 1 to the 2010 Regulations (“fire safety
+compliance information”), and
+(e) such of the documents listed in paragraph (2)(c) as the applicant considers appropriate.
+(4) Where the work consists only of category B work within a flat, the application does not need
+to include the matters mentioned in paragraph (1)(d).
+(5) In relation to an application for work to existing HRB where the work consists of category B
+work, the regulator may at any time before determining the application, by notice in writing,
+additionally require the applicant to provide any of the following documents—
+(a) a competence declaration;
+(b) a construction control plan;
+(c) a change control plan;
+(d) a mandatory occurrence reporting plan;
+(e) a Building Regulations compliance statement;
+(f) a fire and emergency file;
+(g) a partial completion strategy.
+(6) In this regulation—
+“category A work” means work falling within any one or more of the following descriptions—
+(a) work which increases or decreases the external height or width of the higher-risk
+building;
+(b) work which changes the number of storeys the higher-risk building has (including adding
+or removing a mezzanine or gallery floor);
+(c) work which changes the number of flats or residential rooms contained in the higher-risk
+building;
+(d) work which changes the number of, or width of, the staircases in a higher-risk building or
+which changes the number of, or width of, any other escape route within the building;
+(e) work to the external wall of a higher-risk building excluding work or materials of a
+description specified in regulation 7(3) of the 2010 Regulations;
+(f) work which changes the internal layout of a higher-risk building;
+(g) work which affects the passive fire safety measures in the higher-risk building;
+(h) work which affects the active fire safety measures in a higher-risk building;
+(i) work which affects the common parts of a higher-risk building (including the external
+wall) not otherwise falling within category A;
+“category B work” means work which does not fall within category A.
+(7) The requirements of this regulation do not apply to work to existing HRB which consists
+only of—
+(a) scheme work;
+(b) exempt work, or
+(c) work to which regulation 10 (notification of emergency repairs to existing HRB) applies.
+15

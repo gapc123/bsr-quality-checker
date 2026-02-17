@@ -1,0 +1,22 @@
+O N L I N E V E R S I O N
+Interaction with Part J
+0.17 Ventilation fans might cause combustion gases to spill from open-flued appliances. These
+combustion gases might fill the room instead of going up the flue or chimney, even if the
+combustion appliance and fan are in separate rooms.
+0.18 The guidance in Approved Document J should be followed when installing and testing ventilation
+appliances. Combustion appliances must operate safely whether or not fans are running.
+Interaction with Part L
+0.19 Energy efficiency should be considered when specifying ventilation systems. Energy efficiency,
+including the control of infiltration, is dealt with under Part L of the Building Regulations.
+Interaction with Part K and Part M
+0.20 Manual controls, where provided for a ventilation device, should be within reasonable reach of the
+occupants. Follow the guidance in Approved Documents K and M.
+Interaction with Part O
+0.21 This document sets minimum standards for purge ventilation for rapidly diluting indoor air
+pollutants and extracting water vapour where necessary in habitable rooms in buildings other than
+dwellings. For domestic-type buildings, Part O may require a higher standard than the guidance
+given in this document for purge ventilation to remove excess heat. In this case, the higher of the
+two standards should be followed.
+4
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

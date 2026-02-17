@@ -1,0 +1,38 @@
+F1(2), R39,O RN L4I N2E, VRE R4S I4O N
+Controls
+4.11 The correct operation of each control function should be tested where it is practical. Ventilation
+controls should be inspected to ensure that the following have been achieved.
+a. All local controls have been installed in accordance with the manufacturer’s instructions.
+b. All local controls are adequately labelled to clearly indicate their function.
+c. If sensors have been installed separately from the fan unit, that the manufacturer’s installation
+instructions were followed.
+d. Where control of the fan is automated, that the controls are configured to ensure that
+automatic controls do not disturb occupants; for example, by sudden changes in fan speed.
+4.12 If manual controls are provided, clear and detailed instructions should be given to the occupier as
+part of the information package described in paragraphs 4.13 to 4.17.
+Operating and maintenance instructions
+4.13 Sufficient information about the ventilation system and its maintenance requirements must be
+given to the building owner to allow the system to be operated effectively. This should include
+both design flow rates and maintenance requirements. The information should be provided in a
+clear manner, for a non-technical audience.
+4.14 A copy of the completed commissioning sheet in Appendix C should be given to the owner of the
+dwelling.
+4.15 The operation and maintenance information should contain specific instructions for the end user
+on how and when to use the ventilation system, including information on the intended uses for the
+available fan settings. Information should also be provided to suggest when, and how, the system
+components should be cleaned and maintained.
+4.16 The following information should be provided where relevant.
+a. Manufacturer’s contact details.
+b. That background ventilators allow fresh air into the home and should be left open.
+c. The location of automatic controls and how to set them.
+d. The location of manual controls for the on/off and high rate settings for a mechanical
+ventilation system and how to use them.
+e. How cleaning and maintenance of the system and its components should be carried out. This
+includes the location and specification of filters and how to assess when to replace filters.
+f. How to access ducts for cleaning, how to undertake cleaning of plant and ducts and the
+intervals at which cleaning should be undertaken.
+g. The location of sensors and how to recalibrate them.
+h. Design flow rates.
+34
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

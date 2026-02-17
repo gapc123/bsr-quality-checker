@@ -1,0 +1,46 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Table B1 Continued
+Part of building Minimum Alternative minimum provisions when tested to the Type of
+provisions when relevant part of BS 476(2) (minutes) exposure
+tested to the
+Loadbearing Integrity Insulation
+relevant European
+capacity(3)
+standard
+(minutes)(1)
+21. Flue walls described EI half the Not applicable Half the period Half the period From outside
+in Diagram 10.4. period given in given in Table given in Table
+Table B2 for the B2 for the B2 for the
+compartment compartment compartment
+wall/floor wall/floor wall/floor
+22. Construction EI 30 Not applicable 30 min 30 min From
+described in note (a) underside
+to paragraph 12.9 of
+Approved Document
+B Volume 1.
+23. Fire doorsets See Table C1 See Table C1 See
+Appendix C
+NOTES:
+1. BS EN 13501-2 Classification using data from fire resistance tests, excluding ventilation services. BS EN 13501-3
+Classification using data from fire resistance tests on products and elements used in building service installations:
+fire resisting ducts and fire dampers. BS EN 13501-4 Classification using data from fire resistance tests on
+components of smoke control systems.
+In the European classification:
+‘R’ is the resistance to fire in terms of loadbearing capacity.
+‘E’ is the resistance to fire in terms of integrity.
+‘I’ is the resistance to fire in terms of insulation.
+The national classifications do not automatically equate with the alternative classifications in the European column,
+therefore products cannot typically assume a European class unless they have been tested accordingly.
+2. BS 476-20 for general principles, BS 476-21 for loadbearing elements, BS 476-22 for non-loadbearing elements,
+BS 476-23 for fire-protecting suspended ceilings and BS 476-24 for ventilation ducts.
+3. Applies to loadbearing elements only (see paragraph B19).
+4. Guidance on increasing the fire resistance of existing timber floors is given in BRE Digest 208.
+5. Only if a suspended ceiling meets the appropriate provisions should it be relied on to add to the fire resistance of
+the floor.
+6. Such walls may contain areas that do not need to be fire resisting (unprotected areas). See Section 13.
+7. Unless needed as part of a wall in item 5a or 5b.
+8. Except for any limitations on uninsulated glazed elements given in Table B3.
+146 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

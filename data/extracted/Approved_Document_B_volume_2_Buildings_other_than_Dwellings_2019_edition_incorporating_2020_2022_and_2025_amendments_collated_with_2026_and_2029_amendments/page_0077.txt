@@ -1,0 +1,30 @@
+O N L I N E V E R S I O N
+B3
+Section 8: Compartmentation/sprinklers
+Provision of compartmentation
+All purpose groups
+8.1 All of the following should be provided as compartment walls and compartment floors and should
+have, as a minimum, the fire resistance given in Appendix B, Table B1.
+8.2 A wall common to two or more buildings should be a compartment wall.
+8.3 Parts of a building occupied mainly for different purposes should be separated from one another
+by compartment walls and/or compartment floors. Compartmentation is not needed if one of the
+different purposes is ancillary to the other. See paragraphs 0.23 and 0.24.
+8.4 Effective compartmentation relies on both of the following.
+a. Fire resistance should be continuous at the join between elements forming a compartment.
+b. Any openings between two compartments should not reduce the fire resistance.
+8.5 The lowest floor in a building does not need to be a compartment floor.
+Protected shafts
+8.6 Stairs and service shafts connecting compartments should be protected to restrict the spread of
+fire between the compartments. These are called protected shafts. Walls or floors surrounding a
+protected shaft are considered to be compartment walls or compartment floors.
+Places of special fire hazard
+8.7 Fire resisting construction enclosing these places should achieve minimum REI 30. These walls and
+floors are not compartment walls and compartment floors.
+‘Residential (institutional)’ buildings including health care
+8.8 All floors should be constructed as compartment floors.
+8.9 Paragraphs 2.35 and 2.36 give guidance on the provisions for compartment walls in care homes that
+use progressive horizontal evacuation.
+‘Residential (other)’ buildings
+8.10 In ‘residential (other)’ (purpose group (2(b)) buildings, all floors should be compartment floors.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 65
+O N L I N E V E R S I O N

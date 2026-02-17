@@ -1,0 +1,47 @@
+O N L I N E V E R S I O N
+B3
+See para 8.11
+b . Compartmentation
+in buildings over 30m
+see paragraph 8.11b
+Compartment foor(s) or wall(s)
+a . Example of compartmentation in an
+unsprinklered assembly and recreation,
+shop, or commercial building
+see paragraph 8.11a > 30m
+Storey not exceeding
+2000m²
+Storey not exceeding Roof
+2000m²
+Storey exceeding
+30m Compartment
+2000m² divided by
+max. wall
+compartment wall
+Storey exceeding
+Compartment
+2000m² divided by
+wall
+compartment wall
+None of the foors in this case would need to In a building with a top storey
+be compartment foors, but the two storeys over 30m in height all
+exceeding 2000m² would need to be divided storeys should be separated by
+into compartments not more than 2000m² by compartment foors. For
+compartment walls. advice on the special conditions
+in atrium buildings see
+The compartment walls in example (a) do not Annex B of BS 9999.
+need to be in one vertical plane.
+d. Deep basement
+see paragraph 8.11d
+c . Shallow basement
+see paragraph 8.11c
+> 10m
+10m
+max.
+Only the foor of the ground All basement storeys to be
+storey need be a compartment separated by compartment
+foor if the lower basement is foors if any storey is at a
+at a depth of not more than 10m. depth of more than 10m.
+Diagram 8.1 Compartment floors: illustration of guidance in paragraph 8.11
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 67
+O N L I N E V E R S I O N

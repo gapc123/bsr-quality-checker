@@ -1,0 +1,43 @@
+F1(2), R39,O RN L4I N2E, VRE R4S I4O N
+Ducted systems
+4.7 For all ductwork and terminals, the following checks should be made and the results recorded in
+the checklist in Appendix C.
+a. That the system has been installed to achieve both of the following.
+i. The design criteria.
+ii. A standard that will not reduce its performance.
+b. That the number, size and location of the air terminals provide effective air distribution in the
+space.
+c. That all ductwork and terminals are in good condition with no obvious defects that will affect
+the performance of the system.
+d. That the air flow direction is correct at each room terminal.
+e. That there are no abnormal noises from the ventilation system, including in all of the following
+situations.
+i. On start-up.
+ii. When running in background ventilation mode.
+iii. When running at the high rate.
+4.8 For continuous mechanical ventilation systems, such as continuous mechanical extract ventilation
+or mechanical ventilation with heat recovery, the system should be balanced to achieve design air
+flow rates at each room terminal. The fan manufacturer’s instructions should be followed when
+balancing the system. If specific details are not available from the manufacturer, the relevant set of
+instructions from sub-paragraphs (a) to (e) below should be followed.
+a. For adjustable terminals with a fixed (stepped) speed fan, the following apply.
+i. The fan speed should be set to achieve the desired continuous flow rate.
+ii. The index terminal flow rate should be set with the terminal fully open and all other
+terminals should be adjusted to achieve the required flows at each terminal.
+iii. If the total flow rate cannot be achieved through all the terminals, then the fan speed
+should be increased.
+iv. If all the terminals have to be set to a significantly closed position to achieve the required
+air flow rate, then the fan speed should be reduced and the terminals rebalanced.
+b. For adjustable terminals with a controllable speed fan, the following apply.
+i. The fan should be set at a speed that will approximately achieve the desired continuous
+flow rate.
+ii. The index terminal flow rate should be set with the terminal fully open and all other
+terminals should be adjusted to achieve the required flows at each terminal.
+iii. If the index terminal has to be set to a significantly closed position to achieve the required
+air flow rate, then the fan speed should be reduced and the terminals rebalanced.
+c. For fixed terminals with flow adjustment by duct damper or a similar device at the fan unit, the
+guidance in sub-paragraphs (a) or (b) above should be followed, depending on the type of fan
+speed control.
+32
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,45 @@
+O N L I N E V E R S I O N
+D
+Table D1 Floor space factors(1)
+Type of accommodation(2)(3) Floor space factor (m2/person)
+1. S tanding spectator areas, bar areas (within 2m of serving point), similar 0.3
+refreshment areas
+2. Amusement arcade, assembly hall (including a general purpose place of 0.5
+assembly), bingo hall, club, crush hall, dance floor or hall, venue for pop
+concerts and similar events and bar areas without fixed seating
+3. Concourse or queuing area(4) 0.7
+4. Committee room, common room, conference room, dining room, licensed 1.0
+betting office (public area), lounge or bar (other than in (1) above), meeting
+room, reading room, restaurant, staff room or waiting room(5)
+5. Exhibition hall or studio (film, radio, television, recording) 1.5
+6. Skating rink 2.0
+7. Shop sales area(6) 2.0
+8. Art gallery, dormitory, factory production area, museum or workshop 5.0
+9. Office 6.0
+10. Shop sales area(7) 7.0
+11. Kitchen or library 7.0
+12. Bedroom or study-bedroom 8.0
+13. Bed-sitting room, billiards or snooker room or hall 10.0
+14. Storage and warehousing 30.0
+15. Car park Two persons per parking space
+NOTES:
+1. A s an alternative to using the values in the table, the floor space factor may be determined by reference to actual
+data taken from similar premises. Where appropriate, the data should reflect the average occupant density at a
+peak trading time of year.
+2. W here accommodation is not directly covered by the descriptions given, a reasonable value based on a similar use
+may be selected.
+3. W here any part of the building is to be used for more than one type of accommodation, the most onerous
+factor(s) should be applied. Where the building contains different types of accommodation, the occupancy of
+each different area should be calculated using the relevant space factor.
+4. F or detailed guidance on appropriate floor space factors for concourses in sports grounds refer to Concourses
+published by the Football Licensing Authority.
+5. A lternatively the occupant number may be taken as the number of fixed seats provided, if the occupants will
+normally be seated.
+6. S hops excluding those under item 10, but including: supermarkets and department stores (main sales areas), shops
+for personal services, such as hairdressing, and shops for the delivery or collection of goods for cleaning, repair or
+other treatment or for members of the public themselves carrying out such cleaning, repair or other treatment.
+7. S hops (excluding those in covered shopping complexes but including department stores) trading predominantly
+in furniture, floor coverings, cycles, prams, large domestic appliances or other bulky goods, or trading on a
+wholesale self-selection basis (cash and carry).
+176 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

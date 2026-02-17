@@ -1,0 +1,50 @@
+Building control approval applications for work to existing HRB: decisions
+15.—(1) The regulator must grant the building control approval sought in a building control
+approval application for work to existing HRB unless—
+(a) the application or any document that accompanied the application (or is provided under
+regulation 12(5) (building control approval applications for work to existing HRB))—
+(i) does not comply with the requirements of regulation 12 (building control approval
+applications for work to existing HRB) or any direction relating to the application or
+the document given by the regulator under regulation 59 (electronic submission and
+directions);
+(ii) is not sufficiently detailed in any respect to allow the regulator to determine whether
+the work would contravene any applicable requirement of the building regulations;
+(iii) shows that—
+(aa) the proposed work would contravene any applicable requirement of the
+building regulations;
+(bb) in a case where details are provided under regulation 12(1)(e)(viii)(bb), the
+work set out in the details would not in the regulator’s opinion amount to 15%
+of the work;
+(iv) shows the strategies, policies or procedures in relation to the work (including in
+relation to controlled changes, mandatory occurrence reporting, competence of
+persons or sharing of information and co-operation) would contravene, or would be
+likely to contravene, the requirements of—
+(aa) regulations 18 to 21 and 26 to 29 (changes to documents or persons);
+(bb) regulations 31, 38 and 39 (golden thread etc);
+(cc) regulations 32 to 37 (mandatory occurrence reporting);
+(dd) Part 2A (dutyholders and competence) of the 2010 Regulations;
+(b) when requested pursuant to regulation 12(5) (building control approval applications for
+work to existing HRB), the applicant failed to provide the document requested.
+(2) If one or more of the reasons in paragraph (1) applies, the regulator may—
+(a) reject the building control approval application for work to existing HRB, or
+(b) with the written consent of the applicant, grant the building control approval sought in the
+application subject to one or more requirements.
+(3) The types of requirement that may be imposed under paragraph (2)(b) include—
+(a) a requirement to provide a specified plan or document, or a revised version of a specified
+plan or document, within a specified period;
+(b) a requirement that work does not proceed beyond a specified point until a specified plan
+or other document, or a revised version of a specified plan or other document, has been
+given to, and approved by, the regulator.
+(4) The regulator must notify the applicant of the outcome of the application (and where the
+applicant is not the client, also give a copy of the notification to the client) within the period
+referred to in regulation 13 (building control approval applications for work to existing HRB:
+validity and time limit).
+(5) A notice that the application has been rejected must give the reasons for rejection.
+(6) A notice that the building control approval sought in the application has been granted subject
+to a requirement must specify the requirement imposed.
+(7) If requested by the applicant, the regulator must provide a paper copy of the notice of
+building control approval.
+(8) Where a building control approval application for work to existing HRB is successful the
+effect is that from the date of the notice under paragraph (4)—
+(a) building control approval for the work to existing HRB is granted;
+17

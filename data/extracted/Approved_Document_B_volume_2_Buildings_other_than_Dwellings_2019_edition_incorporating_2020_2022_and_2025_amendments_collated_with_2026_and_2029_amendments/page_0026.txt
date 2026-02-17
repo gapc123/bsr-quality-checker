@@ -1,0 +1,54 @@
+O N L I N E V E R S I O N
+B1
+Table 2.1 Limitations on travel distance
+Maximum travel distance(1)
+where travel is possible in:
+Purpose group Use of the premises or part of the premises One direction More than
+only (m) one direction
+(m)
+2(a) Residential (institutional) 9 18
+2(b) Residential (other):
+a. in bedrooms(2) 9 18
+b. in bedroom corridors 9 35
+c. elsewhere 18 35
+3 Office 18 45
+4 Shop and commercial 18 45
+5 Assembly and recreation:
+a. buildings primarily for disabled people 9 18
+b. areas with seating in rows 15 32
+c. elsewhere 18 45
+6 Industrial(3) Normal hazard 25 45
+Higher hazard 12 25
+7 Storage and other non-residential(3) Normal hazard 25 45
+Higher hazard 12 25
+2–7 Place of special fire hazard(4) 9(5) 18(5)
+2–7 Plant room or roof-top plant:
+a. distance within the room 9 35
+b. escape route not in open air (overall 18 45
+travel distance)
+c. escape route in open air (overall travel 60 100
+distance)
+NOTES:
+1. If the internal layout of partitions, fittings, etc. is not known, direct distances, rather than travel distances, should
+be assessed. The direct distance should be assumed to be two-thirds of the actual travel distance.
+2. Maximum part of travel distance within the room. This limit applies within the bedroom and any associated
+dressing room, bathroom or sitting room, etc. The distance is measured to the door to the protected corridor that
+serves the room or suite. Sub-item (b) applies from that point along the bedroom corridor to a storey exit.
+3. In industrial and storage buildings, the appropriate travel distance depends on the level of fire hazard associated
+with the processes and materials being used.
+Higher hazard includes manufacturing, processing or storage of significant amounts of hazardous goods or
+materials, including any of the following.
+• Any compressed, liquefied or dissolved gas.
+• Any substance that becomes dangerous by interaction with either air or water.
+• Any liquid substance with a flash point below 65°C, including whisky or other alcoholic liquor.
+• Any corrosive substance.
+• Any oxidising agent.
+• Any substance liable to spontaneous combustion.
+• Any substance that changes or decomposes readily, giving out heat when doing so.
+• Any solid substance with a flash point less than 120°C.
+• Any substance that is likely to spread fire by flowing from one part of a building to another.
+4. Places of special fire hazard are listed in the definitions in Appendix A.
+5. Maximum part of travel distance within the room/area. Travel distance outside the room/area should comply
+with the limits for the purpose group of the building or part.
+14 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

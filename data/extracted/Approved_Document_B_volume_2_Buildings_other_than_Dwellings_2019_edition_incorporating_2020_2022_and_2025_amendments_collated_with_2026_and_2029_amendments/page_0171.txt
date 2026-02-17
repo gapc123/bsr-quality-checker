@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+D B
+2029 amendment – effective from 2 September 2029
+Table B1 Continued
+Part of building Minimum provisions when tested and classified Type of exposure
+to the relevant European standard (minutes)(1)
+or assessed following the recommendations of
+paragraphs B1 to B5 (minutes)(2)
+Loadbearing Integrity Insulation
+capacity(3)
+19. Duct described in paragraph 9.17e. Not applicable 30 min No provision From outside
+20. Casing around a drainage system Not applicable 30 min No provision From outside
+described in Diagram 9.1 of Approved
+Document B Volume 1.
+21. Flue walls described in Diagram 10.4. Not applicable Half the period Half the period From outside
+given in Table given in Table
+B2 for the B2 for the
+compartment compartment
+wall/floor wall/floor
+22. Construction described in note Not applicable 30 min 30 min From underside
+(a) to paragraph 12.9 of Approved
+Document B Volume 1.
+23. Fire doorsets See Table C1 See
+Appendix C
+NOTES:
+1. Classified in accordance with BS EN 13501-2, BS EN 13501-3 or BS EN 13501-4. In the European classification ‘R’ is the
+resistance to fire in terms of loadbearing capacity, ‘E’ is the resistance to fire in terms of integrity, ‘I’ is the resistance
+to fire in terms of insulation. Products or systems cannot typically assume a European class unless they have been
+tested and classified accordingly.
+2. When assessed as being capable of meeting a performance classification, products or systems should follow the
+relevant test standards to indicate their fire resistance performance in terms of loadbearing capacity, integrity or
+insulation for a period of minutes, when following the recommendations of paragraphs B1 to B5.
+3. Applies to loadbearing elements only (see paragraph B18).
+4. Guidance on increasing the fire resistance of existing timber floors is given in BRE Digest 208.
+5. Only if a suspended ceiling meets the appropriate provisions should it be relied on to add to the fire resistance of
+the floor.
+6. Such walls may contain areas that do not need to be fire resisting (unprotected areas). See Section 13.
+7. Unless needed as part of a wall in item 5a or 5b.
+8. Except for any limitations on uninsulated glazed elements given in Table B3.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 159
+O N L I N E V E R S I O N

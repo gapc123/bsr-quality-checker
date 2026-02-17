@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B3
+Installation and specification of fire dampers
+10.17 Both fire dampers and fire and smoke dampers should be all of the following.
+a. Sited within the thickness of the fire-separating elements.
+b. Securely fixed.
+c. Sited such that, in a fire, expansion of the ductwork would not push the fire damper through the
+structure.
+10.18 Access to the fire damper and its actuating mechanism should be provided for inspection, testing
+and maintenance.
+10.19 Fire dampers should meet both of the following conditions.
+a. Conform to BS EN 15650.
+b. Have a minimum E classification of 60 minutes or to match the integrity rating of the fire
+resisting elements, whichever is higher.
+10.20 Fire and smoke dampers should meet both of the following conditions.
+a. Conform to BS EN 15650.
+b. Have a minimum ES classification of 60 minutes or to match the integrity rating of the fire
+resisting elements, whichever is higher.
+10.21 Smoke detectors should be sited so as to prevent the spread of smoke as early as practicable by
+activating the fire and smoke dampers. Smoke detectors and automatic release mechanisms used
+to activate fire dampers and/or fire and smoke dampers should conform to BS EN 54-7 and
+BS 5839-3 respectively.
+Further information on fire dampers and/or fire and smoke dampers is given in the ASFP Grey Book.
+Sleeping risks
+10.22 Where the use of the building involves a sleeping risk, fire dampers or fire and smoke dampers
+should be actuated by both of the following.
+a. Smoke detector-controlled automatic release mechanisms.
+b. Thermally actuated devices.
+However, in a situation where both of the following are true:
+a. all occupants of the building can be expected to make an unaided escape
+b. an L1 fire detection and alarm system is installed in accordance with BS 5839-1
+then both of the following exceptions may be made.
+i. If, on the detection of smoke, the fire alarm system signals the immediate evacuation of all the
+occupants of the building, then fire dampers and/or fire and smoke dampers do not need to be
+actuated by smoke detectors.
+ii. If the building is divided into fire compartments and the alarm system is arranged to signal the
+immediate evacuation of the occupants of the fire compartment in which the fire has been
+detected, then smoke detector-operated fire dampers or fire and smoke dampers need only be
+provided where ductwork enters or leaves the fire compartment.
+86 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

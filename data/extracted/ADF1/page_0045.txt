@@ -1,0 +1,68 @@
+O N L I N E V E R S I O N A
+Heat recovery Applied to mechanical supply f. the building is not a building described in
+and extract systems or a single room ventilator, classes 1 to 6 in Schedule 2, where previously it
+extract air is passed over a heat exchanger and the was;
+recovered heat is put into the supply air.
+g. the building, which contains at least one
+dwelling, contains a greater or lesser number of
+Highly airtight dwellings Dwellings that achieve
+dwellings than it did previously;
+one of the following.
+h. the building contains a room for residential
+a. A design air permeability lower than 5m3/(h·m2)
+purposes, where previously it did not;
+at 50Pa.
+i. the building, which contains at least one room
+b. An as-built air permeability lower than 3m3/
+for residential purposes, contains a greater
+(h·m2) at 50Pa.
+or lesser number of such rooms than it did
+Infiltration The uncontrolled exchange of air previously;
+between the inside and outside of a building,
+j. the building is used as a shop, where it
+through gaps and cracks.
+previously was not; or
+Intermittent operation When a mechanical
+k. the building is a building described in regulation
+ventilator does not run all the time, usually running
+7(4)(a), where previously it was not.
+only when there is a particular need to remove
+pollutants or water vapour (e.g. during cooking Mechanical ventilation with heat recovery A
+or bathing). Intermittent operation may be under mechanically driven ventilation system that both
+either manual or automatic control. continuously supplies outdoor air to the inside of
+the dwelling and continuously extracts indoor air
+Less airtight dwellings Those dwellings that are not
+and discharges it to the outside. For the purposes
+highly airtight dwellings.
+of this approved document, the guidance for
+Manual controls A system whereby a ventilation mechanical ventilation with heat recovery applies
+device is opened and closed, or switched on to centralised or decentralised supply and extract
+and off, or its performance is adjusted by the systems, with or without heat recovery.
+occupants of a room or building (see automatic
+Natural ventilation Ventilation provided by thermal,
+controls).
+wind or diffusion effects through doors, windows
+*Material change of use Defined in regulation 5 as: or other intentional openings without the use of
+Where there is a change in the purposes for which mechanically driven equipment. For the purposes
+or the circumstances in which a building is used, of this approved document, natural ventilation
+so that after that change: refers to a ventilation strategy using background
+ventilators and intermittent extract ventilation.
+a. the building is used as a dwelling, where
+previously it was not; Permanent opening An opening between rooms or
+floors that has no means of closing it, e.g. an open
+b. the building contains a flat, where previously it
+stairwell or two rooms that have been joined by
+did not;
+removing part of a wall.
+c. the building is used as an hotel or a boarding
+house, where previously it was not; Purge ventilation Manually controlled ventilation
+of rooms or spaces at a relatively high rate to
+d. the building is used as an institution, where
+rapidly dilute pollutants and/or disperse water
+previously it was not;
+vapour. Purge ventilation may be provided by
+e. the building is used as a public building, where natural means (e.g. an openable window) or
+previously it was not; mechanical means (e.g. a fan).
+37
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

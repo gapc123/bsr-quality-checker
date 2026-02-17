@@ -1,0 +1,43 @@
+O N L I N E V E R S I O N
+C
+2026 amendment – effective from 30 September 2026 until 1 September 2029 – see 2029 amendment, page 171
+Table C1 Continued
+Position of door Minimum fire resistance of Minimum fire resistance of
+door in terms of integrity door in terms of integrity
+(minutes) when tested to the (minutes) when tested to
+relevant European standard(1) BS 476-22
+6. Giving access to an external escape route E 30 FD 30
+7. Sub-dividing:
+a. corridors connecting alternative exits E 20 S (2) FD 20 S(2)
+a
+b. d ead-end portions of corridors from the E 20 S (2) FD 20 S(2)
+a
+remainder of the corridor.
+8. Any door within a cavity barrier E 30 FD 30
+9. Any door that forms part of the enclosure E 20 FD 20
+to a protected entrance hall or protected
+landing in a flat
+10. Any door that forms part of the enclosure:
+a. to a place of special fire hazard E 30 FD 30
+b. t o ancillary accommodation in care homes E 30 FD 30
+(see paragraph 2.44 in Approved Document
+B Volume 2).
+11. In a dwellinghouse:
+a. between a dwellinghouse and a garage E 30 S (2) FD 30 S(2)
+a
+b. f orming part of the enclosures to a E 20 FD 20
+protected stairway in a single family
+dwellinghouse
+c. w ithin any fire resisting construction in a E 20 FD 20
+dwellinghouse not described elsewhere in
+this table.
+NOTES:
+1. C lassified in accordance with BS EN 13501-2. National classifications do not necessarily equate with European
+classifications, therefore products cannot typically assume a European class unless they have been tested accordingly.
+2. Unless pressurisation techniques that comply with BS EN 12101-6 are used, these doors should also comply with
+one of the following conditions.
+a. Have a leakage rate not exceeding 3m3/m/hour (from head and jambs only) when tested at 25Pa under BS 476-31.1.
+b. Meet the additional S classification when tested to BS EN 1634-3.
+a
+170 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

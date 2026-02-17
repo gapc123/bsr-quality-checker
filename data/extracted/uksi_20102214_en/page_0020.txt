@@ -1,0 +1,46 @@
+Energy assessors
+30.—(1) An energy assessor must be a member of an accreditation scheme approved by the
+Secretary of State.
+(2) The terms of approval of any accreditation scheme may be limited in relation to the categories
+of building for which members may produce certificates.
+(3) Before approving an accreditation scheme the Secretary of State must be satisfied that the
+scheme contains adequate provision—
+(a) for ensuring that members of the scheme carry out consistent and accurate energy
+assessments in an independent manner;
+(b) for ensuring that members of the scheme are fit and proper persons who are qualified
+(by their education, training and experience) to carry out energy assessments;
+(c) for requiring members of the scheme to prepare energy performance certificates and
+recommendation reports using a standard form for each type of document;
+(d) for ensuring the production and publication of a code as regards the conduct required of
+its members;
+(e) for indemnity arrangements in relation to owners and prospective or actual buyers or
+tenants;
+(f) for facilitating the resolution of complaints against members of the scheme;
+(g) for requiring energy performance certificates and recommendation reports produced by
+members of the scheme to be entered on the relevant register referred to in paragraph
+(4); and
+(h) for the keeping of a register of the members of the scheme.
+(4) An energy assessor who issues an energy performance certificate and recommendation report
+must ensure they are entered onto the relevant register maintained by the Secretary of State in
+accordance with regulation 31 of the Energy Performance of Buildings (Certificates and Inspections)
+(England and Wales) Regulations 2007(a) before giving them to the person who requested them.
+Related party disclosures
+31. An energy assessor must include in an energy performance certificate a declaration of any
+personal or business relationship (other than in relation to producing the certificate) that the
+energy assessor has with—
+(a) the person who commissioned the certificate; and
+(b) any person who the energy assessor believes—
+(i) has or may have a personal or business relationship with the person who
+commissioned the certificate; or
+(ii) has or may have an interest in the building.
+Duty of care
+32.—(1) Energy assessors must carry out energy assessments with reasonable care and skill.
+(2) The duty imposed by paragraph (1) shall be enforceable by the following persons—
+(a) the owner; and
+(b) any prospective or actual buyer or tenant of the building during the period of validity of
+the certificate.
+(3) Any cause of action arising in relation to the duty imposed by paragraph (1) is deemed not to
+be an action founded on tort for the purposes of the Limitation Act 1980(b).
+(a) S.I. 2007/991, amended by S.I. 2008/2363.
+(b) 1980 c.58.
+20

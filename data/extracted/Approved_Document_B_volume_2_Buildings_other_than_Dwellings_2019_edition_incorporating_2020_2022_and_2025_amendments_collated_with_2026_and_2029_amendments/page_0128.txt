@@ -1,0 +1,33 @@
+O N L I N E V E R S I O N
+B5
+Section 16: Fire mains and hydrants
+Introduction
+16.1 Fire mains are installed for the fire and rescue service to connect hoses for water. They may be
+either of the following.
+a. The ‘dry’ type, which are both of the following.
+i. Normally kept empty.
+ii. Supplied through a hose from a fire and rescue service pumping appliance.
+b. The ‘wet’ type, which are both of the following.
+i. Kept full of water.
+ii. Supplied by pumps from tanks in the building.
+There should be a facility to replenish a wet system from a pumping appliance in an emergency.
+Provision of fire mains
+16.2 Buildings with firefighting shafts should have fire mains in both of the following.
+a. The firefighting shafts.
+b. Where necessary, in protected escape stairs.
+The criteria for providing firefighting shafts and fire mains are given in Section 17.
+16.3 Buildings without firefighting shafts should be provided with fire mains where fire service vehicle
+access is not provided in accordance with Table 15.1. In these cases, outlets from fire mains should
+be located as described in paragraph 16.4, with a maximum hose distance of 45m from the fire main
+outlet to the furthest point, measured on a route suitable for laying a hose. Stairs do not need to
+be designed as firefighting shafts.
+Design and construction of fire mains
+16.4 If a firefighting shaft is provided, outlets from fire mains should be within the protected stairway or
+protected lobby (see Diagram 17.1).
+16.5 Guidance on the design and construction of fire mains is given in BS 9990.
+16.6 Buildings with a storey more than 50m above fire service vehicle access level should be provided
+with wet fire mains. In all other buildings where fire mains are provided, either wet or dry fire mains
+are suitable.
+16.7 Fire service vehicle access to fire mains should be provided as described in paragraphs 15.4 and 15.5.
+116 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

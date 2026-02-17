@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B4
+NOTE: Existing buildings may have been designed to comply with all of the following guidance,
+which is also acceptable.
+a. The column members are fixed rigidly to a base of sufficient size and depth to resist overturning.
+b. There is brick, block or concrete protection to the columns up to a protected ring beam
+providing lateral support.
+c. There is some form of roof venting to give early heat release. (The roof venting could be, for
+example, PVC rooflights covering some 10% of the floor area and evenly spaced over the floor
+area.)
+Methods for calculating acceptable unprotected area
+13.17 Two simple methods are given for calculating the acceptable amount of unprotected area in an
+external wall that is a minimum of 1000mm from any point on the relevant boundary. More precise
+methods are described in BRE report BR 187 and may be used instead. When using BR 187 the
+following radiation intensity at each unprotected area should be assumed.
+a. 84kW/m2 if the purpose group of the building is ‘residential’ (purpose groups 1 or 2), ‘office’
+(purpose group 3) or ‘assembly and recreation’ (purpose group 5) or if the building is an open-
+sided multi-storey car park (purpose group 7(b)).
+b. 168kW/m2 if the purpose group of the building is ‘shop and commercial’ (purpose group 4),
+‘industrial’ (purpose group 6) or ‘storage and other non-residential’ (purpose group 7(a)).
+Method 1
+13.18 This method applies to small buildings intended to be used for ‘residential (other)’ purposes.
+13.19 The building should not exceed three storeys in height (excluding basements) or 24m in length. Each
+side of the building should meet the limits stated in Diagram 13.7. Any small unprotected areas falling
+within the limits shown in Diagram 13.5 can be ignored.
+See para 13.19
+24m max.
+Minimum distance (a) Maximum total area of
+between side of building unprotected areas (m2)
+and relevant boundary (m)
+1 5.6
+2 12
+3 18
+a
+4 24
+5 30
+6 No limit
+Relevant boundary
+Diagram 13.7 Permitted unprotected areas in small residential buildings
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 105
+O N L I N E V E R S I O N

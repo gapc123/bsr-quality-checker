@@ -1,0 +1,59 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Table B1 Continued
+Part of building Minimum Alternative minimum provisions when tested to the Type of
+provisions when relevant part of BS 476(2) (minutes) exposure
+tested to the
+Loadbearing Integrity Insulation
+relevant European
+capacity(3)
+standard
+(minutes)(1)
+8. Protected shafts
+Excluding any
+firefighting shaft:
+a. any glazing described E 30 Not applicable 30 min No provision(8) Each side
+in Section 8 diagram separately
+8.4
+b. any other part REI 30 30 min 30 min 30 min Each side
+between the shaft separately
+and a protected
+lobby/corridor
+described in Section
+8 diagram 8.4
+c. any part not REI see Table B2 See Table B2 See Table B2 See Table B2 Each side
+described in (a) or (b) separately
+above.
+9. Enclosure (that does
+not form part of a
+compartment wall or
+a protected shaft)
+to a:
+a. protected stairway REI 30(8) 30 min 30 min 30 min(8) Each side
+separately
+b. lift shaft. REI 30 30 min 30 min 30 min Each side
+separately
+10. Wall or floor REI 30(8) 30 min 30 min 30 min(8) From garage
+separating an side
+attached or integral
+garage from a
+dwellinghouse
+11. Fire resisting REI 30(8) 30 min 30 min 30 min(8) Each side
+construction in separately
+dwellinghouses not
+described elsewhere
+12. Firefighting shafts REI 120 120 min 120 min 120 min From side
+remote from
+shaft
+a. construction that REI 60 60 min 60 min 60 min From shaft
+separates firefighting side
+shaft from rest of
+building
+b. construction that REI 60 60 min 60 min 60 min Each side
+separates firefighting separately
+stair, firefighting lift
+shaft and firefighting
+lobby.
+144 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

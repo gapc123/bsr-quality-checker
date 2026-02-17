@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N F1(1)
+1.22 The guidance in paragraph 1.21 does not apply to the following sizes of room.
+a. Small spaces up to 125m3 volume, or 50m2 floor area.
+b. Large spaces over 800m3 in volume, or 320m2 floor area.
+1.23 Where CO monitors are used, they should meet all of the following.
+2
+a. Be non-dispersive infrared (NDIR) type CO monitors.
+2
+b. Be mains powered.
+c. Be placed at breathing height and away from windows, doors or ventilation openings where
+practicable.
+d. Be placed at least 500mm from people where practicable.
+NOTE: Additional details on CO monitoring for indoor air quality can be found in Appendix C.
+2
+Ventilation for offices
+Extract ventilation for offices
+1.24 Extract ventilation should be provided in offices in all the following areas.
+a. Sanitary accommodation.
+b. Bathrooms.
+c. Washrooms.
+d. Food and beverage preparation areas.
+e. Rooms that are designed to contain printers and photocopiers in substantial use (more than
+30 minutes per hour).
+NOTE: Rooms that are designed to contain printers and photocopiers in substantial use (more than
+30 minutes per hour) should not be designed to be occupied.
+1.25 For rooms designed to contain printers and photocopiers in substantial use (more than 30 minutes
+per hour), both of the following should apply.
+a. The air extract rate should be 20 litres per second per machine during use.
+b. The whole building ventilation rate should be met.
+1.26 Sanitary accommodation and bathrooms should have an intermittent air extract rate of both of the
+following.
+a. 15 litres per second per shower or bath.
+b. 6 litres per second per WC pan or urinal.
+1.27 Extract ventilators in sanitary accommodation should be capable of continuous operation if
+required.
+9
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

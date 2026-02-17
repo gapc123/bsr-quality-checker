@@ -1,0 +1,34 @@
+F1(1) O N L I N E V E R S I O N
+1.39 As an alternative to paragraph 1.38, either of the following may be considered to provide adequate
+ventilation.
+a. If the car park has natural ventilation, openings at each car parking level should comply with
+both of the following.
+i. Have a minimum aggregate equivalent area of 1/20 of the floor area at that level.
+ii. Have a minimum of 25% of the aggregate equivalent area on each of two opposing walls.
+b. If the car park has mechanical ventilation, either of the following should apply.
+i. All of the following.
+• Permanent natural ventilation openings with a minimum equivalent area of 1/40 of the
+floor area.
+• A mechanical ventilation system capable of at least three air changes per hour.
+• For exits and ramps, where cars queue inside the building, provision to ensure a local
+ventilation rate of at least ten air changes per hour.
+ii. Both of the following.
+• For a car park in a basement, the provision of a mechanical ventilation system capable of at
+least six air changes per hour.
+• For exits and ramps, where cars queue inside the building, provision to ensure a local
+ventilation rate of at least ten air changes per hour.
+1.40 Further guidance can be found in the following documents.
+a. The Association of Petroleum and Explosives Administrations’ Code of Practice for Ground Floor,
+Multi Storey and Underground Car Parks.
+b. CIBSE’s Guide B2 Ventilation and Ductwork.
+c. The Health and Safety Executive’s publication EH40/2005 Workplace Exposure Limits.
+d. ASHRAE’s ASHRAE Handbook – HVAC Applications, chapter 16 ‘Enclosed Vehicular Facilities’.
+Ventilation for buildings other than offices and car parks
+1.41 Adequate means of ventilation in buildings other than offices and car parks may be demonstrated
+by meeting the relevant standards set out in CIBSE’s Guide A. Sources of further guidance, and
+relevant regulations, are listed in Table 1.1.
+NOTE: For residential non-domestic buildings within the scope of Part O of the Building
+Regulations (overheating), higher purge ventilation rates may be required.
+12
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,42 @@
+F1(1) O N L I N E V E R S I O N
+Table 2.1 L imit values from Schedule 2 to the Air Quality Standards Regulations 2010
+Pollutant Exposure limit Exposure time
+Carbon monoxide 10mg/m3 8-hour average
+Sulphur dioxide 350μg/m3 1-hour average
+125μg/m3 1-day average
+Nitrogen dioxide 200μg/m3 1-hour average
+40μg/m3 1-year average
+Benzene 5μg/m3 1-year average
+Lead 0.5mg/m3 1-year average
+PM 25μg/m3 1-year average
+2.5
+PM 50μg/m3 1-day average
+10
+40μg/m3 1-year average
+NOTE: This section only gives guidance for typical situations. Expert advice may also be able to
+provide additional guidance on the suitability of other technologies to minimise the intake of
+external air pollutants, including filtration.
+NOTE: The Building Research Establishment’s Ventilation for Healthy Buildings: Reducing the Impact
+of Urban Air Pollution provides guidance on minimising the ingress of external pollutants into non-
+domestic urban buildings.
+Control of ventilation intakes
+2.2 Ventilation intakes should be located away from the direct impact of the sources of local pollution.
+NOTE: CIBSE’s TM64 and TM40 give further guidance.
+2.3 Where urban traffic is a source of pollution, the air intakes for buildings next to busy urban roads
+should be both of the following.
+a. As high as possible.
+b. Located on the less polluted side of the building.
+Mechanical ventilation may be the most practical way of achieving this requirement.
+2.4 If practicable, ventilation intakes should not be located in courtyards or enclosed urban spaces
+where air pollutants are discharged. If this is unavoidable, intakes should be located to meet both
+of the following conditions.
+a. As far as possible from the source of pollutants.
+b. In an open or well-ventilated area.
+2.5 In areas where wind often comes from opposing directions (e.g. a valley), the air intakes should
+point in the opposite direction to the exhaust outlets.
+2.6 Where sources of pollution vary with the time of day, such as urban road traffic, it may be
+acceptable, for time-limited periods, to take one of the following actions.
+a. Reduce the flow of external air into ventilation intakes.
+16
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

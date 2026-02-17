@@ -1,0 +1,22 @@
+O N L I N E V E R S I O N
+B5
+Design and construction of firefighting shafts
+17.9 Every firefighting stair and firefighting lift should be approached from the accommodation through a
+firefighting lobby. Both the stair and lobby of the firefighting shaft should be provided with a means
+of venting smoke and heat (see clause 27.1 of BS 9999).
+Only services associated with the firefighting shaft, such as ventilation systems and lighting for the
+firefighting shaft, should pass through or be contained within the firefighting shaft.
+17.10 All firefighting shafts should have fire mains with outlet connections and valves at every storey.
+17.11 A firefighting lift installation includes all of the following.
+a. Lift car.
+b. Lift well.
+c. Lift machinery space.
+d. Lift control system.
+e. Lift communications system.
+The lift shaft should be constructed in accordance with Section 6 of BS 9999.
+Firefighting lift installations should conform to BS EN 81-72 and BS EN 81-20.
+Rolling shutters in compartment walls
+17.12 The fire and rescue service should be able to manually open and close rolling shutters without the
+use of a ladder.
+122 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

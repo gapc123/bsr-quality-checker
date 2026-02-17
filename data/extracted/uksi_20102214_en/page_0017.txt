@@ -1,0 +1,42 @@
+(c) temporary buildings with a planned time of use of two years or less, industrial sites,
+workshops and non-residential agricultural buildings with low energy demand;
+(d) stand-alone buildings other than dwellings with a total useful floor area of less than
+50m2.
+(4) This paragraph applies to any extension of a building falling within class 7 in Schedule 2
+except a conservatory or porch—
+(a) where any wall, door or window separating the conservatory or porch from that
+building has been removed and not replaced with a wall, door or window; or
+(b) into which the building’s heating system has been extended.
+(5) In this regulation, the following terms have the same meaning as in European Parliament and
+Council Directive 2002/91/EC of 16 December 2002 on the energy performance of buildings(a)—
+(i) “industrial sites”;
+(ii) “low energy demand”;
+(iii) “non-residential agricultural buildings”;
+(iv) “places of worship”;
+(v) “stand-alone”;
+(vi) “total useful floor area”;
+(vii) “workshops”.
+Requirements relating to a change to energy status
+22. Where there is a change to a building’s energy status, such work, if any, shall be carried out
+as is necessary to ensure that the building complies with the applicable requirements of Part L of
+Schedule 1.
+Requirements relating to thermal elements
+23.—(1) Where a person intends to renovate a thermal element, such work shall be carried out
+as is necessary to ensure that the whole thermal element complies with the requirements of
+paragraph L1(a)(i) of Schedule 1.
+(2) Where a thermal element is replaced, the new thermal element shall comply with the
+requirements of paragraph L1(a)(i) of Schedule 1.
+Methodology of calculation and expression of energy performance
+24.—(1) The Secretary of State shall approve—
+(a) a methodology of calculation of the energy performance of buildings, including
+methods for calculating asset ratings and operational ratings of buildings; and
+(b) ways in which the energy performance of buildings, as calculated in accordance with
+the methodology, shall be expressed.
+(2) In this regulation—
+“asset rating” means a numerical indicator of the amount of energy estimated to meet the
+different needs associated with a standardised use of the building; and
+“operational rating” means a numerical indicator of the amount of energy consumed during
+the occupation of a building over a period of time.
+(a) OJ No. L1, 4.1.2003, p.65, as amended by Regulation (EC) No. 1137/2008 of the European Parliament and of the Council
+(OJ No. L311, 21.11.2008, p.1).
+17

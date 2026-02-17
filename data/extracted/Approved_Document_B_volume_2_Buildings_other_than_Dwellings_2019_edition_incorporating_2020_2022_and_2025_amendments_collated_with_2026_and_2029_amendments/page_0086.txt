@@ -1,0 +1,34 @@
+O N L I N E V E R S I O N
+B3
+paras 8.34 and 8.35
+a. With corridor b. With lobby
+External wall
+Fire resistance of protected shaft
+Protected Protected to be a maximum of REI 60
+shaft shaft
+Corridor Uninsulated Fire resistance of construction
+glazed screen to be a minimum of REI 30
+Uninsulated (minimum RE 30)
+glazed screen Fire resistance of glazed screen to be
+(minimum RE 30) Protected a minimum of RE 30
+lobby
+Fire doorsets that are
+a minimum of E 30 S
+a
+Diagram 8.4 Uninsulated glazed screen separating protected shaft from lobby or corridor
+Pipes for oil or gas and ventilation ducts in protected shafts
+8.36 A protected shaft containing a protected stairway and/or a lift should not also contain either
+of the following.
+a. A pipe that conveys oil, other than in the mechanism of a hydraulic lift.
+b. A ventilating duct. Two exceptions are as follows.
+i. A duct provided for pressurising the protected stairway to keep it smoke free.
+ii. A duct provided only to ventilate the protected stairway.
+A pipe that is completely separated from a protected shaft by fire resisting construction is not
+considered to be contained within that shaft.
+8.37 In a protected shaft, any pipe carrying natural gas or LPG should be both of the following.
+a. Of screwed steel or all-welded steel construction.
+b. Installed in accordance with both of the following.
+i. The Pipelines Safety Regulations 1996.
+ii. The Gas Safety (Installation and Use) Regulations 1998.
+74 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

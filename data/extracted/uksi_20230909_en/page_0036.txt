@@ -1,0 +1,46 @@
+“construction phase” means the period of time beginning when the HRB work, a stage of HRB
+work or work to existing HRB starts and ending when the work is completed;
+“HRB design work” means design of any HRB work, stage of HRB work or work to existing
+HRB;
+“principal dutyholders” means the principal contractor (or sole contractor) and the principal
+designer (or sole or lead designer);
+“reporting person” means—
+(a) any designer (including the principal designer),
+(b) any contractor (including the principal contractor), and
+(c) any other person who is a periodic visitor on the site of work;
+“safety occurrence” means—
+(a) in relation to a design, an aspect of the design relating to the structural integrity or fire
+safety of a higher-risk building that would, if built, meet the risk condition;
+(b) otherwise, an incident or situation relating to the structural integrity or fire safety of a
+higher-risk building that meets the risk condition.
+(2) In the definition of “safety occurrence”, the “risk condition” is that use of the building in
+question without the incident or situation being remedied would be likely to present a risk of a
+significant number of deaths, or serious injury to a significant number of people.
+Mandatory occurrence reporting: regulator’s annual report
+36. Regulation 33(1) (mandatory occurrence reporting: reporting to the regulator) is prescribed
+for the purposes of section 19(2)(b) of the 2022 Act.
+Mandatory occurrence reporting: client duty on appointment of principal contractor or
+principal designer
+37. Where, in relation to HRB work, a stage of HRB work or work to existing HRB, the client
+appoints a principal contractor (or sole contractor) or principal designer (or sole or lead designer),
+then the client must take all reasonable steps to satisfy itself that the person appointed is able to
+fulfil the requirements in regulations 32 (mandatory occurrence reporting system) and 33
+(mandatory occurrence reporting: reporting to the regulator).
+Handover of information on completion etc
+38.—(1) The client for HRB work, a stage of HRB work or work to existing HRB must give—
+(a) the BFLO information; and
+(b) the specified golden thread information,
+to the relevant person no later than the date the work is completed, or where regulation 45 (partial
+completion certificates) applies no later than the date the part of the building is to be occupied.
+(2) The golden thread information given under paragraph (1) must be provided in such a way as
+to retain the filing structure in which it was kept, including each index, key or other information
+logically associated with it and in a format which enables the relevant person to read, keep and
+update the information.
+(3) The relevant person must give the client a notice acknowledging receipt of the specified
+golden thread information which confirms—
+(a) they are able to access the information, and
+(b) the information provided is sufficient to enable them to understand, operate and maintain
+the building (and the fire safety systems in it) after the building work.
+(4) The requirements of paragraph (1) do not apply to work to existing HRB which consists only
+of—
+36

@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N F1(1)
+Requirement F1(1): Means of ventilation
+This section deals with the requirements of Part F1(1) of Schedule 1 to the Building Regulations 2010.
+Requirement
+Requirement Limits on application
+Means of ventilation Requirement F1 does not apply to a building or
+space within a building:
+F1. (1) T here shall be adequate means of ventilation
+provided for people in the building. a. into which people do not normally go;
+b. which is used solely for storage; or
+c. which is a garage used solely in connection with
+a single dwelling.
+Intention
+In the Secretary of State’s view, requirement F1(1) is met in a new building other than a dwelling if it
+has a means of ventilation that achieves all of the following.
+a. Extracts water vapour and indoor air pollutants from areas where they are produced in
+significant quantities before they spread through the building, following the guidance on extract
+ventilation in Section 1 for the relevant building type.
+b. Supplies a minimum level of outdoor air for occupants’ health, following the guidance for whole
+building ventilation in Section 1 for the relevant building type.
+c. Rapidly dilutes indoor air pollutants and disperses water vapour when necessary in occupiable
+rooms and sanitary accommodation, following the guidance for purge ventilation in Section 1 for
+the relevant building type.
+d. Monitors air quality in specific types of occupiable rooms, following the guidance in paragraphs
+1.21 to 1.23.
+e. Minimises the entry of external pollutants, following the guidance in Section 2.
+f. Achieves all of the following, as far as is reasonably practicable.
+i. Produces low levels of noise, following the guidance in paragraphs 1.5 and 1.6.
+ii. Offers easy access for maintenance, following the guidance in paragraph 1.7.
+iii. Provides protection from rain.
+iv. Provides protection from cold draughts.
+v. Does not significantly risk occupants’ health.
+In the Secretary of State’s view, requirement F1(1) is met for work on an existing building other than a
+dwelling by following the guidance in Section 3.
+5
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

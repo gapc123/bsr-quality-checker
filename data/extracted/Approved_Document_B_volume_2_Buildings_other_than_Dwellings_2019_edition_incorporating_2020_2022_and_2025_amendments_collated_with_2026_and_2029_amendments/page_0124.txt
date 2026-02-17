@@ -1,0 +1,21 @@
+O N L I N E V E R S I O N
+B5
+See para 15.1
+C D
+A B E F
+J I
+L K H G
+N M
+Plan of building AFGL where AL and FG are walls in common If the dimensions of the building are such that Table 15.1
+with other buildings. requires vehicle access, the green shaded area illustrates
+one possible example of 15% of the perimeter. Note: There
+The footprint of the building is the maximum aggregate plan should be a door into the building in this length (see
+perimeter found by the vertical projection of any overhanging paragraph 15.3).
+storey onto a ground storey (i.e. ABCDEFGHMNKL).
+If the building does not have walls in common with other
+The perimeter of the building for the purposes of Table 15.1 is the buildings, the lengths AL and FG would be included in the
+sum of the lengths of the two external walls, taking account of the perimeter.
+footprint, i.e. (A to B to C to D to E to F) + (G to H to M to N to K to L).
+Diagram 15.1 Example of building footprint and perimeter
+112 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

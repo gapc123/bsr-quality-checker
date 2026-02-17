@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B1
+To find the width of:
+• the stairs serving floors 10 and 11:
+P = 200/2 = 100, N = 2
+From the formula:
+100 = 200W + 50 (W – 0.3)(2 – 1)
+100 = 200W + (50W – 15)(1)
+100 = 200W + 50W – 15
+115 = 250W
+W = 460mm
+Therefore both stairs between the 9th floor landing and the top floor should be at least 460mm
+wide. But this needs to be increased to 1100mm, because the formula applies to stairs 1100mm
+wide or wider (see paragraph 3.18).
+This width will also be adequate when one storey exit is discounted as described in paragraph
+2.21. It also complies with paragraph 3.10a (i.e. the stair widths are not less than the minimum
+widths needed for 100 people in Table 2.3).
+• the stairs serving floors 1 to 9:
+P = 1200/2 = 600, N = 9
+From the formula:
+600 = 200W + 50 (W – 0.3)(9 – 1)
+600 = 200W + (50W – 15)(8)
+600 = 200W + 400W – 120
+720 = 600W
+W = 1200mm
+Therefore both stairs between the ninth floor landing and the ground floor should be at least
+1200mm wide.
+This width will also be adequate when one storey exit is discounted as described in paragraph
+2.21. It also complies with paragraph 3.10a (i.e. the stair widths are not less than the minimum
+widths needed for 134 people in Table 2.3).
+Phased evacuation
+3.19 Phased evacuation cannot be used in every type of building, but can be advantageous for escape
+stairs in high buildings. It requires supporting facilities, such as fire detection and alarm systems, to
+be provided and maintained.
+In a phased evacuation, the first people to be evacuated are those with reduced mobility and those
+on the storey most immediately affected by the fire. If needed, subsequent evacuation is done two
+floors at a time, reducing disruption in large buildings.
+Phased evacuation enables stairs to be narrower than with simultaneous evacuation, and may be
+used for any building provided it is not identified in paragraph 3.16.
+34 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

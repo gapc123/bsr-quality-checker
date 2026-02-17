@@ -1,0 +1,26 @@
+O N L I N E V E R S I O N B
+Assumptions used in applying performance criteria for
+offices in Section 1
+General
+B4 For the purposes of this approved document, for all offices (both new and existing, where Part
+F applies), the moisture criteria are likely to be met if, during the colder months of the year, the
+moving average surface water activity of the internal surfaces of external walls is always less than
+the value in Table B2, evaluated over each moving average period.
+Table B2 Surface water activity
+Moving average period Surface water activity
+1 month 0.75
+1 week 0.85
+1 day 0.95
+Extract ventilation
+B5 Office equipment can emit pollutants, including ozone and organic compounds. For example, a
+study by Black and Wortham (1999) suggests the following emission rates for laser printers and dry
+paper copiers assuming 30 minutes use in an hour.
+a. 25mg/h for TVOC.
+b. 3mg/h for ozone.
+To meet the performance criteria for these pollutants requires an extract rate of 20 litres per second
+per machine during use.
+B6 For sanitary accommodation, the extract rates used for dwellings have been applied.
+B7 For food and beverage preparation areas, the extract rates used for dwellings have been applied.
+29
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

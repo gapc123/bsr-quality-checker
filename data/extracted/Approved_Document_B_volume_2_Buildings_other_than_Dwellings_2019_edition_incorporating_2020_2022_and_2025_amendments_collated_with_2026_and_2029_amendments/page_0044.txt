@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B1
+Paragraph 3.34 identifies cases where stairs need lobby protection.
+Simultaneous evacuation
+3.16 The width of escape stairs should take account of the number of people using them while
+evacuating all storeys at the same time. The following stairs should be designed to allow
+simultaneous evacuation.
+a. All stairs serving basements.
+b. All stairs serving buildings with open spatial planning.
+c. All stairs serving ‘residential (other)’ (purpose group 2(b)) or ‘assembly and recreation’
+(purpose group 5) buildings.
+Annexes B and C of BS 9999 include designs based on simultaneous evacuation.
+3.17 The capacity of stairs of widths from 1000mm to 1800mm is given in Table 3.2.
+Table 3.2 Capacity of stairs for basements and for simultaneous evacuation of the building
+No. of Maximum number of people served by a stair of width:
+floors
+served
+1000mm 1100mm 1200mm 1300mm 1400mm 1500mm 1600mm 1700mm 1800mm
+1 150 220 240 260 280 300 320 340 360
+2 190 260 285 310 335 360 385 410 435
+3 230 300 330 360 390 420 450 480 510
+4 270 340 375 410 445 480 515 550 585
+5 310 380 420 460 500 540 580 620 660
+6 350 420 465 510 555 600 645 690 735
+7 390 460 510 560 610 660 710 760 810
+8 430 500 555 610 665 720 775 830 885
+9 470 540 600 660 720 780 840 900 960
+10 510 580 645 710 775 840 905 970 1035
+NOTES:
+1. The capacity of stairs that serve more than 10 storeys may be obtained by using linear extrapolation.
+2. The capacity of stairs not less than 1100mm wide may also be obtained by using the formulas in paragraph 3.18.
+3. Unless a central handrail is provided, stairs with a rise of more than 30m should be a maximum width of 1400mm
+(see paragraph 3.10).
+4. Stairs wider than 2000mm should have a central handrail (see paragraph 3.11).
+3.18 As an alternative to Table 3.2, the capacity of stairs 1100mm wide or wider can be found using either
+of the following formulas:
+a. P = 200W + 50 (W – 0.3)(N – 1)
+b. W = P + 15N – 15 / 150 + 50N
+where:
+32 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,22 @@
+Provide the name, address, type of organisation and contact details for the:
+● client
+● principal designer
+● principal contractor
+After you’ve submitted your application, you must tell BSR if the client, principal designer or
+principal contractor changes. You can do this by using the online service to manage a building
+control application.
+Building name and location
+Provide the building’s:
+● name
+● location, either by entering its address or its easting and northing coordinates
+Drawings and plans
+Upload the drawings and plans for the project. It may not be necessary to upload all the files
+you have, only upload the drawings and plans that help you:
+● describe the project and the details of the work involved
+● explain the scope of the work
+● show how the work complies with building regulations
+You should refer to these drawings and plans throughout your application and direct BSR to the
+relevant parts.
+Clearly label your drawings and plans. Upload a reference file so that BSRcan easily
+find the parts you’re referring to. The reference file should list the name of each file with
+a clear description of what it is.

@@ -1,0 +1,892 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-17T12:00:00Z",
+  "total_documents": 15,
+  "documents": [
+    {
+      "doc_id": "adf1_ventilation_dwellings_2021",
+      "filename": "ADF1",
+      "title": "Approved Document F: Ventilation - Volume 1: Dwellings",
+      "source": "DLUHC",
+      "source_url": "https://www.gov.uk/government/publications/ventilation-approved-document-f",
+      "publication_date": "2021-12-15",
+      "effective_date": "2022-06-15",
+      "version": "2021 edition",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["ventilation", "building_safety", "technical_spec"],
+      "doc_type": "approved_document",
+      "regulator": "Building Control",
+      "regulated_activities": ["Design of ventilation systems", "Installation of ventilation equipment", "Commissioning of mechanical ventilation"],
+      "regulated_actors": ["principal_designer", "principal_contractor", "building_control", "competent_person"],
+      "building_types": ["Dwellings", "Residential buildings", "Houses", "Flats"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [
+          {"text": "There must be adequate means of ventilation provided for people in the building", "section": "Requirement F1", "page": 1},
+          {"text": "Fixed systems for mechanical ventilation and any associated controls must be commissioned by testing and adjustment", "section": "Regulation 44", "page": 1}
+        ],
+        "should": [
+          {"text": "Anyone using the approved documents should have sufficient knowledge and skills to understand the guidance", "section": "Introduction", "page": 5}
+        ],
+        "may": [
+          {"text": "There may be other ways to comply with the requirements than those described in an approved document", "section": "Introduction", "page": 5}
+        ]
+      },
+      "key_definitions": [
+        {"term": "Dwelling", "definition": "A self-contained unit designed for residential occupation by a single household", "section": "Appendix A"},
+        {"term": "Mechanical ventilation", "definition": "Ventilation provided by a mechanical system, which may be extract only, supply only, or balanced", "section": "Section 1"}
+      ],
+      "exceptions": [
+        {"description": "Competent person self-certification schemes may not require building control notification", "condition": "Installer registered with competent person scheme", "section": "Introduction"}
+      ],
+      "dependencies": [
+        {"doc_ref": "uksi_20102214_en", "relationship": "implements requirements of"},
+        {"doc_ref": "adf2_ventilation_non_dwellings_2021", "relationship": "companion volume for non-dwellings"}
+      ],
+      "decision_points": [
+        "Choice of ventilation strategy (natural, mechanical extract, mechanical supply, balanced)",
+        "Determination of minimum ventilation rates",
+        "Selection of background ventilators and intermittent extract fans"
+      ],
+      "summary_bullets": [
+        "Sets out ventilation requirements for dwellings under Building Regulations 2010",
+        "Covers Requirement F1: Means of ventilation and Regulations 39, 42 and 44",
+        "Provides guidance on adequate ventilation to protect health and safety",
+        "Addresses removal of pollutants including moisture, carbon dioxide and odours",
+        "Specifies minimum ventilation rates for different room types",
+        "Covers natural ventilation, mechanical extract, and balanced systems",
+        "Requires commissioning of mechanical ventilation systems",
+        "Includes provisions for background ventilators and trickle vents",
+        "Addresses purge ventilation for rapid air changes",
+        "Provides guidance on air flow rate testing requirements",
+        "References British Standards for ventilation performance"
+      ],
+      "user_impact_factors": ["Building type", "Number of bedrooms", "Ventilation strategy choice"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "adf2_ventilation_non_dwellings_2021",
+      "filename": "ADF2_revised",
+      "title": "Approved Document F: Ventilation - Volume 2: Buildings other than Dwellings",
+      "source": "DLUHC",
+      "source_url": "https://www.gov.uk/government/publications/ventilation-approved-document-f",
+      "publication_date": "2021-12-15",
+      "effective_date": "2022-06-15",
+      "version": "2021 edition",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["ventilation", "building_safety", "technical_spec"],
+      "doc_type": "approved_document",
+      "regulator": "Building Control",
+      "regulated_activities": ["Design of ventilation systems for non-domestic buildings", "Commercial building ventilation"],
+      "regulated_actors": ["principal_designer", "principal_contractor", "building_control"],
+      "building_types": ["Non-domestic buildings", "Offices", "Retail", "Industrial", "Educational", "Healthcare"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [
+          {"text": "There must be adequate means of ventilation provided for people in the building", "section": "Requirement F1", "page": 1}
+        ],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20102214_en", "relationship": "implements requirements of"},
+        {"doc_ref": "adf1_ventilation_dwellings_2021", "relationship": "companion volume for dwellings"}
+      ],
+      "decision_points": [
+        "Ventilation strategy for non-domestic buildings",
+        "Air quality requirements based on occupancy and use"
+      ],
+      "summary_bullets": [
+        "Sets out ventilation requirements for non-domestic buildings under Building Regulations 2010",
+        "Covers Requirement F1: Means of ventilation and Regulations 39 and 44",
+        "Provides guidance for offices, retail, industrial and other non-domestic uses",
+        "Addresses occupant health and safety through adequate air supply",
+        "Specifies ventilation rates based on building use and occupancy",
+        "Covers both natural and mechanical ventilation approaches",
+        "Requires commissioning of ventilation systems",
+        "References British Standards for commercial ventilation",
+        "Addresses control of indoor air pollutants",
+        "Provides guidance on CO2 monitoring where applicable"
+      ],
+      "user_impact_factors": ["Building use class", "Occupancy levels", "Special ventilation needs"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "adb2_fire_safety_non_dwellings_2019_amended",
+      "filename": "Approved_Document_B_volume_2_Buildings_other_than_Dwellings_2019_edition_incorporating_2020_2022_and_2025_amendments_collated_with_2026_and_2029_amendments",
+      "title": "Approved Document B: Fire Safety - Volume 2: Buildings other than Dwellings (2019 edition with amendments)",
+      "source": "DLUHC",
+      "source_url": "https://www.gov.uk/government/publications/fire-safety-approved-document-b",
+      "publication_date": "2019-11-01",
+      "effective_date": "2020-11-01",
+      "version": "2019 edition incorporating 2020, 2022, 2025, 2026 and 2029 amendments",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["fire_safety", "building_safety", "means_of_escape", "technical_spec"],
+      "doc_type": "approved_document",
+      "regulator": "Building Control",
+      "regulated_activities": ["Fire safety design", "Means of escape design", "Fire compartmentation", "Fire service access"],
+      "regulated_actors": ["principal_designer", "principal_contractor", "building_control", "fire_service"],
+      "building_types": ["Non-domestic buildings", "Assembly buildings", "Offices", "Shops", "Industrial", "Storage", "Care homes", "Hospitals"],
+      "height_thresholds": [
+        {"threshold": "18m", "condition": "Triggers additional fire safety requirements including sprinklers in certain building types"},
+        {"threshold": "30m", "condition": "Additional means of escape and firefighting requirements"}
+      ],
+      "obligations": {
+        "must": [
+          {"text": "The building shall be designed and constructed so that there are appropriate provisions for the early warning of fire, and appropriate means of escape in case of fire", "section": "Requirement B1", "page": 1},
+          {"text": "To inhibit the spread of fire within the building, the internal linings shall adequately resist the spread of flame over their surfaces", "section": "Requirement B2", "page": 1},
+          {"text": "The building shall be designed and constructed so that, in the event of fire, its stability will be maintained for a reasonable period", "section": "Requirement B3", "page": 1},
+          {"text": "The external walls of the building shall adequately resist the spread of fire over the walls and from one building to another", "section": "Requirement B4", "page": 1},
+          {"text": "The building shall be designed and constructed so as to provide reasonable facilities to assist firefighters in the protection of life", "section": "Requirement B5", "page": 1}
+        ],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Purpose group", "definition": "Classification of buildings by their main use for fire safety purposes", "section": "Appendix D"},
+        {"term": "Compartment", "definition": "A building or part of a building constructed to prevent the spread of fire to or from another part of the same building or an adjoining building", "section": "Section 8"},
+        {"term": "Protected stairway", "definition": "A stair discharging through a final exit to a place of safety, including any exit passageway between the foot of the stair and the final exit, that is adequately enclosed with fire-resisting construction", "section": "Section 3"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20102214_en", "relationship": "implements requirements of"}
+      ],
+      "decision_points": [
+        "Fire safety strategy selection",
+        "Means of escape design approach",
+        "Compartmentation strategy",
+        "Sprinkler installation decisions",
+        "Fire service access provisions"
+      ],
+      "summary_bullets": [
+        "Comprehensive fire safety guidance for non-domestic buildings in England",
+        "Covers Requirements B1-B5: Warning/escape, internal linings, structure, external spread, firefighter access",
+        "Incorporates amendments through 2029 for post-Grenfell fire safety improvements",
+        "Addresses means of escape including travel distances and exit capacity",
+        "Specifies fire resistance periods for structural elements",
+        "Covers compartmentation and fire stopping requirements",
+        "Addresses external wall systems including cladding and insulation",
+        "Provides guidance on smoke control systems",
+        "Specifies firefighting shaft requirements for taller buildings",
+        "Covers fire alarm and detection system requirements",
+        "Addresses sprinkler system provisions",
+        "Includes detailed diagrams and worked examples"
+      ],
+      "user_impact_factors": ["Building height", "Purpose group", "Occupancy capacity", "Special fire risks"],
+      "confidence_notes": ["Document references future 2026 and 2029 amendments which may be consolidated versions"],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "clc_golden_thread_guidance_2024",
+      "filename": "CLC-Golden-Thread-Guidance",
+      "title": "Delivering the Golden Thread: Guidance for dutyholders and accountable persons",
+      "source": "CLC (Construction Leadership Council)",
+      "source_url": null,
+      "publication_date": "2024-08-01",
+      "effective_date": "2024-08-01",
+      "version": "August 2024",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["golden_thread", "building_safety", "higher_risk_buildings"],
+      "doc_type": "guidance",
+      "regulator": "BSR",
+      "regulated_activities": ["Information management", "Golden thread maintenance", "Safety case development"],
+      "regulated_actors": ["dutyholders", "accountable_person", "principal_designer", "principal_contractor", "client"],
+      "building_types": ["Higher-risk buildings"],
+      "height_thresholds": [
+        {"threshold": "18m or 7 storeys", "condition": "Definition of higher-risk building with 2+ residential units"}
+      ],
+      "obligations": {
+        "must": [
+          {"text": "Those responsible for higher-risk buildings must use the golden thread to inform the safe operation and occupation of the building", "section": "Foreword", "page": 3}
+        ],
+        "should": [
+          {"text": "The golden thread should be developed during design, through construction, handover and completion of the building and into occupation", "section": "Foreword", "page": 3}
+        ],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Golden thread", "definition": "The information that those responsible need to assure themselves and reassure residents and the regulator that they understand and are effectively managing the building so that it is safe", "section": "Foreword"},
+        {"term": "Safety case report", "definition": "The primary mechanism for demonstrating safe operation and occupation of the building, developed from golden thread information", "section": "Foreword"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20230909_en", "relationship": "provides practical implementation of"},
+        {"doc_ref": "keeping_information_golden_thread", "relationship": "supplements BSR guidance on"}
+      ],
+      "decision_points": [
+        "Golden thread information structure",
+        "Information handover approach",
+        "Safety case report development"
+      ],
+      "summary_bullets": [
+        "Practical guidance from industry on implementing golden thread requirements",
+        "Developed by Construction Leadership Council working group with industry experience",
+        "Endorsed by Dame Judith Hackitt who originated the golden thread concept",
+        "Explains purpose of golden thread for rebuilding trust in higher-risk building safety",
+        "Details information requirements during design, construction and occupation phases",
+        "Links golden thread to safety case report development",
+        "Clarifies golden thread is not a checklist but working information system",
+        "Provides guidance for dutyholders and accountable persons",
+        "Emphasizes golden thread enables effective building management",
+        "Acknowledges guidance will evolve as regime develops",
+        "Provides feedback mechanisms for continuous improvement"
+      ],
+      "user_impact_factors": ["Role in project", "Building lifecycle stage", "Information management capability"],
+      "confidence_notes": ["Guidance will evolve as regulatory regime develops"],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "clc_gateway2_guidance_suite",
+      "filename": "CLC-Guidance-Suite-Building-Control-Approval-Application-for-a-New-Higher-Risk-Building-Gateway-2",
+      "title": "Building Control Approval Application for a New Higher-Risk Building (Gateway 2) - Guidance Suite",
+      "source": "CLC (Construction Leadership Council)",
+      "source_url": null,
+      "publication_date": null,
+      "effective_date": null,
+      "version": null,
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["gateway_process", "building_control", "higher_risk_buildings", "building_safety"],
+      "doc_type": "guidance",
+      "regulator": "BSR",
+      "regulated_activities": ["Gateway 2 application submission", "Building control approval process"],
+      "regulated_actors": ["client", "principal_designer", "principal_contractor", "developer"],
+      "building_types": ["Higher-risk buildings", "New build HRBs"],
+      "height_thresholds": [
+        {"threshold": "18m or 7 storeys", "condition": "Definition of higher-risk building requiring Gateway 2"}
+      ],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Gateway 2", "definition": "Building control approval stage before construction begins on a new higher-risk building", "section": "Title"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20230909_en", "relationship": "provides practical guidance for"},
+        {"doc_ref": "applying_building_control_approval", "relationship": "supplements BSR guidance on"}
+      ],
+      "decision_points": [
+        "Gateway 2 application preparation",
+        "Documentation requirements",
+        "Submission strategy"
+      ],
+      "summary_bullets": [
+        "Industry guidance on Gateway 2 building control approval applications",
+        "Covers new higher-risk building construction approval process",
+        "Provides practical guidance on documentation requirements",
+        "Supplements official BSR guidance with industry perspective",
+        "Helps applicants prepare comprehensive submissions",
+        "Addresses common application issues and how to avoid them",
+        "Covers competence demonstration requirements",
+        "Explains BSR assessment process",
+        "Provides templates and checklists",
+        "Aims to improve application quality and approval rates"
+      ],
+      "user_impact_factors": ["Project complexity", "Team experience with new regime"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "bsr_charging_scheme_2025_26",
+      "filename": "Building Safety Regulator charging scheme 2025 to 2026",
+      "title": "Building Safety Regulator Charging Scheme 2025 to 2026",
+      "source": "HSE/BSR",
+      "source_url": "https://www.gov.uk/government/publications/building-safety-regulator-charging-scheme",
+      "publication_date": "2025-04-01",
+      "effective_date": "2025-04-01",
+      "version": "2025-2026",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["charging_fees", "building_safety", "higher_risk_buildings"],
+      "doc_type": "charging_scheme",
+      "regulator": "BSR",
+      "regulated_activities": ["Building control approval fees", "Registration fees", "Assessment charges"],
+      "regulated_actors": ["client", "developer", "building_owner", "accountable_person"],
+      "building_types": ["Higher-risk buildings"],
+      "height_thresholds": [
+        {"threshold": "18m or 7 storeys", "condition": "HRB definition triggering BSR fees with 2+ residential units"}
+      ],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Higher-risk building", "definition": "Buildings with at least 7 storeys or 18m height with 2+ residential units, or hospitals/care homes meeting height threshold", "section": "Introduction"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20230909_en", "relationship": "implements charging for activities under"}
+      ],
+      "decision_points": [
+        "Fee calculation for building control applications",
+        "Payment timing and methods"
+      ],
+      "summary_bullets": [
+        "Sets out BSR fees and charges for 2025-2026 financial year",
+        "BSR established within Health and Safety Executive",
+        "Covers three core BSR functions: HRB regulation, safety oversight, competence assistance",
+        "Explains fee calculation methodology in Annex A",
+        "Details cost recovery rates for relevant authorities in Annex B",
+        "Covers payments and repayments process in Annex C",
+        "Provides queries and disputes process in Annex D",
+        "Fees support new stringent regulatory regime under Building Safety Act 2022",
+        "Applies to new build and change of use meeting HRB definition",
+        "BSR encourages proportionate risk management decisions"
+      ],
+      "user_impact_factors": ["Project size", "Building complexity", "Application type"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "uksi_20102214_en",
+      "filename": "uksi_20102214_en",
+      "title": "The Building Regulations 2010 (SI 2010/2214)",
+      "source": "UK Government",
+      "source_url": "https://www.legislation.gov.uk/uksi/2010/2214",
+      "publication_date": "2010-09-06",
+      "effective_date": "2010-10-01",
+      "version": "As amended",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England and Wales"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["building_safety", "building_control", "technical_spec"],
+      "doc_type": "statutory_instrument",
+      "regulator": "Building Control",
+      "regulated_activities": ["Building work", "Material change of use", "Energy efficiency", "Water efficiency"],
+      "regulated_actors": ["principal_designer", "principal_contractor", "client", "building_control", "competent_person"],
+      "building_types": ["All buildings"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [
+          {"text": "Building work must comply with requirements in Schedule 1", "section": "Part 2", "page": null},
+          {"text": "Plans must be deposited with local authority or building notice given before work begins", "section": "Part 3", "page": null},
+          {"text": "Notice must be given of commencement and completion of certain stages of work", "section": "Regulation 16", "page": null},
+          {"text": "Fire safety information must be given to responsible person on completion", "section": "Regulation 38", "page": null}
+        ],
+        "should": [],
+        "may": [
+          {"text": "Local authority may dispense with or relax requirements", "section": "Regulation 11", "page": null}
+        ]
+      },
+      "key_definitions": [
+        {"term": "Building work", "definition": "The erection or extension of a building; material alteration; provision, extension or material alteration of controlled services or fittings", "section": "Regulation 3"},
+        {"term": "Material change of use", "definition": "Change to building or part becoming a dwelling, hotel, institution, public building, or other specified uses", "section": "Regulation 5"}
+      ],
+      "exceptions": [
+        {"description": "Exempt buildings and work", "condition": "Listed in Regulation 9 and Schedule 2", "section": "Regulation 9"}
+      ],
+      "dependencies": [],
+      "decision_points": [
+        "Whether building work requires approval",
+        "Building notice vs full plans submission",
+        "Competent person scheme eligibility"
+      ],
+      "summary_bullets": [
+        "Principal statutory instrument governing building control in England and Wales",
+        "Sets out procedural requirements for building work approval",
+        "Defines building work and material change of use",
+        "Establishes Schedule 1 functional requirements (Parts A-S)",
+        "Covers submission of building notices and full plans",
+        "Requires notification at key construction stages",
+        "Establishes completion certificate process",
+        "Covers supervision by approved inspectors",
+        "Enables competent person self-certification schemes",
+        "Includes energy efficiency requirements (Part 6)",
+        "Includes water efficiency requirements (Part 7)",
+        "Requires fire safety information provision",
+        "Covers testing and commissioning requirements"
+      ],
+      "user_impact_factors": ["Type of building work", "Building use", "Geographic location"],
+      "confidence_notes": ["Regulations frequently amended - check current version on legislation.gov.uk"],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "uksi_20230909_en",
+      "filename": "uksi_20230909_en",
+      "title": "The Building (Higher-Risk Buildings Procedures) (England) Regulations 2023 (SI 2023/909)",
+      "source": "UK Government",
+      "source_url": "https://www.legislation.gov.uk/uksi/2023/909",
+      "publication_date": "2023-08-09",
+      "effective_date": "2023-10-01",
+      "version": "As enacted",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["higher_risk_buildings", "building_safety", "gateway_process", "golden_thread", "building_control"],
+      "doc_type": "statutory_instrument",
+      "regulator": "BSR",
+      "regulated_activities": ["Building control approval for HRBs", "Change control", "Golden thread", "Mandatory occurrence reporting", "Completion certification"],
+      "regulated_actors": ["client", "principal_designer", "principal_contractor", "accountable_person", "dutyholders"],
+      "building_types": ["Higher-risk buildings", "New HRBs", "Existing HRBs"],
+      "height_thresholds": [
+        {"threshold": "18m or 7 storeys", "condition": "Definition of higher-risk building"}
+      ],
+      "obligations": {
+        "must": [
+          {"text": "Building control approval required for HRB work or stage of HRB work", "section": "Regulation 3", "page": null},
+          {"text": "Change control applications required for major changes during construction", "section": "Part 3", "page": null},
+          {"text": "Golden thread information must be maintained", "section": "Regulation 31", "page": null},
+          {"text": "Mandatory occurrence reporting system must be established", "section": "Regulation 32", "page": null},
+          {"text": "Information handover required on completion", "section": "Regulation 38", "page": null}
+        ],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "HRB work", "definition": "Building work to construct a new higher-risk building", "section": "Regulation 2"},
+        {"term": "Golden thread", "definition": "Information about the design, construction and maintenance of a higher-risk building that must be kept", "section": "Regulation 31"},
+        {"term": "Mandatory occurrence", "definition": "Structural failure, fire spread, or other occurrence meeting criteria for mandatory reporting", "section": "Regulation 35"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20102214_en", "relationship": "supplements and modifies for HRBs"}
+      ],
+      "decision_points": [
+        "Gateway 2 application timing and content",
+        "Change control notification requirements",
+        "Completion certificate application timing"
+      ],
+      "summary_bullets": [
+        "Key statutory instrument implementing Building Safety Act 2022 for construction phase",
+        "Establishes BSR as building control authority for higher-risk buildings in England",
+        "Creates Gateway 2 building control approval process for new HRBs",
+        "Covers building control approval for work to existing HRBs",
+        "Establishes change control regime during construction",
+        "Creates mandatory golden thread requirements",
+        "Establishes mandatory occurrence reporting system",
+        "Sets out completion certificate process for HRBs",
+        "Covers inspection powers and regularisation",
+        "Includes review and appeals processes",
+        "Addresses insolvency and change of dutyholder situations",
+        "Requires information handover on completion"
+      ],
+      "user_impact_factors": ["Whether building is HRB", "New build vs existing HRB work", "Role in project"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "applying_building_control_approval",
+      "filename": "Applying for building control approval",
+      "title": "Applying for building control approval",
+      "source": "BSR/HSE",
+      "source_url": "https://www.gov.uk/guidance/applying-for-building-control-approval-for-a-higher-risk-building",
+      "publication_date": null,
+      "effective_date": null,
+      "version": null,
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["building_control", "gateway_process", "higher_risk_buildings"],
+      "doc_type": "guidance",
+      "regulator": "BSR",
+      "regulated_activities": ["Building control approval application", "HRB construction approval"],
+      "regulated_actors": ["client", "principal_designer", "developer"],
+      "building_types": ["Higher-risk buildings"],
+      "height_thresholds": [
+        {"threshold": "7 storeys or 18m", "condition": "With at least 2 residential units or hospital/care home"}
+      ],
+      "obligations": {
+        "must": [
+          {"text": "Information must be submitted to BSR when applying to construct a new HRB or carry out building work to existing HRB", "section": "Introduction", "page": 1}
+        ],
+        "should": [
+          {"text": "You should submit and manage a building control approval application online", "section": "How to submit", "page": 1}
+        ],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Higher-risk building", "definition": "Buildings with at least 7 storeys or 18m height with 2+ residential units, or hospitals/care homes", "section": "The role of BSR"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20230909_en", "relationship": "provides guidance on implementing"},
+        {"doc_ref": "building_control_approval_hrb", "relationship": "links to related guidance"}
+      ],
+      "decision_points": [
+        "Application content requirements",
+        "Online submission process"
+      ],
+      "summary_bullets": [
+        "BSR guidance on building control approval application process",
+        "Covers applications for new HRB construction",
+        "Covers changes making building become or stop being HRB",
+        "Covers building work to existing HRBs",
+        "Explains BSR role in overseeing and approving HRB work",
+        "Defines higher-risk building threshold (7 storeys/18m + 2 residential units)",
+        "Notes HRBs with residential units must register before occupation",
+        "Directs users to online application system",
+        "Provides overview of required application information"
+      ],
+      "user_impact_factors": ["Type of work proposed", "Building height and use"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "building_control_approval_hrb",
+      "filename": "Building control approval for higher-risk buildings",
+      "title": "Building control approval for higher-risk buildings",
+      "source": "BSR/HSE",
+      "source_url": "https://www.gov.uk/guidance/building-control-approval-for-higher-risk-buildings",
+      "publication_date": "2025-03-27",
+      "effective_date": null,
+      "version": "Last updated 18 December 2025",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["building_control", "gateway_process", "higher_risk_buildings", "building_safety"],
+      "doc_type": "guidance",
+      "regulator": "BSR",
+      "regulated_activities": ["Building control approval process", "HRB construction", "Managing approved work"],
+      "regulated_actors": ["client", "principal_designer", "principal_contractor", "developer"],
+      "building_types": ["Higher-risk buildings"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20230909_en", "relationship": "provides guidance on implementing"},
+        {"doc_ref": "applying_building_control_approval", "relationship": "linked guidance on applications"}
+      ],
+      "decision_points": [
+        "Which building work needs approval",
+        "Which building work does not need approval",
+        "Managing work after approval"
+      ],
+      "summary_bullets": [
+        "BSR guidance on building control approval for higher-risk buildings",
+        "Published March 2025, updated December 2025",
+        "Explains what building work requires BSR approval",
+        "Explains what building work does not require approval",
+        "Covers the building control approval process",
+        "Addresses managing building work after approval is granted",
+        "Applies to England only",
+        "Supplements statutory requirements in SI 2023/909"
+      ],
+      "user_impact_factors": ["Type of proposed building work"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "building_regs_duties_guide",
+      "filename": "Building regulations and duties covered in this guide",
+      "title": "Building regulations and duties covered in this guide",
+      "source": "BSR/HSE",
+      "source_url": "https://www.gov.uk/guidance/building-regulations-and-duties",
+      "publication_date": null,
+      "effective_date": null,
+      "version": null,
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["building_control", "building_safety", "higher_risk_buildings"],
+      "doc_type": "guidance",
+      "regulator": "BSR",
+      "regulated_activities": ["Design work duties", "Building work duties", "Competence requirements"],
+      "regulated_actors": ["client", "principal_designer", "principal_contractor", "developer", "building_owner"],
+      "building_types": ["All buildings", "Higher-risk buildings"],
+      "height_thresholds": [
+        {"threshold": "7 storeys or 18m", "condition": "With 2+ residential units or hospital/care home for HRB duties"}
+      ],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Client", "definition": "Organisation or individual on whose behalf building and design work is done, often a developer or building owner", "section": "Clients' duties"},
+        {"term": "Higher-risk building", "definition": "Building with at least 7 storeys or 18m height with 2+ residential units, or hospital/care home", "section": "Higher-risk buildings"}
+      ],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20102214_en", "relationship": "explains duties under"},
+        {"doc_ref": "uksi_20230909_en", "relationship": "explains additional HRB duties under"}
+      ],
+      "decision_points": [
+        "Understanding applicable duties based on role",
+        "Additional duties for HRB projects"
+      ],
+      "summary_bullets": [
+        "Overview guide to duties under Building Regulations (Amendment) 2023",
+        "Covers competence requirements for design and building work",
+        "Notes other duties under Building Regulations 2010 exist but not covered",
+        "Explains additional duties for higher-risk building projects",
+        "Covers HRB definition: 7 storeys/18m with 2+ residential units",
+        "Notes HRBs must be registered before occupation",
+        "Explains client duties as project commissioner",
+        "Links to detailed guidance on HRB criteria",
+        "Covers construction of new HRBs",
+        "Covers work on existing HRBs including deregistration work",
+        "Covers work making buildings become HRBs"
+      ],
+      "user_impact_factors": ["Role in project", "Whether project involves HRB"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "keeping_information_golden_thread",
+      "filename": "Keeping information about a higher-risk building_ the golden thread",
+      "title": "Keeping information about a higher-risk building: the golden thread",
+      "source": "BSR/HSE",
+      "source_url": "https://www.gov.uk/guidance/keeping-information-about-a-higher-risk-building-the-golden-thread",
+      "publication_date": "2024-02-29",
+      "effective_date": null,
+      "version": "Last updated 18 September 2024",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["golden_thread", "building_safety", "higher_risk_buildings"],
+      "doc_type": "guidance",
+      "regulator": "BSR",
+      "regulated_activities": ["Information keeping", "Golden thread maintenance"],
+      "regulated_actors": ["client", "principal_designer", "principal_contractor", "accountable_person"],
+      "building_types": ["Higher-risk buildings"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "uksi_20230909_en", "relationship": "provides guidance on Regulation 31"},
+        {"doc_ref": "clc_golden_thread_guidance_2024", "relationship": "supplemented by industry guidance"}
+      ],
+      "decision_points": [
+        "What information to keep",
+        "How to maintain golden thread",
+        "Information handover requirements"
+      ],
+      "summary_bullets": [
+        "BSR guidance on golden thread information requirements",
+        "Published February 2024, updated September 2024",
+        "Explains what clients must keep during design/construction",
+        "Explains what principal designers must keep",
+        "Explains what principal contractors must keep",
+        "Explains what accountable persons must keep in occupation",
+        "Applies to higher-risk buildings in England",
+        "Supports Building Safety Act 2022 requirements"
+      ],
+      "user_impact_factors": ["Role in project", "Building lifecycle stage"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "manage_building_control_application_hrb",
+      "filename": "Manage a building control application for a higher-risk building",
+      "title": "Manage a building control application for a higher-risk building",
+      "source": "BSR/HSE",
+      "source_url": "https://www.gov.uk/guidance/manage-a-building-control-application-for-a-higher-risk-building",
+      "publication_date": "2023-10-02",
+      "effective_date": null,
+      "version": "Last updated 27 March 2025",
+      "supersedes": [],
+      "superseded_by": null,
+      "geography_scope": ["England"],
+      "london_specific": false,
+      "london_triggers": [],
+      "topic_tags": ["building_control", "gateway_process", "higher_risk_buildings"],
+      "doc_type": "procedural",
+      "regulator": "BSR",
+      "regulated_activities": ["Building control application management", "Online application service"],
+      "regulated_actors": ["client", "principal_designer", "developer"],
+      "building_types": ["Higher-risk buildings"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "applying_building_control_approval", "relationship": "linked to application guidance"},
+        {"doc_ref": "building_control_approval_hrb", "relationship": "linked to approval guidance"}
+      ],
+      "decision_points": [
+        "How to use online application service",
+        "Application management tasks"
+      ],
+      "summary_bullets": [
+        "Service guidance for BSR online application portal",
+        "Published October 2023, updated March 2025",
+        "Explains how to apply for building control approval online",
+        "Explains how to manage existing applications",
+        "Applies to higher-risk buildings in England",
+        "Joint guidance from BSR and HSE"
+      ],
+      "user_impact_factors": ["Application stage"],
+      "confidence_notes": [],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "gla_fire_statements_d12b_draft",
+      "filename": "draft_guidance_sheet_fire_statements_d12_b_070720_web",
+      "title": "London Plan Policy D12(B) Fire Statements - Guidance Sheet",
+      "source": "GLA (Greater London Authority)",
+      "source_url": null,
+      "publication_date": "2020-07-07",
+      "effective_date": null,
+      "version": "Draft",
+      "supersedes": [],
+      "superseded_by": "gla_fire_safety_lpg_2022",
+      "geography_scope": ["Greater London"],
+      "london_specific": true,
+      "london_triggers": ["London Plan", "GLA", "Policy D12", "Mayor"],
+      "topic_tags": ["fire_safety", "planning", "building_safety"],
+      "doc_type": "guidance",
+      "regulator": "GLA/Local Planning Authority",
+      "regulated_activities": ["Fire statement preparation", "Planning application submission"],
+      "regulated_actors": ["developer", "principal_designer"],
+      "building_types": ["Major developments in London"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [
+          {"text": "All development proposals must achieve the highest standards of fire safety", "section": "Policy D12", "page": 1}
+        ],
+        "should": [
+          {"text": "All major development proposals should be submitted with a Fire Statement", "section": "Policy D12(B)", "page": 1}
+        ],
+        "may": []
+      },
+      "key_definitions": [
+        {"term": "Fire Statement", "definition": "A standalone document which defines the fire safety objectives and performance requirements of a development, and the methods by which these objectives will be provided/satisfied", "section": "Paragraph 4"}
+      ],
+      "exceptions": [],
+      "dependencies": [],
+      "decision_points": [
+        "Fire statement content requirements",
+        "Coordination with planning application"
+      ],
+      "summary_bullets": [
+        "GLA guidance on London Plan Policy D12(B) Fire Statements",
+        "Draft guidance sheet dated July 2020",
+        "Requires major developments to submit Fire Statements",
+        "Fire safety must be embedded at earliest design stage",
+        "Fire Statement is standalone document defining fire safety objectives",
+        "Must evidence safety of occupants and property protection",
+        "Must address firefighting access and equipment provision",
+        "Should include schedule of relevant plan references",
+        "Should feature plan excerpts as standalone document",
+        "Must align with all other planning application documentation",
+        "Explains planning officer role in assessing Fire Statements"
+      ],
+      "user_impact_factors": ["Whether development is major", "London location"],
+      "confidence_notes": ["Draft document - superseded by 2022 Fire Safety LPG"],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    },
+    {
+      "doc_id": "gla_fire_safety_lpg_2022",
+      "filename": "fire_safety_lpg_consultation_version_-_planning_11_feb_22",
+      "title": "London Plan Guidance: Fire Safety",
+      "source": "GLA (Greater London Authority)",
+      "source_url": "https://www.london.gov.uk/programmes-strategies/planning/implementing-london-plan/london-plan-guidance",
+      "publication_date": "2022-02-11",
+      "effective_date": null,
+      "version": "Consultation version February 2022",
+      "supersedes": ["gla_fire_statements_d12b_draft"],
+      "superseded_by": null,
+      "geography_scope": ["Greater London"],
+      "london_specific": true,
+      "london_triggers": ["London Plan", "GLA", "Mayor", "Policy D12", "Policy D5"],
+      "topic_tags": ["fire_safety", "planning", "building_safety"],
+      "doc_type": "guidance",
+      "regulator": "GLA/Local Planning Authority",
+      "regulated_activities": ["Fire safety in planning", "Fire statement preparation", "Evacuation planning"],
+      "regulated_actors": ["developer", "principal_designer", "local_authority"],
+      "building_types": ["Major developments in London", "Residential buildings", "All buildings requiring planning permission"],
+      "height_thresholds": [],
+      "obligations": {
+        "must": [],
+        "should": [],
+        "may": []
+      },
+      "key_definitions": [],
+      "exceptions": [],
+      "dependencies": [
+        {"doc_ref": "gla_fire_statements_d12b_draft", "relationship": "supersedes draft guidance"}
+      ],
+      "decision_points": [
+        "Fire safety considerations in planning applications",
+        "Fire statement requirements",
+        "Evacuation strategy considerations"
+      ],
+      "summary_bullets": [
+        "London Plan Guidance on fire safety for planning purposes",
+        "Consultation version from February 2022",
+        "Implements London Plan Policy D12 (Fire Safety)",
+        "Provides detailed guidance on fire statement requirements",
+        "Covers evacuation strategies including PEEPs",
+        "Addresses second staircase requirements for tall buildings",
+        "Integrates fire safety into planning assessment process",
+        "Applies to major developments requiring planning permission",
+        "Supports embedding fire safety from earliest design stages",
+        "London-specific supplement to national building regulations"
+      ],
+      "user_impact_factors": ["Development type", "Building height", "London location"],
+      "confidence_notes": ["Consultation version - check for final adopted version"],
+      "extraction_date": "2026-02-17T12:00:00Z",
+      "extraction_model": "claude-opus-4-5-20251101"
+    }
+  ]
+}

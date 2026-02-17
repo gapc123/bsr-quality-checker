@@ -1,0 +1,50 @@
+O N L I N E V E R S I O N
+D B
+2029 amendment – effective from 2 September 2029
+Table B2 Continued
+Purpose group of building Minimum periods of fire resistance(1) (minutes) in a:
+Basement storey* Ground or upper storey
+including floor over
+Depth (m) of the lowest Height (m) of top floor above ground, in a building or
+basement separated part of a building
+More than Up to 10 Up to 5 Up to 11 Up to 18 Up to 30 More than
+10 30
+b. car park for light vehicles:
+i. open sided car park(7) Not Not 15 min†# 15 min†#(8) 15 min†#(8) 15 min†#(8) 60 min
+applicable applicable
+ii. any other car park 90 min 60 min 30 min† 60 min 60 min 90 min 120 min‡
+NOTES:
+For single storey buildings, the periods under the heading ‘Up to 5’ apply. If single storey buildings have basements,
+for the basement storeys the period appropriate to their depth applies.
+* For the floor over a basement or, if there is more than one basement, the floor over the topmost basement, the
+higher of the period for the basement storey and the period for the ground or upper storey applies.
+† For compartment walls that separate buildings, the period is increased to a minimum of 60 minutes.
++ For any floor that does not contribute to the support of the building within a flat of more than one storey, the
+period is reduced to 30 minutes.
+§ For flat conversions, refer to paragraphs 6.5 to 6.7 of Approved Document B Volume 1 regarding the acceptability
+of 30 minutes.
+‡ For elements that do not form part of the structural frame, the period is reduced to 90 minutes.
+# For elements that protect the means of escape, the period is increased to 30 minutes.
+1. Refer to note 1, Table B1 for the specific provisions of test.
+2. Blocks of flats with a top storey more than 11m above ground level (see Diagram D6) should be fitted with a
+sprinkler system in accordance with Appendix E.
+NOTE: Sprinklers should be provided within the individual flats, they do not need to be provided in the common
+areas such as stairs, corridors or landings when these areas are fire sterile.
+3. ‘With sprinkler system’ means that the building is fitted throughout with an automatic sprinkler system in
+accordance with Appendix E.
+4. Very large (with a top storey more than 18m above ground level or with a 10m deep basement) or unusual
+dwellinghouses are outside the scope of the guidance provided with regard to dwellinghouses.
+5. A minimum of 30 minutes in the case of three storey dwellinghouses, increased to 60 minutes minimum for
+compartment walls separating buildings.
+6. Buildings within the ‘office’, ‘shop and commercial’, ‘assembly and recreation’, ‘industrial’ and ‘storage and other
+non-residential’ (except car parks for light vehicles) purpose groups (purpose groups 3 to 7(a)) require sprinklers
+where there is a top storey more than 30m above ground level.
+7. The car park should comply with the relevant provisions in the guidance on requirement B3, Section 11.
+8. For the purposes of meeting the Building Regulations, the following types of steel elements are deemed to have
+satisfied the minimum period of fire resistance of 15 minutes when tested to the European test method.
+i. Beams supporting concrete floors, maximum Hp/A=230m-1 operating under full design load.
+ii. Free-standing columns, maximum Hp/A=180m-1 operating under full design load.
+iii. Wind bracing and struts, maximum Hp/A=210m-1 operating under full design load.
+Guidance is also available in BS EN 1993-1-2.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 161
+O N L I N E V E R S I O N

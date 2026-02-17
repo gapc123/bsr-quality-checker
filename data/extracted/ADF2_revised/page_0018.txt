@@ -1,0 +1,36 @@
+F1(1) O N L I N E V E R S I O N
+1.28 Food and drink preparation areas should have an intermittent air extract rate of either of the
+following.
+a. If the area is only for using a microwave and preparing drinks: 15 litres per second.
+b. If the area is for using a domestic-type hob or cooker, either of the following.
+i. If the extract ventilator is adjacent to the hob/cooker: 30 litres per second.
+ii. If the extract ventilator is remote from the hob/cooker: 60 litres per second.
+NOTE: This guidance does not apply to commercial kitchens, which should follow the specific
+guidance in Table 1.1.
+1.29 Specialist buildings and spaces should follow the guidance in Table 1.1.
+1.30 For naturally ventilated offices that do not use mechanical supply and extract ventilation, both of
+the following should apply.
+a. The locations of extract ventilators should be both of the following.
+i. As high as practicable.
+ii. A maximum of 400mm below the ceiling.
+b. Where used, passive stack ventilation terminals should be located in the ceiling.
+1.31 For a room with no openable window, the extract ventilation should operate both:
+a. while the room is occupied
+b. for a minimum of 15 minutes after occupants have left the room.
+Whole building ventilation rates for offices
+1.32 Outdoor air should be supplied for occupiable rooms in offices at whichever of the following will
+provide the higher total rate.
+a. 10 litres per second per person.
+b. 1 litre per second per m2 floor area.
+1.33 Common spaces in offices, including rooms or spaces used solely or mainly for circulation, such as
+corridors and lift lobbies, should be provided with either of the following.
+a. Natural ventilation by appropriately located ventilation opening(s) with a total opening area of
+at least 1/50 of the floor area of the common space.
+b. Mechanical ventilation installed to provide a supply of outdoor air of 0.5 litres per second per
+m2 of floor area of the common space.
+1.34 If there are significant levels of pollutants other than body effluents/odour, additional ventilation
+may be required. The calculation method provided in CIBSE’s Guide A Environmental Design should
+be followed to determine the whole building ventilation rate.
+10
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

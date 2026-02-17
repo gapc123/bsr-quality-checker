@@ -1,0 +1,20 @@
+Application decisions
+Approved
+Building work can start as planned.
+Approved with requirements
+Building work can start as planned on the parts of the application approved by BSR.
+You must not start building work on any parts of the application that are subject to a
+requirement, until BSR is satisfied the requirement has been met.
+Examples of requirements include BSR telling you to:
+● supply additional information, such as providing further plans or details to clarify certain
+aspects of the application
+● supply revised plans to address changes and concerns raised by BSR
+● delay certain aspects of building work until you can demonstrate specific requirements are
+met
+Rejected
+A building control approval application will be rejected if it shows that the work will not comply with
+building regulations. BSR will tell you why they have rejected your application.
+Applications will be rejected if they do not:
+● have enough detail to show compliance
+● show effective strategies for managing compliance
+You must not start building work if the application is rejected.

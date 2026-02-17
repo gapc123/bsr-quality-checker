@@ -1,0 +1,36 @@
+O N L I N E V E R S I O N F1(1)
+Purge ventilation for offices
+1.35 Each office should have the means to provide purge ventilation, to reduce pollutants before the
+office space is occupied or after activities such as painting.
+The purged air should both:
+a. be taken directly to the outside
+b. not be recirculated to any other part of the building.
+Controls for offices
+1.36 Controls should be provided for ventilators so that the ventilation in each room can be adjusted.
+For mechanical supply and extract ventilation, either manual controls or automatic controls are
+acceptable.
+Recirculation of air within ventilation systems in offices
+1.37 Ventilation systems that, under normal operation, recirculate air between more than one space,
+room or zone should also be able to operate in a mode that reduces the risk of the transmission of
+airborne infection. This can be achieved by one or more of the following.
+a. Systems capable of providing 100% outdoor air to the levels specified in paragraphs 1.32 to 1.34
+to all occupiable rooms and common spaces, without recirculating air.
+b. Systems incorporating a UV-C germicidal irradiation system that is able to disinfect the air that is
+being recirculated. This type of system is commonly located within the heating, ventilation and
+air conditioning (HVAC) system or ductwork.
+c. Systems designed so that they can incorporate HEPA filters, if required, which are able to provide
+filtration of the recirculated air.
+NOTE: For some system types some recirculation is necessary or desirable in normal operation. Use
+of any full outdoor air mode, UV-C germicidal irradiation or HEPA filtration may not be necessary
+under normal conditions of operation.
+Ventilation of car parks
+1.38 For car parks below ground level, enclosed car parks and multi-storey car parks, the ventilation rate
+should be designed, and equipment installed, to limit carbon monoxide to both of the following.
+a. Average concentration: a maximum of 30 parts per million over an eight-hour period.
+b. Peak concentration, such as by ramps and exits: a maximum of 90 parts per million over a
+15-minute period.
+NOTE: Guidance on the ventilation of car parks to manage the risk of fire is given in Approved
+Document B.
+11
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

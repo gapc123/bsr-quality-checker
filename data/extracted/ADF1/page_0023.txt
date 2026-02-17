@@ -1,0 +1,45 @@
+O N L I N E V E R S I O N F1(1)
+NOTE: A window with a night latch position is not adequate for background ventilation, due to the
+following.
+a. The risk of draughts.
+b. Security issues.
+c. The difficulty of measuring the equivalent area.
+1.53 If the dwelling has more than one exposed façade, the area of background ventilators on each
+façade should be similar, to allow cross-ventilation.
+1.54 If an exposed façade is close to an area of sustained and loud noise (e.g. a main road), then a noise
+attenuating background ventilator should be fitted.
+1.55 If fans and background ventilators are fitted in the same room, they should be at least 500mm
+apart.
+1.56 The minimum total area of background ventilators in each room should follow the guidance in
+Table 1.7.
+1.57 The total number of ventilators installed in the dwelling’s habitable rooms and kitchens should be
+at least the following.
+a. Four ventilators if the dwelling has one bedroom.
+b. Five ventilators if the dwelling has more than one bedroom.
+1.58 If the dwelling has a kitchen and living room which are not separate rooms, at least three
+ventilators of the same area as for other habitable rooms in Table 1.7 should be provided in the
+open-plan space.
+Table 1.7 Minimum equivalent area of background ventilators for natural ventilation(1)
+Room Minimum equivalent area of Minimum equivalent area of
+background ventilators for dwellings background ventilators for single-
+with multiple floors storey dwellings
+Habitable rooms(2)(3) 8000mm2 10,000mm2
+Kitchen(2)(3) 8000mm2 10,000mm2
+Utility room No minimum No minimum
+Bathroom(4) 4000mm2 4000mm2
+Sanitary accommodation No minimum No minimum
+NOTES:
+1. The use of this table is not appropriate in any of the following situations and expert advice should be sought.
+• If the dwelling has only one exposed façade.
+• If the dwelling has at least 70% of its openings on the same façade.
+• If a kitchen has no windows or external façade through which a ventilator can be installed.
+2. Where a kitchen and living room accommodation are not separate rooms (i.e. open plan), no fewer than three
+ventilators of the same equivalent area as for other habitable rooms should be provided within the open-plan
+space.
+3. The total number of ventilators installed in a dwelling’s habitable rooms and kitchens should be no fewer than
+five, except in one-bedroom properties, where there should be no fewer than four.
+4. If a bathroom has no window or external façade through which a ventilator can be installed, the minimum equiva-
+lent area specified should be added to the ventilator sizes specified in other rooms.
+15
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

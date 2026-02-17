@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N F1(1)
+Purge ventilation
+1.26 A system for purge ventilation should be provided in each habitable room.
+1.27 Purge ventilation should be capable of extracting at least four air changes per hour per room
+directly to the outside.
+NOTE: In order to demonstrate compliance with Part O of the Building Regulations it is likely that
+higher purge ventilation rates than those given in paragraph 1.29 will be required.
+1.28 Purge ventilation should be delivered through one of the following means.
+a. Openings (e.g. windows or doors).
+b. A mechanical extract ventilation system.
+1.29 Where purge ventilation is delivered through openings in a habitable room, the minimum opening
+areas in Table 1.4 should be achieved. The values in Table 1.4 are based on BS 5925, which assumes
+all of the following.
+a. Single-sided ventilation.
+b. An urban environment.
+c. A wind speed of 2.1 metres per second (m/s).
+d. A temperature difference of 3°C between the air inside and outside the building.
+1.30 Depending on the dwelling design or the external climate, it may be possible in certain
+circumstances to achieve four air changes per hour with smaller openings. If smaller openings than
+those given in Table 1.4 are specified, expert advice should be sought to ensure that the design
+complies with requirement F1(1).
+Table 1.4 Purge ventilation openings
+Opening type Minimum total area of openings
+Hinged or pivot windows with an opening angle of 15 to 30 degrees 1/10 of the floor area of the room
+Hinged or pivot windows with an opening angle of greater than or 1/20 of the floor area of the room
+equal to 30 degrees
+Opening sash windows
+External doors
+1.31 Hinged or pivot windows with an opening angle of less than 15 degrees are not suitable for purge
+ventilation.
+Performance testing
+1.32 The air flow resistance of all components should be considered when specifying ventilation
+systems. The complete assembly, as installed, should be designed to meet the performance
+standards of this approved document. The performance of the separate components should be
+measured according to the relevant parts of BS EN 13141 and other relevant standards. The relevant
+test standards for common equipment types are given in Table 1.5.
+11
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

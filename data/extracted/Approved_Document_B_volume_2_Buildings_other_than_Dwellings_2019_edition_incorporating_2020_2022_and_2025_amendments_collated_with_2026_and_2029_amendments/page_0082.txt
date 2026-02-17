@@ -1,0 +1,49 @@
+O N L I N E V E R S I O N
+B3
+8.23 At the junction of a compartment floor and an external wall with no fire resistance, the external
+wall should be restrained at floor level. The restraint should reduce movement of the wall away
+from the floor if exposed to fire.
+8.24 Compartment walls should be able to accommodate deflection of the floor, when exposed to fire,
+by either of the following means.
+a. Between the wall and floor, provide a head detail that is capable of maintaining its integrity
+while deforming.
+b. Design the wall so it maintains its integrity by resisting the additional vertical load from the floor
+above.
+Where compartment walls are located within the middle half of a floor between vertical supports,
+the deflection may be assumed to be 40mm unless a smaller value can be justified by assessment.
+Outside this area, the limit can be reduced linearly to zero at the supports.
+For steel beams that do not have the required fire resistance, reference should be made to SCI
+Publication P288.
+Junction of compartment wall with roof
+8.25 A compartment wall should achieve both of the following.
+a. Meet the underside of the roof covering or deck, with fire-stopping to maintain the continuity
+of fire resistance.
+b. Be continued across any eaves.
+8.26 To reduce the risk of fire spreading over the roof from one compartment to another, a 1500mm
+wide zone of the roof, either side of the wall, should have a covering classified as B (t4), on a
+ROOF
+substrate or deck of a material rated class A2-s3, d2 or better, as set out in Diagram 8.2a.
+Thermoplastic rooflights that, because of paragraph 14.7, are regarded as having a B (t4)
+ROOF
+classification are not suitable for use in that zone.
+8.27 Materials achieving class B-s3, d2 or worse used as a substrate to the roof covering and any timber
+tiling battens, fully bedded in mortar or other suitable material for the width of the wall (Diagram
+8.2b), may extend over the compartment wall in buildings that are both of the following.
+a. A maximum of 15m high.
+b. In one of the following purpose groups.
+i. All residential purpose groups (purpose groups 1 and 2) other than ‘residential (institutional)’
+(purpose group 2(a)).
+ii. ‘Office’ (purpose group 3).
+iii. ‘Assembly and recreation’ (purpose group 5).
+8.28 Double-skinned insulated roof sheeting should incorporate a band of material rated class A2-s3, d2
+or better, a minimum of 300mm in width, centred over the wall.
+8.29 As an alternative to the provisions of paragraph 8.26 or 8.27, the compartment wall may extend
+through the roof for a minimum of either of the following (see Diagram 8.2c).
+a. Where the height difference between the two roofs is less than 375mm, 375mm above the top
+surface of the adjoining roof covering.
+b. 200mm above the top surface of the adjoining roof covering where either of the following applies.
+i. The height difference between the two roofs is 375mm or more.
+ii. The roof coverings either side of the wall are of a material classified as B (t4).
+ROOF
+70 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

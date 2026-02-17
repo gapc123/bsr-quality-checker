@@ -1,0 +1,61 @@
+O N L I N E V E R S I O N
+G C
+2026 amendment – effective from 30 September 2026 until 1 September 2029 – see 2029 amendment, page 171
+Table C1 Provisions for fire doorsets
+Position of door Minimum fire resistance of door Minimum fire resistance of
+in terms of integrity (minutes) door in terms of integrity
+when tested to the relevant (minutes) when tested to
+European standard(1) BS 476-22
+1. In a compartment wall separating buildings Same as for the wall in which Same as for the wall in which
+the door is fitted, but a the door is fitted, but a
+minimum of 60 minutes minimum of 60 minutes
+2. In a compartment wall:
+a. i f it separates a flat from a space in E 30 S(2) FD 30 S(2)
+a
+common use
+b. enclosing a protected shaft forming a E 30 S(2) FD 30 S(2)
+a
+stairway or an evacuation shaft wholly
+or partly above the adjoining ground in a
+building used for flats, other residential,
+assembly and recreation, or office
+purposes
+c. e nclosing a protected shaft forming Half the period of fire resistance Half the period of fire
+a stairway or an evacuation shaft not of the wall in which it is fitted, resistance of the wall in
+described in (b) above but 30 minutes minimum and which it is fitted, but 30
+with suffix S(2) minutes minimum and with
+a
+suffix S(2)
+d. e nclosing a protected shaft forming a lift Half the period of fire resistance Half the period of fire
+or service shaft of the wall in which it is fitted, resistance of the wall in
+but 30 minutes minimum which it is fitted, but 30
+minutes minimum
+e. n ot described in (a), (b), (c) or (d) above. Same as for the wall in which Same as for the wall in which
+it is fitted, but add S(2) if the it is fitted, but add S(2) if the
+a
+door is used for progressive door is used for progressive
+horizontal evacuation under the horizontal evacuation under
+guidance to requirement B1 the guidance to requirement
+B1
+3. In a compartment floor Same as for the floor in which it Same as for the floor in
+is fitted which it is fitted
+4. Forming part of the enclosures of:
+a. p rotected stairway or evacuation shaft E 30 S(2) FD 30 S(2)
+a
+(except as described in item 9 or 11(b)
+below)
+b. a lift shaft (see paragraph 3.99b) that does E 30 FD 30
+not form a protected shaft in 2(b), (c) or (d)
+above.
+5. Forming part of the enclosure of:
+a. a protected lobby approach (or protected E 30 S(2) FD 30 S(2)
+a
+corridor) to a stairway or an evacuation
+shaft
+b. any other protected corridor E 20 S(2) FD 20 S(2)
+a
+c. a protected lobby approach to a lift shaft E 30 S(2) FD 30 S(2)
+a
+(paragraphs 3.102 to 3.104).
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 169
+O N L I N E V E R S I O N

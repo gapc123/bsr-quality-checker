@@ -1,0 +1,37 @@
+O N L I N E V E R S I O N
+B1
+Access lobbies and corridors
+3.34 In the following situations, protected lobbies or protected corridors should be provided at all
+storeys above ground, except the top storey.
+a. If the stair is the only one serving a building or part of a building that has more than one storey
+above or below the ground storey.
+b. If the stair serves any storey at a height of 18m or more above ground level.
+c. If the building is designed for phased evacuation.
+d. If the stair is a firefighting stair.
+e. If the option in paragraph 3.15b has been used so as not to discount one stair when calculating
+stair widths.
+As an alternative to (a) to (c), a smoke control system as described in paragraph 3.15a may be used.
+3.35 A protected lobby should be provided between an escape stair and a place of special fire hazard
+to protect from the ingress of smoke. The lobby should have a minimum 0.4m2 of permanent
+ventilation, or be protected by a mechanical smoke control system.
+Exits from protected stairways
+3.36 Every protected stairway should lead to a final exit, either directly or via an exit passageway.
+Any protected exit corridor or stair should have the same standard of fire resistance and lobby
+protection as the stair it serves. The exit from a protected stairway should comply with paragraphs
+5.20 to 5.24.
+Separation of adjoining protected stairways
+3.37 The construction separating two adjacent protected stairways (or exit passageways) leading to
+different final exits should be imperforate.
+Use of space within protected stairways
+3.38 A protected stairway may only include any of the following.
+a. Sanitary accommodation or washrooms, as long as the accommodation is not used as
+a cloakroom. A gas water heater or sanitary towel incinerator may be installed in the
+accommodation, but no other gas appliance.
+b. If the protected stairway is not a firefighting stair: a lift well.
+c. If the protected stairway is not the only stair serving the building or part of the building: a
+reception desk or enquiry office area at ground or access level. The reception or enquiry office
+area should have a maximum area of 10m2.
+d. If the protected stairway is not the only stair serving the building or part of the building:
+cupboards enclosed with fire resisting construction.
+40 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

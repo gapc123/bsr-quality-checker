@@ -1,0 +1,47 @@
+O N L I N E V E R S I O N
+D
+Building three storeys
+Second
+To count the number of storeys in a building,
+foor
+or in a separated part of a building, count only at
+the position which gives the greatest number and
+First
+exclude any basement storeys.
+foor
+Ground
+foor
+Basement
+Separated part three storeys
+Separated part two storeys
+Second
+foor
+Compartment NOTES:
+wall
+First
+1 . In assembly buildings (purpose group 5), a gallery
+foor
+is included as a storey, but not if it is a loading gallery,
+fy gallery, stage grid, lighting bridge, or any gallery
+Ground provided for similar purposes, or for maintenance and
+foor repair.
+2 . In other purpose group buildings, galleries are not
+Basement
+counted as a storey.
+3 . For the defnition of basement, see Appendix A.
+Diagram D5 Number of storeys
+Plant Roof
+Height of top storey excludes
+roof-top plant areas and any
+top storeys consisting exclusively
+Height of top
+of plant rooms
+storey measured
+from upper foor
+surface of top
+foor to ground
+level on lowest
+side of building
+Diagram D6 Height of top storey in building
+180 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

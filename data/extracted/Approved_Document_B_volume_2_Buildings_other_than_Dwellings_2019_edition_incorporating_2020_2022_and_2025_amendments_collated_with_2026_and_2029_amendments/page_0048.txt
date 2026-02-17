@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B1
+Worked example using Table 3.3
+What is the minimum width needed for the stairs serving a 15 storey office building (ground + 14
+office floors), assuming a total population of 2500 people (excluding the ground floor population,
+which does not use the stairs)? To satisfy the travel distance limitations, three stairs are required.
+The building is over 45m in height and designed for phased evacuation. It has been decided to
+discount one stair to take account of fire and rescue service operations as described in paragraph
+3.20. Therefore:
+• Number of people per storey = 2500/14 = 179.
+Each remaining stair must be able to accommodate half the population of one storey (i.e. 90
+people).
+Thus each stair should be 1000mm wide (maximum capacity 100 people).
+This width will also be adequate when one storey exit is discounted as described in paragraph 2.21. It
+also complies with paragraph 3.10a (i.e. the stair widths are not less than the minimum width needed
+for 90 people in Table 2.3).
+• At least one of those stairs needs to be a firefighting stair, therefore a minimum width of 1100mm
+is needed (see note 2 to Table 3.1).
+Additional worked example using Table 3.3
+What is the minimum width needed for the stairs serving a 9 storey office building (ground + 8
+office floors), assuming a total population of 1920 people (excluding the ground floor population,
+which does not use the stairs)? To satisfy the travel distance limitations, two stairs are required.
+As both stairs need to be entered at each level through a protected lobby (see paragraph 3.21),
+both stairs can be assumed to be available (see paragraph 3.15). Therefore:
+• Number of people per storey = 1920/8 = 240.
+• Each stair must be able to accommodate half the population of one storey
+(i.e. 240/2 = 120 people).
+• Thus both stairs would require a width of 1100mm (maximum capacity 120 people) according
+to Table 3.3, but:
+• Each storey exit needs to be able to serve 240 people, because of discounting as described
+in paragraph 2.21. The minimum exit width needed for 240 people in Table 2.3 is 1200mm. As
+described in paragraph 3.10a, the stair should be at least as wide as the storey exit serving it.
+• The required stair width is therefore 1200mm.
+Design and protection of escape stairs
+Enclosure of escape stairs
+3.23 Every internal escape stair should be a protected stairway (within a fire resisting enclosure). If it
+is also a protected shaft (i.e. it passes from one compartment to another) or firefighting shaft,
+additional guidance in Sections 8 and 17 applies.
+There is one exception: an unprotected stair (e.g. an accommodation stair) may form part of an
+internal route to a storey exit or final exit, provided that the distance of travel and the number of
+people involved are very limited. For example, small premises (Section 4) and raised storage areas (see
+paragraphs 7.6 and 7.7).
+36 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

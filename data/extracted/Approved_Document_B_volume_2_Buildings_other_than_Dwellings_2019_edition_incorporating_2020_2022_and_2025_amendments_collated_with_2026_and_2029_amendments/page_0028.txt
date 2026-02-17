@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+B1
+a. The occupant number of the inner room does not exceed:
+i. 30 people for ‘residential (institutional)’ buildings (purpose group 2(a))
+ii. 60 people for other purpose groups.
+b. The inner room is not a bedroom.
+c. The inner room is entered directly from the access room (but not via a corridor).
+d. The escape route from the inner room does not pass through more than one access room.
+e. The travel distance from any point in the inner room to the exits from the access room does not
+exceed the distances in Table 2.1.
+f. The access room meets both of the following conditions.
+i. It is not a place of special fire hazard.
+ii. It is in the control of the same occupier.
+g. One of the following arrangements is made.
+i. The enclosures (walls or partitions) of the inner room stop a minimum of 500mm below the
+ceiling.
+ii. The door or walls of the inner room contain a vision panel (minimum 0.1m2), so people can
+see if a fire starts in the access room.
+iii. The access room is fitted with an automatic fire detection and alarm system to warn
+occupants of the inner room if a fire starts in the access room.
+See para 2.11
+Arrangement A Arrangement B
+Exit Exit
+Access room
+NOTES:
+Room with Inner room
+alternative
+Arrangement A Needs no special provision.
+exits
+Arrangement B Should observe the inner room
+provisions in paragraph 2.11.
+Exit
+Diagram 2.3 Inner room and access room
+Planning of exits in a central core
+2.12 Where a central core has more than one exit, storey exits should be remote from one another and
+no two exits should be approached from the same lift hall, common lobby or undivided corridor
+(Diagram 2.4).
+16 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

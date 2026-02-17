@@ -1,0 +1,47 @@
+O N L I N E V E R S I O N
+B4
+See paras 14.5 and 14.6
+Roofight*
+max. area 5m2
+* Or group of roofights amounting to no more than 5m2
+† Class D-s3, d2 roofights to rooms in industrial and other
+3m† minimum non-residential purpose groups may be spaced 1800mm
+apart provided the roofights are evenly distributed and
+between any
+do not exceed 20% of the area of the room
+two roofights
+in any direction
+NOTES:
+1. There are restrictions on the use of plastic roofights in the
+guidance to requirement B2 in Section 6.
+Roofight* 2. Surrounding roof covering to be class B-s3, d2
+max. area 5m2 for at least 3m distance.
+3. Where Diagram 8.2a or 8.2b applies, roofights should be at
+least 1500mm from the compartment wall.
+Diagram 14.1 L imitations on spacing and size of plastic rooflights that have a class D-s3, d2 or
+TP(b) lower surface
+Table 14.1 Limitations on roof coverings
+Designation(1) of covering of roof Distance from any point on relevant boundary
+or part of roof
+Less than 6m At least 6m At least 12m At least 20m
+BROOF(t4) l l l l
+CROOF(t4) l l l l
+DROOF(t4) l (1)(2)l(2)(3) (1)l(2) l
+EROOF(t4) l (1)(2)l(2)(3) (1)l(2) (1)l(2)
+FROOF(t4) l l l (1)(2)l(2)(3)
+l Acceptable. l Not acceptable.
+NOTES:
+Separation distances do not apply to enclosed/covered walkways. However, see Diagram 8.2 if the roof passes over
+the top of a compartment wall.
+Polycarbonate and uPVC rooflights that achieve a class C-s3, d2 rating by test may be regarded as having a B (t4)
+ROOF
+classification.
+1. The designation of external roof surfaces is explained in Appendix B
+2. Not acceptable on any of the following buildings.
+a. Industrial, storage or other non-residential purpose group (purpose groups 6 and 7) buildings of any size.
+b. Any other buildings with a cubic capacity of more than 1500m3.
+3. Acceptable on buildings not listed in (2) if both of the following apply.
+a. Part of the roof has a maximum area of 3m2 and is a minimum of 1500mm from any similar part.
+b. The roof between the parts is covered with a material rated class A2-s3, d2 or better.
+108 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

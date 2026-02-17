@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B4
+Section 14: Resisting fire spread over roof
+coverings
+Introduction
+14.1 ‘Roof covering’ describes one or more layers of material, but not the roof structure as a whole.
+14.2 Provisions for the fire properties of roofs are given in other parts of this document.
+a. Requirement B1 – for roofs that are part of a means of escape.
+b. Requirement B2 – for the internal surfaces of rooflights as part of internal linings.
+c. Requirement B3 – for roofs that are used as a floor and for roofs passing over a compartment wall.
+d. Section 13 – the circumstances in which a roof is subject to the provisions for space separation.
+Separation distances
+14.3 Separation distance is the minimum distance from the roof, or part of the roof, to the relevant
+boundary (paragraph 13.5). Table 14.1 sets out separation distances by the type of roof covering and
+the size and use of the building.
+In addition, roof covering products (and/or materials) defined in Commission Decision 2000/553/
+EC of 6 September 2000, implementing Council Directive 89/106/EEC, can be considered to fulfil
+all of the requirements for the performance characteristic ‘external fire performance’ without the
+need for testing, provided that any national provisions on the design and execution of works are
+fulfilled, and can be used without restriction.
+14.4 The performance of rooflights is specified in a similar way to the performance of roof coverings.
+Plastic rooflights may also be used.
+Plastic rooflights
+14.5 Table 14.2 and Diagram 14.1 set the limitations for using plastic rooflights whose lower surface has a
+minimum rating of class D-s3, d2.
+14.6 Table 14.3 sets the limitations for using thermoplastic materials with a TP(a) rigid or TP(b)
+(see also Diagram 14.1) classification. The method of classifying thermoplastic materials is given in
+Appendix B.
+14.7 Other than for the purposes of Diagram 8.2, polycarbonate or uPVC roofights achieving a minimum
+rating of class C-s3, d2 can be regarded as having a B (t4) classifcation.
+ROOF
+Unwired glass in rooflights
+14.8 When used in rooflights, unwired glass a minimum of 4mm thick can be regarded as having a
+B (t4) classification.
+ROOF
+Thatch and wood shingles
+14.9 If the performance of thatch or wood shingles cannot be established, they should be regarded
+as having an E (t4) classification in Table 14.1.
+ROOF
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 107
+O N L I N E V E R S I O N

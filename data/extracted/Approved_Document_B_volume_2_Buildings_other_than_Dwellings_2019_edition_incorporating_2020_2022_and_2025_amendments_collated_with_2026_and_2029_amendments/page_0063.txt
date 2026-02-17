@@ -1,0 +1,40 @@
+O N L I N E V E R S I O N
+B1
+Lighting of escape routes
+5.25 All escape routes should have adequate artificial lighting. If the mains electricity power supply fails,
+escape lighting should illuminate the routes listed in Table 5.1.
+5.26 Escape stair lighting should be on a separate circuit from the electricity supply to any other part of
+the escape route.
+5.27 Escape lighting should conform to BS 5266-1.
+Exit signs
+5.28 Every doorway or other exit providing access to a means of escape, other than exits in ordinary use
+(e.g. main entrances), should be distinctively and conspicuously marked by an exit sign in accordance
+with BS ISO 3864-1 and BS 5499-4.
+Advice on fire safety signs, including emergency escape signs, is given in the HSE publication Safety
+Signs and Signals: Guidance on Regulations.
+Some buildings may require additional signs to comply with other legislation.
+Protected power circuits
+5.29 To limit potential damage to cables in protected circuits, all of the following should apply.
+a. Cables should be sufficiently robust.
+b. Cable routes should be carefully selected and/or physically protected in areas where cables may
+be exposed to damage.
+c. Methods of cable support should be class A1 rated and offer at least the same integrity as the cable.
+They should maintain circuit integrity and hold cables in place when exposed to fire.
+5.30 A protected circuit to operate equipment during a fire should achieve all of the following.
+a. Cables should achieve PH 30 classification when tested in accordance with BS EN 50200
+(incorporating Annex E) or an equivalent standard.
+b. It should only pass through parts of the building in which the fire risk is negligible.
+c. It should be separate from any circuit provided for another purpose.
+5.31 Guidance on cables for large and complex buildings is given in BS 5839-1, BS 5266-1 and BS 8519.
+Lifts
+Evacuation lifts
+5.32 Generally, lifts should not be used when there is a fire in the building, unless their use forms part
+of a management plan for evacuating people and the following conditions are met.
+a. Lifts are appropriately sited and protected.
+b. Lifts contain safety features to ensure they remain usable during a fire.
+Guidance on the design and use of evacuation lifts is given in Annex G to BS 9999.
+5.33 Where a firefighting lift is provided, it can be used to evacuate disabled people. Management plans
+should describe how this would be managed, and what will happen when the fire and rescue service
+arrives.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 51
+O N L I N E V E R S I O N

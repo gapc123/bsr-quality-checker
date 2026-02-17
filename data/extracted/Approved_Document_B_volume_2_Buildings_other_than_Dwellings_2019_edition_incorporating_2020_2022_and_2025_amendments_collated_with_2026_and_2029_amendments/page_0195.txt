@@ -1,0 +1,43 @@
+O N L I N E V E R S I O N
+E
+Design of sprinkler systems
+E3 Where required, sprinkler systems should be provided throughout the building or separated part,
+unless acting as a compensatory feature to address a specific risk. They should be designed and
+installed in accordance with the following.
+a. For residential buildings, the requirements of BS 9251.
+b. For non-residential buildings, or residential buildings outside the scope of BS 9251, the
+requirements of BS EN 12845, including the relevant hazard classification together with additional
+measures to improve system reliability and availability as described in Annex F of the standard.
+NOTE: Any sprinkler system installed to satisfy the requirements of Part B of the Building
+Regulations should be provided with additional measures to improve system reliability and
+availability and is therefore to be regarded as a life safety system. However, there may be some
+circumstances in which additional measures to improve system reliability and availability specified in
+Annex F of BS EN 12845 are inappropriate or unnecessary.
+E4 If the provisions in a building vary from those in this document, sprinkler protection can also
+sometimes be used as a compensatory feature.
+BS 9251 makes additional recommendations when sprinklers are proposed as compensatory features.
+Water supplies and pumps
+E5 For non-residential sprinkler systems designed and installed to BS EN 12845, water supplies should
+consist of either of the following.
+a. Two single water supplies complying with clause 9.6.1, independent of each other.
+b. Two stored water supplies meeting all of the following conditions.
+i. Gravity or suction tanks should satisfy all the requirements of clause 9.6.2(b), other than
+capacity.
+ii. Any pump arrangements should comply with clause 10.2.
+iii. In addition to meeting the requirements for inflow, either of the following should apply.
+• The capacity of each tank should be at least half the specified minimum water volume
+of a single full capacity tank, appropriate to the hazard.
+• One tank should be at least equivalent to half the specified water volume of a single full
+capacity tank, and the other shall not be less than the minimum volume of a reduced
+capacity tank (see clause 9.3.4) appropriate to the hazard.
+The total capacity of the water supply in (iii), including any inflow for a reduced capacity
+tank, should be at least that of a single full holding capacity tank that complies with Table 9,
+Table 10 or clause 9.3.2.3, as appropriate to the hazard and pipework design.
+E6 For the systems described in paragraph E5, both of the following apply if pumps are used to draw
+water from two tanks.
+a. Each pump should be able to draw water from either tank.
+b. Any one pump, or either tank, should be able to be isolated.
+The sprinkler water supplies should not be used as connections for other services or other fixed
+firefighting systems.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 183
+O N L I N E V E R S I O N

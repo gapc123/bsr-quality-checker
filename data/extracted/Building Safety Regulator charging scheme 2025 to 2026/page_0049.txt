@@ -1,0 +1,18 @@
+The review of a decision of the regulator which, pursuant to section 25 of the act, is a prescribed
+decision.
+Description
+Review of any BSR prescribed decision within scope of section 25. Under the regulations, such
+decisions include but are not limited to:
+a. a decision by the regulator to reject a:
+● building control approval application for HRB work
+● building control approval application for a stage of HRB work
+● building control approval application for work to existing HRB
+● change control application
+● completion certificate application
+● partial completion certificate application
+● regularisation certificate application
+b. a decision to specify a controlled change as being a major change or a notifiable change
+under regulation 25 (change control: regulator power to specify notifiable changes and major
+changes)
+c. a decision to refuse a request to vary a requirement under regulation 30 (a variation of a
+requirement imposed on a building control approval).

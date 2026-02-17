@@ -1,0 +1,49 @@
+(4) A notifiable change must not be carried out, and the work to which it relates must not start,
+until the notification referred to in paragraph (3) has occurred.
+(5) Where the controlled change is a major change, the client must make an application for
+building control approval in respect of the change (a “change control application”) to the regulator
+in accordance with regulation 21 (change control applications).
+(6) A major change must not be carried out, and the work to which it relates must not start, until
+the change control application is granted.
+(7) Paragraph (8) applies where two or more controlled changes are related to the same change
+to the building work (“related changes”) and at least one of those controlled changes is a major
+change and at least one is a notifiable change.
+(8) Where this paragraph applies—
+(a) all the major changes which are related changes may be included in the same change
+control application,
+(b) any notifiable changes which are related changes may also be included in that change
+control application, and
+(c) in relation to any change which is a notifiable change, the requirements of regulation 20
+(change control: notification requirements) are satisfied by providing details of the
+change as part of that application.
+(9) Where two or more controlled changes are not related to the same change to the building
+work they must not be included in the same change control application.
+(10) Paragraph (11) applies where a change control application has been submitted in relation to
+a proposed change (“the main change”) and it is proposed another controlled change (excluding a
+change which is only a recordable change) is to be carried out which is consequential on the main
+change (“a consequential change”) but was not included in an application of the type referred to in
+paragraph (8).
+(11) Where this paragraph applies—
+(a) a consequential change which is a notifiable change must not be notified in accordance
+with regulation 20 (change control: notification requirements);
+(b) a change control application in relation to a consequential change which is a major
+change must not be made in accordance with regulation 21 (change control applications),
+until the regulator has notified the client of the outcome of the change control application in
+relation to the main change.
+(12) In this regulation—
+“current agreed document” means the document that is an agreed document at the time the
+controlled change is proposed;
+“current plans” means the plans that are an agreed document at the time the controlled change
+is proposed.
+Change control: record-keeping
+19.—(1) The principal contractor (or sole contractor) must create and maintain a document for
+the purposes of recording information in respect of changes to the project (“change control log”).
+(2) A controlled change must be recorded by entering the following information in the change
+control log—
+(a) the name of the individual recording the change,
+(b) a description of the proposed change,
+(c) an explanation of the reasons why the change has been proposed,
+(d) whether the change is a recordable change, a notifiable change or a major change,
+(e) a list of the name and occupation of each person, if any, whose advice was sought in
+relation to the proposed change and a summary of any advice provided,
+20

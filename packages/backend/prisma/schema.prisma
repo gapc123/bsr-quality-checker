@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Pack {
+  id        String        @id @default(uuid())
+  name      String
+  createdAt DateTime      @default(now())
+  versions  PackVersion[]
+}
+
+model PackVersion {
+  id            String           @id @default(uuid())
+  packId        String
+  pack          Pack             @relation(fields: [packId], references: [id], onDelete: Cascade)
+  versionNumber Int
+  createdAt     DateTime         @default(now())
+  documents     Document[]
+  fields        ExtractedField[]
+  issues        IssueAction[]
+  artifacts     OutputArtifact[]
+
+  // Optional user inputs
+  projectName  String?
+  borough      String?
+  buildingType String?
+  height       String?
+  storeys      String?
+  targetDate   DateTime?
+
+  @@unique([packId, versionNumber])
+}
+
+model Document {
+  id              String           @id @default(uuid())
+  packVersionId   String?
+  packVersion     PackVersion?     @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
+  libraryType     String           // pack, baseline, butler
+  filename        String
+  filepath        String
+  docType         String?
+  source          String?
+  createdAt       DateTime         @default(now())
+  chunks          Chunk[]
+  extractedFields ExtractedField[]
+}
+
+model Chunk {
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex Int
+  text       String
+  pageRef    Int
+}
+
+model ExtractedField {
+  id                 String       @id @default(uuid())
+  packVersionId      String
+  packVersion        PackVersion  @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
+  fieldName          String
+  fieldValue         String?
+  confidence         String       // high, medium, low
+  evidenceDocumentId String?
+  evidenceDocument   Document?    @relation(fields: [evidenceDocumentId], references: [id])
+  evidencePageRef    Int?
+  evidenceQuote      String?
+}
+
+model IssueAction {
+  id                   String      @id @default(uuid())
+  packVersionId        String
+  packVersion          PackVersion @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
+  severity             String      // high, medium, low
+  category             String
+  title                String
+  finding              String
+  whyItMatters         String
+  action               String
+  ownerRole            String
+  effort               String      // S, M, L
+  endUserConsideration String
+  expectedBenefit      String
+  confidence           String      // high, medium, low
+  citations            String      // JSON string
+  evidence             String      // JSON string
+  createdAt            DateTime    @default(now())
+}
+
+model OutputArtifact {
+  id            String      @id @default(uuid())
+  packVersionId String
+  packVersion   PackVersion @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
+  artifactType  String      // md, pdf, json
+  path          String
+  createdAt     DateTime    @default(now())
+}

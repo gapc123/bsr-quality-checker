@@ -1,0 +1,48 @@
+O N L I N E V E R S I O N
+B1
+Open spatial planning
+2.13 Escape routes should not be within 4.5m of openings between floors, such as for an escalator, unless
+either of the following applies.
+a. The direction of travel is away from the opening.
+b. An alternative escape route does not pass within 4.5m of the open connection (Diagram 2.5).
+See para 2.12
+A A A
+C Fda A NOTE: The doors at both ends of the area marked
+Fd ‘S’ should be self-closing fre doorsets unless the
+Fd PS area is sub-divided such that any fre in that area
+L will not be able to prejudice both sections of
+corridor at the same time. If that area is a lift
+lobby, doors should be provided as shown in
+Figure 9 in BS 9999.
+A L
+Fd S Fd
+L Lift
+L
+S Services, toilets, etc.
+F d Self-closing E 20 S fre doorsets
+a
+F d a Possible alternative position for fre doorset
+C Corridor o… which accommodation opens
+L
+PS Fd P S Protected stairway
+A Accommodation (e.g. oƒce space – indicative
+Fd
+layout shown)
+Fda C
+A A A
+Diagram 2.4 Exits in a central core
+See para 2.13
+See par
+C
+Area within 4.5m of the opening
+Escape route
+4.5m Exit From A and B at least one direction of travel
+Opening is away from the opening. From C, where the
+A initial direction of travel is towards the opening,
+one of the escape routes is not less than 4.5m
+from the opening.
+B
+Exit
+Diagram 2.5 Open connections
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 17
+O N L I N E V E R S I O N

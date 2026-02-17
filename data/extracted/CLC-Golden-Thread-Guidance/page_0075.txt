@@ -1,0 +1,56 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+ANNEX D - Large HRB portfolios
+D1.21. In this example, it should be D1.24. BS 9997103 and BS EN ISO 45001104
+The questions an organisation can ask
+understood that a good systemic give detailed assistance on building
+itself, to set its context, include:
+approach to safety will rely upon a systemic risk management system.
+• What issues are likely to impact the
+information being kept regarding However, there are seven core
+accountable person’s organisation, and
+previous customer communications principles that are common to the
+how will it monitor them? (e.g. how is
+about the fire door closers. It will majority of risk management systems the organisation going to keep up to
+also include documents detailing and these are laid out below. date with new building safety law or
+the procurement method used to product recalls? etc.)
+Context of the Organisation
+source the new fire doors and closers
+• What are the interested parties that the
+and to appoint the installer. It will D1.25. Note that the word ‘system’ does not accountable person needs to consider
+help to identify whether the criteria refer to an IT system. It refers to in the Risk Management System? (e.g.
+used to source the doors meant an a risk management system, a well residents, regulators, other accountable
+inferior product was chosen because thought out, step by step process for persons, neighbouring properties,
+contractors, the public and visitors,
+it was cheaper, without a competent controlling safety risks.
+other Responsible Persons under the
+assessment of the consequence of D1.26. Understanding the context of an Regulatory Reform (Fire safety) Order
+selecting the cheaper option. organisation is foundational to building etc.)
+D1.22. For a smaller organisation, perhaps a proportionate risk management
+• Understand how the organisation
+managing only one HRB, this may system. An organisation with one HRB will establish, implement, maintain
+just involve retaining the quotes for can achieve a good systemic approach and continually improve the risk
+the door closers, and the reason why with a less complex system, as they management system (e.g. has the
+the successful quotation was chosen. are unlikely to have as many external, accountable person written down
+processes for managing the building
+Critically, once the root cause is nor internal, stakeholders.
+safely?)
+identified, the PDCA cycle will then D1.27. Whereas an organisation that
+enable the problem to be identified has eighty HRBs will require a • What are the desired outcomes of the
+processes the accountable person has
+and lessons to be learnt to avoid this sophisticated system to manage such
+in place, and how will it monitor they
+situation in the future. a significant number of properties
+are working to control the risks in the
+D1.23. This approach to managing building and residents. It will likely have many building(s)?
+safety risks relies on holding the external interested parties, including
+• What resources are available to operate
+golden thread information to enable multiple regulatory bodies across a
+the risk management system and are
+updating, maintaining, and periodically varied geography. It will also likely they adequate?
+reviewing the steps taken with regard have multiple internal stakeholders,
+• How will the organisation chronicle the
+to identifying building safety risks in such as repairs teams or IT teams,
+improvements they make to processes
+the HRB. that are important to establishing a over time?
+strong safety system.
+75

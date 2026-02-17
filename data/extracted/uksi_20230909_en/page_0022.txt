@@ -1,0 +1,45 @@
+(b) a list of the name and occupation of each person, if any, whose advice was sought in
+relation to the proposed change and a summary of any advice provided,
+(c) where the change is to the number of flats or residential rooms, plans showing the number
+of flats or residential rooms it is proposed the higher-risk building will contain,
+(d) an assessment of the agreed documents affected by the proposed change,
+(e) a compliance explanation in relation to the proposed change, and
+(f) where the application is made by someone on behalf of the client, a statement signed by
+the client confirming they agree to the application being made and that the information
+contained in the application is correct,
+and the application must be accompanied by the revised version of the agreed document produced
+in accordance with regulation 18(2)(b) (change control).
+Change control applications: validity and time limit
+22.—(1) Where the regulator receives a change control application which is valid the regulator
+must—
+(a) notify the applicant to that effect, and
+(b) determine it within 6 weeks beginning with the date the application is received by the
+regulator or within such longer period as at any time the regulator and the applicant agree
+in writing.
+(2) Where the regulator receives a change control application which is not valid the regulator
+must notify the applicant to that effect giving reasons (and where the applicant is not the client,
+also give a copy of the notification to the client).
+(3) A change control application is valid if it complies with regulation 21 (change control
+applications).
+Change control applications: consultation
+23.—(1) Before determining a change control application relating to a controlled change of a
+kind described in regulation 18(1)(a) (change control), the regulator must consult—
+(a) the enforcing authority (within the meaning of article 25 of the Regulatory Reform (Fire
+Safety) Order 2005(a)) for the building or proposed building where Part B of Schedule 1
+to the 2010 Regulations imposes requirements in relation to the work to which the
+controlled change relates, and
+(b) the sewerage undertaker for the building or proposed building where paragraph H4 of
+Schedule 1 to the 2010 Regulations imposes requirements in relation to the work to which
+the controlled change relates.
+(2) Where the regulator is required to consult a person under this regulation the regulator—
+(a) must give the person sufficient plans to show whether the work would, if carried out in
+accordance with those plans, comply with—
+(i) in the case of the enforcing authority, the applicable requirements of Part B (fire
+safety) of Schedule 1 to the 2010 Regulations, and
+(ii) in the case of the sewerage undertaker, the requirements of paragraph H4 of
+Schedule 1 to the 2010 Regulations;
+(b) must not determine the application until the expiry of a period of 10 working days
+beginning with the date the consultation starts or such longer period as the regulator and
+the person consulted agree in writing.
+(a) S.I. 2005/1541 to which there are amendments not relevant to this provision.
+22

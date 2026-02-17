@@ -1,0 +1,24 @@
+O N L I N E V E R S I O N
+D
+Travel distance
+D3 Travel distance is measured as the shortest route. Both of the following should be observed.
+a. If there is fixed seating or other fixed obstructions, the shortest route is along the centre line of
+the seatways and gangways.
+b. If the route includes a stair, the shortest route is along the pitch line on the centre line of travel.
+Width
+D4 Width is measured according to the following.
+a. For a door (or doorway), the clear width when the door is open (Diagram D1).
+b. For an escape route, either of the following.
+i. When the route is defined by walls: the width at 1500mm above finished floor level.
+ii. Elsewhere: the minimum width of passage available between any fixed obstructions.
+c. For a stair, the clear width between the walls or balustrades. On escape routes and stairs,
+handrails and strings intruding into the width by a maximum of 100mm on each side may be
+ignored. Rails used for guiding a stair-lift may be ignored, but it should be possible to park the
+lift’s chair or carriage in a position that does not obstruct the stair or landing.
+E°ective clear E°ective clear
+width (door stop width (door stop to
+to projecting door leaf)
+ironmongery)
+Diagram D1 M easurement of door width
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 177
+O N L I N E V E R S I O N

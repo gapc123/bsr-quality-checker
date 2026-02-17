@@ -1,0 +1,40 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+ANNEX D - Large HRB portfolios
+Risk and safety management reverse the decision when it comes D1.18. The reason that risk management
+systems and the golden thread to replacing the alarm system, and systems are identified as being critical
+inadvertently reduce the safety of the to improving safety standards, is
+D1.13. One of the most important changes
+building. that risk management systems are
+introduced through the Building
+Safety Act 2022 (BSA)98 is a shift from D1.15. Systemic approaches rely upon typically based upon a continuous
+a culture of ‘compliance’ to one of learning lessons from things that go improvement cycle. Since the mid-
+‘systemic risk management’. Dame well, and also events that go awry. 1990s, in UK Health and Safety law,
+Judith Hackitt’s interim report99 in If these learnings aren’t recorded, the improvement cycle has been
+2017 stated “There is a widespread and made intuitively accessible to based upon the Plan, Do, Check, Act
+culture in relation to building and future accountable persons, then the (PDCA) cycle100. Existing guidance
+fire standards of waiting to be told golden thread principle has not been includes BS 9997101 and BS EN ISO
+what to do by regulators rather than delivered upon, as the core principle 45001102, which are also PDCA based
+taking responsibility for building to of the golden thread is to enable good management systems, that can be
+correct standards. The approach decision making throughout the life used to manage building safety risks.
+is very much driven by aiming for cycle of the building. D1.19. This annex outlines how a larger
+minimum compliance, not ensuring D1.16. Therefore, when making decisions organisation with responsibility for a
+safety for the lifetime of the building.” based on the questions detailed below, number of buildings could develop a
+The introduction of the golden thread it is critical to make sure that the logic risk management system to enable
+requirements exemplifies the cultural and justification of your decisions them to discharge their duties under
+change that the new building safety are recorded in a way that future the Building Safety Act and other
+regime seeks to achieve. accountable persons can find and rely relevant legislation such as the Fire
+D1.14. Accountable persons must set out why on the information to enable them to Safety Act and the Regulatory Reform
+they have made their decisions. For make decisions. Order and their obligations to the
+Regulator of Social Housing
+example, following a fire in a building D1.17. In the new regulatory regime for
+fire alarm engineers recommend occupied HRBs, the expectation is D1.20. A significant element of the golden
+a change to the alarm and smoke placed firmly on the accountable thread is based on capturing and
+control systems due to lessons learnt person to understand their building, retaining evidence of cyclical events,
+after a fire. The accountable person to assess the key building safety such as fire risk assessments and
+must record this evidence as golden risks and then to manage them. This follow up works or alarm test records
+thread information. If this decision need not be unduly onerous and etc. Systemic management of building
+is not captured and made easily there is guidance available to assist safety risks goes beyond these cyclical
+accessible to a future accountable accountable persons to assess risks in events and seeks to identify root
+person, they may unwittingly their building. causes of risks, rather than treating
+the symptoms.
+74

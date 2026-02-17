@@ -1,0 +1,41 @@
+O N L I N E V E R S I O N
+B3
+d. Calcium silicate, cement-based or gypsum-based boards, a minimum of 12mm thick.
+These do not necessarily achieve the performance specified in paragraph 9.13.
+NOTE: Cavity barriers provided around openings may be formed by the window or door frame if
+the frame is constructed of steel or timber of the minimum thickness in (a) or (b), as appropriate.
+9.15 Cavity barriers should be tightly fitted to a rigid construction and mechanically fixed in position.
+If this is not possible (e.g. where a cavity barrier joins to slates, tiles, corrugated sheeting or similar
+materials) the junction should be fire-stopped.
+9.16 Cavity barriers should be fixed so their performance is unlikely to be made ineffective by any of the
+following.
+a. Movement of the building due to subsidence, shrinkage or temperature change, and movement
+of the external envelope due to wind.
+b. During a fire, collapse of services penetrating the cavity barriers, either by the failure of the
+supporting system or through degradation of the service itself (e.g. by melting or burning).
+c. During a fire, failure of the cavity barrier fixings. (In roof spaces, where cavity barriers are fixed
+to roof members, there is no expectation of fire resistance from roof members provided for the
+purpose of support.)
+d. During a fire, failure of any material or construction to which cavity barriers abut. (For example,
+a suspended ceiling that continues over a fire resisting wall or partition collapses, and the
+cavity barrier fails prematurely because the ceiling was not designed to provide a minimum fire
+resistance of EI 30.)
+Openings in cavity barriers
+9.17 Openings should be limited to the following.
+a. Fire doorsets with a minimum rating of E 30, fitted in accordance with Appendix C.
+b. The passage of pipes that follow the provisions in Section 10.
+c. The passage of cables or conduits containing one or more cables.
+d. Openings fitted with a suitably mounted and appropriate fire damper.
+e. Ducts that are either of the following.
+i. Fire resisting (minimum E 30).
+ii. Fitted with a suitably mounted and appropriate fire damper where they pass through the
+cavity barrier.
+9.18 If a cavity barrier is provided above or below a partition between bedrooms in ‘residential
+(institutional)’ and ‘residential (other)’ (purpose groups 2(a) and 2(b)) buildings, and the partition is not
+a fire resisting partition, then paragraph 9.17 does not apply. However, both of the following apply.
+a. The number of openings in the barrier should be kept to a minimum.
+b. Any penetrations should be sealed to restrict the passage of smoke with an appropriate
+fire-stopping material.
+NOTE: For further guidance on openings in cavity barriers see Section 10.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 81
+O N L I N E V E R S I O N

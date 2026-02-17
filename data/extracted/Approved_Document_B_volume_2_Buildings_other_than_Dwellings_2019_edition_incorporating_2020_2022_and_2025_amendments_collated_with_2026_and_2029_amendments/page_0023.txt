@@ -1,0 +1,23 @@
+O N L I N E V E R S I O N
+B1
+Design and installation of systems
+1.16 Fire detection and alarm systems must be properly designed, installed and maintained. A design,
+installation and commissioning certificate should be provided for fire detection and alarm systems.
+Third party certification schemes for fire protection products and related services are an effective
+means of providing assurances of quality, reliability and safety.
+Interface between fire detection and alarm systems and other systems
+1.17 Fire detection and alarm systems sometimes trigger other systems. The interface between systems
+must be reliable. Particular care should be taken if the interface is facilitated via another system.
+Where any part of BS 7273 applies to the triggering of other systems, the recommendations of that
+part of BS 7273 should be followed.
+Student accommodation
+1.18 In student residences that are designed and occupied as a block of flats, separate automatic
+detection should be provided in each self-contained flat where all of the following apply.
+a. A group of up to six students shares the flat.
+b. Each flat has its own entrance door.
+c. The compartmentation principles for flats in Section 7 of Approved Document B Volume 1 have
+been followed.
+Where a total evacuation strategy is adopted, the alarm system should follow the guidance
+elsewhere in this section.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 11
+O N L I N E V E R S I O N

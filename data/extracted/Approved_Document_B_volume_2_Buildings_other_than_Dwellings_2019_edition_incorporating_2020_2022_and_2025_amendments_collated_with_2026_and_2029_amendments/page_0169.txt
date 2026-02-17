@@ -1,0 +1,49 @@
+O N L I N E V E R S I O N
+D B
+2029 amendment – effective from 2 September 2029
+Table B1 Continued
+Part of building Minimum provisions when tested and classified Type of exposure
+to the relevant European standard (minutes)(1)
+or assessed following the recommendations of
+paragraphs B1 to B5 (minutes)(2)
+Loadbearing Integrity Insulation
+capacity(3)
+5. External walls
+a. any part a maximum of 1000mm from See Table B2 See Table B2 See Table B2 Each side
+any point on the relevant boundary(6) separately
+b. any part a minimum of 1000mm from See Table B2 See Table B2 15 min From inside the
+the relevant boundary(6) building
+c. any part beside an external escape 30 min 30 min No From inside the
+route (Section 2, Diagram 2.7 of provision(7) (8) building
+Approved Document B Volume 1 and
+Section 3, Diagram 3.4).
+6. Compartment walls
+Separating either:
+a. a flat from any other part of 60 min or 60 min or 60 min or Each side
+the building (see paragraph 7.1 of see Table B2 see Table B2 see Table B2 separately
+Approved Document B Volume 1) (whichever is (whichever is (whichever is
+less) less) less)
+b. occupancies. 60 min or 60 min or 60 min or Each side
+see Table B2 see Table B2 see Table B2 separately
+(whichever is (whichever is (whichever is
+less) less) less)
+7. Compartment walls See Table B2 See Table B2 See Table B2 Each side
+(other than in item 6 or item 10). separately
+8. Protected shafts
+Excluding any firefighting shaft:
+a. any glazing described in Section 8, Not applicable 30 min No provision(8) Each side
+Diagram 8.4 separately
+b. any other part between the shaft 30 min 30 min 30 min Each side
+and a protected lobby/corridor separately
+described in Section 8, Diagram 8.4
+c. any part not described in (a) or (b) See Table B2 See Table B2 See Table B2 Each side
+above. separately
+9. Enclosure (that does not form
+part of a compartment wall or a
+protected shaft) to a:
+a. protected stairway 30 min 30 min 30 min(8) Each side
+separately
+b. lift shaft. 30 min 30 min 30 min Each side
+separately
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 157
+O N L I N E V E R S I O N

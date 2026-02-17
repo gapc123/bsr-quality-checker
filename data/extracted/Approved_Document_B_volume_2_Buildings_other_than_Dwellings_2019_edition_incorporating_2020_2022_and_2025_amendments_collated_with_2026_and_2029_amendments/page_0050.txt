@@ -1,0 +1,40 @@
+O N L I N E V E R S I O N
+B1
+See para 3.29
+Configurations of stairs and external wall
+Accommodation Accommodation
+1800mm min. Fire resisting construction
+of adjacent building enclosure
+Fire resisting construction
+1800mm 1800mm of protected stairway
+Stair min. Stair min.
+Non-fre resisting construction
+Accommodation Accommodation
+Configuration A Configuration B
+Diagram 3.3 E xternal protection to protected stairways
+External escape stairs
+3.31 Where a storey or part of the building has more than one escape route available, some of the
+escape routes may be via an external escape stair, provided the following conditions are met.
+a. There is at least one internal escape stair from every part of each storey (excluding plant areas).
+b. In the case of an ‘assembly and recreation’ (purpose group 5) building, the route is not intended for
+use by the public.
+c. In the case of a ‘residential (institutional)’ (purpose group 2(a)) building, the route serves only
+office or residential staff accommodation.
+3.32 Any external escape stair should meet all of the following conditions (Diagram 3.4).
+a. Doors to the stair should be fire resisting (minimum E 30) and be fitted with a self-closing
+device, except for a single exit door from the building to the top landing of a downward-leading
+external stair, provided it is the only door onto the landing.
+b. Fire resisting construction (minimum RE 30) is required for the building envelope within the
+following zones, measured from the flights and landings of the external stair.
+i. 1800mm above and horizontally.
+ii. 9m vertically below.
+iii. 1100mm above the top landing of the stair (except where the stair leads from basement to
+ground level).
+c. Fire resisting construction (minimum RE 30) should be provided for any part of the building
+(including doors) within 1800mm of the escape route from the foot of the stair to a place of
+safety. This does not apply if there are alternative escape route from the foot of the external
+escape stair.
+d. Stairs more than 6m in height should be protected from adverse weather. Protection should
+prevent the build-up of snow or ice but does not require full enclosure.
+38 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

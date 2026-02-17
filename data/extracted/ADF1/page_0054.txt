@@ -1,0 +1,51 @@
+C O N L I N E V E R S I O N
+Part 3 – Commissioning details
+The commissioning engineer should complete this section after completing Part 2b.
+3.1 Commissioning equipment
+Schedule of air flow measurement equipment used (model and serial number) Date of last UKAS calibration
+1.
+2.
+3.
+3.2 Air flow measurements – intermittent extract fans only
+Fan reference (from section 1.2 above) Measured extract rate (l/s) Design extract rate (l/s)
+Refer to Table 1.1(1)
+Extract fan 1
+Extract fan 2
+Extract fan 3
+Extract fan 4
+For cooker hoods, only the highest setting needs to be recorded.
+3.3 Air flow measurements (extract) – continuous mechanical extract ventilation and mechanical ventilation with
+heat recovery only
+Room reference Measured air flow – Design air flow – high Measured air flow – Design air flow –
+(location of terminals) high rate (l/s) rate (l/s) continuous rate (l/s) continuous rate (l/s)
+Refer to Table 1.2 Refer to Table 1.3
+Kitchen
+Bathroom
+En suite
+Utility
+Other
+Other
+Other
+3.4 Air flow measurements (supply) – mechanical ventilation with heat recovery only
+Room reference Measured air flow – Design air flow – high Measured air flow – Design air flow –
+(location of terminals) high rate (l/s) rate (l/s) continuous rate (l/s) continuous rate (l/s)
+Refer to Table 1.2 Refer to Table 1.3
+Living room 1
+Living room 2
+Dining room
+Bedroom 1
+Bedroom 2
+Bedroom 3
+Bedroom 4
+Bedroom 5
+Study
+Other
+3.5 Commissioning engineer’s declaration
+Engineer’s signature
+Registration number (if applicable)
+Date of commissioning
+NOTE:
+1. All references to tables and paragraphs are to Approved Document F, Volume 1: Dwellings.
+46
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

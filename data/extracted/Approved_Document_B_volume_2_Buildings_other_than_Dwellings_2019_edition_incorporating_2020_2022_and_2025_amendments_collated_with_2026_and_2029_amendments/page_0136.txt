@@ -1,0 +1,33 @@
+O N L I N E V E R S I O N
+B5
+18.10 Outlets should not be placed where they prevent the use of escape routes from the building.
+Mechanical smoke extract
+18.11 If basement storeys are fitted with a sprinkler system in accordance with Appendix E, a mechanical
+smoke extraction system may be provided as an alternative to natural venting. Sprinklers do not
+need to be installed on the other storeys unless needed for other reasons.
+Car parks are not normally expected to be fitted with sprinklers (see Section 11 for guidance on
+car parks).
+18.12 The air extraction system should comply with all of the following.
+a. It should give at least 10 air changes per hour.
+b. It should be capable of handling gas temperatures of 300°C for not less than one hour.
+c. It should do either of the following.
+i. Be activated automatically if the sprinkler system activates.
+ii. Be activated by an automatic fire detection system that conforms to BS 5839-1
+(minimum L3 standard).
+Further information on equipment for removing hot smoke is given in BS EN 12101-3.
+See paras 18.1 and 18.13
+Fire resisting construction of foor
+see Section 8
+Fire resisting construction achieving
+the same rating as the foor of the
+ground storey
+External External
+wall wall
+Stallboard outlet Basement outlet
+with grill with break-out or
+or removable openable cover
+Ground foor cover Ground foor
+Basement Basement
+Diagram 18.1 Fire resisting construction for smoke outlet shafts
+124 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

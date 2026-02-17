@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B1
+2.28 Where dead ends of corridors exceeding 4.5m long provide access to a point from which alternative
+escape route are available, they should be separated by self-closing fire doorsets (together with any
+associated screens) from any part of the corridor that either:
+a. Provides two directions of escape (Diagram 2.10a)
+b. Continues past one storey exit to another (Diagram 2.10b).
+Alternatively, the stairs and corridors may be protected by a pressurisation system complying with
+BS EN 12101-6.
+See para 2.28
+a. ‘T’ junction with b. Continuation
+main corridor past stairway
+Fd Fd
+Fd Fd
+Fd
+Fd Fd Fd
+Fd Fd Fd
+Fd
+Fd Fd
+F d Self-closing
+Fd Fd
+fre doorsets
+Protected
+corridor
+Diagram 2.10 Dead-end corridors exceeding 4.5m long
+Cavity barriers
+2.29 Additional measures to safeguard means of escape from smoke are given in Section 10.
+External escape routes
+2.30 Where an external escape route is beside an external wall of the building, the external wall should
+be of fire resisting construction in both of the following zones.
+a. Within 1800mm of the escape route.
+b. Up to 1100mm above the surface of the escape route.
+This does not apply to external escape stairs (see paragraph 3.32).
+24 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

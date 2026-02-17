@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B3
+Section 7: Loadbearing elements of structure
+Fire resistance standard
+7.1 Elements of structure such as structural frames, beams, columns, loadbearing walls (internal and
+external), foor structures and gallery structures should have, as a minimum, the fre resistance given
+in Appendix B, Table B1.
+7.2 Appendix B includes guidance on all of the following.
+a. Provisions to ensure that where one element of structure supports or stabilises another
+element of structure, the supporting element has no less fire resistance than the other element
+(see Table B2).
+b. Measures so that elements common to more than one building or compartment are constructed
+to the standard of the more onerous of the relevant provisions.
+c. Special provisions about fire resistance of elements of structure in single storey buildings.
+d. Concessions in respect of fire resistance of elements of structure in basements where one or
+more sides of the basement are open at ground level.
+Exclusions from the provisions for elements of structure
+7.3 The following are excluded from the definition of ‘element of structure’.
+a. A structure that supports only a roof, unless either of the following applies.
+i. The roof performs the function of a floor, such as for parking vehicles, or as a means
+of escape.
+ii. The structure is essential for the stability of an external wall that needs to be fire
+resisting (e.g. to achieve compartmentation or for the purposes of preventing fire spread
+between buildings).
+b. The lowest floor of the building.
+c. A platform floor.
+d. A loading gallery, fly gallery, stage grid, lighting bridge or any gallery provided for similar purposes
+or for maintenance and repair.
+e. External walls, such as curtain walls or other forms of cladding, which transmit only self weight
+and wind loads and do not transmit floor load.
+NOTE: In some cases, structural members within a roof may be essential for the structural stability
+system of the building. In these cases, the structural members in the roof do not just support a roof
+and must demonstrate the relevant fire resistance for the building as required by paragraph 7.2a above.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 63
+O N L I N E V E R S I O N

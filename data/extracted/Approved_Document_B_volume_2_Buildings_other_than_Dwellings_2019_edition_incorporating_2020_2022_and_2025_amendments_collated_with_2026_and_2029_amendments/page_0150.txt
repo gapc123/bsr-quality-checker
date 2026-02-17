@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Appendix B: Performance of materials,
+products and structures
+Introduction
+B1 Much of the guidance in this document is given in terms of performance classifications in relation
+to British or European Standards. In such cases, it will be necessary to demonstrate that a system
+or product can meet the relevant performance classification. This will be achieved if the system or
+product complies with one of the following.
+a. They should be in accordance with a specification or design that has been shown by specific
+test(s) to be capable of meeting that performance classification.
+b. They should have been designed by using relevant design standards in order to meet that
+performance classification.
+c. They should have been assessed by applying relevant test evidence, in lieu of carrying out a
+specific test, as being capable of meeting that performance classification.
+NOTE: Some products are subject to Classification Without Further Testing (CWFT). For the
+purposes of this approved document, such products can be considered to have been shown to be
+capable of meeting a performance specification as per paragraph B1a.
+B2 Any test evidence used to demonstrate the fire performance classification of a product or system
+should be carefully checked to ensure that it is applicable to the intended use. Small differences in
+detail, such as fixing method, joints, dimensions, the introduction of insulation materials and air gaps
+(ventilated or not), might significantly affect the performance and should be tested or assessed in
+accordance with paragraph B1.
+B3 Assessments should not be regarded as a way to avoid a test where one is necessary. Assessments
+should only be carried out where sufficient relevant test evidence is available. Relevant test
+evidence is unlikely to be provided by test standards which have different classification criteria.
+B4 Where it is proposed to assess the classification of a product or system in lieu of carrying out a
+specific test (as in paragraph B1c), this should be done in accordance with the relevant standard for
+extended application for the test in question and should include details of the test evidence that
+has been used to support the assessment.
+For performance classifications where there is no specific standard for extended application,
+assessment reports should be produced in accordance with the principles of BS EN 15725 and
+should include details of the test evidence that has been used to support the assessment. In
+cases where the end use application is not covered by the extended application standard and
+an assessment is the only other suitable approach, then further information on best practice is
+provided in the Passive Fire Protection Forum’s Guide to Undertaking Technical Assessments of the
+Fire Performance of Construction Products Based on Fire Test Evidence. The same principle should
+be followed for assessments as described in paragraph B2.
+NOTE: Regulation 7(2) limits components used in or on the external walls of certain buildings to
+materials achieving class A2-s1, d0 or class A1 (see Section 12). Assessments cannot be used to
+demonstrate compliance with this requirement.
+138 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

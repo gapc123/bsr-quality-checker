@@ -1,0 +1,47 @@
+(xiii) a change to the number of flats, residential rooms or commercial units contained in a
+higher-risk building;
+(c) a change specified by the regulator as a major change by notice given in accordance with
+regulation 25 (change control: regulator power to specify notifiable changes and major
+changes);
+“notifiable change” means—
+(a) a change to the construction control plan other than a change to the schedule of
+appointments contained within it;
+(b) a change to the change control plan;
+(c) a change to the layout of a flat or a residential room in a proposed higher-risk building or
+in a higher-risk building;
+(d) a change to the number or dimensions of any openings in any wall, ceiling or other
+building element for any pipe, duct or cable;
+(e) a change to the wall tie, wall restraint fixing or support system in any wall or proposed
+wall (excluding an external wall);
+(f) subject to paragraph (2), a change of any construction product or building element to be
+used in or on a proposed higher-risk building (or to be used as part of works to a higher-
+risk building) where its replacement is of the same or higher classification under the
+reaction to fire classification (within the meaning in regulation 2(6) of the 2010
+Regulations);
+(g) any other change to the fire and emergency file or the fire safety compliance information;
+(h) a change specified by the regulator as a notifiable change by notice given in accordance
+with regulation 25 (change control: regulator power to specify notifiable changes and
+major changes);
+(i) a change to the partial completion strategy;
+(j) a change to a staged work statement or a subsequent stages statement (as defined in
+regulation 4(3)).
+(2) Where an agreed document specifies use of a construction product or building element
+falling within a specified class, the change to another product or element falling within the same
+design specification is a recordable change.
+New client etc
+27.—(1) Subject to paragraphs (4) and (5), if, at any time after building control approval for
+HRB work, a stage of HRB work or work to existing HRB is granted, a person (in this regulation
+“C”) ceases to be the client in relation to the work they must, not more than 14 days after the date
+they cease to be the client, provide the new client (in this regulation “N”) with—
+(a) a copy of the golden thread information;
+(b) information (including plans, drawings and other documents) which is sufficient to detail
+the work comprised in the project;
+(c) a document explaining the arrangements made under regulation 11A (suitable
+arrangements to ensure compliance with requirements etc) of the 2010 Regulations;
+(d) a statement, signed by C, which—
+(i) provides the date C ceased to be the client, and
+(ii) confirms that—
+(aa) C has fulfilled their duties as the client under Part 2A (dutyholders and
+competence) of the 2010 Regulations,
+(bb) C has provided a copy of the golden thread information to N, and
+26

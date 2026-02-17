@@ -1,0 +1,42 @@
+O N L I N E V E R S I O N
+B1
+ii. Operable from the side approached by people escaping.
+iii. Operable without a key.
+iv. Operable without requiring people to manipulate more than one mechanism.
+Doors may be fitted with hardware to allow them to be locked when rooms are empty.
+In places such as hotel bedrooms, locks may be fitted that are key operated from the outside and
+manually opened from the inside.
+If a secure door is operated by code or combination keypad, swipe or proximity card, biometric data,
+etc., a security mechanism override should be possible from the side approached by people escaping.
+5.8 Electrically powered locks should return to the unlocked position in all of the following situations.
+a. If the fire detection and alarm system operates.
+b. If there is loss of power or system error.
+c. If the security mechanism override is activated.
+Security mechanism overrides for electrically powered locks should be a Type A call point as
+described in BS 7273-4. The call point should be positioned on the side approached by people
+escaping. If the door provides escape in either direction, a call point should be installed on both
+sides of the door.
+5.9 In places of assembly and shop and commercial buildings (purpose groups 4 and 5), doors on escape
+routes from rooms with more than 60 people should be either of the following.
+a. Not fitted with locks, latches or bolts.
+b. Fitted with panic fastenings in accordance with BS EN 1125.
+In non-residential buildings (purpose groups 3 to 7), some final exit doors feature security locks
+that are used only when the building is empty. Such locks may be appropriate, but management
+procedures must emphasise their safe use.
+5.10 Guidance on door closing and ‘hold open’ devices for fire doorsets is set out in Appendix C.
+Direction of opening
+5.11 The door of any doorway or exit should be hung to open in the direction of escape whenever
+reasonably practicable. It should always be hung to open in the direction of escape if either of the
+following conditions applies.
+a. More than 60 people might be expected to use it during a fire.
+b. There is a very high risk of fire with potential for rapid fire growth, such as with some
+industrial activities.
+Amount of opening and effect on associated escape routes
+5.12 All doors on escape routes should be hung to meet both of the following conditions.
+a. Open by a minimum of 90 degrees.
+b. Open with a swing that complies with both of the following.
+i. Is clear of any change of floor level, other than a threshold or single step on the line
+of the doorway.
+ii. Does not reduce the effective width of any escape route across a landing.
+48 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

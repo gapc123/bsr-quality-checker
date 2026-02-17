@@ -1,0 +1,63 @@
+O N L I N E V E R S I O N
+C
+2029 amendment – effective from 2 September 2029
+Table C1 Continued
+Position of doorset Minimum fire resistance of doorset in terms of
+integrity (minutes) when tested and classified to the
+relevant European standard(1) or assessed following the
+recommendations of paragraph B1 to B5 and C1(2)
+e. not described in (a), (b), (c) or (d) above. Same as for the wall in which it is fitted, but add S (3) if the
+a
+door is used for progressive horizontal evacuation under
+the guidance to requirement B1
+3. In a compartment floor Same as for the floor in which it is fitted
+4. Forming part of the enclosures of:
+a. a protected stairway or evacuation shaft 30 minutes S (3)
+a
+(except as described in item 9 or 11(b) below)
+b. a lift shaft (see paragraph 5.34b) that does not 30 minutes
+form a protected shaft in 2(b), (c) or (d) above.
+5. Forming part of the enclosure of:
+a. a protected lobby approach (or protected 30 minutes S(3)
+a
+corridor) to a stairway or an evacuation shaft.
+b. any other protected corridor 20 minutes S(3)
+a
+c. a protected lobby approach to a lift shaft 30 minutes S(3)
+a
+(paragraphs 5.37 to 5.39).
+6. Giving access to an external escape route 30 minutes
+7. Sub-dividing:
+a. corridors connecting alternative exits 20 minutes S (3)
+a
+b. dead-end portions of corridors from the 20 minutes S (3)
+a
+remainder of the corridor.
+8. Any door within a cavity barrier 30 minutes
+9. Any door that forms part of the enclosure to a 20 minutes
+protected entrance hall or protected landing in
+a flat
+10. Any door that forms part of the enclosure:
+a. to a place of special fire hazard 30 minutes
+b. to ancillary accommodation in care homes (see 30 minutes
+paragraph 2.44).
+11. In a dwellinghouse:
+a. between a dwellinghouse and a garage 30 minutes S (3)
+a
+b. forming part of the enclosures to a protected 20 minutes
+stairway in a single family dwellinghouse
+c. within any fire resisting construction in a 20 minutes
+dwellinghouse not described elsewhere in this
+table.
+NOTES:
+1. Classified in accordance with BS EN 13501-2. In the European classification ‘E’ is the resistance to fire in terms of
+integrity. Products or systems cannot typically assume a European class unless they have been tested and classified
+accordingly.
+2. When assessed as being capable of meeting a performance classification, products or systems should follow the
+relevant test standards to indicate their fire resistance performance in terms of integrity for a period of minutes,
+when following the recommendations of paragraphs B1 to B5.
+3. Unless pressurisation techniques that comply with BS EN 12101-6 are used, these doors should also be evidenced to
+match in performance the additional S classification when tested to BS EN 1634-3.
+a
+174 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

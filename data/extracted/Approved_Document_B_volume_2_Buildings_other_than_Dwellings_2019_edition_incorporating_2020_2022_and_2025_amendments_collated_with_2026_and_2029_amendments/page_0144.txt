@@ -1,0 +1,70 @@
+O N L I N E V E R S I O N
+A A
+Appendix A: Key terms
+NOTE: Except for the items marked * (which Basement storey A storey with a floor that, at some
+are from the Building Regulations 2010), these point, is more than 1200mm below the highest level
+definitions apply only to Approved Document B. of ground beside the outside walls. (However, see
+Appendix B, paragraph B26c, for situations where
+NOTE: The terms defined below are key terms
+the storey is considered to be a basement only
+used in this document only. Refer to BS 4422 for
+because of a sloping site.)
+further guidance on the definitions of common
+terms used in the fire safety industry which are not Boundary The boundary of the land that belongs to
+listed below. a building, or, where the land abuts a road, railway,
+canal or river, the centre line of that road, railway,
+Access room A room that the only escape route
+canal or river.
+from an inner room passes through.
+*Building Any permanent or temporary building
+Alternative escape routes Escape routes that are
+but not any other kind of structure or erection. A
+sufficiently separated by direction and space or by
+reference to a building includes a reference to part
+fire resisting construction to ensure that one is still
+of a building.
+available if the other is affected by fire.
+Building control body A term that includes both
+NOTE: A second stair, balcony or flat roof which
+local authority building control and approved
+enables a person to reach a place free from danger
+inspectors.
+from fire is considered an alternative escape route
+for the purposes of a dwellinghouse. Cavity A space enclosed by elements of a building
+(including a suspended ceiling) or contained within
+Alternative exit One of two or more exits, each of
+an element, but that is not a room, cupboard,
+which is separate from the other.
+circulation space, protected shaft, or space within a
+Appliance ventilation duct A duct to deliver flue, chute, duct, pipe or conduit.
+combustion air to a gas appliance.
+Cavity barrier A construction within a cavity, other
+Atrium (plural atria) A continuous space that passes than a smoke curtain, to perform either of the
+through one or more structural floors within a following functions.
+building, not necessarily vertically.
+• Close a cavity to stop smoke or flame entering.
+NOTE: Enclosed lift wells, enclosed escalator wells,
+• Restrict the movement of smoke or flame
+building services ducts and stairs are not classified
+within a cavity.
+as atria.
+Ceiling Part of a building that encloses a room,
+Automatic release mechanism A device that
+protected shaft or circulation space and is exposed
+normally holds a door open, but closes it
+overhead.
+automatically if any one of the following occurs.
+NOTE: The soffit of a rooflight, but not the frame,
+• Smoke is detected by an automatic device of a
+is included as part of the surface of the ceiling. An
+suitable nature and quality in a suitable location.
+upstand below a rooflight is considered as a wall.
+• A hand-operated switch, fitted in a suitable
+Circulation space A space (including a protected
+position, is operated.
+stairway) mainly used as a means of access
+• The electricity supply to the device, apparatus between a room and an exit from the building or
+or switch fails. compartment.
+• The fire alarm system, if any, is operated.
+132 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

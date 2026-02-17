@@ -1,0 +1,279 @@
+{
+  "doc_id": "bsr_charging_scheme_2025_26",
+  "filename": "Building Safety Regulator charging scheme 2025 to 2026.pdf",
+  "title": "Building Safety Regulator Charging Scheme 2025 to 2026",
+  "source": "HSE/Building Safety Regulator",
+  "source_url": "https://www.hse.gov.uk/building-safety/charging-scheme.htm",
+  "publication_date": "2025-04-01",
+  "effective_date": "2025-04-01",
+  "version": "2025-2026",
+  "supersedes": ["bsr_charging_scheme_2024_25"],
+  "superseded_by": null,
+  "geography_scope": ["England"],
+  "london_specific": false,
+  "london_triggers": [],
+  "topic_tags": [
+    "building_safety",
+    "higher_risk_buildings",
+    "charging_fees",
+    "building_control",
+    "gateway_process"
+  ],
+  "doc_type": "charging_scheme",
+  "regulator": "Building Safety Regulator (BSR)",
+  "regulated_activities": [
+    "Building control approval applications",
+    "Gateway 2 applications (building control approval)",
+    "Gateway 3 applications (completion certificate)",
+    "Higher-risk building registration",
+    "Building assessment certificate applications",
+    "Building inspector registration",
+    "Building control approver registration",
+    "Relaxation and dispensation applications",
+    "Change of use applications",
+    "Regularisation applications",
+    "Appeals",
+    "Compliance notices and enforcement",
+    "Complaints investigation",
+    "Major revision applications",
+    "Minor revision applications",
+    "Public body status notifications",
+    "Initial notice validations",
+    "Amendment notice validations",
+    "Final certificate validations",
+    "Plans certificate validations",
+    "Oversight of building control bodies",
+    "Mandatory occurrence reports processing"
+  ],
+  "regulated_actors": [
+    "client",
+    "principal_designer",
+    "principal_contractor",
+    "accountable_person",
+    "building_control",
+    "developer",
+    "housing_association"
+  ],
+  "building_types": [
+    "higher-risk buildings",
+    "residential buildings over 18m or 7+ storeys",
+    "care homes",
+    "hospitals",
+    "buildings with 2+ residential units"
+  ],
+  "height_thresholds": [
+    {
+      "threshold": "18m or 7+ storeys",
+      "condition": "Higher-risk building (HRB) definition for residential buildings"
+    },
+    {
+      "threshold": "2+ residential units",
+      "condition": "HRB applies to buildings containing flats, care homes, hospitals"
+    }
+  ],
+  "obligations": {
+    "must": [
+      {
+        "text": "Clients must pay charges within 30 days of receiving an invoice",
+        "section": "Payment and invoicing",
+        "page": null
+      },
+      {
+        "text": "Accountable persons must pay HRB registration charges",
+        "section": "Schedule 13-14",
+        "page": null
+      },
+      {
+        "text": "Building control approvers must pay registration fees (5-year registration)",
+        "section": "Schedule 20",
+        "page": null
+      },
+      {
+        "text": "Building inspectors must pay registration fees (4-year registration)",
+        "section": "Schedule 19",
+        "page": null
+      },
+      {
+        "text": "Charges are recoverable as a civil debt if unpaid",
+        "section": "Payment terms",
+        "page": null
+      },
+      {
+        "text": "Principal accountable person must apply for building assessment certificate within prescribed period",
+        "section": "Schedule 16",
+        "page": null
+      }
+    ],
+    "should": [
+      {
+        "text": "Applicants should raise any queries about charges within 14 days",
+        "section": "Query and dispute process",
+        "page": null
+      },
+      {
+        "text": "Applicants should escalate unresolved queries to level 2 (finance team) then level 3 (senior review)",
+        "section": "Dispute resolution",
+        "page": null
+      }
+    ],
+    "may": [
+      {
+        "text": "BSR may waive charges for building work solely for disabled persons",
+        "section": "Exceptions",
+        "page": null
+      },
+      {
+        "text": "BSR may charge for additional compliance work beyond standard scope",
+        "section": "Assessment activities",
+        "page": null
+      },
+      {
+        "text": "BSR may recover additional costs for enforcement activities",
+        "section": "Schedule 18",
+        "page": null
+      }
+    ]
+  },
+  "key_definitions": [
+    {
+      "term": "Higher-risk building (HRB)",
+      "definition": "Building at least 18m high or with 7+ storeys, containing 2+ residential units, OR containing a care home or hospital regardless of height",
+      "section": "Building Safety Act 2022"
+    },
+    {
+      "term": "Principal Accountable Person (PAP)",
+      "definition": "The accountable person with overall responsibility for discharging obligations under the Building Safety Act for an occupied HRB",
+      "section": "Building Safety Act 2022"
+    },
+    {
+      "term": "Client",
+      "definition": "Person for whom building work is carried out; responsible for Gateway 2 and 3 applications",
+      "section": "Building Safety Act 2022"
+    },
+    {
+      "term": "Gateway 2",
+      "definition": "Building control approval stage before construction can commence on HRB",
+      "section": "Gateway process"
+    },
+    {
+      "term": "Gateway 3",
+      "definition": "Completion certificate application stage for HRB before occupation",
+      "section": "Gateway process"
+    },
+    {
+      "term": "Hourly rate",
+      "definition": "Standard charge of GBP 151 per hour for most BSR building control functions",
+      "section": "Charging rates"
+    },
+    {
+      "term": "Oversight hourly rate",
+      "definition": "Charge of GBP 130 per hour for BSR oversight of registered building control bodies",
+      "section": "Schedule 21-28"
+    },
+    {
+      "term": "Building assessment certificate",
+      "definition": "Certificate issued by BSR confirming HRB meets building safety standards during occupation",
+      "section": "Schedule 16"
+    },
+    {
+      "term": "Mandatory occurrence reports",
+      "definition": "Reports of safety occurrences that must be submitted to BSR",
+      "section": "Schedule 17"
+    }
+  ],
+  "exceptions": [
+    {
+      "description": "Building work solely for disabled persons",
+      "condition": "The building work must be carried out solely to facilitate the needs of a disabled person and must relate to their disability. Standard charges may be waived in these circumstances.",
+      "section": "Exceptions to charges"
+    },
+    {
+      "description": "Crown premises",
+      "condition": "Specific provisions apply to Crown premises under separate schedules",
+      "section": "Crown provisions"
+    }
+  ],
+  "dependencies": [
+    {
+      "doc_ref": "Building Safety Act 2022",
+      "relationship": "Primary legislation enabling the charging scheme"
+    },
+    {
+      "doc_ref": "Building Act 1984",
+      "relationship": "Primary legislation for building control functions"
+    },
+    {
+      "doc_ref": "Building Safety (Regulator's Charges) Regulations 2023",
+      "relationship": "Statutory instrument setting charge rates and structure"
+    },
+    {
+      "doc_ref": "Building Regulations 2010",
+      "relationship": "Technical requirements being regulated"
+    },
+    {
+      "doc_ref": "Higher-Risk Buildings (Key Building Information etc.) (England) Regulations 2023",
+      "relationship": "Regulations for HRB registration requirements"
+    },
+    {
+      "doc_ref": "Building (Registered Building Control Approvers etc.) (England) Regulations 2024",
+      "relationship": "Regulations for building control body registration"
+    },
+    {
+      "doc_ref": "Managing Safety Guidance - HM Treasury",
+      "relationship": "Government guidance on cost recovery principles"
+    }
+  ],
+  "decision_points": [
+    "Whether a building qualifies as higher-risk (affecting applicable fees)",
+    "Which gateway stage applies to the project",
+    "Whether building control approval or registered building control approver route applies",
+    "Whether disabled persons exemption applies",
+    "Timing of HRB registration requirement",
+    "Whether major or minor revision applies to change requests",
+    "Whether regularisation route is needed for unpermitted work",
+    "Selection of appropriate building control route (BSR vs RBC)"
+  ],
+  "summary_bullets": [
+    "BSR charges GBP 151 per hour for most building control functions including Gateway 2 and 3 assessments",
+    "Oversight of registered building control bodies charged at GBP 130 per hour",
+    "Fixed fee of GBP 189 for building control approval applications (not HRB)",
+    "Fixed fee of GBP 113 for relaxation/dispensation applications",
+    "Gateway 3 completion certificate application costs GBP 227 fixed fee",
+    "HRB registration costs GBP 251 per higher-risk building",
+    "Building assessment certificate application costs GBP 302",
+    "Building inspector registration costs GBP 336 for 4-year period",
+    "Building control approver registration costs GBP 4,494 for 5-year period",
+    "28 schedules detail specific chargeable activities and rates",
+    "Cost recovery principle applies - those who benefit from regulation bear the cost",
+    "Payment required within 30 days; unpaid charges recoverable as civil debt",
+    "Three-level query/dispute process available for challenging charges",
+    "Exemption available for building work solely benefiting disabled persons",
+    "Scheme applies to England only under Building Safety Act 2022",
+    "Annual scheme updated from previous 2024-25 charging scheme",
+    "Includes charges for enforcement, compliance notices, and appeals",
+    "Mandatory occurrence report processing included in assessment charges",
+    "Special provisions for Crown premises and public bodies"
+  ],
+  "user_impact_factors": [
+    "Whether building is higher-risk (18m+/7+ storeys with residential units)",
+    "Number of higher-risk buildings in portfolio (affects total registration fees)",
+    "Whether client is applying via BSR building control or registered building control approver",
+    "Complexity of building design (affects hourly assessment time)",
+    "Whether building work is solely for disabled persons (potential exemption)",
+    "Stage of project (Gateway 2 vs Gateway 3 vs occupied building assessment)",
+    "Whether applicant is registering as building inspector or building control approver",
+    "Whether enforcement action has been taken (additional charges apply)",
+    "Whether appeals are pursued (separate charging schedule)",
+    "Whether major or minor revisions are requested during construction"
+  ],
+  "confidence_notes": [
+    "Exact hourly rates for specific schedules should be verified against the detailed schedules in the full document",
+    "Fixed fees quoted are as stated in the charging scheme but may be subject to annual review",
+    "The disabled persons exemption criteria may require interpretation in specific cases",
+    "Crown premises and public body provisions may have additional complexity not fully captured",
+    "Some oversight charges may vary based on investigation complexity",
+    "Document references 2024-25 scheme as predecessor but specific supersession date should be confirmed"
+  ],
+  "extraction_date": "2026-02-17T12:00:00Z",
+  "extraction_model": "claude-opus-4-5-20251101"
+}

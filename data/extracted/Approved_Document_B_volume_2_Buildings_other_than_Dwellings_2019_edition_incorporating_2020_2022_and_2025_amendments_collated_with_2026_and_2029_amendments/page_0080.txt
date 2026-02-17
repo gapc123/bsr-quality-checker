@@ -1,0 +1,46 @@
+O N L I N E V E R S I O N
+B3
+Table 8.1 Maximum dimensions of building or compartment (non-residential buildings)
+Purpose group of building or part Height of floor of top Maximum floor area of any one storey in the
+storey above ground level building or any one storey in a compartment
+(m) (m2)
+Single storey buildings Multi-storey
+buildings
+Office No limit(1) No limit No limit
+Assembly and recreation, shop and
+commercial:
+a. Shops – without sprinkler system No limit(1) 2000 2000
+Shops – with sprinkler system(2) No limit No limit 4000
+b. Elsewhere – without sprinkler No limit(1) No limit 2000
+system
+Elsewhere – with sprinkler system(2) No limit No limit 4000
+Industrial(3)
+Without sprinkler system(1) Not more than 18 No limit 7000
+More than 18 N/A 2000(4)
+With sprinkler system(2) Not more than 18 No limit 14,000
+More than 18 N/A 4000(4)
+Height of floor of top Maximum Maximum Maximum
+storey above ground level floor area height (m)(5) compartment
+(m) (m2) volume (m3)
+Single storey buildings Multi-storey
+buildings
+Storage(3) and other non-residential:
+a. Car park for light vehicles No limit No limit No limit No limit
+b. Any other building or part:
+Without sprinkler system(1) Not more than 18 20,000 18 20,000
+More than 18 N/A N/A 4000(4)
+With sprinkler system(2) Not more than 18 No limit No limit 40,000
+More than 18 8000(4)
+NOTES:
+This table recommends that where the maximum size limitations placed on a building without a sprinkler system are
+exceeded, a sprinkler system in accordance with Appendix E should be provided.
+1. See Appendix B, Table B2 for sprinkler system height requirements.
+2. ‘With sprinkler system’ means that the building is fitted throughout with an automatic sprinkler system in
+accordance with Appendix E.
+3. In certain industrial and storage uses that are subject to other legislation, for example the storage of LPG and
+certain chemicals, additional limitations on floor area and/or additional sprinkler provisions might apply.
+4. This reduced limit applies only to storeys that are a minimum of 18m above ground level. Below this height the
+higher limit applies.
+5. Compartment height is measured from finished floor level to the underside of the roof or ceiling.
+68 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

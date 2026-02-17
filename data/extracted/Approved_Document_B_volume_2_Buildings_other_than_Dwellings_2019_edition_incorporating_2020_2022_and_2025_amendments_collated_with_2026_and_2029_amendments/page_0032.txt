@@ -1,0 +1,40 @@
+B1
+Storey exit (N)
+D
+W
+Diagram 2.6 Merging flows at final exit
+20 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+D
+O N L I N E V E R S I O N
+See para 2.23
+Escape stair
+S
+Ground foor
+D Minimum 2m, where ‘N’ is greater than 60 people
+lobby
+N Number of people served by ground foor storey exit
+W Width of fnal exit in metres
+S Stair width in metres
+Final exit
+This can be calculated using the following formula:
+W = ((N/2.5) + (60S))/80
+where:
+W is the width of final exit in metres
+N is the number of people served by ground floor storey exit
+S is the stair width in metres.
+If the number of people (N) entering the lobby from the ground storey is more than 60, then the
+distance from the foot of the stair or the storey exit to the final exit should be a minimum of 2m
+(see Diagram 2.6).
+If that minimum distance cannot be achieved, the width of the final exit (W) should be at least the
+width of the stair plus the width of the storey exit.
+Worked example
+A ground floor storey exit serving 250 people shares a common final exit with a 1.2m wide stair.
+Required final exit width = ((250/2.5) + (1.2×60))/80 = 2.150m
+Protected corridors
+2.24 A corridor serving as part of the means of escape in any of the following circumstances should be a
+protected corridor.
+a. Every corridor that serves bedrooms.
+b. Every dead end corridor (excluding recesses and extensions a maximum of 2m deep, as shown in
+Diagrams 2.7 and 2.8).
+c. Any corridor shared by two or more occupancies (paragraph 2.17).
+O N L I N E V E R S I O N

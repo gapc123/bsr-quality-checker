@@ -1,0 +1,43 @@
+D O N L I N E V E R S I O N
+Table D1 Checklist for ventilation provision in existing dwellings
+Natural ventilation(1)
+What is the total equivalent area of background ventilators currently in dwelling? mm2
+Does each habitable room satisfy the minimum equivalent area standards in Table 1.7(2)? Yes No
+Have all background ventilators been left in the open position? Yes No
+Are fans and background ventilators in the same room at least 0.5m apart? Yes No
+Are there working intermittent extract fans in all wet rooms? Yes No
+Is there the correct number of intermittent extract fans to satisfy the standards in Table 1.1? Yes No
+Does the location of fans satisfy the standards in paragraph 1.20? Yes No
+Do all automatic controls have a manual override? Yes No
+Does each room have a system for purge ventilation (e.g. windows)? Yes No
+Do the openings in the rooms satisfy the minimum opening area standards in Table 1.4? Yes No
+Do all internal doors have sufficient undercut to allow air transfer between rooms as detailed Yes No
+in paragraph 1.25 (i.e. 10mm above the floor finish or 20mm above the floor surface)?
+Continuous mechanical extract ventilation(1)
+Does the system have a central extract fan, individual room extract fans, or both? Yes No
+Does the total combined continuous rate of mechanical extract ventilation satisfy the Yes No
+standards in Table 1.3?
+Does each minimum mechanical extract ventilation high rate satisfy the standards in Table 1.2? Yes No
+Is it certain that there are no background ventilators in wet rooms? Yes No
+Do all habitable rooms have a minimum equivalent area of 5000mm2? Yes No
+Does each room have a system for purge ventilation (e.g. windows)? Yes No
+Do the openings in the rooms satisfy the minimum opening area standards in Table 1.4? Yes No
+Do all internal doors have sufficient undercut to allow air transfer between rooms as detailed Yes No
+in paragraph 1.25 (i.e. 10mm above the floor finish or 20mm above the floor surface)?
+Mechanical ventilation with heat recovery(1)
+Does each habitable room have mechanical supply ventilation? Yes No
+Does the total continuous rate of mechanical ventilation with heat recovery satisfy the Yes No
+standards in Table 1.3?
+Does each minimum mechanical extract ventilation high rate satisfy the standards in Table 1.2? Yes No
+Have all background ventilators been removed or sealed shut? Yes No
+Does each room have a system for purge ventilation (e.g. windows)? Yes No
+Do the openings in the rooms satisfy the minimum opening area standards in Table 1.4? Yes No
+Do all internal doors have sufficient undercut to allow air transfer between rooms as detailed Yes No
+in paragraph 1.25 (i.e. 10mm above the floor finish or 20mm above the floor surface)?
+NOTES:
+1. Make a visual check for mould or condensation. If either are present, install additional ventilation provisions or
+seek specialist advice.
+2. All references to tables and paragraphs are to Approved Document F, Volume 1: Dwellings.
+48
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

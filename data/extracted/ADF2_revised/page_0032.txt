@@ -1,0 +1,68 @@
+A O N L I N E V E R S I O N
+Appendix A: Key terms
+Except for the items marked * (which are from the Continuous operation Uninterrupted running of a
+Building Regulations 2010), these definitions apply mechanical ventilation device, such as mechanical
+only to Approved Document F, Volume 2: Buildings extract ventilation or mechanical supply and
+other than dwellings. extract ventilation. The air flow rate provided by
+mechanical ventilation need not be constant but
+Air permeability The measure of airtightness of
+may be varied, under either manual or automatic
+the building fabric. It is defined as the air leakage
+control, in response to the demand for removal of
+rate per hour per m2 of envelope area at the test
+pollutants or water vapour.
+reference pressure differential of 50Pa.
+Dwelling A self-contained unit designed to
+Airtightness The resistance of the building
+accommodate a single household.
+envelope to infiltration when ventilators are
+closed. The greater the airtightness at a given Equivalent area A measure of the aerodynamic
+pressure difference across the envelope, the lower performance of a ventilator. It is the area of a
+the infiltration. sharp-edged circular orifice through which air
+would pass at the same volume flow rate, under an
+Automatic controls A system whereby a
+identical applied pressure difference, as through
+ventilation device is adjusted by a mechanical or
+the opening under consideration.
+electronic controller that responds to a relevant
+stimulus. That stimulus usually relates to the Expert advice Advice from a suitably qualified
+humidity of the air in a room, pollutant levels, competent person. Examples from the ventilation
+occupancy of the space or pressure difference industry of a person competent to give expert
+across the device. advice include a chartered or professional
+engineer, a building services specialist, a specialist
+Background ventilator A small ventilation opening
+ventilation manufacturer or members of
+designed to provide controllable whole building
+professional trade bodies.
+ventilation.
+Extract ventilation The removal of air directly
+Bathroom A room that contains a bath or
+from an internal space or spaces to the outside.
+shower and which can also include sanitary
+Extract ventilation may be by natural means or
+accommodation.
+by mechanical means (e.g. by an extract fan or a
+Building control body A local authority or an central system).
+approved inspector.
+Free area The geometric open area of a ventilator.
+Common space A space where large numbers of
+Habitable room A room used for dwelling
+people are expected to gather (e.g. a shopping mall
+purposes but which is not solely a kitchen, utility
+or foyer of a cinema or theatre) or which is used
+room, bathroom, cellar or sanitary accommodation.
+mainly for circulation in buildings which do not
+contain dwellings (e.g. a corridor or lift lobby in an Infiltration The uncontrolled exchange of air
+office building). This does not include areas used between the inside and outside of a building,
+solely or principally for circulation in buildings through gaps and cracks.
+containing dwellings, including corridors or lift
+Intermittent operation When a mechanical
+lobbies in blocks of flats.
+ventilator does not run all the time, usually running
+only when there is a particular need to remove
+pollutants or water vapour (e.g. during cooking
+or bathing). Intermittent operation may be under
+either manual control or automatic control.
+24
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

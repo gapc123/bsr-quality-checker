@@ -1,0 +1,46 @@
+Variation of a requirement imposed on a building control approval
+30. —(1) In relation to HRB work, a stage of HRB work or work to existing HRB, a client may
+request, by notice in writing, that the regulator vary a requirement imposed on a building control
+approval.
+(2) A notice under paragraph (1) must be made in writing, signed by the client, and must
+include—
+(a) the name, address, telephone number and (if available) email address of the client,
+(b) a statement that the notice is given under this regulation,
+(c) a description of the proposed variation,
+(d) an explanation of the reasons why the variation is proposed,
+(e) a list of the name and occupation of each person, if any, whose advice was sought in
+relation to the proposed variation and a summary of any advice provided.
+(3) Where the notice under paragraph (1) is given by someone on behalf of the client, it must
+include a statement signed by the client confirming they agree to the notice being given and that
+the information contained in the application is correct.
+(4) Where the regulator receives a notice under paragraph (1) the regulator must determine
+whether to grant the variation within 28 days of receipt of the notice or within such longer period
+as at any time the regulator and the person giving the notice agree in writing.
+(5) Where the regulator has not determined whether to grant the variation before the expiry of
+the period provided for in paragraph (4) then the variation is treated as refused by the regulator.
+(6) Where a requirement is varied the regulator must give the client a notice setting out the
+requirement as varied.
+(7) If requested by the client, the regulator must provide a paper copy of the notice.
+(8) Where the regulator does not agree to the variation the regulator must notify the client giving
+reasons.
+PART 4
+Golden thread, mandatory occurrence reporting, information handover etc
+Golden thread
+31.—(1) The arrangements made by a client under regulation 11A (suitable arrangements to
+ensure compliance with requirements etc) of the 2010 Regulations must include—
+(a) where the work is HRB work or a stage of HRB work—
+(i) arrangements for an electronic facility to be created and maintained by the client (or
+someone on their behalf) for the purpose of holding the golden thread information;
+(ii) procedures for persons involved with designing or carrying out the work to have
+access to the facility for the purpose of maintaining the golden thread information in
+the facility;
+(b) where the work is work to existing HRB—
+(i) arrangements for an electronic facility which holds the golden thread information to
+be maintained by the client (or someone on their behalf) for the purpose of updating
+the golden thread information in relation to the work;
+(ii) procedures for persons involved with designing or carrying out the work to have
+access to the facility for the purpose of maintaining the golden thread information in
+the facility.
+(2) The client must ensure the golden thread information—
+(a) is kept in an electronic format,
+32

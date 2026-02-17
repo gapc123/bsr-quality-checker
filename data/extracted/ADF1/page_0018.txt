@@ -1,0 +1,44 @@
+F1(1) O N L I N E V E R S I O N
+1.22 Minimum extract ventilation rates for continuous extract systems are specified in Table 1.2. A
+continuous rate is given for the general operation of the fan and a high rate for when additional
+extraction is required.
+Table 1.2 Minimum extract ventilation rates for continuous extract systems(1)
+Room High rate (l/s) Continuous rate
+Kitchen 13 The sum of all extract ventilation
+in the dwelling on its continuous
+rate should be at least the whole
+Utility room 8
+dwelling ventilation rate given in
+Table 1.3
+Bathroom 8
+Sanitary accommodation 6
+NOTE:
+1. If the continuous rate of ventilation provided in a room is equal to or higher than the minimum high rate specified
+in the table, no extra ventilation is needed.
+Whole dwelling ventilation
+1.23 Supply air for the dwelling should be delivered through one of the following means.
+a. Continuous supply fans.
+b. Background ventilators.
+1.24 The minimum whole dwelling ventilation rate for the supply of air to the habitable rooms in a
+dwelling should meet both of the following conditions.
+a. A minimum rate of 0.3 litres per second per m2 of internal floor area (this includes all floors, e.g.
+for a two-storey building, add the ground-floor and first-floor areas).
+b. A minimum rate determined by the number of bedrooms, as specified in Table 1.3.
+Table 1.3 Minimum whole dwelling ventilation rates determined by the number of bedrooms
+Number of bedrooms(1)(2) Minimum ventilation rate by number of bedrooms (l/s)
+1 19
+2 25
+3 31
+4 37
+5 43
+NOTES:
+1. If the dwelling only has one habitable room, a minimum ventilation rate of 13l/s should be used.
+2. For each additional bedroom, add 6l/s to the values in Table 1.3.
+1.25 Internal doors should allow air to flow through the dwelling by providing a minimum free area
+equivalent to a 10mm undercut in a 760mm wide door. Doors should be undercut to achieve one of
+the following.
+a. If the floor finish is fitted: 10mm above the floor finish.
+b. If the floor finish is not fitted: 20mm above the floor surface.
+10
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

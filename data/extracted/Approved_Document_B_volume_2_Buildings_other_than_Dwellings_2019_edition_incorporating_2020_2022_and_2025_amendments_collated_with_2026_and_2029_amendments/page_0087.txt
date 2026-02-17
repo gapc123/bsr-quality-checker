@@ -1,0 +1,30 @@
+O N L I N E V E R S I O N
+B3
+Ventilation of protected shafts conveying gas
+8.38 A protected shaft conveying piped flammable gas should be ventilated direct to the outside air,
+by ventilation openings at high and low level in the shaft.
+Any extension of the storey floor into the protected shaft should not compromise the free
+movement of air throughout the entire length of the shaft.
+Guidance on shafts conveying piped flammable gas, including the size of ventilation openings,
+is given in BS 8313.
+Openings into protected shafts
+8.39 The external wall of a protected shaft does not normally need to have fire resistance. Situations
+where there are provisions are given in paragraph 3.29 (external walls of protected stairways, which
+may also be protected shafts) and paragraph 17.2 (firefighting shafts).
+Openings in other parts of the enclosure to a protected shaft should be limited to the following.
+a. If a wall common to two or more buildings forms part of the enclosure, only the following
+openings should be made in that wall.
+i. A fire doorset providing a means of escape, which has the same fire resistance as the wall
+and is fitted in accordance with the provisions in Appendix C.
+ii. The passage of a pipe that meets the provisions in Section 10.
+b. Other parts of the enclosure (other than an external wall) should only have openings for any
+of the following.
+i. Fire doorsets of the appropriate fire resistance, fitted in accordance with the provisions
+in Appendix C.
+ii. The passage of pipes which meet the provisions in Section 10.
+iii. Inlets to, outlets from and openings for a ventilation duct (if the shaft contains or serves
+as a ventilating duct), meeting the provisions in Section 10.
+iv. The passage of lift cables into a lift machine room (if the shaft contains a lift). If the machine
+room is at the bottom of the shaft, the openings should be as small as practicable.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 75
+O N L I N E V E R S I O N

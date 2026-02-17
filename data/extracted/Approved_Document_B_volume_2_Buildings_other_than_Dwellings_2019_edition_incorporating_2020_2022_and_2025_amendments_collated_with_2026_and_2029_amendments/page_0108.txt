@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N
+B4
+Materials and products
+12.6 In a building with a storey 18m or more in height (see Diagram D6 in Appendix D) any insulation
+product, fller material (such as the core materials of metal composite panels, sandwich panels and
+window spandrel panels but not including gaskets, sealants and similar) etc. used in the construction
+of an external wall should be class A2-s3, d2 or better (see Appendix B). This restriction does not
+apply to masonry cavity wall construction which complies with Diagram 9.2 in Section 9. Where
+regulation 7(2) applies, that regulation prevails over all the provisions in this paragraph.
+12.7 In buildings that include a ‘residential’ purpose (purpose groups 1 and 2) with a storey 11m or more
+in height (see Diagram D6 in Appendix D) any insulation product, fller material (such as the core
+materials of metal composite panels, sandwich panels and window spandrel panels but not including
+gaskets, sealants and similar) etc. used in the construction of an external wall should be class A2-s1, d0
+or better (see Appendix B). This restriction does not apply to masonry cavity wall construction which
+complies with Diagram 9.2 in Section 9. Where regulation 7(2) applies, that regulation prevails over all
+the provisions in this paragraph.
+12.8 Best practice guidance for green walls (also called living walls) can be found in Fire Performance of
+Green Roofs and Walls, published by the Department for Communities and Local Government.
+Where regulation 7(2) applies, that regulation prevails over all the provisions in this paragraph.
+Cavities and cavity barriers
+12.9 Cavity barriers should be provided in accordance with Section 9.
+12.10 In the case of an external wall construction of a building which, by virtue of paragraph 9.10d (external
+cladding system with a masonry or concrete inner leaf), is not subject to the provisions of Table 9.1,
+the surfaces which face into cavities should also meet the provisions of Table 12.1 and provisions in
+Section 9, but where regulation 7(2) applies, that regulation prevails over the guidance provided in
+Table 12.1 and Section 9.
+Balconies
+12.11 In buildings that include a ‘residential’ purpose (purpose groups 1 and 2) with a storey 11m or more in
+height (see Diagram D6 in Appendix D) balconies should meet either of the following conditions.
+a. Only contain materials achieving class A1 or A2-s1, d0, except for any of the following.
+i. Cavity trays when used between two leaves of masonry.
+ii. Intumescent and fire-stopping materials where the inclusion of the materials is necessary to
+meet the requirements of Part B of Schedule 1 to the Building Regulations 2010.
+iii. Membranes.
+iv. Seals, gaskets, fxings, sealants and backer rods.
+v. Thermal break materials where the inclusion of the materials is necessary to meet the
+thermal bridging requirements of Part L of Schedule 1 to the Building Regulations 2010.
+vi. Any material achieving class A1f or A2f-s1 when it forms the top horizontal foor layer of a
+balcony and is provided with an imperforate substrate under it which extends to the full size
+of the class A1f or A2f-s1 material.
+vii. Electrical installations.
+viii. Fibre optic cables.
+96 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

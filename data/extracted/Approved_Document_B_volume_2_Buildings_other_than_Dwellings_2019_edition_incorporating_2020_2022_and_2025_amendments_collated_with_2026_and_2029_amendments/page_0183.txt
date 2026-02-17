@@ -1,0 +1,40 @@
+O N L I N E V E R S I O N
+C
+2029 amendment – effective from 2 September 2029
+Appendix C: Fire doorsets
+C1 All fire doorsets should have the performance shown in Table C1, based on one of the following.
+a. Fire doorsets should be classified in accordance with BS EN 13501-2, as determined with
+reference to Commission Decision 2000/367/EC regarding the classification of the resistance
+to fire performance of construction products, construction works and parts thereof, when
+tested to the relevant European method from the following.
+i. BS EN 1634-1.
+ii. BS EN 1634-2.
+iii. BS EN 1634-3.
+b. Fire doorsets may have their performance on fire resistance assessed, following the
+recommendations of paragraphs B1 to B5, as being capable of meeting a performance
+classification. In those situations the performance classifications given in Table C1 may be used,
+presented in terms of integrity, for a period of minutes, when tested to a relevant standard.
+c. As determined with reference to European Parliament and Council Directive 95/16/EC (which
+applies to lifts that permanently serve buildings and constructions and specified safety
+components) on the approximation of laws of Member States relating to lifts (‘Lifts Directive’)
+implementing the Lifts Regulations 1997 (SI 1997/831) and calling upon the harmonised standard
+BS EN 81-58.
+C2 The performance requirement is in terms of integrity (E) for a period of minutes. An additional
+classification of S is used for all doors where restricted smoke leakage at ambient temperatures is
+a
+needed.
+C3 The requirement is for test exposure from each side of the doorset separately. The exception is lift
+doors, which are tested from the landing side only.
+C4 Any test evidence used to verify the fire resistance rating of a doorset or shutter should be
+checked to ensure both of the following.
+a. It adequately demonstrates compliance.
+b. It is applicable to the complete installed assembly. Small differences in detail might
+significantly affect the rating and should be tested or assessed in accordance with paragraphs
+B1 to B5.
+Until relevant harmonised product standards are published, for the purposes of meeting
+the Building Regulations, products or systems tested in accordance with BS EN 1634-1 (with
+or without pre-fire test mechanical conditioning) or assessed as being capable of meeting a
+performance classification based on the recommendations of paragraphs B1 to B5 that achieve
+the minimum performance in Table C1 will be deemed to satisfy the provisions.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 171
+O N L I N E V E R S I O N

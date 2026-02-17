@@ -1,0 +1,33 @@
+Building Control Approval Application for a New
+Higher-Risk Building (Gateway 2)
+APPLICATION PROJECT BRIEF
+2. APPLICATION PROJECT BRIEF
+2.1. The Application Project Brief is a summary document which provides an easy
+to navigate clear, concise and informative description of the project.
+2.2. It allows the MDT to quickly understand the proposed project in a standalone
+document and provides the Description of Work but also the wider context of the
+essential features and complexity of the building(s).
+2.3. The Application Project Brief and should be appropriate to the size and complexity
+of the project and outline key points including the:
+• Description of Work;
+• Project team;
+• Description of the development;
+• Description of the development programme; and
+• Key information about the building(s).
+2.4. It should be made clear in the Project Brief, if the application is part of a series
+of applications for either a wider, multi-building development or a single building
+staged application. This will allow BSR to allocate work appropriately.
+2.5. If an application is rejected and then re-submitted, the Project Brief should
+reference the previous application reference e.g. Rejection Explanation of
+BCA01234567. This highlights the previous rejection and allows the MDT to focus
+on rejection reasons addressed in new application.
+2.6. It is recommended that the applicant should submit the Application Project Brief
+as a separate file in a sub-folder named “General Application Information”
+and upload this at the Drawings and Plans stage of the BSR online application
+portal. CLC guidance on Application Document Management and
+Submission provides further information.
+2.7. The Description of Work should also be copied into the online portal text field.
+2.8. Annex 5A provides an example Application Project Brief including a Description
+of Work.
+End of Note 05
+Back to contents page Page 17

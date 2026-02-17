@@ -1,0 +1,34 @@
+O N L I N E V E R S I O N
+B4
+Section 12: Resisting fire spread over
+external walls
+Introduction
+12.1 The external wall of a building should not provide a medium for fre spread if that is likely to be a risk
+to health and safety. Combustible materials and cavities in external walls and attachments to them
+can present such a risk, particularly in tall buildings. The guidance in this section is designed to reduce
+the risk of fre spread as well as the risk of ignition from fames coming from adjacent buildings.
+Fire resistance
+12.2 This section provides guidance on resisting fre spread over external walls; however, it does not deal
+with fre resistance of external walls. An external wall may need fre resistance to meet the provisions
+of Section 2 (Design for horizontal escape), Section 3 (Design for vertical escape),
+Section 7 (Loadbearing elements of structure), Section 13 (Resisting fre spread from one building
+to another) or Section 17 (Access to buildings for frefghting personnel).
+Combustibility of external walls
+12.3 The external walls of buildings other than those described in regulation 7(4) of the Building
+Regulations should achieve either of the following.
+a. Follow the provisions given in paragraphs 12.5 to 12.10, which provide guidance on all of
+the following.
+i. External surfaces.
+ii. Materials and products.
+iii. Cavities and cavity barriers.
+b. Meet the performance criteria given in BRE report BR 135 for external walls using full-scale test
+data from BS 8414-1 or BS 8414-2.
+12.4 In relation to buildings of any height or use, consideration should be given to the choice of materials
+(including their extent and arrangement) used for the external wall, or attachments to the wall (e.g.
+balconies, etc.), to reduce the risk of fre spread over the wall.
+External surfaces
+12.5 The external surfaces (i.e. outermost external material) of external walls should comply with the
+provisions in Table 12.1. The provisions in Table 12.1 apply to each wall individually in relation to its
+proximity to the relevant boundary.
+94 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,57 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+3.0 The golden thread for the design, construction and building work on HRBs
+The golden thread of information for 3.10. During the design and construction 3.13. Before building work starts the golden
+the HRB building control regime phases, the emphasis is on designing thread information must contain
+and building in compliance with the sufficient detail to demonstrate how:
+3.8. The golden thread information is all
+functional requirements of the building • the building, when built, will
+the information required to support
+regulations. The documents required satisfy all of the applicable
+the whole HRB building control
+as part of an application for building functional requirements of building
+process, it will evolve and should
+control approval (gateway two) and a regulations; and
+be managed and stored effectively
+completion certificate (gateway three)
+(see section 2 of this guidance). This • the construction activity (building
+will be used to support this.
+includes all the information: work) will be managed to ensure
+the building will be built to the
+• required for the building control Golden thread information
+design. This includes demonstrating
+approval application, including
+Design phase – The information to
+that sufficient credible evidence to
+a full record of the design for demonstrate the design if built will comply
+support your building completion
+the planned building and the with the building regulations
+certificate application will be
+‘accompanying documents’;
+3.11. The client is responsible for captured.
+• records associated with any
+determining that appropriate 3.14. The golden thread information enables
+changes through the construction
+procedures for developing, managing the design and construction teams to
+phase; and
+and storing the golden thread demonstrate “what” is to be built and
+• the evidence collected to support information are in place. They must “how” compliant delivery is to be met.
+the completion certificate allow the right people (principal
+3.15. The new HRB regime requires some
+application and handover to the designer, principal contractor and
+new information and documents to be
+Responsible Person. other dutyholders) to have access to
+submitted with the building control
+3.9. More detail on the HRB building the golden thread.
+application as well as the design
+control regime can be found in 3.12. The principal designer is responsible (drawings and plans). These are called
+The Building (Higher-Risk Buildings for ensuring that the designs are accompanying documents and all
+Procedures) (England) Regulations39, stored appropriately and for managing should be submitted as part of the
+HSE guidance40 and GOV.UK41. the golden thread information relating building control approval application
+to design work of the project. This (gateway two) to the BSR. These
+includes capturing and keeping all of documents need to be kept as golden
+the design information up to date, thread information. The building
+effective communication between control application should include a
+designers and sharing of information description of the HRB work.
+relevant to the building work with the
+principal contractor and contractors.
+24

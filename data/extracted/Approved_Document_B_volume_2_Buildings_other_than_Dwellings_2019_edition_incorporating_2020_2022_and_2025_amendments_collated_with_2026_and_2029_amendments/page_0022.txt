@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+B1
+Category L systems are divided into the following.
+L1 – systems installed throughout the protected building.
+L2 – systems installed only in defined parts of the protected building (a category L2 system will
+normally include the coverage required of a category L3 system).
+L3 – systems designed to warn of fire at an early enough stage to enable all occupants, other
+than possibly those in the room where the fire started, to escape safely before the escape routes
+become impassable because of fire, smoke or toxic gases.
+L4 – systems installed within those parts of the escape routes that comprise circulation areas and
+circulation spaces, such as corridors and stairs.
+L5 – systems in which the protected area(s) and/or the location of detectors are designed to satisfy
+a specific fire safety objective (other than that of a category L1, L2, L3 or L4 system).
+Type P systems are divided into the following.
+P1 – systems installed throughout the protected building.
+P2 – systems installed only in defined parts of the protected building.
+1.10 Electrical alarm system call points should comply with either of the following.
+a. BS 5839-2.
+b. BS EN 54-11 Type A (direct operation).
+Call points should be installed in accordance with BS 5839-1.
+Type B (indirect operation) call points of BS EN 54-11 should only be used with the approval of the
+building control body.
+1.11 A voice alarm system complying with BS 5839-8, and giving a fire warning different from other
+signals in general use, may be considered if either of the following applies.
+a. People might not respond quickly to a fire warning.
+b. People are unfamiliar with the fire warning arrangements.
+1.12 In premises where lots of members of the public are present, an initial general alarm may be
+undesirable. Any fire alarm system that first alerts staff should comply with BS 5839-1.
+1.13 Where the escape strategy is based on simultaneous evacuation, actuation of the fire alarm system
+should give warning from all fire alarm sounders. Where phased evacuation is planned, a staged
+alarm system is appropriate. See paragraph 3.21.
+1.14 BS 9999 provides guidance for fire detection and alarm systems in buildings containing atria.
+Warnings for people with impaired hearing
+1.15 Clause 18 of BS 5839-1 gives detailed guidance on the design and selection of fire alarm warnings
+for people with impaired hearing. In buildings or part of a building where people may be in relative
+isolation, a visual and audible fire alarm may be the most appropriate solution. In buildings where
+the population is managed, a vibrating personal paging system may be more appropriate.
+10 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

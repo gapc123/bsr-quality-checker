@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B4
+Section 13: Resisting fire spread from one
+building to another
+Introduction
+13.1 The following assumptions enable a reasonable standard of resistance to the spread of fire to
+be specified.
+a. The size of a fire depends on the compartmentation within the building. A fire may involve
+a complete compartment, but will not spread to other compartments.
+b. The intensity of fire is related to the building use, but can be moderated by a sprinkler system.
+c. Fires in ‘residential’ and ‘assembly and recreation’ buildings (purposes groups 1, 2 and 5) represent
+a greater risk to life.
+d. A building on the far side of the relevant boundary meets both of the following conditions.
+i. Has a similar elevation to the one in question.
+ii. Is at the same distance from the common boundary.
+e. The radiated heat passing through any part of the fire resisting external wall may be discounted.
+13.2 Where regulation 7(2) applies, that regulation prevails over the provisions within this section.
+13.3 If a reduced separation distance between buildings, or increased amount of unprotected area, is
+required, smaller compartments should be considered.
+Boundaries
+13.4 The fire resistance of a wall depends on its distance from the relevant boundary (see Diagram 13.1).
+Separation distances are measured to boundaries to ensure that the location and design of buildings
+on adjoining sites have no influence on the building under consideration.
+13.5 The boundary that a wall faces is the relevant boundary (Diagram 13.2). It may be one of the
+following.
+a. The site boundary.
+b. The centre line of a space where further development is unlikely, such as a road, railway, canal or
+river.
+c. An assumed notional boundary between two buildings on the same site (Diagram 13.3) where
+either of the following conditions is met.
+i. One or both of the buildings are in the ‘residential’ or ‘assembly and recreation’ purpose
+groups (purpose group 1, 2 or 5).
+ii. The buildings will be operated/managed by different organisations.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 99
+O N L I N E V E R S I O N

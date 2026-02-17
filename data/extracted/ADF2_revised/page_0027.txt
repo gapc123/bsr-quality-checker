@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N F1(1)
+Replacing windows
+Existing windows with background ventilators
+3.5 If the existing windows have background ventilators, the replacement windows should include
+background ventilators. The new background ventilators should comply with the following
+conditions.
+a. Not be smaller than the background ventilators in the original window.
+b. Be controllable either automatically or by the occupant.
+If the size of the background ventilators in the existing window is not known, the ventilator sizes in
+paragraph 3.6 may be applied.
+Existing windows without background ventilators
+3.6 Replacing the windows is likely to increase the airtightness of the building. If ventilation is not
+provided via a mechanical ventilation system, then increasing the airtightness of the building may
+reduce beneficial ventilation in the building. In these circumstances, it is necessary to ensure that
+the ventilation provision in the building is no worse than it was before the work was carried out.
+This may be demonstrated in any of the following ways.
+a. Incorporating background ventilators in the replacement windows equivalent to the following.
+i. Occupiable rooms.
+• For floor areas up to 10m2 – minimum 2500mm2 equivalent area.
+• For floor areas greater than 10m2 – minimum 250mm2 equivalent area per m2 of floor area.
+ii. Domestic-type kitchen – minimum 8000mm2 equivalent area.
+iii. Bathroom (with or without a toilet) and shower rooms – minimum 4000mm2 equivalent
+area per bath or shower.
+iv. Sanitary accommodation (and/or washing facilities) – minimum 2000mm2 equivalent area
+per WC.
+b. Other ventilation provisions, if it can be demonstrated to a building control body that they
+comply with the requirements of paragraph 3.2.
+NOTE: If it is not technically feasible to adopt the minimum equivalent areas set out in paragraph
+3.6, the background ventilators should have equivalent areas as close to the minimum value as is
+feasible.
+NOTE: If an exposed façade is close to an area of sustained and loud noise (e.g. a main road), then a
+noise attenuating background ventilator should be fitted.
+19
+Building Regulations 2010 Approved Document F Volume 2, 2021 edition
+O N L I N E V E R S I O N

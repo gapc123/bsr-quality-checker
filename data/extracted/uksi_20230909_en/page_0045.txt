@@ -1,0 +1,51 @@
+(6) Where the regulator receives a partial completion certificate application which is not valid
+the regulator must notify the applicant to that effect giving reasons (and where the applicant is not
+the client, also give a copy of the notification to the client).
+(7) A partial completion certificate application is valid if it complies with paragraphs (2) to (4).
+(8) Before determining a partial completion certificate application the regulator must—
+(a) comply with regulation 42(1) to (3) (completion certificates applications: consultation), as
+modified by paragraph (9);
+(b) comply with regulation 43(1) (completion certificates applications: inspection) as
+modified by paragraph (9).
+(9) Regulations 42 (completion certificates applications: consultation) and 44 (completion
+certificates applications: inspection) and Schedule 1 have effect with the following
+modifications—
+(a) any reference to as built is to be treated as a reference to as completed at the date on
+which the application is made;
+(b) any reference to HRB work is to be treated as a reference to the part of the HRB work to
+which the application relates;
+(c) any reference to work to existing HRB is to be treated as a reference to the part of work to
+existing HRB to which the application relates;
+(d) any reference to a higher-risk building is to be treated as a reference to the building to
+which HRB work, the stage to HRB work or work to existing HRB is being carried out.
+(10) The regulator must approve the partial completion certificate application and issue a partial
+completion certificate, if it is satisfied, after taking all reasonable steps, that—
+(a) the part of the HRB work or work to existing HRB which the application relates complies
+with all applicable requirements of the building regulations and the part of the building to
+be occupied before completion of the HRB work or work to existing HRB complies with
+all applicable requirements of the building regulations;
+(b) the documents and information listed in paragraphs (2) and (3) and submitted as part of
+the application are complete and accurate;
+(c) the information, as at the date on which the application is made, to be provided to the
+relevant person in accordance with regulation 38 (handover of information on completion
+etc) has been given.
+(11) If the regulator is not satisfied in accordance with paragraph (10) it must reject the partial
+completion certificate application.
+(12) The regulator must notify the applicant of the outcome of the application (and where the
+applicant is not the client, also give a copy of the notification to the client) within the period
+referred to in paragraph (5).
+(13) A notice that the application has been rejected must give the reasons for rejection.
+(14) If the application is approved the regulator must issue a partial completion certificate for
+the building at the same time as giving the notice of its decision under paragraph (12).
+(15) If requested by the applicant or the relevant person, the regulator must provide a paper copy
+of the partial completion certificate.
+(16) A certificate issued under this regulation is evidence (but not conclusive evidence) that all
+applicable requirements have been complied with in relation to the part of the HRB work or work
+to existing HRB to which the certificate relates.
+(17) The certificate must include a statement describing its evidentiary effect, in terms
+substantially the same as paragraph (16).
+(18) When the partial completion certificate application is approved the client must ensure the
+relevant person (as defined in regulation 38 (handover of information on completion etc) is sent—
+(a) a copy of the partial completion certificate application and each of the other documents
+which accompanied the application, and
+45

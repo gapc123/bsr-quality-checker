@@ -1,0 +1,38 @@
+O N L I N E V E R S I O N
+R38
+g. Any high risk areas (e.g. heating machinery).
+h. Any power supplies or power generating installations.
+i. The location of secure information boxes.
+19.5 Details should be provided of all of the following.
+a. Specifications of fire safety equipment provided, including routine maintenance schedules.
+b. Any assumptions regarding the management of the building in the design of the fire safety
+arrangements.
+c. Any provision enabling the evacuation of disabled people, which can be used when designing
+personal emergency evacuation plans.
+d. Information for care homes should include the assessment for the number of beds in a
+compartment, as this should set out the expected number of staff and level of assistance of
+residents (see paragraph 2.39).
+Additional information for complex buildings
+19.6 A detailed record should be provided of both of the following.
+a. The fire safety strategy.
+b. Procedures for operating and maintaining any fire protection measures. This should include an
+outline cause and effect matrix/strategy for the building.
+Further guidance is available in clause 9 and Annex H of BS 9999.
+19.7 The records should include details of the following.
+a. The fire safety strategy, including all assumptions in the design of the fire safety systems (such
+as fire load). Any risk assessments or risk analysis.
+b. All assumptions in the design of the fire safety arrangements for the management of the
+building.
+c. All of the following.
+i. Escape routes (including occupant load and capacity of escape routes).
+ii. Any provision to enable the evacuation of disabled people (including the location and
+mode of operation of evacuation lifts).
+iii. Escape strategy (e.g. simultaneous or phased).
+iv. Assembly points and/or muster stations.
+d. All passive fire safety measures, including all of the following.
+i. Compartmentation.
+ii. Fire-separating elements.
+iii. Fire resisting construction.
+iv. Cavity barriers.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 129
+O N L I N E V E R S I O N

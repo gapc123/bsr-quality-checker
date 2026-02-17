@@ -1,0 +1,42 @@
+O N L I N E V E R S I O N
+B B
+Effective until 1 September 2029 – see 2029 amendment, page 152
+Thermoplastic materials
+B10 Thermoplastic material is any synthetic polymeric material that has a softening point below 200°C
+if tested to BS EN ISO 306 Method A120. Products formed from these materials cannot always be
+classified in the normal way. In those circumstances the following approach can be followed.
+B11 Thermoplastic materials used for window glazing, rooflights and lighting diffusers within suspended
+ceilings do not need to meet the criteria within paragraph B18 onwards, if the guidance to
+requirements B2 and B4 is followed.
+B12 For the purposes of requirements B2 and B4, thermoplastic materials should be classified as TP(a)
+rigid, TP(a) flexible or TP(b), as follows:
+a. TP(a) rigid
+i. rigid solid uPVC sheet
+ii. solid (as distinct from double- or multi-skinned) polycarbonate sheet a minimum of 3mm
+thick
+iii. any other rigid thermoplastic product, a specimen of which (at the thickness of the
+product as put on the market), when tested to BS 2782-0 Method 508A, performs so that
+both:
+• the test flame extinguishes before the first mark
+• the duration of flaming or afterglow does not exceed 5 seconds following removal of
+the burner.
+b. TP(a) flexible
+Flexible products a maximum of 1mm thick that comply with the Type C requirements of BS
+5867-2 when tested to BS 5438 Test 2 with the flame applied to the surface of the specimens
+for 5, 15, 20 and 30 seconds respectively, but excluding the cleansing procedure; and
+c. TP(b)
+i. rigid solid polycarbonate sheet products a maximum of 3mm thick, or multi-skinned
+polycarbonate sheet products that do not qualify as TP(a) by test
+ii. other products which, when a specimen of the material between 1.5 and 3mm thick is
+tested in accordance with BS 2782-0 Method 508A, have a maximum rate of burning of
+50mm/minute.
+NOTE: If it is not possible to cut or machine a 3mm thick specimen from the product, then a
+3mm test specimen can be moulded from the same material as that used to manufacture the
+product.
+B13 A thermoplastic material alone when used as a lining to a wall or ceiling cannot be assumed to
+protect a substrate. The surface rating of both thermoplastic material and substrate must therefore
+meet the required classification.
+If, however, the thermoplastic material is fully bonded to a non-thermoplastic substrate, then only
+the surface rating of the composite needs to meet the required classification.
+140 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

@@ -1,0 +1,32 @@
+OFN L1I(N2E) V, ERR S3I O9N, R42, R44
+4.17 The operation and maintenance information should also contain relevant manufacturers’ literature,
+including the following, where relevant.
+a. Component specifications.
+b. Installation guidance.
+c. Operating instructions.
+d. Maintenance schedules.
+e. Guarantees.
+f. Registration card.
+g. Spare parts lists.
+h. Instructions for obtaining spare parts.
+Home User Guide for new dwellings
+4.18 A Home User Guide should be provided for a new dwelling as described in Section 9 of Approved
+Document L, Volume 1: Dwellings. It should contain a section on ‘Ventilation’ that provides non-
+technical advice on the ventilation systems provided within the new dwelling.
+4.19 The Home User Guide is in addition to the operating and maintenance instructions. It is intended
+to be a non-technical overview for the occupiers, and should include some basic details on the
+operation and maintenance of the system. The operating and maintenance instructions provide
+further details as required.
+NOTE: Information about overheating and the conservation of fuel and power are required
+under different regulations and guidance is given in Approved Documents O (Overheating) and L
+(Conservation of fuel and power). Where the system provides more than one function, the owner
+should be informed of each separate function.
+Additional information for work in existing dwellings
+4.20 When new ventilation is installed in an existing dwelling, information about it should be provided
+to the building owner in accordance with paragraphs 4.13 to 4.17.
+Example text on the purpose of ventilation and the standards for existing dwellings can be viewed
+at https://www.gov.uk/government/publications/home-user-guide-template. However, there is no
+requirement to follow the layout, format or text used in the example.
+35
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

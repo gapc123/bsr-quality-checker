@@ -1,0 +1,42 @@
+O N L I N E V E R S I O N
+B3
+i. the cavity is less than 1000mm in height
+ii. the cavity is not normally accessible by people, unless there are openings in the floor such
+that it is possible for materials to accumulate in the cavity (in which case cavity barriers
+should be provided and access should be provided to the cavity for cleaning).
+9.11 If a single room with a ceiling cavity or underfloor cavity exceeds the dimensions in Table 9.1, cavity
+barriers need only be provided on the line of the enclosing walls/partitions of that room, if both of
+the following apply.
+a. The cavity barriers are a maximum of 40m apart.
+b. The surface of the material/product exposed in the cavity is class C-s3, d2 or better.
+9.12 If the cavity is over an undivided area that exceeds 40m in any direction, there is no limit to its size
+if all of the following conditions are met.
+a. Together, the room and cavity form a compartment separated from the rest of the building.
+b. Both of the following apply.
+i. The building is fitted with an automatic fire detection and alarm system that conforms
+to BS 5839-1.
+ii. Detectors are only required in the cavity to satisfy BS 5839-1.
+c. If the cavity is used as a plenum then the recommendations for recirculating air distribution
+systems in Section 32 of BS 9999 are followed.
+d. Both of the following apply.
+i. The exposed surface of the material/product used in the construction of the cavity is
+class B-s3, d2 or better.
+ii. The supports and fixings in the cavity are class A1.
+e. Any pipe insulation system should achieve class C-s3, d2 rating or better.
+f. Any electrical wiring in the cavity is laid in metal trays or metal conduit.
+g. Other than those in (d)–(f), any materials are class A2-s3, d2 rated or better.
+Construction and fixings for cavity barriers
+9.13 Cavity barriers, tested from each side separately, should provide a minimum of both of the
+following:
+a. 30 minutes’ integrity (E 30)
+b. 15 minutes’ insulation (I 15).
+They may be formed by a construction provided for another purpose if it achieves the same
+performance.
+9.14 Cavity barriers in a stud wall or partition, or provided around openings, may be formed of any of
+the following.
+a. Steel, a minimum of 0.5mm thick.
+b. Timber, a minimum of 38mm thick.
+c. Polythene-sleeved mineral wool, or mineral wool slab, under compression when installed in
+the cavity.
+80 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

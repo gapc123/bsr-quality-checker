@@ -1,0 +1,44 @@
+O N L I N E V E R S I O N F1(1)
+Table 3.1 Energy efficiency measures
+Category of measure
+Roof insulation
+a. Renewing loft insulation, including effective edge sealing at junctions and penetrations Minor
+b. Loft conversions or works that include changing a cold loft (insulation at ceiling level) to Minor
+a warm loft (insulation at roof level)
+Wall insulation
+c. Installing cavity wall insulation to any external wall Minor
+d. Installing external or internal wall insulation to less than or equal to 50% of the external Minor
+wall area
+e. Installing external or internal wall insulation to more than 50% of the external wall area Major
+Replacement of windows and doors(1)
+f. Replacing less than or equal to 30% of the total existing windows or door units Minor
+g. Replacing more than 30% of the total existing windows or door units Major
+Draught-proofing (other than openings)(2)
+h. Replacing a loft hatch with a sealed/insulated unit Minor
+i. Sealing around structural or service penetrations through walls, floors or ceiling/roof Minor
+j. Sealing and/or insulating a suspended ground floor Major
+k. Removing chimney or providing another means of sealing over chimney, internally or Major
+externally
+NOTES:
+1. If the energy efficiency works involve only replacing windows, then the guidance in paragraphs 3.14 to 3.16 may be
+followed as an alternative means of demonstrating compliance.
+2. Draught-proofing measures might not, on their own, constitute building work. This work may be controllable
+under the Building Regulations if carried out as part of other building work.
+Number of minor measures
+0 1 2 3 4 5 6
+0 Category A
+1
+Number Category B
+of major 2
+measures
+3
+Category C
+4
+Diagram 3.1 C hart for categorising impact on ventilation when carrying out works in existing
+dwellings
+3.10 If the method in Diagram 3.1 results in the work being categorised as Category A, it is likely that the
+energy efficiency measures have not reduced the ventilation provision of the dwelling below the
+requirements of F1(1) so no further ventilation provision is necessary.
+23
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

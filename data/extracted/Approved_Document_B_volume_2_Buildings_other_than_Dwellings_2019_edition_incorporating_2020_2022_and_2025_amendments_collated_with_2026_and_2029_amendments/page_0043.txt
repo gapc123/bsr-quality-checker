@@ -1,0 +1,43 @@
+O N L I N E V E R S I O N
+B1
+b. It should be no less than the minimum widths given in Table 3.1.
+c. It should not reduce at any point on the way to a final exit.
+d. It should not exceed 1400mm in stairs taller than 30m, unless a central handrail is provided. When
+a central handrail is provided, the stair width on each side of it should be considered separately
+when assessing stair capacity.
+3.11 Approved Document K requires stairs more than 2000mm wide in public buildings to have a
+central handrail.
+3.12 If an exit route from a stair is also the escape route from the ground storey and/or basement storey,
+the width of the exit route may need to be increased (see paragraph 2.23).
+Table 3.1 Minimum widths of escape stairs
+Situation of stair Maximum number of Minimum stair width
+people served(1) (mm)
+1a. In a ‘residential (institutional)’ building (unless the stair 150 1000(2)
+will only be used by staff)
+1b. In an ‘assembly and recreation’ building and serving an 220 1100
+area used for assembly purposes (unless the area is less
+than 100m²)
+1c. In any other building and serving an area with an Over 220 See note 3
+occupancy of more than 50
+2. Any stair not described above 50 800(4)
+NOTES:
+1. Assessed as likely to use the stair in a fire emergency.
+2. Section 6 of BS 9999 recommends that firefighting stairs should be at least 1100mm wide.
+3. See Table 3.2 for the size of stairs for simultaneous evacuation, and Table 3.3 for phased evacuation.
+4. T o comply with the guidance in Approved Document M on minimum widths for areas accessible to disabled
+people, this may need to be increased to 1000mm.
+Calculation of minimum stair width
+3.13 The width depends on the number of stairs provided and the escape strategy (simultaneous or
+phased evacuation). If the maximum number of people needing to use escape stairs is unknown,
+calculate it using the floor space factors in Appendix D.
+Discounting of stairs
+3.14 Regardless of escape strategy, where two or more stairs are provided, it should be assumed
+that one might not be available during a fire. Each stair should be discounted in turn to ensure
+the capacity of the remaining stairs is adequate. This applies to buildings with or without a sprinkler
+system.
+3.15 Paragraph 3.14 does not apply if either of the following applies.
+a. Escape stairs are protected by a smoke control system designed in accordance with BS EN 12101-6.
+b. Escape stairs are approached on each storey (except the top storey) through a protected lobby.
+Despite these exceptions, at least one storey exit still needs to be discounted (paragraph 2.21).
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 31
+O N L I N E V E R S I O N

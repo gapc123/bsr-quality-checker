@@ -1,0 +1,23 @@
+You can read guidance about the criteria that makes a building a higher-risk building.
+Managing and storing the information
+You must manage and store information about a building, so that it is:
+● kept digitally
+● secure from unauthorised access
+● available when someone needs the information
+● presented in a way someone can use
+● a building’s single source of truth
+● accessible, by providing the information in a simple format that is easy to understand and
+written in plain English
+● compliant with General Data Protection Regulation (GDPR)
+During design and construction of a higher-risk building
+Client’s responsibilities
+As the client, you must keep information that describes the building and shows how it complies with
+building regulations. To do this, you must keep a record of:
+● how those responsible for the building work comply with their duties
+● how you will manage the work, so you build what you set out to build
+You must share information about the building with every designer and contractor on the project.
+To store information about the building digitally, you must provide a record-keeping system. Your
+system should have version control so users can see any changes. You must set out your policies
+and procedures, to make sure your system is:
+● secure
+● available for authorised access

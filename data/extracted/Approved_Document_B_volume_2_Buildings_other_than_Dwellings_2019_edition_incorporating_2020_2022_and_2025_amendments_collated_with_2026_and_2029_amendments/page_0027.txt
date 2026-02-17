@@ -1,0 +1,39 @@
+O N L I N E V E R S I O N
+B1
+Access control measures
+2.8 Measures to restrict access to the building (or parts of it) should not adversely affect fire safety
+provisions. It may be reasonable to close some escape routes outside normal business hours, but
+measures should remain to safely evacuate people left inside the building (see paragraph 5.6).
+Number of occupants and exits
+2.9 The building design should be based on the number of occupants. If the number is not known, use
+the appropriate floor space factors (Appendix D).
+Table 2.2 gives the minimum number of escape routes and exits from a room or storey for different
+numbers of occupants. This number is likely to be increased by the need to observe travel distances
+and other practical considerations.
+The width of escape routes and exits is given in paragraph 2.18.
+Table 2.2 Minimum number of escape routes and exits from a room, tier or storey
+Maximum number of people Minimum number of escape routes/exits
+60 1
+600 2
+More than 600 3
+Alternative escape routes
+2.10 Alternative escape route should satisfy one of the following criteria.
+a. They are in directions 45 degrees or more apart (Diagram 2.2).
+b. They are in directions less than 45 degrees apart, but separated from each other by fire resisting
+construction.
+See para 2.10
+A B Alternative escape routes are available from C because angle ACB
+is 45 degrees or more and therefore distance CA or CB (whichever
+E
+is the less) should be no more than the maximum travel distance
+given for alternative escape routes.
+> 45° < 45° Alternative escape routes are not available from D because angle
+D ADB is less than 45 degrees (therefore see Diagram 2.1).
+C
+There is also no alternative escape route from E.
+Diagram 2.2 A lternative escape routes
+Inner rooms
+2.11 An inner room is at risk if a fire starts in the access room (Diagram 2.3). Such an arrangement should
+only be accepted if all of the following conditions are satisfied.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 15
+O N L I N E V E R S I O N

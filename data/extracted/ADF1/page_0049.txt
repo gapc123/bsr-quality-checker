@@ -1,0 +1,21 @@
+O N L I N E V E R S I O N B
+B10 For the purposes of this approved document, for all dwellings (both new and existing, where Part
+F applies), the moisture criteria are likely to be met if, during the colder months of the year, the
+moving average surface water activity of the internal surfaces of external walls is always less than
+the value in Table B2, evaluated over each moving average period.
+Table B2 Surface water activity
+Moving average period Surface water activity
+1 month 0.75
+1 week 0.85
+1 day 0.95
+B11 For new dwellings, for the purposes of this approved document, the moisture criteria in Table B2 is
+likely to be met if, during the colder months of the year, the moving average relative humidity in a
+room is always less than the value given in Table B3, evaluated over each moving average period.
+Table B3 Indoor air relative humidity
+Moving average period Indoor air relative humidity (%)
+1 month 65
+1 week 75
+1 day 85
+41
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

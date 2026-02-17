@@ -1,0 +1,46 @@
+(8) Where a change control application is successful the effect is that from the date of the notice
+under paragraph (4)—
+(a) building control approval for the HRB work, the stage of HRB work or work to existing
+HRB is granted;
+(b) subject to paragraphs (9) and (10)—
+(i) the description of the proposed controlled change, and
+(ii) the revised version of the agreed document that accompanied the application,
+are approved.
+(9) Where building control approval has been granted subject to a requirement that a plan or
+document must be revised, the unrevised plan or document is not approved by paragraph (8)(b).
+(10) Where—
+(a) building control approval has been granted subject to a requirement that a plan or
+document must be revised, and
+(b) the plan or document is revised in accordance with the requirement,
+paragraph (8)(b) applies in relation to the revised plan or document.
+(11) Where building control approval has been granted subject to a requirement of a type
+described in paragraph (3)(b)—
+(a) the client must ensure the work does not proceed beyond the point specified in the
+requirement until approval by the regulator to the plan or document has been received;
+(b) where a request for approval has been received by the regulator it must notify the client of
+the outcome of the request within 6 weeks beginning with the date the request is received
+by the regulator or within such longer period as at any time the regulator and the client
+agree in writing;
+(c) a notice that the request has been rejected must give the reasons for rejection, and
+(d) if requested by the client, the regulator must provide a paper copy of the approval.
+Change control: regulator power to specify notifiable changes and major changes
+25. The regulator may specify that a particular type of controlled change is a notifiable change
+or a major change, in relation to specified work, by giving notice in writing to that effect to the
+client, principal contractor (or sole contractor) and the principal designer (or sole or lead designer)
+for that work.
+Change control: major changes and notifiable changes
+26.—(1) In regulations 18 to 25—
+“major change” means—
+(a) in relation to HRB work or a stage of HRB work—
+(i) a change which is a material change of use to any part of a proposed higher-risk
+building;
+(ii) a change of the proposed use of any part of a proposed higher-risk building so that
+after the change the part of the building is to have a use as a car park or cease to have
+a use as a car park (whether the car park is for the occupiers of the building or
+otherwise);
+(iii) a change which increases or decreases the external height or width of a proposed
+higher-risk building;
+(iv) a change to the number of storeys in a proposed higher-risk building (including
+adding or removing a mezzanine or gallery floor);
+(v) a change to the structural design or structural loading of the building;
+24

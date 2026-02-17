@@ -1,0 +1,33 @@
+O N L I N E V E R S I O N
+B4
+Unprotected areas and fire resistance
+13.6 Parts of an external wall with less fire resistance than the appropriate amount given in Appendix B,
+Table B2, are called unprotected areas.
+13.7 Where a fire resisting external wall has an external surface material that is worse than class B-s3,
+d2 and is more than 1mm thick, that part of the wall should be classified as an unprotected area
+equating to half its area (Diagram 13.4).
+External walls on, and within 1000mm of, the relevant boundary
+13.8 Unprotected areas should meet the conditions in Diagram 13.5 and the rest of the wall should be fire
+resisting from both sides.
+External surface materials facing the boundary should be class B-s3, d2 or better.
+External walls 1000mm or more from the relevant boundary
+13.9 Unprotected area should not exceed the result given by one of the methods in paragraph 13.17, and
+the rest of the wall (if any) should be fre resisting but only from the inside of the building.
+External walls of protected stairways
+13.10 Exclude external walls of stairways in a protected shaft when assessing unprotected areas (see
+Diagram 3.3)
+See para 13.7
+b
+Area of fre resisting wall with
+materials more than 1mm thick and
+with a reaction to fre performance
+worse than class B-s3, d2 = a˜b
+Area of wall counted as
+unprotected area = 0.5a˜b
+Area of fre resisting wall with
+materials having a reaction to fre
+performance better than class B-s3, d2
+a
+Diagram 13.4 Status of materials achieving class B-s3, d2 or worse as unprotected area
+102 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

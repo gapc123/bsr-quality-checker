@@ -1,0 +1,36 @@
+O N L I N E V E R S I O N
+R38
+Section 19: Fire safety information
+19.1 For building work involving the erection or extension or a change of use of a relevant building (i.e.
+a building to which the Regulatory Reform (Fire Safety) Order 2005 or the Building Safety Act 2022
+applies, or will apply), fire safety information should be given to the relevant dutyholder (responsible
+person or accountable person) at one of the following times, whichever is the earlier.
+a. When the project is complete.
+b. When the building or extension is first occupied.
+19.2 This section is a guide to the information that should be provided and is not exhaustive. Guidance
+is in terms of essential information and additional information for complex buildings; however, the
+level of detail required should be considered on a case-by-case basis.
+Essential information
+19.3 The essential information provided should be sufficient to enable the relevant dutyholder to
+understand, operate and maintain the building (including the fire safety systems in it). It should
+make it clear how the fire safety arrangements of the building are intended to operate together.
+In cases where a fire safety strategy has been prepared (e.g. as part of the design and construction
+process for a building or building work), then this should be made available to the relevant
+dutyholder.
+19.4 Information on the location of fire protection measures may be sufficient. An as-built plan of the
+building should be provided showing all of the following.
+a. Escape routes – this should include exit capacity (i.e. the maximum allowable number of people
+for each storey and for the building).
+b. Fire resisting construction and location of fire-separating elements (including cavity barriers in
+walk-in spaces).
+c. Fire doorsets, fire doorsets fitted with a self-closing device and other doors relevant to the fire
+safety strategy, such as doors equipped with relevant hardware.
+d. Locations of fire detector heads (e.g. heat and smoke detectors), manual call points, fire alarm
+control and indicating equipment, fire alarm sounders, fire safety signage, emergency lighting,
+fire extinguishers, dry or wet fire mains and other firefighting equipment, and hydrants outside
+the building.
+e. Any sprinkler systems, including isolating valves and control equipment.
+f. Any smoke control systems, or ventilation systems with a smoke control function, including
+mode of operation and control systems.
+128 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

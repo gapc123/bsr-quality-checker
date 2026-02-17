@@ -1,0 +1,40 @@
+O N L I N E V E R S I O N
+B3
+Section 11: Special provisions for car parks
+11.1 Car parks call for different measures to restrict fire spread within buildings for the following reasons.
+a. The fire load is well defined.
+b. The probability of fire spreading from one storey to another in a well ventilated car park is low.
+Guidance is therefore given for three ventilation scenarios.
+Open‑sided car parks
+Natural ventilation
+11.2 For the purposes of assessing fire resistance, a building, compartment or separated part containing a
+car park may be regarded as open-sided when it complies with all of the following.
+a. There are no basement storeys.
+b. Each storey is naturally ventilated by permanent openings at each car parking level. The
+aggregate vent area is a minimum of 1/20 of that level’s floor area, at least half of which is
+provided equally by two opposite walls (1/80 on each side). The remaining free area can be
+distributed wherever possible.
+c. Where one element of structure supports, carries or stabilises another, the fire resistance of
+the supporting element at least matches the minimum period of fire resistance for the other
+element.
+d. In mixed use buildings, the fire resistance of any element that supports, carries or stabilises an
+element in the other part of the building should at least match the minimum period of fire
+resistance for the other element.
+e. All materials used in the construction should be class A1 rated, except for the following.
+i. Any surface finish applied to a floor or roof of the car park (or within any building,
+compartment or separated part adjoining the structure enclosing it), if the finish meets
+requirements B2 and B4.
+ii. Any fire doorset.
+iii. Any attendant’s kiosk not exceeding 15m2 in area.
+iv. Any shop mobility facility.
+Car parks that are not open‑sided
+11.3 For car parks that do not have the ventilation set out in paragraph 11.2, the required fire resistance
+is given in Appendix B, Table B2. Ventilation should be either natural or mechanical. See Approved
+Document F for additional guidance on ventilation of car parks.
+Natural ventilation
+11.4 Each storey should be ventilated by permanent openings at each car parking level. The openings can
+be at ceiling level. The aggregate free vent area should be a minimum of 1/40 of that level’s floor
+area, at least half of which should be provided equally by two opposite walls (1/160 on each side).
+The remaining free area can be distributed wherever possible.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 89
+O N L I N E V E R S I O N

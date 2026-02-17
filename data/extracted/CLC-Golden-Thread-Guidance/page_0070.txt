@@ -1,0 +1,49 @@
+CLC | Delivering the golden thread: Practical Guidance | August 2024
+ANNEX C - Content of the safety case report
+Regulation 5 of The Higher-Risk Buildings (Management of Safety Risks etc) (England) Regulations 2023, made under the powers
+conferred by Section 85 (3) of the Building Safety Act, require the principal accountable person to include the following information in
+the safety case report for an HRB:
+(1) A principal accountable person must f) for assuring the competence of designers and (4) The regulator may make a direction as
+include the following information in a contractors appointed, quality of materials used to the way in which a safety case report
+safety case report and assessment and management of building or a notification under section 86(1) of
+safety risks whilst works are in progress; the 2022 Act is to be given, which may
+a) the registration number given to the building
+include a requirement to give the report or
+on the register; g) a description of emergency plans in place for
+notification via a website address provided
+the building including but not limited to
+b) a brief description of the building and its for that purpose by the regulator.
+wider environment; (i) a description of equipment in place to
+(5) The regulator must publish a direction
+allow emergency services to respond to an
+c) a description of the possible scenarios of under paragraph (4) on its website and
+emergency,
+building safety risks that have been identified make it available for inspection at its
+by each accountable person through the (ii) details of the information provided principal offices during normal office hours.
+risk assessment process under section 83 of to emergency services to support their
+the 2022 Act, the likelihood of those risks emergency response planning,
+materialising and the assessment of the likely
+(iii) a description of the expectation with
+consequences if they do materialise;
+regard to residents and how they are to
+d) a description of how the steps taken by each respond to emergency situations.
+accountable person demonstrate compliance
+(2) The safety case report must be kept in
+with the obligations under section 84 of the
+electronic form.
+2022 Act;
+(3) A notification to the regulator under
+e) a description summarising the system for
+section 86(1) of the 2022 Act of a revised
+managing safety for the building including but
+safety case report must include—
+not limited to details of—
+a) an overview of the main revisions to the
+(i) how safety measures are tested and
+safety case report; and
+maintained,
+b) an explanation why the revision has been
+(ii) the policies and procedures in place for
+made.
+managing works to the building, including
+70

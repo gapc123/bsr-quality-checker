@@ -1,0 +1,42 @@
+F1(1) O N L I N E V E R S I O N
+System-specific guidance
+1.45 Paragraphs 1.46 to 1.73 give guidance for the types of ventilation system listed in Table 1.6.
+Table 1.6 Types of ventilation system
+System type Dwellings covered by the guidance
+Natural ventilation (paragraphs 1.47 to 1.59) Less airtight dwellings
+Continuous mechanical extract ventilation (paragraphs 1.60 to 1.66) All dwellings
+Mechanical ventilation with heat recovery (paragraphs 1.67 to 1.73) All dwellings
+NOTE: For situations outside the scope of Table 1.6, expert advice should be sought for the design,
+sizing and position of ventilators to provide effective ventilation.
+NOTE: As defined in Appendix A, less airtight dwellings are dwellings which have one of the
+following.
+a. A design air permeability higher than 5m3/(h·m2) at 50Pa.
+b. An as-built air permeability higher than 3m3/(h·m2) at 50Pa.
+1.46 Where a dwelling has natural ventilation and a measured air permeability that differs from the design
+air permeability, so that it is defined as a highly airtight dwelling, one of the following applies.
+a. Expert advice should be sought.
+b. A continuous mechanical extract ventilation system should be installed by following the
+guidance in paragraphs 1.60 to 1.66.
+NOTE: Continuous mechanical extract ventilation systems are available as decentralised options.
+An intermittent extract fan may be replaced with a decentralised continuous mechanical extract
+ventilation system fan.
+Natural ventilation with background ventilators and intermittent extract fans
+(guidance suitable only for less airtight dwellings)
+Intermittent extract
+1.47 Intermittent extract fans should be fitted in all wet rooms. For kitchens, utility rooms, bathrooms
+and sanitary accommodation, the extract rates in Table 1.1 can be met using an intermittent extract
+fan.
+1.48 If a wet room has no external walls, the intermittent extract fan should extract at four air changes
+per hour to meet the purge ventilation standards in paragraphs 1.26 to 1.31.
+1.49 For sanitary accommodation, extract rates can be met using windows by following the purge
+ventilation guidance in paragraphs 1.26 to 1.31.
+1.50 Any automatic controls (e.g. humidity control) for intermittent extract should have a manual
+override to allow the occupant to turn the extract ventilation on or off.
+1.51 In a room with no openable window, an intermittent extract fan should be provided with controls
+which continue to operate the fan for at least 15 minutes after the room is vacated.
+Background ventilators
+1.52 All rooms with external walls should have background ventilators. If a habitable room has no
+external walls, paragraphs 1.42 to 1.44 should be followed.
+14
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

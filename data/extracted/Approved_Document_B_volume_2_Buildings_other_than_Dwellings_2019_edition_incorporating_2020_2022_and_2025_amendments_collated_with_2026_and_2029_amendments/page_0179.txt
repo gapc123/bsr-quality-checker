@@ -1,0 +1,53 @@
+O N L I N E V E R S I O N
+F C
+Effective until 1 September 2029 – see 2029 amendment, page 171
+C14 Recommendations for the specification, design, construction, installation and maintenance of fire
+doorsets constructed with non-metallic door leaves are given in BS 8214.
+Guidance on timber fire resisting doorsets, in relation to the new European test standard, may be
+found in Timber Fire Resisting Doorsets: Maintaining Performance Under the New European Test
+Standard published by the Timber Research and Development Association (TRADA).
+Guidance for metal doors is given in Code of Practice for Fire Resisting Metal Doorsets published by
+the Door and Shutter Manufacturers’ Association (DSMA).
+C15 Hardware used on fire doors can significantly affect their performance in a fire. Notwithstanding the
+guidance in this approved document, guidance is available in Hardware for Fire and Escape Doors
+published by the Door and Hardware Federation (DHF) and Guild of Architectural Ironmongers (GAI).
+Effective until 29 September 2026 – see 2026 amendment, page 169
+Table C1 Provisions for fire doorsets
+Position of door Minimum fire resistance of door Minimum fire resistance of
+in terms of integrity (minutes) door in terms of integrity
+when tested to the relevant (minutes) when tested to
+European standard(1) BS 476-22
+1. In a compartment wall separating buildings Same as for the wall in which Same as for the wall in which
+the door is fitted, but a the door is fitted, but a
+minimum of 60 minutes minimum of 60 minutes
+2. In a compartment wall:
+a. i f it separates a flat from a space in E 30 S(2) FD 30 S(2)
+a
+common use
+b. enclosing a protected shaft forming E 30 S(2) FD 30 S(2)
+a
+a stairway wholly or partly above the
+adjoining ground in a building used for
+flats, other residential, assembly and
+recreation, or office purposes
+c. e nclosing a protected shaft forming a Half the period of fire Half the period of fire
+stairway not described in (b) above resistance of the wall in which resistance of the wall in
+it is fitted, but 30 minutes which it is fitted, but 30
+minimum and with suffix S(2) minutes minimum and with
+a
+suffix S(2)
+d. e nclosing a protected shaft forming a lift Half the period of fire Half the period of fire
+or service shaft resistance of the wall in which resistance of the wall in
+it is fitted, but 30 minutes which it is fitted, but
+minimum 30 minutes minimum
+e. n ot described in (a), (b), (c) or (d) above. Same as for the wall in which Same as for the wall in which
+it is fitted, but add S(2) if the it is fitted, but add S(2) if the
+a
+door is used for progressive door is used for progressive
+horizontal evacuation under the horizontal evacuation under
+guidance to requirement B1 the guidance to requirement
+B1
+3. In a compartment floor Same as for the floor in which Same as for the floor in
+it is fitted which it is fitted
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 167
+O N L I N E V E R S I O N

@@ -1,0 +1,51 @@
+Minimum energy performance requirements for new buildings
+25. The Secretary of State shall approve minimum energy performance requirements for new
+buildings, in the form of target CO emission rates, which shall be based upon the methodology
+2
+approved pursuant to regulation 24.
+CO emission rates for new buildings
+2
+26. Where a building is erected, it shall not exceed the target CO emission rate for the building
+2
+that has been approved pursuant to regulation 25.
+CO emission rate calculations
+2
+27.—(1) This regulation applies where a building is erected and regulation 26 applies.
+(2) Not later than the day before the work starts, the person carrying out the work shall give the
+local authority a notice which specifies—
+(a) the target CO emission rate for the building,
+2
+(b) the calculated CO emission rate for the building as designed, and
+2
+(c) a list of specifications to which the building is to be constructed.
+(3) Not later than five days after the work has been completed, the person carrying out the work
+shall give the local authority—
+(a) a notice which specifies—
+(i) the target CO emission rate for the building,
+2
+(ii) the calculated CO emission rate for the building as constructed, and
+2
+(iii) whether the building has been constructed in accordance with the list of
+specifications referred to in paragraph (2)(c), and if not a list of any changes to those
+specifications; or
+(b) a certificate of the sort referred to in paragraph (4) accompanied by the information
+referred to in sub-paragraph (a).
+(4) A local authority are authorised to accept, as evidence that the requirements of regulation 26
+have been satisfied, a certificate to that effect by an energy assessor who is accredited to produce
+such certificates for that category of building.
+(5) In this regulation, “specifications” means specifications used for the calculation of the CO
+2
+emission rate.
+Consequential improvements to energy performance
+28.—(1) Paragraph (2) applies to an existing building with a total useful floor area over 1,000m2
+where the proposed building work consists of or includes—
+(a) an extension;
+(b) the initial provision of any fixed building services; or
+(c) an increase to the installed capacity of any fixed building services.
+(2) Subject to paragraph (3), where this paragraph applies, such work, if any, shall be carried out
+as is necessary to ensure that the building complies with the requirements of Part L of Schedule 1.
+(3) Nothing in paragraph (2) requires work to be carried out if it is not technically, functionally
+and economically feasible.
+Energy performance certificates
+29.—(1) This regulation applies where—
+18

@@ -1,0 +1,47 @@
+“(g) a certificate under regulation 47 (regularisation of unauthorised building work) of
+the Building (Higher-Risk Buildings Procedures) (England) Regulations 2023;”;
+(d) in paragraph (8)—
+(i) after sub-paragraph (f) insert—
+“(fa)an application for a certificate under regulation 40 (completion certificate
+applications) or regulation 45 (partial completion certificates) of the Building
+(Higher-Risk Buildings Procedures) (England) Regulations 2023;”;
+(ii) after sub-paragraph (g) insert—
+“(h) an application for a certificate under regulation 47 (regularisation of unauthorised
+building work) of the Building (Higher-Risk Buildings Procedures) (England)
+Regulations 2023;”.
+(3) After regulation 34 insert—
+“Exception to building control prohibition: emergency repair work to existing HRB
+34A.—(1) Where an applicable person proposes to carry out work to existing HRB which
+consists of emergency repairs then—
+(a) the provision by them of a notice under regulation 10(1)(a) (notification of
+emergency repairs to existing HRB) of the Building (Higher-Risk Buildings
+Procedures) (England) Regulations 2023, and
+(b) an application for a certificate in relation to that work under regulation 47
+(regularisation of unauthorised building work) of those Regulations,
+are not to be treated as a breach of the building control prohibition.
+(2) Where paragraph (1) applies, the regulator is not prohibited from giving the applicable
+person a certificate under regulation 47 (regularisation of unauthorised building work) of
+the Building (Higher-Risk Buildings Procedures) (England) Regulations 2023.
+(3) In this regulation—
+“emergency repairs” has the meaning given in regulation 10(2) of the Building (Higher-
+Risk Buildings Procedures) (England) Regulations 2023;
+“the regulator” has the meaning in section 126 of the Building Act 1984;
+“work to existing HRB” has the meaning given in regulation 2 of the Building (Higher-
+Risk Buildings Procedures) (England) Regulations 2023.”.
+(4) In regulation 35 (exception to building control prohibition: work to occupied buildings)—
+(a) in paragraph (4)(a)—
+(i) after paragraph (i) insert—
+“(ia) an application for a certificate under regulation 40 (completion certificate
+applications) of the Building (Higher-Risk Buildings Procedures) (England)
+Regulations 2023 in relation to the work;”;
+(ii) after paragraph (ii) insert—
+“(iia) an application for a certificate under regulation 45 (partial completion
+certificates) of the Building (Higher-Risk Buildings Procedures) (England)
+Regulations 2023 in relation to the work;”;
+(b) after paragraph (5) insert—
+“(5A) Where paragraph (4) applies, the regulator is not prohibited from giving the
+applicable person a certificate under regulation 47 (regularisation of unauthorised building
+work) of the Building (Higher-Risk Buildings Procedures) (England) Regulations 2023.”.
+(5) In regulation 36(1) (exception to building control prohibitions: purchasers) after sub-
+paragraph (a) insert—
+56

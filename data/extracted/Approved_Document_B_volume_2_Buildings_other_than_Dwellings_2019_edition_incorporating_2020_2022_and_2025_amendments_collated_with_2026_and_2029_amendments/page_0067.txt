@@ -1,0 +1,35 @@
+O N L I N E V E R S I O N
+B2
+Section 6: Wall and ceiling linings
+Classification of linings
+6.1 The surface linings of walls and ceilings should meet the classifications in Table 6.1.
+Table 6.1 Classification of linings
+Location Classification
+Small rooms of maximum internal floor area: D-s3, d2
+a. 4 m2 in residential accommodation
+b. 30m2 in non-residential accommodation
+Other rooms (including garages) C-s3, d2
+Other circulation spaces B-s3, d2(1)
+NOTE:
+1. Wallcoverings which conform to BS EN 15102, achieving at least class C-s3, d2 and bonded to a class A2-s3, d2
+substrate, will also be acceptable.
+Walls
+6.2 For the purposes of this requirement, a wall includes both of the following.
+a. The internal surface of internal and external glazing (except glazing in doors).
+b. Any part of a ceiling which slopes at an angle greater than 70 degrees to the horizontal.
+6.3 For the purposes of this requirement, a wall does not include any of the following.
+a. Doors and door frames.
+b. Window frames and frames in which glazing is fitted.
+c. Architraves, cover moulds, picture rails, skirtings and similar narrow members.
+d. Fireplace surrounds, mantle shelves and fitted furniture.
+6.4 Parts of walls in rooms may be of lower performance than stated in Table 6.1, but no worse than
+class D-s3, d2. In any one room, the total area of lower performance wall lining should be less than
+an area equivalent to half of the room’s floor area, up to a maximum of:
+a. 20m2 in residential accommodation.
+b. 60m2 in non-residential accommodation.
+Ceilings
+6.5 For the purposes of this requirement, a ceiling includes all of the following.
+a. Glazed surfaces.
+b. Any part of a wall at 70 degrees or less to the horizontal.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 55
+O N L I N E V E R S I O N

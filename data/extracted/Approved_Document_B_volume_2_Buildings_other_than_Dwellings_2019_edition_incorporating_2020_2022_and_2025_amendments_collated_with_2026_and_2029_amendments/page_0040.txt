@@ -1,0 +1,34 @@
+O N L I N E V E R S I O N
+B1
+Section 3: Design for vertical escape
+Introduction
+3.1 The limits on horizontal travel escape distances mean most people should be able to independently
+reach a protected escape route or final exit. The following guidance also includes measures for
+people who are unable to use stairs without help.
+In larger buildings, some escape stairs may need to serve as firefighting stairs, and Section 17 will also
+apply.
+Number of escape stairs
+Mixed use buildings
+3.2 If a building contains storeys, or parts of storeys, in different purpose groups, it is necessary to
+consider providing either of the following.
+a. Separate escape routes from the areas of different use.
+b. Other effective means to protect common escape routes.
+Single escape stairs
+3.3 A single escape stair may serve a building (or part of a building) in the following situations.
+a. When independent escape routes from areas in different purpose groups are not necessary
+(see paragraph 3.2).
+b. From a basement that is allowed to have a single escape route in accordance with paragraph 2.6b
+and Table 2.1.
+c. In small premises, provided it meets the conditions in paragraph 4.2.
+d. From a building that meets both of the following conditions.
+i. It has no storey with a floor level more than 11m above ground level.
+ii. It is allowed to have only a single escape route in every storey in accordance with paragraph
+2.6b and Table 2.1.
+e. An office building with a maximum of five storeys above the ground storey where both of the
+following apply.
+i. The travel distance from every point in each storey does not exceed the distances given in
+Table 2.1 for escape in one direction only.
+ii. Every storey with a floor level more than 11m above ground level has an alternative means
+of escape.
+28 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

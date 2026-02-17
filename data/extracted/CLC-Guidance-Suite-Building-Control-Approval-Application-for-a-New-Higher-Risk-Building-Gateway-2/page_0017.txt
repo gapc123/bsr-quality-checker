@@ -1,0 +1,38 @@
+Building Control Approval Application for a New
+Higher-Risk Building (Gateway 2)
+APPLICATION INFORMATION SCHEDULE
+2. GATEWAY TWO APPLICATION INFORMATION SCHEDULE
+2.1. An Application Information Schedule is recommended to be submitted with
+the application.
+2.2. The objectives of the Application Information Schedule are to:
+• Signpost the sub-folders/files to the Approved Documents;
+• Identify the entity responsible for the providing the design;
+• Provide guidance on the sufficiency of the design for a Building Control
+Approval application and the proposed information that may be provided for
+Approval with Requirements.
+2.3. The BSR online application portal now provides for the information to be provided
+with an application to be uploaded in a folder, sub-folder and file structure at the
+time of the application.
+2.4. It is recommended that the applicant should submit the Application Information
+Schedule as a file in a sub-folder named “General Application Information”,
+and upload this sub-folder at the Drawings and Plans stage of the BSR online
+application portal. CLC guidance on Application Document Management and
+Submission provides further information.
+2.5. Annex 4A provides an example of an Application Information Schedule.
+3. HOW TO USE AN APPLICATION INFORMATION SCHEDULE
+3.1. An Application Information Schedule provides an easy to navigate information
+framework aligned with the requirements of Building Regulations (Schedule 1).
+3.2. The Schedule is divided into three columns: 1) Approved Documents; 2)
+Information provided with the application; and 3) Information provided with
+Approval with Requirements.
+3.3. It is key that each file listed within both columns 2 and 3 are referenced and
+allocated to the respective Approved Document.
+3.4. Each file should be allocated only once to the primary Approved Document and
+not to multiple Approved Documents.
+3.5. Files can be identified with the File Reference Number and File Title. For example
+- 2.1.1 (file reference number) Architectural Plans, Sections and Elevations (file
+title).
+3.6. It is an applicant’s decision on how to name and structure file references and
+titles.
+End of Note 04
+Back to contents page Page 13

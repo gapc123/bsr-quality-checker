@@ -1,0 +1,41 @@
+Fire Safety
+Appendix 4 Standards for evacuation lifts and firefighters’
+lifts
+A4.1.1 London Plan policy D5(B5) requires that where lifts are installed in a
+development, at least one lift per core is to be a suitable sized evacuation
+lift. This is a planning requirement which is in addition to any requirement
+by the Building Regulations to provide firefighters’ lifts.
+A4.1.2 Some of the features of evacuation and firefighters’ lifts differ.
+Requirements and standards for firefighters’ lifts are set out in the Building
+Regulations and British Standards. There are currently no published
+standards for evacuation lifts, however BS 9991 and BS 9999 set out a
+holistic approach to fire safety within developments. Standards (EN81-76)
+specifically for the inclusion of evacuation lifts were consulted on in 2019
+but are not finalised. A draft revised BS 9991 which included guidance on
+providing evacuation lifts was consulted on in 2021and is due to be
+published in 2022. Below are some of the potential features and
+differences between evacuation and firefighters’ lifts.
+Table A4.1 Features of Evacuation lifts and firefighters’ lifts
+Evacuation lifts Firefighters’ lifts
+Description A lift system specifically A lift system designed to
+designed to be used as a means facilitate the safe movement of
+of escape by people who require firefighters and their equipment
+level access in an emergency. in the event of an emergency.
+A trained person supports the The fire and rescue service has
+use of the lift by persons that exclusive use of the lift for
+require an assisted evacuation transporting firefighters and their
+following the evacuation equipment.
+strategy.
+These lifts are generally used as
+These lifts are generally used as passenger or goods lifts until
+passenger or goods lifts until required by the fire and rescue
+required for evacuation. service.
+Key Features Fire protected lift shaft Fire protected lift shaft
+(Building Protected safe areas (lobbies) in Protected safe areas (lobbies) in
+design) front of lift entrances front of lift entrances
+Smoke control measures, Smoke control measures
+including safe areas (lobbies)
+Separate power supply to the lift
+Separate power supply to the lift to enable the lift to remain in
+to enable the lift to remain in use
+33

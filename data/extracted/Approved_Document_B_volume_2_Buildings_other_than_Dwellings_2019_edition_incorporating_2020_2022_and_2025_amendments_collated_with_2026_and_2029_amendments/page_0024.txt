@@ -1,0 +1,26 @@
+O N L I N E V E R S I O N
+BB11
+Section 2: Design for horizontal escape
+Introduction
+2.1 Means of escape should be provided from any point on a storey to the storey exit, for all types of
+building. The general principle is that any person confronted by a fire within a building can turn away
+from it and escape safely.
+2.2 For small shop, office, industrial, storage and other similar premises, the guidance on small premises
+(see section 4) may be followed instead of the provisions in this section, if they meet both of the
+following conditions.
+a. No storey has an area more than 280m2.
+b. There is a maximum of two storeys plus a basement storey.
+Escape route design
+Number of escape routes and exits
+2.3 The number of escape routes and exits that should be provided depends on both of the following.
+a. The number of occupants in the room, tier or storey.
+b. The limits on travel distance to the nearest exit given in Table 2.1 (which apply only to the
+nearest exit; other exits may be further away).
+2.4 In multi-storey buildings, if more than one stair is needed for vertical escape, every part of each
+storey should have access to more than one stair. An area may be in a dead end provided the
+alternative stair is accessible.
+2.5 In mixed use buildings, separate means of escape should be provided from any storeys or parts
+of storeys used for the ‘residential’ or ‘assembly and recreation’ purpose groups (purpose groups 1,
+2 and 5).
+12 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

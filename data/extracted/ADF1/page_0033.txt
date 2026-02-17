@@ -1,0 +1,40 @@
+O N L I N E V E R S I O N F1(1)
+a. Incorporating background ventilators in the replacement windows equivalent to the following.
+i. Habitable rooms – minimum 8000mm2 equivalent area.
+ii. Kitchen – minimum 8000mm2 equivalent area.
+iii. Bathroom (with or without a toilet) – minimum 4000mm2 equivalent area.
+b. If the dwelling will have continuous mechanical extract ventilation, installing background
+ventilators in any replacement windows which are not in wet rooms, with a minimum equivalent
+area of 4000mm2 in each habitable room.
+c. Other ventilation provisions, if it can be demonstrated to a building control body that they
+comply with the requirements of paragraph 3.2.
+NOTE: If it is not technically feasible to adopt the minimum equivalent areas set out in paragraph
+3.15, the background ventilators should have equivalent areas as close to the minimum value as is
+feasible.
+3.16 When windows are replaced as part of the work connected with a material change of use, Section 1
+of this approved document should be followed in addition to paragraphs 3.14 and 3.15.
+Addition of a habitable room (not including a conservatory)
+to an existing dwelling
+3.17 The requirement for adequate ventilation can be met if background ventilators are used as follows.
+a. If the additional room is connected to an existing habitable room which now has no windows
+opening to the outside, paragraphs 1.42 to 1.44 should be followed
+b. If the additional room is connected to an existing habitable room that still has windows opening
+to the outside, the following conditions apply.
+i. If the existing habitable room has a total background ventilator equivalent area of less
+than 5000mm2, paragraphs 1.42 to 1.44 should be followed.
+ii. If the existing habitable room has a total background ventilator equivalent area of at
+least 5000mm2, both of the following should be provided.
+• Background ventilators of at least 12,000mm2 equivalent area between the two rooms.
+• Background ventilators of at least 12,000mm2 equivalent area between the additional
+room and the outside.
+3.18 As an alternative to paragraph 3.17, to ventilate the additional habitable room, one of the following
+methods could be used.
+a. A single-room heat recovery ventilator. The supply rate to the additional room should be
+determined as follows.
+i. Establish the whole dwelling ventilation rate from Table 1.3.
+ii. Calculate the room supply rate required from the following equation.
+(whole dwelling ventilation rate × Room volume)
+(Total volume of all habitable rooms)
+25
+Building Regulations 2010 Approved Document F Volume 1, 2021 edition
+O N L I N E V E R S I O N

@@ -1,0 +1,46 @@
+B1
+Diagram 3.4 F ire resistance of areas near to external stairs
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 39
+mm0081
+O N L I N E V E R S I O N
+e. Glazing in areas of fire resisting construction should be fixed shut and fire resisting, in terms
+of integrity but not insulation (minimum E 30).
+3.33 Access to an external escape stair may be via a flat roof, provided the flat roof meets the
+requirements of paragraphs 2.31 and 2.32.
+See para 3.32
+Example a.
+No fre resistance Fire resisting window
+required for door (minimum RE 30)
+1100mm
+above
+top landing 1800mm
+Fd
+1800mm
+9m
+below stair 1800mm
+fights and
+Fd Fire doorset (minimum E 30) landings Ground level or a roof
+Fd
+Fire resisting construction or podium served by an
+(minimum RE 30) independent stairway
+Example b.
+1100mm
+above top
+landing
+Fd 1800mm
+1800mm
+9m
+below stair
+fights and Ground level or a roof
+landings or podium served by an
+independent stairway
+Section A–A Section B–B
+A
+1800mm
+B B
+NOTE:
+See para 3.31 on the provision
+of external stairs.
+See para 3.32d for weather
+protection provisions. Plan A
+O N L I N E V E R S I O N

@@ -1,0 +1,46 @@
+section 14(3) of the Building Act 1984(a) and has consulted the regulator and such other persons
+as the Secretary of State considers appropriate in accordance with section 7 of the Building Safety
+Act 2022.
+PART 1
+Preliminary
+Citation, commencement, extent and application
+1.—(1) These Regulations may be cited as the Building (Higher-Risk Buildings Procedures)
+(England) Regulations 2023 and come into force on 1st October 2023.
+(2) These Regulations extend to England and Wales.
+(3) These Regulations apply in relation to England only.
+Interpretation
+2.—(1) In these Regulations—
+“the 1984 Act” means the Building Act 1984;
+“the 2022 Act” means the Building Safety Act 2022;
+“the 2010 Regulations” means the Building Regulations 2010(b);
+“active fire safety measures” includes sprinkler systems (including isolating valves and control
+equipment for that system), smoke control systems (including heating or ventilation and air
+conditioning systems with a smoke control function), fire or smoke dampers, fire alarm
+systems, lifts and lift shafts (including evacuation or fire-fighting lifts), and fire main and
+hydrants;
+“agreed document” means—
+(a) a description, plan or document in relation to HRB work, stage of HRB work or work to
+existing HRB that was approved by virtue of regulation 7(8) or (10) (building control
+approval applications for HRB work or stage of HRB work: decisions) or regulation 15(8)
+or (10) (building control approval applications for work to existing HRB: decisions), or
+(b) where such a description, plan or document is revised—
+(i) in relation to a major change, the plan or document that was approved in accordance
+with regulation 24(8) or (10) (change control applications: decisions);
+(ii) in relation to a notifiable change, the version of the plan or document that
+accompanied the notice to the regulator(c) given under regulation 20(1) (change
+control: notification requirements);
+(iii) in relation to a recordable change, the version of the plan or document that was
+revised in accordance with regulation 18(2)(b) (change control) and in respect of
+which a record was made in accordance with regulation 18(2)(a);
+“building”—
+(a) in the application of any provision of these Regulations to the construction of a higher-
+risk building, has the meaning given in regulation 4 of the Higher-Risk Buildings
+(Descriptions and Supplementary Provisions) Regulations 2023(a);
+(a) Under the transitional provisions in regulation 5(1) of S.I. 2023/362 the requirement to consult under section 120B of the
+Building Act 1984 does not apply to proposals consulted on under section 14(3) of the Building Act 1984 before it was
+repealed by paragraph 17 of Schedule 5 to the Building Safety Act 2022.
+(b) S.I. 2010/2214 as amended by S.I. 2012/3119, 2013/1959, 2014/110, 2015/767, 2016/285, 2016/1274, 2018/1230,
+2021/1391, 2022/608 and 2023/520. There are other amending instruments, but none is relevant to this instrument.
+(c) See section 126 of the Building Act 1984 for the definition of “the regulator”, which was inserted by paragraph 81 of
+Schedule 5 to the Building Safety Act 2022.
+4

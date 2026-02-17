@@ -1,0 +1,36 @@
+O N L I N E V E R S I O N
+B3
+See para 9.8
+Arrangement A Arrangement B
+Acceptable without cavity barriers Cavity barriers necessary
+Cavity barrier
+Insulation
+The insulation should make contact with both skins of sheeting. See also Diagram 8.2a regarding the need for fre-stopping
+where such roofs pass over the top of a compartment wall.
+Diagram 9.4 Provisions for cavity barriers in double-skinned insulated roof sheeting
+Extensive cavities
+Maximum dimensions of cavities
+9.9 Cavity barriers should be used to divide any cavity (including roof spaces). Table 9.1 sets out
+maximum dimensions for undivided cavities.
+Table 9.1 Maximum dimensions of cavities in buildings other than dwellings
+(purpose groups 2 to 7)
+Location of cavity Class of surface/product exposed in cavity Maximum dimension
+(excluding the surface of any pipe, cable or conduit, in any direction (m)
+or any insulation to any pipe)
+Between roof and a ceiling Any 20
+Any other cavity Class C-s3, d2 or better 20
+Worse than Class C-s3, d2 10
+9.10 Table 9.1 does not apply to any of the following cavities.
+a. A cavity in a wall that is fire resisting only because it is loadbearing.
+b. A cavity in a wall that meets the conditions of Diagram 9.2.
+c. A floor or roof cavity above a fire resisting ceiling (Diagram 9.3) that extends throughout the
+building or compartment to a maximum of 30m.
+d. In a building not put to residential or institutional use, a cavity that does not contain materials
+achieving class B-s3, d2 or worse and is formed either:
+i. behind the external skin of an external cladding system with a masonry or concrete inner
+leaf a minimum of 75mm thick
+ii. by overcladding an existing masonry (or concrete) external wall or an existing concrete roof.
+e. A cavity that meets the conditions of paragraph 9.8.
+f. A cavity below a floor next to the ground or next to oversite concrete, if either:
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 79
+O N L I N E V E R S I O N

@@ -1,0 +1,43 @@
+O N L I N E V E R S I O N
+Assembly buildings
+0.13 Assembly buildings where a large number of people are present require additional considerations for
+means of escape; for example, fixed seating may limit the ability of people to escape.
+Guidance on fixed seating and other aspects of means of escape in assembly buildings is given in
+Annex D of BS 9999.
+For buildings to which the Safety of Sports Grounds Act 1975 applies, the Sports Grounds Safety
+Authority’s Guide to Safety at Sports Grounds should also be followed.
+Schools
+0.14 The design of fire safety in schools is covered by Building Bulletin 100, which should be used.
+Building Bulletin 100 contains fire safety provisions that are outside the scope of the Building
+Regulations.
+Prisons provided under section 33 of the Prisons Act 1952
+0.15 Prisons are exempted from the functional requirements of Parts B1 to B5 of the Building Regulations
+under section 33 of the Prisons Act 1952. It is usual that prisons should comply with the fire safety
+requirements of the Building Regulations, except where the requirements are incompatible with safe
+custody, good order or security.
+HM Prison and Probation Service (HMPPS) provides guidance documents on fire precautions in
+prisons, which take account of the public safety need to secure doors and exits while maintaining
+life safety objectives.
+The HMPPS Custodial Premises Fire Safety Design Guide (FSDG) is the design standard for fire safety
+in prisons, providing structured guidance for those involved in the planning, designing or approval
+of new or altered buildings.
+Further guidance documents on fire safety in prisons are provided by HMPPS. These documents
+may also be used for other places of lawful detention.
+Buildings containing one or more atria
+0.16 A building with an atrium that passes through compartment floors may need special fire safety
+measures. Guidance is given in Annexes B and C of BS 9999.
+Buildings of special architectural or historic interest
+0.17 Where Part B applies to existing buildings, particularly buildings of special architectural or historic
+interest for which the guidance in this document might prove too restrictive, some variation of the
+provisions in this document may be appropriate. In such cases, it is appropriate to assess the hazard
+and risk in the particular case and consider a range of fire safety features in that context.
+Fire safety engineering
+0.18 Fire safety engineering might provide an alternative approach to fire safety. Fire safety engineering
+may be the only practical way to achieve a satisfactory standard of fire safety in some complex
+buildings and in buildings that contain different uses.
+Fire safety engineering may also be suitable for solving a specific problem with a design that
+otherwise follows the provisions in this document.
+0.19 BS 7974 and supporting published documents (PDs) provide a framework for and guidance on the
+application of fire safety engineering principles to the design of buildings.
+4 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

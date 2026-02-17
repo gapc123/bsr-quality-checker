@@ -1,0 +1,42 @@
+F1(1) O N L I N E V E R S I O N
+Equivalent area of ventilators
+1.14 The size of background ventilators (including trickle ventilators) is given in this approved document
+as an equivalent area in mm2, not as a free area. BS EN 13141-1 includes a method of measuring the
+equivalent area of background ventilator openings.
+1.15 Background ventilators should have the equivalent area marked where it will be easy to see from
+inside the building when installed, to aid verification by building control bodies.
+Installation of ventilation systems
+1.16 Ventilation systems should be installed to meet both of the following conditions.
+a. Comply with the guidance in paragraphs 1.17 to 1.20.
+b. Not compromise the performance of the system in use.
+1.17 Rigid ducts should be used wherever possible. Where necessary, flexible ducts may be used for final
+connections, but their lengths should be kept to a minimum. All flexible ductwork should meet the
+standards of BSRIA’s BG 43/2013.
+1.18 Ductwork installations should be designed and installed to minimise the overall pressure losses
+within the system by taking all of the following steps.
+a. Minimising the overall length of duct.
+b. Minimising the number of bends required.
+c. Installing appropriately sized ducts for the air flow rate.
+1.19 Duct connections should be both mechanically secured and adequately sealed to prevent leaks.
+Rigid connectors and jubilee clips should be used for flexible ducting to ensure a good seal.
+1.20 Mechanical ventilation systems must be commissioned in accordance with an approved procedure.
+See Section 4 of this approved document.
+Indoor air quality monitoring
+1.21 In new buildings, the following types of occupiable room, unless they are rooms of the size
+described in paragraph 1.22, should have a means of monitoring the indoor air quality. This may be
+achieved using CO monitors or other means of measuring indoor air quality.
+2
+a. Occupiable rooms in offices.
+b. Occupiable rooms where singing, loud speech or aerobic exercise or other aerosol generating
+activities are likely to take place. These may include rooms, for example, in gymnasiums, other
+indoor sports venues, dance studios, theatres, concert halls, public houses, nightclubs, places of
+assembly, as well as in other types of building.
+c. Occupiable rooms where members of the public are likely to gather. These may include rooms,
+for example, in public buildings, hotels, gymnasiums, indoor sports venues, dance studios,
+theatres, concert halls, public houses, nightclubs, places of assembly, as well as in other types
+of building.
+d. Occupiable rooms which are maintained at both low temperatures and low levels of humidity.
+These may include rooms used for chilled food processing and occupied cold stores.
+8
+Approved Document F Volume 2, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

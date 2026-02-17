@@ -1,0 +1,28 @@
+O N L I N E V E R S I O N
+B5
+See paras 15.8 and 15.9
+Overhead obstructions to be avoided in this zone
+Face of building at ground level or vertical plane
+of projecting upper storey
+a b
+c d
+Obstruction
+Hardstanding or access road
+Type of appliance
+Turntable Hydraulic
+ladder platform
+dimension (m) dimension (m)
+a. Maximum distance of near edge of hardstanding from building 4.9 2.0
+b. Minimum width of hardstanding 5.0 5.5
+c. Minimum distance of further edge of hardstanding from building 10.0 7.5
+d. Minimum width of unobstructed space (for swing of appliance platform) N/A 2.2
+NOTES:
+1. Hardstanding for high reach appliances should be as 2. Fire appliances are not standardised. Some fre services have
+level as possible and should have a maximum appliances with a greater weight or di°erent size.
+gradient of 1 in 12. In consultation with the fre and rescue service, the building
+control body should adopt the relevant dimensions and ground
+loading capacity.
+Diagram 15.2 R elationship between building and hardstanding/access roads for high reach
+fire appliances
+114 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

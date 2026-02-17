@@ -1,0 +1,31 @@
+O N L I N E V E R S I O N
+B5
+Section 15: Vehicle access
+Buildings not fitted with fire mains
+15.1 For small buildings (up to 2000m2, with a top storey that is a maximum of 11m above ground level),
+vehicle access for a pump appliance should be provided to whichever is the less onerous of the
+following.
+a. 15% of the perimeter.
+b. Within 45m of every point of the footprint of the building (see Diagram 15.1).
+15.2 For all other buildings, provide vehicle access in accordance with Table 15.1.
+15.3 Every elevation to which vehicle access is provided should have a door, a minimum of 750mm wide,
+to give access into the building. The maximum distance between doors, or between a door and the
+end of the elevation, is 60m (e.g. a 150m elevation would need a minimum of two doors).
+Table 15.1 Fire and rescue service vehicle access to buildings not fitted with fire mains
+Total floor area(1) of Height of floor of top storey Provide vehicle Type of appliance
+building (m²) above ground (m)(2) access to:
+Up to 2000 Up to 11 See paragraph 15.1 Pump
+Over 11 15% of perimeter High reach
+2000–8000 Up to 11 15% of perimeter Pump
+Over 11 50% of perimeter High reach
+8000–16,000 Up to 11 50% of perimeter Pump
+Over 11 50% of perimeter High reach
+16,000–24,000 Up to 11 75% of perimeter Pump
+Over 11 75% of perimeter High reach
+Over 24,000 Up to 11 100% of perimeter Pump
+Over 11 100% of perimeter High reach
+NOTES:
+1. The sum of the area of all storeys in the building (excluding basements).
+2. For storage buildings (purpose group 7(a)), measure height to mean roof level (see Appendix D).
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 111
+O N L I N E V E R S I O N

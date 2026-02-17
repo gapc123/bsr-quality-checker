@@ -1,0 +1,29 @@
+C O N L I N E V E R S I O N
+Appendix C: Completion checklist and
+commissioning sheet
+C1 This installation and commissioning checklist is divided into three parts, as follows.
+a. Part 1 contains the particulars of the system, installation address and installer’s details.
+b. Part 2a functions as an installation checklist.
+c. Part 2b is a visual inspection, or pre-commissioning, checklist.
+d. Part 3 is for recording air flow measurements from fans.
+Checking design air flow rates against measured air
+flow rates
+C2 Measured air flow rates for all fans should be recorded on Part 3: Commissioning details, as part of
+the commissioning procedures given in Section 4 of this approved document.
+The measured values should be compared with their respective design values to determine the
+following.
+a. If the measured rate for each fan is equal to or greater than the design value, then the system
+meets the design standard.
+b. If any measured value is lower than the design value, an adjustment should be made to correct
+the system. All air flows should then be remeasured. If necessary, further adjustments should be
+made until all air flows match their design values.
+Demonstrating compliance
+C3 All three parts of the installation and commissioning checklist should be completed.
+The relevant sections of Parts 2 and 3 should be signed by a person who is both competent to install
+the system and responsible for installing and commissioning the system.
+C4 The three-part form should be completed for each installation address. A copy should be
+submitted to the building control body as evidence that the system has been correctly installed,
+inspected and commissioned.
+42
+Approved Document F Volume 1, 2021 edition Building Regulations 2010
+O N L I N E V E R S I O N

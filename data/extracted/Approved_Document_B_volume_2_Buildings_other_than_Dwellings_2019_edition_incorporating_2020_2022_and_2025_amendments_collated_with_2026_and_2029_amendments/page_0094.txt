@@ -1,0 +1,31 @@
+O N L I N E V E R S I O N
+B3
+Section 10: Protection of openings and
+fire‑stopping
+Introduction
+10.1 Every joint, imperfect fit and opening for services through a fire-separating element should be
+sealed with fire-stopping to ensure the fire resistance of the element is not impaired. Fire-stopping
+delays the spread of fire and, generally, the spread of smoke as well.
+Openings for pipes
+10.2 Pipes passing through a fire-separating element, unless in a protected shaft, should comply with one
+of the alternatives A, B or C below.
+Alternative A: Proprietary seals (any pipe diameter)
+10.3 Provide a proprietary, tested sealing system that will maintain the fire resistance of the wall, floor or
+cavity barrier.
+Alternative B: Pipes with a restricted diameter
+10.4 Where a proprietary sealing system is not used, fire-stop around the pipe, keeping the opening
+for the pipe as small as possible. The nominal internal diameter of the pipe should not exceed the
+relevant dimension given in Table 10.1.
+Alternative C: Sleeving
+10.5 A pipe with a maximum nominal internal diameter of 160mm may be used with a sleeve made out
+of a high melting point metal, as shown in Diagram 10.1, if the pipe is made of one of the following.
+a. Lead.
+b. Aluminium.
+c. Aluminium alloy.
+d. Fibre-cement.
+e. uPVC (pipes should also comply with either BS 4514 or BS 5255).
+A high melting point metal means any metal (such as cast iron, copper or steel) which, if exposed
+to a temperature of 800°C, will not soften or fracture to the extent that flame or hot gas will pass
+through the wall of the pipe.
+82 Approved Document B Volume 2, 2019 edition Building Regulations 2010
+O N L I N E V E R S I O N

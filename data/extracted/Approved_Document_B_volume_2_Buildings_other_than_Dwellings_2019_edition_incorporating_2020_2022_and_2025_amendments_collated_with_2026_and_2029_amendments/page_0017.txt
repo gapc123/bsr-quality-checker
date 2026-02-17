@@ -1,0 +1,45 @@
+O N L I N E V E R S I O N
+Purpose groups
+0.20 Building uses are classified within different purpose groups, which represent different levels of
+hazard (see Table 0.1). A purpose group can apply to a whole building or to a compartment within
+the building, and should relate to the main use of the building or compartment.
+0.21 Where a building or compartment has more than one use, it is appropriate to assign each different
+use to its own purpose group in the following situations.
+a. If the ancillary use is a flat.
+b. If both of the following apply.
+i. The building or compartment has an area of more than 280m2.
+ii. The ancillary use relates to an area that is more than one-fifth of the total floor area of the
+building or compartment.
+c. In ‘shop and commercial’ (purpose group 4) buildings or compartments, if the ancillary use is
+storage and both of the following apply.
+i. The building or compartment has an area of more than 280m2 .
+ii. The storage area comprises more than one-third of the total floor area of the building or
+compartment.
+0.22 Where there are multiple main uses that are not ancillary to one another (for example, shops with
+independent offices above), each use should be assigned to a purpose group in its own right. Where
+there is doubt as to which purpose group is appropriate, the more onerous guidance should be
+applied.
+Table 0.1 Classification of purpose groups
+Volume 1 purpose groups
+Title Group Purpose for which the building or compartment of a building is intended to be used
+Residential 1(a)(1) Flat.
+(dwellings)
+1(b)(2) Dwellinghouse that contains a habitable storey with a floor level a minimum of 4.5m
+above ground level up to a maximum of 18m.(3)
+1(c)(2)(4) Dwellinghouse that does not contain a habitable storey with a floor level a minimum
+of 4.5m above ground level.
+Volume 2 purpose groups
+Residential 2(a) Hospital, home, school or other similar establishment, where people sleep on the
+(institutional) premises. The building may be either of the following:
+• Living accommodation for, or accommodation for the treatment, care or
+maintenance of, either:
+disabled people with a range of impairments including physical, sensory and
+-
+cognitive impairments, or mental health conditions
+people under the age of 5 years.
+-
+• A place of lawful detention.
+Residential 2(b) Hotel, boarding house, residential college, hall of residence, hostel or any other
+(other) residential purpose not described above.
+Building Regulations 2010 Approved Document B Volume 2, 2019 edition 5
+O N L I N E V E R S I O N
