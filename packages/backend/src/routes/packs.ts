@@ -84,7 +84,7 @@ router.post('/', async (req: Request, res: Response) => {
 // GET /api/packs/:id - Get pack with versions
 router.get('/:id', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const pack = await prisma.pack.findUnique({
       where: { id },

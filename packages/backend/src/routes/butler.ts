@@ -88,7 +88,7 @@ router.post('/', upload.single('document'), async (req: Request, res: Response) 
 // GET /api/butler/:id - Get butler document details
 router.get('/:id', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const document = await prisma.document.findUnique({
       where: { id, libraryType: 'butler' },
@@ -116,7 +116,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 // DELETE /api/butler/:id - Delete butler library document
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const document = await prisma.document.findUnique({
       where: { id, libraryType: 'butler' },
