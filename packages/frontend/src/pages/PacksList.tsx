@@ -101,25 +101,38 @@ export default function PacksList() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-6">
-        <div className="max-w-3xl">
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">
-            Gateway 2 Submission Quality Checker
-          </h1>
-          <p className="text-lg text-slate-600 mb-6">
-            Upload your Gateway 2 pack, check clarity and consistency, and get an actions-first
-            gap analysis with evidence and references.
-          </p>
-          <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <svg className="w-5 h-5 text-slate-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
-            <div className="text-sm text-slate-600">
-              <strong className="text-slate-700">What this tool does:</strong> Reviews your documents for quality,
-              clarity, and consistency. Cross-references against BSR requirements and produces an
-              actionable gap analysis. <span className="text-slate-500">This is a reviewability diagnostic — it
-              does not certify compliance or replace professional judgement.</span>
+      {/* Hero Section with Background Image */}
+      <div className="relative rounded-xl overflow-hidden shadow-lg mb-6">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80')" }}
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-800/90 to-blue-900/85" />
+        {/* Content */}
+        <div className="relative p-8">
+          <div className="max-w-3xl">
+            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-wider shadow-md">
+              GATEWAY 2
+            </span>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Submission Quality Checker
+            </h1>
+            <p className="text-lg text-blue-100 mb-6">
+              Upload your Gateway 2 pack, check clarity and consistency, and get an actions-first
+              gap analysis with evidence and references.
+            </p>
+            <div className="flex items-start gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+              <svg className="w-5 h-5 text-blue-300 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+              <div className="text-sm text-blue-100">
+                <strong className="text-white">What this tool does:</strong> Reviews your documents for quality,
+                clarity, and consistency. Cross-references against BSR requirements and produces an
+                actionable gap analysis. <span className="text-blue-200">This is a reviewability diagnostic — it
+                does not certify compliance or replace professional judgement.</span>
+              </div>
             </div>
           </div>
         </div>

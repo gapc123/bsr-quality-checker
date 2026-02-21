@@ -15,7 +15,10 @@ COPY package*.json ./
 COPY packages/backend/package*.json ./packages/backend/
 COPY packages/frontend/package*.json ./packages/frontend/
 
-# Install dependencies
+# Remove package-lock to avoid platform-specific issues
+RUN rm -f package-lock.json packages/*/package-lock.json
+
+# Install dependencies fresh for this platform
 RUN npm install
 
 # Copy source code
@@ -24,8 +27,8 @@ COPY . .
 # Generate Prisma client
 RUN cd packages/backend && npx prisma generate
 
-# Build frontend
-RUN npm run build --workspace=packages/frontend
+# Build frontend (with clean vite cache)
+RUN cd packages/frontend && rm -rf node_modules/.vite && npm run build
 
 # Build backend
 RUN npm run build --workspace=packages/backend

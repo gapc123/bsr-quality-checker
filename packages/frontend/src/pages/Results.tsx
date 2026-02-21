@@ -192,20 +192,30 @@ export default function Results() {
           )}
           <span className="text-slate-900 font-medium">Quality Report</span>
         </nav>
-        <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-blue-800 rounded-xl p-6 text-white shadow-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-2 tracking-wider">
-                GATEWAY 2
-              </span>
-              <h1 className="text-2xl font-light tracking-tight">Quality Assessment Report</h1>
-              {projectName && (
-                <p className="text-blue-200 mt-1">{projectName} • Version {versionNumber}</p>
-              )}
-            </div>
-            <div className="text-right">
-              <div className="text-sm text-blue-200">BSR Quality Checker</div>
-              <div className="text-xs text-blue-300">Building Safety Act 2022</div>
+        <div className="relative rounded-xl overflow-hidden shadow-lg">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80')" }}
+          />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-800/85 to-blue-900/80" />
+          {/* Content */}
+          <div className="relative p-6 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-2 tracking-wider shadow-md">
+                  GATEWAY 2
+                </span>
+                <h1 className="text-2xl font-light tracking-tight">Quality Assessment Report</h1>
+                {projectName && (
+                  <p className="text-blue-200 mt-1">{projectName} • Version {versionNumber}</p>
+                )}
+              </div>
+              <div className="text-right">
+                <div className="text-sm text-blue-200">BSR Quality Checker</div>
+                <div className="text-xs text-blue-300">Building Safety Act 2022</div>
+              </div>
             </div>
           </div>
         </div>

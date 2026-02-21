@@ -1,0 +1,22 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "chromium"]
+
+[phases.install]
+cmds = [
+    "npm ci || npm install"
+]
+
+[phases.build]
+cmds = [
+    "cd packages/backend && npx prisma generate",
+    "npm run build --workspace=packages/frontend",
+    "npm run build --workspace=packages/backend"
+]
+
+[start]
+cmd = "cd packages/backend && node dist/index.js"
+
+[variables]
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
+PUPPETEER_EXECUTABLE_PATH = "/nix/store/chromium/bin/chromium"
+NODE_ENV = "production"
