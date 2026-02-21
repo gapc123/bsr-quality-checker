@@ -39,3 +39,4 @@ coverage/
 
 # Misc
 *.tsbuildinfo
+package-lock.json

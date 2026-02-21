@@ -1,9 +1,10 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "chromium"]
+nixPkgs = ["nodejs_20", "chromium", "python3"]
 
 [phases.install]
 cmds = [
-    "npm ci || npm install"
+    "rm -f package-lock.json packages/*/package-lock.json",
+    "npm install --legacy-peer-deps"
 ]
 
 [phases.build]
@@ -18,5 +19,5 @@ cmd = "cd packages/backend && node dist/index.js"
 
 [variables]
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
-PUPPETEER_EXECUTABLE_PATH = "/nix/store/chromium/bin/chromium"
+PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium"
 NODE_ENV = "production"
