@@ -119,7 +119,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 // DELETE /api/packs/:id - Delete pack
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     await prisma.pack.delete({
       where: { id },
@@ -138,10 +138,10 @@ router.post(
   upload.array('documents', 20),
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const files = req.files as Express.Multer.File[];
 
-      // Get pack
+      // Get pack with versions
       const pack = await prisma.pack.findUnique({
         where: { id },
         include: {
@@ -150,7 +150,7 @@ router.post(
             take: 1,
           },
         },
-      });
+      }) as any;
 
       if (!pack) {
         res.status(404).json({ error: 'Pack not found' });
@@ -159,7 +159,7 @@ router.post(
 
       // Calculate next version number
       const nextVersion =
-        pack.versions.length > 0 ? pack.versions[0].versionNumber + 1 : 1;
+        pack.versions && pack.versions.length > 0 ? pack.versions[0].versionNumber + 1 : 1;
 
       // Parse optional metadata
       const metadata = {
@@ -212,7 +212,7 @@ router.post(
 // GET /api/packs/:packId/versions/:versionId - Get version details
 router.get('/:packId/versions/:versionId', async (req: Request, res: Response) => {
   try {
-    const { versionId } = req.params;
+    const versionId = req.params.versionId as string;
 
     const version = await prisma.packVersion.findUnique({
       where: { id: versionId },
