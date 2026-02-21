@@ -103,3 +103,43 @@ model OutputArtifact {
   path          String
   createdAt     DateTime    @default(now())
 }
+
+// Auth & Subscription models
+model StripeCustomer {
+  id               String   @id @default(uuid())
+  userId           String   @unique // Clerk user ID
+  stripeCustomerId String   @unique
+  createdAt        DateTime @default(now())
+}
+
+model Subscription {
+  id                   String   @id @default(uuid())
+  userId               String
+  stripeSubscriptionId String   @unique
+  plan                 String   // professional, enterprise
+  status               String   // active, cancelled, inactive
+  currentPeriodEnd     DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+// Track submissions per user
+model SubmissionUsage {
+  id            String   @id @default(uuid())
+  userId        String
+  packVersionId String   @unique
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+// Track purchased submission credits (pay-as-you-go)
+model SubmissionCredit {
+  id                String   @id @default(uuid())
+  userId            String
+  stripePaymentId   String?  @unique
+  creditsRemaining  Int      @default(1)
+  createdAt         DateTime @default(now())
+
+  @@index([userId])
+}
