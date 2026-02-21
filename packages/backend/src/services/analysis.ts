@@ -11,6 +11,11 @@ import {
   ISSUE_GENERATION_USER_PROMPT,
   IssueGenerationResponse,
 } from '../prompts/generateReport.js';
+import {
+  assessPackAgainstMatrix,
+  determinePackContext,
+  FullAssessment,
+} from './matrix-assessment.js';
 
 type Confidence = 'high' | 'medium' | 'low';
 
@@ -322,6 +327,60 @@ async function generateIssues(
   }
 }
 
+/**
+ * Run matrix-based assessment on a pack version
+ */
+export async function runMatrixAssessment(packVersionId: string): Promise<FullAssessment> {
+  const packVersion = await prisma.packVersion.findUnique({
+    where: { id: packVersionId },
+    include: {
+      documents: {
+        include: { chunks: true },
+      },
+    },
+  });
+
+  if (!packVersion) {
+    throw new Error(`Pack version not found: ${packVersionId}`);
+  }
+
+  // Prepare pack documents for assessment
+  const packDocs = packVersion.documents.map(doc => ({
+    filename: doc.filename,
+    docType: doc.docType,
+    extractedText: doc.chunks
+      .sort((a, b) => a.chunkIndex - b.chunkIndex)
+      .map(c => c.text)
+      .join('\n')
+      .slice(0, 30000) // Limit per document
+  }));
+
+  // Determine pack context from version metadata
+  const context = determinePackContext(
+    packVersion.borough,
+    packVersion.buildingType,
+    packVersion.height,
+    packVersion.storeys
+  );
+
+  console.log(`[Matrix Assessment] Starting assessment for pack version ${packVersionId}`);
+  console.log(`[Matrix Assessment] Context: London=${context.isLondon}, HRB=${context.isHRB}`);
+
+  // Run the matrix assessment
+  const assessment = await assessPackAgainstMatrix(packDocs, context);
+
+  // Store assessment results in database
+  await prisma.packVersion.update({
+    where: { id: packVersionId },
+    data: {
+      matrixAssessment: JSON.stringify(assessment),
+    },
+  });
+
+  return assessment;
+}
+
 export default {
   analyzePackVersion,
+  runMatrixAssessment,
 };

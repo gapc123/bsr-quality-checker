@@ -1,0 +1,859 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-17",
+  "description": "BSR Gateway 2 Quality Assessment Criteria Matrix",
+  "criteria_types": {
+    "LLM_ONLY": "Can be assessed using pack documents alone without reference corpus",
+    "CORPUS_BACKED": "Must cite specific reference document(s) from corpus to assess",
+    "HYBRID": "Uses both pack evidence and corpus reference standards"
+  },
+  "categories": [
+    {
+      "id": "COMPLETENESS",
+      "name": "Pack Completeness vs Gateway 2 Expectations",
+      "description": "Checks that required documents are present per BSR Gateway 2 guidance"
+    },
+    {
+      "id": "GOLDEN_THREAD",
+      "name": "Golden Thread & Information Management",
+      "description": "Checks compliance with golden thread information requirements"
+    },
+    {
+      "id": "HRB_DUTIES",
+      "name": "HRB Process Duties & Roles",
+      "description": "Checks evidence of dutyholder competence and role clarity"
+    },
+    {
+      "id": "FIRE_SAFETY",
+      "name": "Fire Safety Narrative Quality",
+      "description": "Checks fire strategy against Approved Document B expectations"
+    },
+    {
+      "id": "STRUCTURAL",
+      "name": "Structural Safety Information",
+      "description": "Checks structural documentation completeness"
+    },
+    {
+      "id": "VENTILATION",
+      "name": "Ventilation Systems",
+      "description": "Checks ventilation strategy against Approved Document F"
+    },
+    {
+      "id": "LONDON_PLANNING",
+      "name": "London Planning Fire Statement",
+      "description": "London-specific fire statement requirements under Policy D12"
+    },
+    {
+      "id": "TRACEABILITY",
+      "name": "Document Traceability & Cross-Referencing",
+      "description": "Checks that documents reference each other consistently"
+    },
+    {
+      "id": "CONSISTENCY",
+      "name": "Internal Consistency",
+      "description": "Checks for contradictions within pack documents"
+    }
+  ],
+  "criteria": [
+    {
+      "criterion_id": "COMP-001",
+      "criterion_name": "Fire Strategy Report Present",
+      "category": "COMPLETENESS",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include a fire strategy report as required for Gateway 2 HRB applications?",
+      "pack_evidence_required": ["Fire Strategy Report", "Fire Safety Strategy"],
+      "reference_docs": ["clc_gateway2_guidance_suite", "building_control_approval_hrb"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if document clearly titled; Medium if inferred from content"
+      }
+    },
+    {
+      "criterion_id": "COMP-002",
+      "criterion_name": "Structural Design Documentation Present",
+      "category": "COMPLETENESS",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include structural design information demonstrating stability requirements?",
+      "pack_evidence_required": ["Structural Report", "Structural Calculations", "Structural Engineer Report"],
+      "reference_docs": ["uksi_20230909_en", "clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if structural calculations present"
+      }
+    },
+    {
+      "criterion_id": "COMP-003",
+      "criterion_name": "External Wall System Details Present",
+      "category": "COMPLETENESS",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include external wall system details including cladding and insulation specifications?",
+      "pack_evidence_required": ["External Wall Schedule", "Cladding Specification", "Facade Details"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended", "clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": "18m"
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if materials explicitly listed"
+      }
+    },
+    {
+      "criterion_id": "COMP-004",
+      "criterion_name": "Design and Access Statement Present",
+      "category": "COMPLETENESS",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include a Design and Access Statement describing the design approach?",
+      "pack_evidence_required": ["Design and Access Statement", "DAS"],
+      "reference_docs": ["clc_gateway2_guidance_suite", "applying_building_control_approval"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if clearly titled"
+      }
+    },
+    {
+      "criterion_id": "COMP-005",
+      "criterion_name": "MEP Specification Present",
+      "category": "COMPLETENESS",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include mechanical, electrical and plumbing specifications?",
+      "pack_evidence_required": ["MEP Specification", "M&E Specification", "Services Specification"],
+      "reference_docs": ["clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if systems clearly described"
+      }
+    },
+    {
+      "criterion_id": "COMP-006",
+      "criterion_name": "Fire Risk Assessment Present",
+      "category": "COMPLETENESS",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include a fire risk assessment for the building?",
+      "pack_evidence_required": ["Fire Risk Assessment", "FRA"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended", "uksi_20102214_en"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if FRA methodology evident"
+      }
+    },
+    {
+      "criterion_id": "GT-001",
+      "criterion_name": "Golden Thread Information Structure Defined",
+      "category": "GOLDEN_THREAD",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack demonstrate how golden thread information will be structured and maintained?",
+      "pack_evidence_required": ["Information Management Plan", "Golden Thread Strategy", "Document Management"],
+      "reference_docs": ["clc_golden_thread_guidance_2024", "keeping_information_golden_thread", "uksi_20230909_en"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if explicit golden thread reference; Medium if information management mentioned"
+      }
+    },
+    {
+      "criterion_id": "GT-002",
+      "criterion_name": "Information Handover Approach Documented",
+      "category": "GOLDEN_THREAD",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack describe how information will be handed over at completion per Regulation 38?",
+      "pack_evidence_required": ["Handover Plan", "O&M Manual Approach", "Completion Information"],
+      "reference_docs": ["clc_golden_thread_guidance_2024", "uksi_20230909_en", "uksi_20102214_en"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "Medium - often implicit in construction plans"
+      }
+    },
+    {
+      "criterion_id": "GT-003",
+      "criterion_name": "Document Version Control Evident",
+      "category": "GOLDEN_THREAD",
+      "criterion_type": "HYBRID",
+      "question": "Do documents show version control and revision history as expected for golden thread compliance?",
+      "pack_evidence_required": ["Any document with version/revision information"],
+      "reference_docs": ["clc_golden_thread_guidance_2024"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "low",
+        "confidence_guidance": "High if revision tables present"
+      }
+    },
+    {
+      "criterion_id": "HRB-001",
+      "criterion_name": "Principal Designer Identified and Competent",
+      "category": "HRB_DUTIES",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack identify the Principal Designer and evidence their competence for HRB work?",
+      "pack_evidence_required": ["Principal Designer Declaration", "Competence Statement", "Design Team Information"],
+      "reference_docs": ["building_regs_duties_guide", "uksi_20230909_en", "clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if named with qualifications"
+      }
+    },
+    {
+      "criterion_id": "HRB-002",
+      "criterion_name": "Principal Contractor Identified and Competent",
+      "category": "HRB_DUTIES",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack identify the Principal Contractor and evidence their competence for HRB work?",
+      "pack_evidence_required": ["Principal Contractor Declaration", "Contractor Competence", "Construction Team"],
+      "reference_docs": ["building_regs_duties_guide", "uksi_20230909_en", "clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if named with credentials"
+      }
+    },
+    {
+      "criterion_id": "HRB-003",
+      "criterion_name": "Client Duties Acknowledged",
+      "category": "HRB_DUTIES",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack evidence that the Client understands their duties under the Building Safety Act?",
+      "pack_evidence_required": ["Client Declaration", "Dutyholder Statement"],
+      "reference_docs": ["building_regs_duties_guide", "uksi_20230909_en"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "Medium - may be implicit"
+      }
+    },
+    {
+      "criterion_id": "HRB-004",
+      "criterion_name": "Change Control Process Defined",
+      "category": "HRB_DUTIES",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack describe how major changes during construction will be controlled and notified to BSR?",
+      "pack_evidence_required": ["Change Control Procedure", "Construction Management Plan"],
+      "reference_docs": ["uksi_20230909_en", "building_control_approval_hrb", "clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if explicit change control section"
+      }
+    },
+    {
+      "criterion_id": "HRB-005",
+      "criterion_name": "Mandatory Occurrence Reporting Awareness",
+      "category": "HRB_DUTIES",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack acknowledge mandatory occurrence reporting requirements during construction?",
+      "pack_evidence_required": ["Health and Safety Plan", "Occurrence Reporting", "Incident Procedure"],
+      "reference_docs": ["uksi_20230909_en"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "Low - often not explicit at Gateway 2"
+      }
+    },
+    {
+      "criterion_id": "FIRE-001",
+      "criterion_name": "Means of Escape Strategy Documented",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy document means of escape provisions including travel distances and exit widths?",
+      "pack_evidence_required": ["Fire Strategy Report", "Means of Escape Drawings"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if travel distances stated"
+      }
+    },
+    {
+      "criterion_id": "FIRE-002",
+      "criterion_name": "Compartmentation Strategy Defined",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy define compartmentation approach with fire resistance periods?",
+      "pack_evidence_required": ["Fire Strategy Report", "Compartmentation Drawings"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if fire resistance ratings stated"
+      }
+    },
+    {
+      "criterion_id": "FIRE-003",
+      "criterion_name": "Sprinkler Provision Addressed",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy address sprinkler provision requirements for the building height/type?",
+      "pack_evidence_required": ["Fire Strategy Report", "Sprinkler Specification"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["residential", "care_homes", "hospitals"],
+        "height_threshold": "18m"
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if sprinkler coverage described"
+      }
+    },
+    {
+      "criterion_id": "FIRE-004",
+      "criterion_name": "Firefighting Access Provisions",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy address firefighter access including firefighting shafts for taller buildings?",
+      "pack_evidence_required": ["Fire Strategy Report", "Access Drawings"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": "18m"
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if firefighting shaft mentioned for HRBs"
+      }
+    },
+    {
+      "criterion_id": "FIRE-005",
+      "criterion_name": "External Wall Fire Performance Specified",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the external wall schedule specify fire performance of materials per Requirement B4?",
+      "pack_evidence_required": ["External Wall Schedule", "Cladding Specification", "Fire Strategy Report"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": "18m"
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if fire classification ratings stated"
+      }
+    },
+    {
+      "criterion_id": "FIRE-006",
+      "criterion_name": "Smoke Control Strategy Defined",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy define smoke control provisions for common areas and escape routes?",
+      "pack_evidence_required": ["Fire Strategy Report", "Smoke Control Specification"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if smoke ventilation described"
+      }
+    },
+    {
+      "criterion_id": "FIRE-007",
+      "criterion_name": "Fire Detection and Alarm System Specified",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack specify fire detection and alarm system category and coverage?",
+      "pack_evidence_required": ["Fire Strategy Report", "MEP Specification", "Fire Alarm Specification"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if BS 5839 category stated"
+      }
+    },
+    {
+      "criterion_id": "FIRE-008",
+      "criterion_name": "Evacuation Strategy Defined",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy define the evacuation strategy (simultaneous, phased, stay-put)?",
+      "pack_evidence_required": ["Fire Strategy Report", "Fire Risk Assessment"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended", "gla_fire_safety_lpg_2022"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["residential"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_found"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if evacuation type explicitly stated"
+      }
+    },
+    {
+      "criterion_id": "FIRE-009",
+      "criterion_name": "Second Staircase Provision Addressed",
+      "category": "FIRE_SAFETY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "For buildings over 18m, does the fire strategy address second staircase requirements?",
+      "pack_evidence_required": ["Fire Strategy Report", "Core Design Drawings"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended", "gla_fire_safety_lpg_2022"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["residential"],
+        "height_threshold": "18m"
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if stair count and strategy stated"
+      }
+    },
+    {
+      "criterion_id": "STRUCT-001",
+      "criterion_name": "Structural Fire Resistance Specified",
+      "category": "STRUCTURAL",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the structural report specify fire resistance periods for structural elements?",
+      "pack_evidence_required": ["Structural Report", "Fire Strategy Report"],
+      "reference_docs": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if minutes fire resistance stated"
+      }
+    },
+    {
+      "criterion_id": "STRUCT-002",
+      "criterion_name": "Disproportionate Collapse Addressed",
+      "category": "STRUCTURAL",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the structural report address robustness and disproportionate collapse prevention?",
+      "pack_evidence_required": ["Structural Report", "Structural Calculations"],
+      "reference_docs": ["uksi_20102214_en"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "Medium - technical assessment required"
+      }
+    },
+    {
+      "criterion_id": "VENT-001",
+      "criterion_name": "Ventilation Strategy Defined",
+      "category": "VENTILATION",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack define the ventilation strategy (natural, mechanical, mixed-mode)?",
+      "pack_evidence_required": ["MEP Specification", "Ventilation Strategy", "Design and Access Statement"],
+      "reference_docs": ["adf1_ventilation_dwellings_2021", "adf2_ventilation_non_dwellings_2021"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if ventilation type stated"
+      }
+    },
+    {
+      "criterion_id": "VENT-002",
+      "criterion_name": "Ventilation Rates Specified",
+      "category": "VENTILATION",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the MEP specification include ventilation rates compliant with Approved Document F?",
+      "pack_evidence_required": ["MEP Specification", "Ventilation Calculations"],
+      "reference_docs": ["adf1_ventilation_dwellings_2021", "adf2_ventilation_non_dwellings_2021"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["dwellings"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if l/s rates stated"
+      }
+    },
+    {
+      "criterion_id": "VENT-003",
+      "criterion_name": "Mechanical Ventilation Commissioning Planned",
+      "category": "VENTILATION",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "If mechanical ventilation is proposed, is commissioning referenced per Regulation 44?",
+      "pack_evidence_required": ["MEP Specification", "Commissioning Plan"],
+      "reference_docs": ["adf1_ventilation_dwellings_2021", "uksi_20102214_en"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "low",
+        "confidence_guidance": "Medium - commissioning often addressed later"
+      }
+    },
+    {
+      "criterion_id": "LON-001",
+      "criterion_name": "Fire Statement Submitted (London)",
+      "category": "LONDON_PLANNING",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "For London major developments, does the pack include a Fire Statement per Policy D12(B)?",
+      "pack_evidence_required": ["Fire Statement", "Planning Fire Statement"],
+      "reference_docs": ["gla_fire_safety_lpg_2022", "gla_fire_statements_d12b_draft"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": true,
+        "building_types": ["major_developments"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "not_applicable"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if Fire Statement titled document present"
+      }
+    },
+    {
+      "criterion_id": "LON-002",
+      "criterion_name": "Fire Statement Prepared by Qualified Engineer (London)",
+      "category": "LONDON_PLANNING",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Is the London Fire Statement prepared by a suitably qualified fire engineer?",
+      "pack_evidence_required": ["Fire Statement with author credentials"],
+      "reference_docs": ["gla_fire_safety_lpg_2022", "gla_fire_statements_d12b_draft"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": true,
+        "building_types": ["major_developments"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if IFE/chartered credentials stated"
+      }
+    },
+    {
+      "criterion_id": "LON-003",
+      "criterion_name": "PEEP Considerations Addressed (London)",
+      "category": "LONDON_PLANNING",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the fire strategy address Personal Emergency Evacuation Plans for disabled residents?",
+      "pack_evidence_required": ["Fire Strategy Report", "Fire Statement"],
+      "reference_docs": ["gla_fire_safety_lpg_2022"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": true,
+        "building_types": ["residential"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "Medium if evacuation accessibility mentioned"
+      }
+    },
+    {
+      "criterion_id": "TRACE-001",
+      "criterion_name": "Documents Cross-Reference Each Other",
+      "category": "TRACEABILITY",
+      "criterion_type": "HYBRID",
+      "question": "Do key documents (fire strategy, DAS, structural) cross-reference each other appropriately?",
+      "pack_evidence_required": ["All documents"],
+      "reference_docs": ["clc_golden_thread_guidance_2024"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "low",
+        "confidence_guidance": "Medium - requires document comparison"
+      }
+    },
+    {
+      "criterion_id": "TRACE-002",
+      "criterion_name": "Drawing References Provided",
+      "category": "TRACEABILITY",
+      "criterion_type": "HYBRID",
+      "question": "Does the pack reference specific drawing numbers that would form part of the approval?",
+      "pack_evidence_required": ["Drawing schedule", "Document references in reports"],
+      "reference_docs": ["clc_golden_thread_guidance_2024", "clc_gateway2_guidance_suite"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if drawing numbers listed"
+      }
+    },
+    {
+      "criterion_id": "TRACE-003",
+      "criterion_name": "Regulatory Compliance Mapping Present",
+      "category": "TRACEABILITY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack map design decisions to specific regulatory requirements?",
+      "pack_evidence_required": ["Compliance statement", "Regulatory mapping"],
+      "reference_docs": ["clc_gateway2_guidance_suite", "uksi_20102214_en"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if Schedule 1 requirements referenced"
+      }
+    },
+    {
+      "criterion_id": "CON-001",
+      "criterion_name": "Building Height Consistent Across Documents",
+      "category": "CONSISTENCY",
+      "criterion_type": "LLM_ONLY",
+      "question": "Is the building height stated consistently across all pack documents?",
+      "pack_evidence_required": ["All documents mentioning height"],
+      "reference_docs": [],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if heights explicitly compared"
+      }
+    },
+    {
+      "criterion_id": "CON-002",
+      "criterion_name": "Storey Count Consistent Across Documents",
+      "category": "CONSISTENCY",
+      "criterion_type": "LLM_ONLY",
+      "question": "Is the number of storeys stated consistently across all pack documents?",
+      "pack_evidence_required": ["All documents mentioning storeys"],
+      "reference_docs": [],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag"],
+        "severity_if_flagged": "high",
+        "confidence_guidance": "High if storey counts explicitly compared"
+      }
+    },
+    {
+      "criterion_id": "CON-003",
+      "criterion_name": "Building Use Consistent Across Documents",
+      "category": "CONSISTENCY",
+      "criterion_type": "LLM_ONLY",
+      "question": "Is the building use/purpose group consistent across fire strategy and other documents?",
+      "pack_evidence_required": ["Fire Strategy Report", "Design and Access Statement"],
+      "reference_docs": [],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "High if purpose groups stated"
+      }
+    },
+    {
+      "criterion_id": "REG-001",
+      "criterion_name": "BSR Fee Awareness",
+      "category": "HRB_DUTIES",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack acknowledge BSR charging requirements for the application?",
+      "pack_evidence_required": ["Cover letter", "Application form"],
+      "reference_docs": ["bsr_charging_scheme_2025_26"],
+      "applicability": {
+        "hrb_only": true,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "low",
+        "confidence_guidance": "Low - fees often handled separately"
+      }
+    },
+    {
+      "criterion_id": "REG-002",
+      "criterion_name": "Building Regulations Compliance Statement",
+      "category": "TRACEABILITY",
+      "criterion_type": "CORPUS_BACKED",
+      "question": "Does the pack include a statement of compliance with Building Regulations 2010?",
+      "pack_evidence_required": ["Compliance statement", "Design certification"],
+      "reference_docs": ["uksi_20102214_en"],
+      "applicability": {
+        "hrb_only": false,
+        "london_only": false,
+        "building_types": ["all"],
+        "height_threshold": null
+      },
+      "output": {
+        "status_options": ["pass", "flag", "conditional"],
+        "severity_if_flagged": "medium",
+        "confidence_guidance": "Medium if compliance implied but not explicit"
+      }
+    }
+  ],
+  "statistics": {
+    "total_criteria": 38,
+    "by_type": {
+      "LLM_ONLY": 3,
+      "CORPUS_BACKED": 31,
+      "HYBRID": 4
+    },
+    "by_category": {
+      "COMPLETENESS": 6,
+      "GOLDEN_THREAD": 3,
+      "HRB_DUTIES": 6,
+      "FIRE_SAFETY": 9,
+      "STRUCTURAL": 2,
+      "VENTILATION": 3,
+      "LONDON_PLANNING": 3,
+      "TRACEABILITY": 4,
+      "CONSISTENCY": 3
+    },
+    "corpus_backed_percentage": 92
+  }
+}

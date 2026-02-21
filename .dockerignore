@@ -1,0 +1,13 @@
+node_modules
+.git
+.gitignore
+*.md
+!DEPLOY.md
+.env
+.env.*
+*.log
+uploads/*
+reports/*
+packages/backend/prisma/*.db
+packages/backend/prisma/*.db-journal
+.DS_Store

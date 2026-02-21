@@ -1,0 +1,687 @@
+{
+  "schema_version": "1.0.0",
+  "last_updated": "2026-02-19",
+  "description": "Regulatory Success Matrix for Gateway 2 Submissions - Proprietary assessment framework synthesised from BSR corpus",
+  "matrix": [
+    {
+      "matrix_id": "SM-001",
+      "matrix_title": "Fire Strategy Report Present and Complete",
+      "matrix_description": "A comprehensive fire strategy is fundamental to demonstrating compliance with Requirements B1-B5. BSR expects this as a core Gateway 2 document.",
+      "success_definition": "Pack includes a fire strategy report that addresses means of escape, compartmentation, external fire spread, structural fire resistance, and firefighter access. Document is clearly titled and authored by a competent fire engineer.",
+      "failure_modes": [
+        "No fire strategy report present",
+        "Fire strategy exists but missing key sections (e.g., no compartmentation)",
+        "Fire strategy present but unsigned or no author credentials",
+        "Fire strategy references outdated standards"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended", "clc_gateway2_guidance_suite", "uksi_20230909_en"],
+      "evidence_expected": ["Fire Strategy Report", "Fire Safety Strategy"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-002",
+      "matrix_title": "Means of Escape Clearly Defined",
+      "matrix_description": "Approved Document B requires clear demonstration of escape routes, travel distances, and exit capacities. Unclear escape provisions are a common rejection reason.",
+      "success_definition": "Fire strategy explicitly states evacuation strategy type, travel distances with measurements, exit widths, protected stairways, and compliance route (ADB or fire engineering).",
+      "failure_modes": [
+        "No evacuation strategy type stated",
+        "Travel distances mentioned but not quantified",
+        "No reference to stair protection or capacity",
+        "Relies on fire engineering without stating approach"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Strategy Report", "Means of Escape Drawings"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-003",
+      "matrix_title": "Compartmentation Strategy with Fire Resistance Periods",
+      "matrix_description": "Buildings must be divided into compartments to inhibit fire spread. BSR expects explicit fire resistance periods aligned with building height and purpose group.",
+      "success_definition": "Fire strategy defines compartment sizes, fire resistance periods (e.g., 60/90/120 minutes) for walls and floors, and fire stopping approach. References ADB Table A1/A2 or equivalent.",
+      "failure_modes": [
+        "No compartmentation section",
+        "Compartments described but no fire resistance periods",
+        "Fire resistance stated but not justified against building height",
+        "No fire stopping strategy"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Strategy Report", "Compartmentation Drawings"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-004",
+      "matrix_title": "External Wall System Fire Performance Specified",
+      "matrix_description": "Post-Grenfell requirements mandate detailed specification of external wall materials. This is a Gateway 2 priority check area.",
+      "success_definition": "External wall schedule or specification lists all materials, fire classifications (A1/A2/B etc), insulation types, cavity barriers, and compliance route. For 18m+ buildings, explicitly addresses the ban on combustible materials.",
+      "failure_modes": [
+        "No external wall schedule",
+        "Materials listed but no fire classifications",
+        "No mention of cavity barriers",
+        "Claims compliance without specifying materials",
+        "Uses generic descriptions (e.g., 'fire-rated cladding') without specifics"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": "18m"
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["External Wall Schedule", "Cladding Specification", "Fire Strategy Report"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-005",
+      "matrix_title": "Sprinkler Provision Addressed Appropriately",
+      "matrix_description": "For residential buildings over 11m, sprinklers are typically required. BSR expects clear statement of sprinkler strategy.",
+      "success_definition": "Fire strategy confirms whether sprinklers are provided, states coverage (full/partial), references relevant standard (BS 9251 or BS EN 12845), and explains design intent.",
+      "failure_modes": [
+        "No mention of sprinklers in fire strategy",
+        "States 'sprinklers to be provided' without specification",
+        "Height over 11m but no sprinkler justification",
+        "Sprinkler design not referenced against standards"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["residential"],
+        "hrb_only": false,
+        "height_threshold": "11m"
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Strategy Report", "Sprinkler Specification", "MEP Specification"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-006",
+      "matrix_title": "Firefighting Access Provisions for HRBs",
+      "matrix_description": "Buildings over 18m require firefighting shafts and enhanced access. BSR scrutinises this for HRB applications.",
+      "success_definition": "Fire strategy addresses firefighting shaft provision (if applicable), fire main locations, vehicle access, and coordination with local fire service. For 18m+ buildings, explicitly describes shaft design.",
+      "failure_modes": [
+        "No firefighting access section",
+        "Over 18m but no firefighting shaft mentioned",
+        "Generic statement without specifics",
+        "No evidence of fire service consultation"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": "18m"
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Strategy Report", "Access Drawings"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-007",
+      "matrix_title": "Second Staircase Provision for Tall Residential",
+      "matrix_description": "Recent guidance strengthens second staircase requirements for residential buildings over 18m. This is a key review focus.",
+      "success_definition": "For residential HRBs, fire strategy explicitly addresses number of stairs, justification if single stair proposed, or confirmation of two-stair design with protected lobbies.",
+      "failure_modes": [
+        "No mention of staircase strategy",
+        "Single stair proposed without fire engineering justification",
+        "Two stairs shown but no protected lobby approach",
+        "Height over 18m but stair count unclear"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["residential"],
+        "hrb_only": true,
+        "height_threshold": "18m"
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended", "gla_fire_safety_lpg_2022"],
+      "evidence_expected": ["Fire Strategy Report", "Core Design Drawings"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-008",
+      "matrix_title": "Structural Design Information Present",
+      "matrix_description": "Gateway 2 requires demonstration that structural design meets Building Regulations. Absence of structural information is a completeness gap.",
+      "success_definition": "Pack includes structural report or statement from chartered structural engineer covering foundation approach, superstructure system, and key design standards (Eurocodes).",
+      "failure_modes": [
+        "No structural documentation",
+        "Structural drawings only without report",
+        "No engineer credentials evident",
+        "References outdated codes"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_gateway2_guidance_suite", "uksi_20230909_en"],
+      "evidence_expected": ["Structural Report", "Structural Engineer Statement"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-009",
+      "matrix_title": "Structural Fire Resistance Aligned with Fire Strategy",
+      "matrix_description": "Structural elements must achieve fire resistance periods consistent with the fire strategy. Misalignment is a common issue.",
+      "success_definition": "Structural report references fire resistance requirements and confirms structural frame achieves required periods (e.g., 120 minutes for >30m buildings). Cross-references fire strategy.",
+      "failure_modes": [
+        "No fire resistance mentioned in structural report",
+        "Fire resistance periods differ from fire strategy",
+        "No cross-reference between structural and fire documents",
+        "Fire resistance stated but not justified"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Structural Report", "Fire Strategy Report"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-010",
+      "matrix_title": "Principal Designer Identified with Competence Evidence",
+      "matrix_description": "Building Safety Act requires a competent Principal Designer for HRBs. Gateway 2 applications must demonstrate this appointment.",
+      "success_definition": "Pack clearly names Principal Designer, states their organisation and qualifications, and evidences their competence for the building type (e.g., HRB experience, professional registration).",
+      "failure_modes": [
+        "No Principal Designer named",
+        "Named but no credentials or qualifications",
+        "Role assigned but competence not evidenced",
+        "Unclear whether PD has HRB-specific competence"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["building_regs_duties_guide", "uksi_20230909_en", "clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Principal Designer Declaration", "Competence Statement", "Cover Letter"],
+      "category": "HRB_DUTIES",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-011",
+      "matrix_title": "Principal Contractor Identified with Competence Evidence",
+      "matrix_description": "Building Safety Act requires a competent Principal Contractor for HRBs. Appointment must be demonstrated at Gateway 2.",
+      "success_definition": "Pack clearly names Principal Contractor (or confirms appointment pending), states their organisation, and evidences competence for HRB construction.",
+      "failure_modes": [
+        "No Principal Contractor named or referenced",
+        "Named but no competence evidence",
+        "States 'TBC' without explaining appointment process",
+        "Competence claimed but not substantiated"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["building_regs_duties_guide", "uksi_20230909_en", "clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Principal Contractor Declaration", "Competence Statement"],
+      "category": "HRB_DUTIES",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-012",
+      "matrix_title": "Golden Thread Information Strategy Defined",
+      "matrix_description": "HRBs must maintain a golden thread of building information. Gateway 2 should demonstrate awareness and approach.",
+      "success_definition": "Pack includes statement or section on information management approach, acknowledges golden thread requirements, and describes how information will be structured, stored, and handed over.",
+      "failure_modes": [
+        "No mention of golden thread or information management",
+        "Acknowledges requirement but no approach described",
+        "Vague statements without practical detail",
+        "No mention of digital format or accessibility"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_golden_thread_guidance_2024", "keeping_information_golden_thread", "uksi_20230909_en"],
+      "evidence_expected": ["Information Management Plan", "Golden Thread Statement", "Design Report"],
+      "category": "GOLDEN_THREAD",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-013",
+      "matrix_title": "Change Control Process Defined",
+      "matrix_description": "HRB construction requires formal change control with BSR notification for major changes. Gateway 2 should show this is planned.",
+      "success_definition": "Pack describes approach to managing design changes during construction, references need to notify BSR of major changes, and identifies responsibility for change assessment.",
+      "failure_modes": [
+        "No mention of change control",
+        "Generic quality management without BSR-specific process",
+        "No acknowledgment of major change notification requirement",
+        "Unclear who assesses change significance"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["uksi_20230909_en", "building_control_approval_hrb", "clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Construction Management Plan", "Quality Plan", "Change Control Procedure"],
+      "category": "HRB_DUTIES",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-014",
+      "matrix_title": "Design and Access Statement Present",
+      "matrix_description": "DAS provides essential context about design intent and decisions. Its absence makes it harder for BSR to understand the proposal.",
+      "success_definition": "Pack includes Design and Access Statement that describes the building, its context, design rationale, and access provisions for occupants and emergency services.",
+      "failure_modes": [
+        "No DAS present",
+        "DAS present but very brief or lacking substance",
+        "Design described but no access considerations",
+        "No explanation of key design decisions"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Design and Access Statement"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-015",
+      "matrix_title": "MEP Systems Specification Present",
+      "matrix_description": "Mechanical, electrical and plumbing systems affect building safety. Gateway 2 benefits from clear MEP information.",
+      "success_definition": "Pack includes MEP specification or report covering heating, ventilation, electrical systems, and plumbing. Shows coordination with fire and structural strategies.",
+      "failure_modes": [
+        "No MEP documentation",
+        "MEP mentioned in other docs but no dedicated specification",
+        "Specification exists but lacks system details",
+        "No evidence of coordination with fire strategy"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_gateway2_guidance_suite"],
+      "evidence_expected": ["MEP Specification", "M&E Report", "Services Strategy"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-016",
+      "matrix_title": "Ventilation Strategy Defined per ADF",
+      "matrix_description": "Approved Document F sets ventilation requirements. Submissions should demonstrate compliant ventilation approach.",
+      "success_definition": "Pack specifies ventilation strategy (natural, mechanical, or mixed-mode), ventilation rates for habitable rooms, and compliance route with ADF.",
+      "failure_modes": [
+        "No ventilation information",
+        "Mentions 'mechanical ventilation' without rates",
+        "No reference to ADF or equivalent standards",
+        "Ventilation appears in passing but not substantively addressed"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["dwellings"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adf1_ventilation_dwellings_2021", "adf2_ventilation_non_dwellings_2021"],
+      "evidence_expected": ["MEP Specification", "Ventilation Strategy", "Design Report"],
+      "category": "VENTILATION",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-017",
+      "matrix_title": "Fire Detection and Alarm System Specified",
+      "matrix_description": "Fire detection is a core life safety system. BSR expects clear specification of detection approach.",
+      "success_definition": "Fire strategy or MEP specification states fire alarm category (L1/L2/L3 per BS 5839), detector types, coverage, and integration with evacuation strategy.",
+      "failure_modes": [
+        "No fire alarm information",
+        "Generic 'fire alarm system' without category",
+        "Category stated but coverage unclear",
+        "No link to evacuation strategy"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Strategy Report", "MEP Specification", "Fire Alarm Specification"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-018",
+      "matrix_title": "Smoke Control Strategy Defined",
+      "matrix_description": "Common areas and escape routes typically need smoke control. This should be addressed in fire strategy.",
+      "success_definition": "Fire strategy describes smoke control approach for common corridors and stairs (natural, mechanical, or pressure differential), references relevant standards, and coordinates with compartmentation.",
+      "failure_modes": [
+        "No smoke control mentioned",
+        "Smoke control referenced but not specified",
+        "Strategy unclear (e.g., 'smoke vents provided' without detail)",
+        "No coordination with stair pressurisation if claimed"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Strategy Report", "Smoke Control Specification"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-019",
+      "matrix_title": "Evacuation Strategy Type Explicitly Stated",
+      "matrix_description": "Residential buildings require clear evacuation strategy (simultaneous, phased, or stay-put). Ambiguity causes review delays.",
+      "success_definition": "Fire strategy explicitly states evacuation strategy type, justifies choice based on building design, and explains how it will be communicated to residents.",
+      "failure_modes": [
+        "No evacuation strategy stated",
+        "Assumes stay-put without stating it",
+        "Strategy stated but not justified",
+        "Mixed messages between documents"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["residential"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended", "gla_fire_safety_lpg_2022"],
+      "evidence_expected": ["Fire Strategy Report", "Fire Risk Assessment"],
+      "category": "FIRE_SAFETY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-020",
+      "matrix_title": "Building Height Consistent Across Documents",
+      "matrix_description": "Inconsistent building heights across documents suggest coordination failures and undermine confidence in the submission.",
+      "success_definition": "Building height is stated consistently (within reasonable tolerance) across fire strategy, structural report, DAS, and other documents.",
+      "failure_modes": [
+        "Different heights in different documents",
+        "Height stated in some documents but not others",
+        "Measurement basis unclear (to roof, to parapet, etc.)",
+        "Significant discrepancies (>1m)"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": [],
+      "evidence_expected": ["All documents mentioning height"],
+      "category": "CONSISTENCY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-021",
+      "matrix_title": "Storey Count Consistent Across Documents",
+      "matrix_description": "Inconsistent storey counts suggest coordination failures. This affects HRB classification.",
+      "success_definition": "Number of storeys is stated consistently across all documents, with clear basis (above ground, including basement, etc.).",
+      "failure_modes": [
+        "Different storey counts in different documents",
+        "Basis of count unclear (some include basement, some don't)",
+        "Storey count affects HRB threshold but inconsistent"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": [],
+      "evidence_expected": ["All documents mentioning storeys"],
+      "category": "CONSISTENCY",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-022",
+      "matrix_title": "Fire Risk Assessment Included",
+      "matrix_description": "FRA provides risk-based foundation for fire strategy. Its presence strengthens submissions.",
+      "success_definition": "Pack includes Fire Risk Assessment that identifies building-specific fire risks, assesses likelihood and consequence, and links to mitigation measures in fire strategy.",
+      "failure_modes": [
+        "No FRA present",
+        "FRA present but generic/template-based",
+        "FRA doesn't reference the specific building",
+        "FRA not linked to fire strategy measures"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["adb2_fire_safety_non_dwellings_2019_amended"],
+      "evidence_expected": ["Fire Risk Assessment"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-023",
+      "matrix_title": "London Fire Statement Present (London Only)",
+      "matrix_description": "London Plan Policy D12(B) requires major developments to submit a Fire Statement prepared by a qualified fire engineer.",
+      "success_definition": "For London projects, pack includes a dedicated Fire Statement (distinct from fire strategy) addressing Policy D12 requirements, prepared by a suitably qualified professional.",
+      "failure_modes": [
+        "No Fire Statement (London project)",
+        "Fire strategy exists but not in Fire Statement format",
+        "Fire Statement present but author qualifications unclear",
+        "Doesn't address D12-specific requirements"
+      ],
+      "applicability_rules": {
+        "geography": "london",
+        "building_types": ["major_developments"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["gla_fire_safety_lpg_2022", "gla_fire_statements_d12b_draft"],
+      "evidence_expected": ["Fire Statement", "Planning Fire Statement"],
+      "category": "LONDON_SPECIFIC",
+      "severity_if_unmet": "high"
+    },
+    {
+      "matrix_id": "SM-024",
+      "matrix_title": "PEEP Considerations Addressed (London Residential)",
+      "matrix_description": "London Fire Safety LPG emphasises Personal Emergency Evacuation Plans for disabled residents. This should be addressed for residential HRBs.",
+      "success_definition": "Fire strategy or Fire Statement acknowledges PEEP requirements, describes how evacuation of mobility-impaired residents will be managed, and identifies refuge areas if applicable.",
+      "failure_modes": [
+        "No mention of PEEPs or disabled evacuation",
+        "Generic accessibility statement without evacuation specifics",
+        "Refuges shown but not explained",
+        "PEEP mentioned but no management approach"
+      ],
+      "applicability_rules": {
+        "geography": "london",
+        "building_types": ["residential"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["gla_fire_safety_lpg_2022"],
+      "evidence_expected": ["Fire Strategy Report", "Fire Statement"],
+      "category": "LONDON_SPECIFIC",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-025",
+      "matrix_title": "Documents Cross-Reference Each Other",
+      "matrix_description": "Well-coordinated submissions show documents referencing each other. This indicates design team coordination.",
+      "success_definition": "Fire strategy references structural report, MEP references fire strategy, DAS references key technical documents. Drawing numbers are cited where relevant.",
+      "failure_modes": [
+        "Documents appear isolated/standalone",
+        "No cross-references between technical documents",
+        "References are generic ('as per architect drawings') not specific",
+        "Referenced documents not included in pack"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_golden_thread_guidance_2024"],
+      "evidence_expected": ["All technical documents"],
+      "category": "TRACEABILITY",
+      "severity_if_unmet": "low"
+    },
+    {
+      "matrix_id": "SM-026",
+      "matrix_title": "Regulatory Compliance Mapping Present",
+      "matrix_description": "Explicit mapping of design to regulations helps BSR understand compliance approach. Its absence requires more BSR analysis.",
+      "success_definition": "Pack includes compliance statement or matrix showing how Building Regulations (Schedule 1) requirements are addressed, with document references.",
+      "failure_modes": [
+        "No compliance mapping",
+        "Compliance claimed but not demonstrated",
+        "Only fire regulations addressed, others ignored",
+        "Generic compliance statement without specifics"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["uksi_20102214_en", "clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Compliance Statement", "Regulations Matrix", "Cover Letter"],
+      "category": "TRACEABILITY",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-027",
+      "matrix_title": "Document Version Control Evident",
+      "matrix_description": "Version control supports golden thread requirements and shows document maturity.",
+      "success_definition": "Documents include revision numbers, dates, and where applicable, revision history. Superseded versions are clearly marked.",
+      "failure_modes": [
+        "No version numbers on documents",
+        "Dates present but no revision tracking",
+        "Inconsistent versioning approach across documents",
+        "Draft watermarks on submitted documents"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_golden_thread_guidance_2024"],
+      "evidence_expected": ["All documents"],
+      "category": "GOLDEN_THREAD",
+      "severity_if_unmet": "low"
+    },
+    {
+      "matrix_id": "SM-028",
+      "matrix_title": "Construction Phase Plan Approach Outlined",
+      "matrix_description": "Gateway 2 should demonstrate how construction will be controlled. This supports confidence in delivery.",
+      "success_definition": "Pack indicates approach to construction phase management, site supervision, and quality assurance. May reference future Construction Phase Plan.",
+      "failure_modes": [
+        "No construction management information",
+        "Design documents only with no delivery context",
+        "Vague statements about 'quality construction'",
+        "No indication of how design intent will be maintained"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_gateway2_guidance_suite", "uksi_20230909_en"],
+      "evidence_expected": ["Construction Management Plan", "Quality Plan", "Project Execution Plan"],
+      "category": "HRB_DUTIES",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-029",
+      "matrix_title": "Building Description Clear and Complete",
+      "matrix_description": "A clear building description helps BSR understand the proposal quickly. Ambiguity slows review.",
+      "success_definition": "Pack provides clear description of building including: use, height, storeys, units/area, construction type, key features. Information is consistent and easy to find.",
+      "failure_modes": [
+        "Building description scattered across documents",
+        "Key parameters missing (units, area)",
+        "Description inconsistent between documents",
+        "Technical jargon without plain language summary"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Design and Access Statement", "Cover Letter", "Project Description"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "medium"
+    },
+    {
+      "matrix_id": "SM-030",
+      "matrix_title": "Site Location and Context Documented",
+      "matrix_description": "Understanding site context helps BSR assess external fire spread, access, and environmental factors.",
+      "success_definition": "Pack includes site plan, describes surrounding context, identifies access routes, and notes any site-specific constraints affecting fire safety or construction.",
+      "failure_modes": [
+        "No site plan",
+        "Site plan without context description",
+        "Access routes not shown",
+        "Adjacent buildings not considered for fire spread"
+      ],
+      "applicability_rules": {
+        "geography": "england",
+        "building_types": ["all"],
+        "hrb_only": false,
+        "height_threshold": null
+      },
+      "reference_sources": ["clc_gateway2_guidance_suite"],
+      "evidence_expected": ["Site Plan", "Design and Access Statement", "Location Plan"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "low"
+    }
+  ],
+  "statistics": {
+    "total_criteria": 30,
+    "by_category": {
+      "PACK_COMPLETENESS": 7,
+      "FIRE_SAFETY": 10,
+      "HRB_DUTIES": 4,
+      "GOLDEN_THREAD": 2,
+      "VENTILATION": 1,
+      "LONDON_SPECIFIC": 2,
+      "TRACEABILITY": 2,
+      "CONSISTENCY": 2
+    },
+    "by_severity": {
+      "high": 16,
+      "medium": 11,
+      "low": 3
+    },
+    "corpus_backed_count": 28,
+    "llm_only_count": 2
+  }
+}
