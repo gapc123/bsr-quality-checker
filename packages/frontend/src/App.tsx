@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import Landing from './pages/Landing';
 import PacksList from './pages/PacksList';
 import PackDetail from './pages/PackDetail';
 import Upload from './pages/Upload';
@@ -15,7 +16,7 @@ import SubscriptionGate from './components/SubscriptionGate';
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
   const isActive = location.pathname === to ||
-    (to !== '/' && location.pathname.startsWith(to));
+    (to !== '/' && to !== '/dashboard' && location.pathname.startsWith(to));
 
   return (
     <Link
@@ -32,77 +33,136 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 }
 
 function AppContent() {
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Professional Header */}
-      <header className="bg-slate-900 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo and Brand */}
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-lg font-bold text-white">BSR Quality Checker</span>
-                <span className="hidden sm:block text-xs text-slate-400">Gateway 2 Document Review Tool</span>
-              </div>
-            </Link>
+      {/* Header - different for landing vs app */}
+      {!isLandingPage && (
+        <header className="bg-slate-900 shadow-lg">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center justify-between h-16">
+              {/* Logo and Brand */}
+              <Link to="/" className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="text-lg font-bold text-white">BSR Quality Checker</span>
+                  <span className="hidden sm:block text-xs text-slate-400">Gateway 2 Document Review Tool</span>
+                </div>
+              </Link>
 
-            {/* Navigation and Auth */}
-            <div className="flex items-center gap-4">
-              <SignedIn>
-                <nav className="flex items-center gap-2">
-                  <NavLink to="/">Submission Packs</NavLink>
-                  <NavLink to="/butler">Reference Library</NavLink>
-                </nav>
-                <div className="ml-4 pl-4 border-l border-slate-700">
+              {/* Navigation and Auth */}
+              <div className="flex items-center gap-4">
+                <SignedIn>
+                  <nav className="flex items-center gap-2">
+                    <NavLink to="/dashboard">Submission Packs</NavLink>
+                    <NavLink to="/butler">Reference Library</NavLink>
+                  </nav>
+                  <div className="ml-4 pl-4 border-l border-slate-700">
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-9 h-9"
+                        }
+                      }}
+                    />
+                  </div>
+                </SignedIn>
+
+                <SignedOut>
+                  <nav className="flex items-center gap-2">
+                    <NavLink to="/pricing">Pricing</NavLink>
+                    <Link
+                      to="/sign-in"
+                      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      Sign In
+                    </Link>
+                  </nav>
+                </SignedOut>
+              </div>
+            </div>
+          </div>
+        </header>
+      )}
+
+      {/* Landing page header */}
+      {isLandingPage && (
+        <header className="absolute top-0 left-0 right-0 z-50">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex items-center justify-between h-20">
+              <Link to="/" className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <span className="text-lg font-bold text-white">BSR Quality Checker</span>
+              </Link>
+
+              <nav className="flex items-center gap-4">
+                <SignedOut>
+                  <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
+                    Pricing
+                  </Link>
+                  <Link to="/sign-in" className="text-white/80 hover:text-white font-medium transition-colors">
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/sign-up"
+                    className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
+                  >
+                    Get Started
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  <Link
+                    to="/dashboard"
+                    className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
+                  >
+                    Dashboard
+                  </Link>
                   <UserButton
-                    afterSignOutUrl="/sign-in"
+                    afterSignOutUrl="/"
                     appearance={{
                       elements: {
                         avatarBox: "w-9 h-9"
                       }
                     }}
                   />
-                </div>
-              </SignedIn>
-
-              <SignedOut>
-                <nav className="flex items-center gap-2">
-                  <NavLink to="/pricing">Pricing</NavLink>
-                  <Link
-                    to="/sign-in"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Sign In
-                  </Link>
-                </nav>
-              </SignedOut>
+                </SignedIn>
+              </nav>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
-      {/* Disclaimer Banner - only show when signed in */}
-      <SignedIn>
-        <Disclaimer />
-      </SignedIn>
+      {/* Disclaimer Banner - only show when signed in and not on landing */}
+      {!isLandingPage && (
+        <SignedIn>
+          <Disclaimer />
+        </SignedIn>
+      )}
 
       {/* Main Content */}
-      <main className="flex-1 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+      <main className={`flex-1 ${!isLandingPage ? 'bg-slate-50' : ''}`}>
+        <div className={!isLandingPage ? 'max-w-7xl mx-auto px-4 py-8' : ''}>
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<Landing />} />
             <Route path="/sign-in/*" element={<SignInPage />} />
             <Route path="/sign-up/*" element={<SignUpPage />} />
             <Route path="/pricing" element={<Pricing />} />
 
             {/* Protected routes (require auth + subscription) */}
             <Route
-              path="/"
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <SubscriptionGate>
@@ -155,19 +215,21 @@ function AppContent() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-400">
-              BSR Quality Checker — A reviewability diagnostic for Gateway 2 submissions
-            </p>
-            <p className="text-xs text-slate-500">
-              Not a compliance tool. For quality assessment only.
-            </p>
+      {/* Footer - only show when not on landing page (landing has its own) */}
+      {!isLandingPage && (
+        <footer className="bg-slate-900 border-t border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-slate-400">
+                BSR Quality Checker — A reviewability diagnostic for Gateway 2 submissions
+              </p>
+              <p className="text-xs text-slate-500">
+                Not a compliance tool. For quality assessment only.
+              </p>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      )}
     </div>
   );
 }
