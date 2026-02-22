@@ -28,21 +28,23 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files first
 COPY package*.json ./
 COPY packages/frontend/package*.json ./packages/frontend/
 COPY packages/backend/package*.json ./packages/backend/
 
-# Install dependencies
+# Install dependencies with legacy peer deps
 RUN npm install --legacy-peer-deps
 
-# Copy source code
+# Copy all source code
 COPY . .
 
-# Generate Prisma client
-RUN cd packages/backend && npx prisma generate
+# Generate Prisma client using local installation
+WORKDIR /app/packages/backend
+RUN npx prisma@5.22.0 generate
 
 # Build frontend
+WORKDIR /app
 RUN npm run build --workspace=packages/frontend
 
 # Build backend
