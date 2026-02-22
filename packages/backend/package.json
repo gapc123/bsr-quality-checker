@@ -15,7 +15,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
     "@clerk/express": "^1.7.73",
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "5.22.0",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "marked": "^4.3.0",
@@ -32,7 +32,7 @@
     "@types/node": "^22.9.0",
     "@types/pdf-parse": "^1.1.5",
     "@types/uuid": "^10.0.0",
-    "prisma": "^5.22.0",
+    "prisma": "5.22.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vitest": "^2.1.4"
