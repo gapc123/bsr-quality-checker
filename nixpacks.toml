@@ -9,11 +9,13 @@ cmds = [
 
 [phases.build]
 cmds = [
-    "echo 'Build version: 2026-02-21-v3-security-audit-changes'",
+    "echo 'Starting fresh build at:' && date",
     "rm -rf packages/frontend/dist packages/backend/dist",
+    "rm -rf node_modules/.vite node_modules/.cache",
     "cd packages/backend && npx prisma generate",
     "npm run build --workspace=packages/frontend",
-    "npm run build --workspace=packages/backend"
+    "npm run build --workspace=packages/backend",
+    "echo 'Build complete' && ls -la packages/frontend/dist/assets/"
 ]
 
 [start]
