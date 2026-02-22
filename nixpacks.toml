@@ -9,7 +9,8 @@ cmds = [
 
 [phases.build]
 cmds = [
-    "echo 'Build version: 2026-02-21-v2'",
+    "echo 'Build version: 2026-02-21-v3-security-audit-changes'",
+    "rm -rf packages/frontend/dist packages/backend/dist",
     "cd packages/backend && npx prisma generate",
     "npm run build --workspace=packages/frontend",
     "npm run build --workspace=packages/backend"

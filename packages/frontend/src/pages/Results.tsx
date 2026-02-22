@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import SecurityPanel from '../components/SecurityPanel';
+import ActionableChanges from '../components/ActionableChanges';
 
 interface MatrixUISummary {
   overallStatus: {
@@ -55,6 +57,10 @@ export default function Results() {
   const [versionNumber, setVersionNumber] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [showChangesPanel, setShowChangesPanel] = useState(false);
+  const [aiChanges, setAiChanges] = useState<any[]>([]);
+  const [humanChanges, setHumanChanges] = useState<any[]>([]);
+  const [hasUpdatedReport, setHasUpdatedReport] = useState(false);
 
   useEffect(() => {
     checkStatusAndFetch();
@@ -70,6 +76,7 @@ export default function Results() {
 
       if (statusData.status === 'completed') {
         fetchMatrixReport();
+        fetchActionableChanges();
       } else {
         setLoading(false);
       }
@@ -153,6 +160,41 @@ export default function Results() {
       console.error('Error downloading report:', error);
     } finally {
       setDownloading(null);
+    }
+  };
+
+  const fetchActionableChanges = async () => {
+    try {
+      const res = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/actionable-changes`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setAiChanges(data.aiChanges || []);
+        setHumanChanges(data.humanChanges || []);
+        setHasUpdatedReport(data.hasAppliedChanges || false);
+      }
+    } catch (error) {
+      console.error('Error fetching actionable changes:', error);
+    }
+  };
+
+  const applyChanges = async (selectedIds: string[]) => {
+    try {
+      const res = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/apply-changes`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ selectedChangeIds: selectedIds })
+        }
+      );
+      if (res.ok) {
+        setHasUpdatedReport(true);
+      }
+    } catch (error) {
+      console.error('Error applying changes:', error);
+      throw error;
     }
   };
 
@@ -459,6 +501,43 @@ export default function Results() {
             </div>
           </div>
 
+          {/* AI Actions Panel */}
+          {aiChanges.length > 0 && (
+            <div className="mt-6">
+              <button
+                onClick={() => setShowChangesPanel(!showChangesPanel)}
+                className="w-full bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 flex items-center justify-between hover:from-green-100 hover:to-emerald-100 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <p className="font-semibold text-slate-900">Want us to action changes for you?</p>
+                    <p className="text-sm text-slate-600">{aiChanges.length} improvements can be applied automatically</p>
+                  </div>
+                </div>
+                <svg className={`w-5 h-5 text-slate-400 transition-transform ${showChangesPanel ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {showChangesPanel && (
+                <div className="mt-4">
+                  <ActionableChanges
+                    aiChanges={aiChanges}
+                    humanChanges={humanChanges}
+                    onApplyChanges={applyChanges}
+                    onDownloadUpdated={() => downloadReport('pdf')}
+                    hasUpdatedReport={hasUpdatedReport}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Other formats */}
           <div className="flex items-center justify-center gap-4 text-sm">
             <span className="text-slate-500">Other formats:</span>
@@ -477,6 +556,9 @@ export default function Results() {
               {downloading === 'json' ? '...' : 'JSON'}
             </button>
           </div>
+
+          {/* Security Panel */}
+          <SecurityPanel />
 
           {/* Disclaimer */}
           <div className="text-center text-sm text-slate-500 py-2">
