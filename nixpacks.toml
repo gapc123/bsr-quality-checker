@@ -9,13 +9,13 @@ cmds = [
 
 [phases.build]
 cmds = [
-    "echo 'Starting fresh build at:' && date",
+    "echo 'Cache bust: $BUILD_CACHE_BUST'",
     "rm -rf packages/frontend/dist packages/backend/dist",
     "rm -rf node_modules/.vite node_modules/.cache",
     "cd packages/backend && npx prisma generate",
     "npm run build --workspace=packages/frontend",
     "npm run build --workspace=packages/backend",
-    "echo 'Build complete' && ls -la packages/frontend/dist/assets/"
+    "ls -la packages/frontend/dist/assets/"
 ]
 
 [start]
