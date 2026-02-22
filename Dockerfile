@@ -24,7 +24,6 @@ RUN apt-get update && apt-get install -y \
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
-ENV NODE_ENV=production
 
 WORKDIR /app
 
@@ -33,13 +32,13 @@ COPY package*.json ./
 COPY packages/frontend/package*.json ./packages/frontend/
 COPY packages/backend/package*.json ./packages/backend/
 
-# Install dependencies with legacy peer deps
+# Install ALL dependencies (including devDependencies for build)
 RUN npm install --legacy-peer-deps
 
 # Copy all source code
 COPY . .
 
-# Generate Prisma client using local installation
+# Generate Prisma client
 WORKDIR /app/packages/backend
 RUN npx prisma@5.22.0 generate
 
@@ -49,6 +48,9 @@ RUN npm run build --workspace=packages/frontend
 
 # Build backend
 RUN npm run build --workspace=packages/backend
+
+# Set production mode for runtime
+ENV NODE_ENV=production
 
 # Start command
 CMD ["node", "packages/backend/dist/index.js"]
