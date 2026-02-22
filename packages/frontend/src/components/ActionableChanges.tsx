@@ -30,7 +30,7 @@ export default function ActionableChanges({
   humanChanges,
   onApplyChanges,
   onDownloadUpdated,
-  hasUpdatedReport
+  hasUpdatedReport: _hasUpdatedReport
 }: ActionableChangesProps) {
   const [selectedChanges, setSelectedChanges] = useState<Set<string>>(
     new Set(aiChanges.map(c => c.id))
