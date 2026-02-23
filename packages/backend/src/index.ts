@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Serve uploaded files statically (for debugging)
 const uploadsPath = isProduction
-  ? path.join(process.cwd(), '..', '..', 'uploads')
+  ? path.join(process.cwd(), 'uploads')
   : path.join(process.cwd(), '..', '..', 'uploads');
 app.use('/uploads', express.static(uploadsPath));
 
@@ -39,7 +39,8 @@ app.get('/api/health', (req, res) => {
 
 // Serve frontend static files in production
 if (isProduction) {
-  const frontendPath = path.join(process.cwd(), '..', 'frontend', 'dist');
+  // When running from /app with CMD ["node", "packages/backend/dist/index.js"]
+  const frontendPath = path.join(process.cwd(), 'packages', 'frontend', 'dist');
 
   if (fs.existsSync(frontendPath)) {
     app.use(express.static(frontendPath));
