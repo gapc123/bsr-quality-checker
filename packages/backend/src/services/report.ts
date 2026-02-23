@@ -98,7 +98,10 @@ export async function generatePDFReport(
   const filename = `report-${data.pack.name}-v${data.version.versionNumber}.pdf`;
   const filepath = path.join(REPORTS_DIR, filename);
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
   await page.pdf({
@@ -1230,7 +1233,10 @@ export async function generateMatrixPDFReport(
   const filename = `matrix-report-${packVersion.pack.name}-v${packVersion.versionNumber}.pdf`;
   const filepath = path.join(REPORTS_DIR, filename);
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
   await page.pdf({
