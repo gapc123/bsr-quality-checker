@@ -42,8 +42,10 @@ COPY . .
 WORKDIR /app/packages/backend
 RUN npx prisma@5.22.0 generate
 
-# Build frontend
+# Build frontend - accept Clerk key as build argument
 WORKDIR /app
+ARG VITE_CLERK_PUBLISHABLE_KEY
+ENV VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
 RUN npm run build --workspace=packages/frontend
 
 # Build backend
