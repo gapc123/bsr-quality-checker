@@ -110,8 +110,9 @@ export default function Results() {
       setStatus(statusData);
 
       if (statusData.status === 'completed') {
-        fetchMatrixReport();
-        fetchActionableChanges();
+        // Fetch actionable changes first, then show modal
+        await fetchActionableChanges();
+        fetchMatrixReport(true); // Show modal for completed assessments
       } else {
         setLoading(false);
       }
