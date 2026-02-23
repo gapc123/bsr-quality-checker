@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/clerk-react';
 import Landing from './pages/Landing';
 import PacksList from './pages/PacksList';
 import PackDetail from './pages/PackDetail';
@@ -12,6 +12,9 @@ import Pricing from './pages/Pricing';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import SubscriptionGate from './components/SubscriptionGate';
+
+// Demo user gets free access
+const DEMO_EMAIL = 'georgeapclarke@gmail.com';
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -34,7 +37,9 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 
 function AppContent() {
   const location = useLocation();
+  const { user } = useUser();
   const isLandingPage = location.pathname === '/';
+  const isDemoUser = user?.primaryEmailAddress?.emailAddress === DEMO_EMAIL;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -59,6 +64,11 @@ function AppContent() {
               {/* Navigation and Auth */}
               <div className="flex items-center gap-4">
                 <SignedIn>
+                  {isDemoUser && (
+                    <span className="bg-amber-500 text-amber-950 text-xs font-bold px-2 py-1 rounded">
+                      DEMO ACCESS
+                    </span>
+                  )}
                   <nav className="flex items-center gap-2">
                     <NavLink to="/dashboard">Submission Packs</NavLink>
                     <NavLink to="/butler">Reference Library</NavLink>

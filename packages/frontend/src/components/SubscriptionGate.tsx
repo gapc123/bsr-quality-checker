@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+
+// Demo user gets free access to the full product
+const DEMO_EMAIL = 'georgeapclarke@gmail.com';
 
 interface SubscriptionGateProps {
   children: React.ReactNode;
@@ -8,9 +11,19 @@ interface SubscriptionGateProps {
 
 export default function SubscriptionGate({ children }: SubscriptionGateProps) {
   const { getToken } = useAuth();
+  const { user, isLoaded } = useUser();
   const [subscriptionStatus, setSubscriptionStatus] = useState<'loading' | 'active' | 'inactive'>('loading');
 
+  // Check if user is the demo user (gets free access)
+  const isDemoUser = isLoaded && user?.primaryEmailAddress?.emailAddress === DEMO_EMAIL;
+
   useEffect(() => {
+    // Demo user bypasses subscription check
+    if (isDemoUser) {
+      setSubscriptionStatus('active');
+      return;
+    }
+
     async function checkSubscription() {
       try {
         const token = await getToken();
@@ -32,8 +45,10 @@ export default function SubscriptionGate({ children }: SubscriptionGateProps) {
       }
     }
 
-    checkSubscription();
-  }, [getToken]);
+    if (isLoaded && !isDemoUser) {
+      checkSubscription();
+    }
+  }, [getToken, isLoaded, isDemoUser]);
 
   if (subscriptionStatus === 'loading') {
     return (
