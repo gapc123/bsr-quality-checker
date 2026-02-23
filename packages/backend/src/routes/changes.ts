@@ -117,6 +117,7 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
         id: 'add_toc',
         title: 'Add table of contents',
         description: 'Generate a navigable table of contents for the report with links to each section',
+        why: 'BSR reviewers navigate large documents frequently; a TOC reduces their review time significantly.',
         riskLevel: 'mechanical',
         appliesTo: 'Report structure',
         category: 'navigation'
@@ -125,6 +126,7 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
         id: 'standardise_headings',
         title: 'Standardise heading formats',
         description: 'Ensure consistent capitalisation and formatting across all section headings',
+        why: 'Inconsistent formatting can signal lack of attention to detail, which raises concerns during review.',
         riskLevel: 'mechanical',
         appliesTo: 'All sections',
         category: 'formatting'
@@ -133,6 +135,7 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
         id: 'add_cross_refs',
         title: 'Add document cross-references',
         description: 'Link findings to specific documents and page numbers in your submission',
+        why: 'Cross-references allow reviewers to verify claims quickly, improving trust in your submission.',
         riskLevel: 'low',
         appliesTo: 'Evidence citations',
         category: 'cross-reference'
@@ -141,6 +144,7 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
         id: 'format_citations',
         title: 'Improve citation formatting',
         description: 'Standardise the format of regulatory references and document citations',
+        why: 'Clear, consistent citations demonstrate professional rigour and make audit trails easier to follow.',
         riskLevel: 'mechanical',
         appliesTo: 'All citations',
         category: 'formatting'
@@ -149,6 +153,7 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
         id: 'add_page_numbers',
         title: 'Add page number references',
         description: 'Include specific page numbers when referencing source documents',
+        why: 'Page-level references enable reviewers to locate evidence instantly rather than searching entire documents.',
         riskLevel: 'low',
         appliesTo: 'Document references',
         category: 'cross-reference'

@@ -95,7 +95,7 @@ export default function Results() {
   const [aiChanges, setAiChanges] = useState<any[]>([]);
   const [humanChanges, setHumanChanges] = useState<any[]>([]);
   const [hasUpdatedReport, setHasUpdatedReport] = useState(false);
-  const [showCriteriaDetails, setShowCriteriaDetails] = useState(false);
+  const [showCriteriaDetails, setShowCriteriaDetails] = useState(true); // Show by default
 
   useEffect(() => {
     checkStatusAndFetch();
@@ -498,20 +498,32 @@ export default function Results() {
             </div>
           </div>
 
-          {/* Detailed Criteria Results (Expandable) */}
+          {/* Detailed Criteria Results with Auditability */}
           {criteriaResults.length > 0 && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <button
                 onClick={() => setShowCriteriaDetails(!showCriteriaDetails)}
-                className="w-full px-5 py-4 flex items-center justify-between bg-gradient-to-r from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-150 transition-colors"
+                className="w-full px-5 py-4 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 transition-colors border-b border-indigo-100"
               >
-                <div>
-                  <h3 className="font-semibold text-slate-900 text-left">Detailed Criteria Assessment</h3>
-                  <p className="text-xs text-slate-500 text-left">Click to see auditability details for each criterion</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-semibold text-slate-900">Auditability Details</h3>
+                    <p className="text-sm text-slate-500">Click each criterion to see evidence sources and reasoning</p>
+                  </div>
                 </div>
-                <svg className={`w-5 h-5 text-slate-400 transition-transform ${showCriteriaDetails ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-medium">
+                    {criteriaResults.length} criteria
+                  </span>
+                  <svg className={`w-5 h-5 text-slate-400 transition-transform ${showCriteriaDetails ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </button>
 
               {showCriteriaDetails && (
@@ -758,34 +770,56 @@ export default function Results() {
             </div>
           </div>
 
-          {/* Download Section - Prominent PDF callout */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white shadow-lg">
-            <div className="flex items-center gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+          {/* Download Section - Two Options */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* PDF Option */}
+            <div className="bg-gradient-to-r from-slate-700 to-slate-800 rounded-xl p-5 text-white shadow-lg">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
                   </svg>
                 </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold mb-1">PDF Report</h3>
+                  <p className="text-slate-300 text-sm mb-3">
+                    Final, formatted report with all {uiSummary.criteria.total} criteria and action plan.
+                  </p>
+                  <button
+                    onClick={() => downloadReport('pdf')}
+                    disabled={downloading !== null}
+                    className="w-full py-2 bg-white text-slate-700 rounded-lg font-medium hover:bg-slate-100 transition-colors disabled:opacity-50"
+                  >
+                    {downloading === 'pdf' ? 'Generating...' : 'Download PDF'}
+                  </button>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold mb-1">Get the Full Picture</h3>
-                <p className="text-blue-100 text-sm">
-                  The PDF report contains <strong>all {uiSummary.criteria.total} criteria assessments</strong>, detailed findings with evidence citations,
-                  the <strong>complete action plan</strong> with 20+ prioritised actions, and full methodology explanation.
-                </p>
-              </div>
-              <div className="flex-shrink-0">
-                <button
-                  onClick={() => downloadReport('pdf')}
-                  disabled={downloading !== null}
-                  className="inline-flex items-center gap-2 bg-white text-blue-700 px-6 py-3 rounded-lg hover:bg-blue-50 font-semibold transition-colors disabled:opacity-50 shadow-md"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+            </div>
+
+            {/* Editable DOCX Option - Emphasized */}
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-5 text-white shadow-lg border-2 border-blue-400">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                   </svg>
-                  {downloading === 'pdf' ? 'Generating...' : 'Download PDF Report'}
-                </button>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold">Editable DOCX</h3>
+                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">Recommended</span>
+                  </div>
+                  <p className="text-blue-100 text-sm mb-3">
+                    Word document you can edit, with AI changes highlighted in yellow.
+                  </p>
+                  <button
+                    onClick={() => downloadEditableDocx([])}
+                    disabled={downloading !== null}
+                    className="w-full py-2 bg-white text-blue-700 rounded-lg font-medium hover:bg-blue-50 transition-colors disabled:opacity-50"
+                  >
+                    Download Editable DOCX
+                  </button>
+                </div>
               </div>
             </div>
           </div>

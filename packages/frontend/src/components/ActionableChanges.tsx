@@ -4,6 +4,7 @@ interface AIActionableChange {
   id: string;
   title: string;
   description: string;
+  why: string;
   riskLevel: 'low' | 'mechanical';
   appliesTo: string;
   category: 'formatting' | 'structure' | 'cross-reference' | 'clarity' | 'navigation';
@@ -28,6 +29,8 @@ interface ActionableChangesProps {
   versionId: string;
 }
 
+type ChangeDecision = 'approved' | 'rejected' | 'pending';
+
 export default function ActionableChanges({
   aiChanges,
   humanChanges,
@@ -38,122 +41,50 @@ export default function ActionableChanges({
   packId: _packId,
   versionId: _versionId
 }: ActionableChangesProps) {
-  const [selectedChanges, setSelectedChanges] = useState<Set<string>>(
-    new Set(aiChanges.map(c => c.id))
+  const [decisions, setDecisions] = useState<Record<string, ChangeDecision>>(
+    () => aiChanges.reduce((acc, c) => ({ ...acc, [c.id]: 'pending' as ChangeDecision }), {})
   );
   const [applying, setApplying] = useState(false);
   const [applied, setApplied] = useState(false);
   const [showHumanChanges, setShowHumanChanges] = useState(false);
   const [downloadingDocx, setDownloadingDocx] = useState(false);
 
-  const toggleChange = (id: string) => {
-    const newSelected = new Set(selectedChanges);
-    if (newSelected.has(id)) {
-      newSelected.delete(id);
-    } else {
-      newSelected.add(id);
-    }
-    setSelectedChanges(newSelected);
+  const approveChange = (id: string) => {
+    setDecisions(prev => ({ ...prev, [id]: 'approved' }));
   };
 
-  const selectAll = () => {
-    setSelectedChanges(new Set(aiChanges.map(c => c.id)));
+  const rejectChange = (id: string) => {
+    setDecisions(prev => ({ ...prev, [id]: 'rejected' }));
   };
 
-  const deselectAll = () => {
-    setSelectedChanges(new Set());
+  const approveAll = () => {
+    const newDecisions = { ...decisions };
+    aiChanges.forEach(c => { newDecisions[c.id] = 'approved'; });
+    setDecisions(newDecisions);
   };
+
+  const rejectAll = () => {
+    const newDecisions = { ...decisions };
+    aiChanges.forEach(c => { newDecisions[c.id] = 'rejected'; });
+    setDecisions(newDecisions);
+  };
+
+  const approvedChanges = aiChanges.filter(c => decisions[c.id] === 'approved');
+  const rejectedChanges = aiChanges.filter(c => decisions[c.id] === 'rejected');
+  const pendingCount = aiChanges.filter(c => decisions[c.id] === 'pending').length;
 
   const handleApply = async () => {
     setApplying(true);
     try {
-      await onApplyChanges(Array.from(selectedChanges));
+      await onApplyChanges(approvedChanges.map(c => c.id));
       setApplied(true);
     } finally {
       setApplying(false);
     }
   };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'formatting':
-        return (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
-          </svg>
-        );
-      case 'structure':
-        return (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
-        );
-      case 'cross-reference':
-        return (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-          </svg>
-        );
-      case 'clarity':
-        return (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-          </svg>
-        );
-      case 'navigation':
-        return (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        );
-    }
-  };
-
   return (
     <div className="space-y-6">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200 p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-green-700">{aiChanges.length}</p>
-              <p className="text-sm text-green-600">AI can fix automatically</p>
-            </div>
-          </div>
-          <p className="text-xs text-green-600 mt-2">
-            Low-risk improvements like formatting, navigation, and cross-references
-          </p>
-        </div>
-
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-200 p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-amber-700">{humanChanges.length}</p>
-              <p className="text-sm text-amber-600">Require human judgement</p>
-            </div>
-          </div>
-          <p className="text-xs text-amber-600 mt-2">
-            Technical content, professional sign-offs, and regulatory decisions
-          </p>
-        </div>
-      </div>
-
       {/* AI-Actionable Changes */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-200 bg-gradient-to-r from-green-50 to-emerald-50">
@@ -161,220 +92,295 @@ export default function ActionableChanges({
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900">AI-Actionable Changes</h3>
-                <p className="text-sm text-slate-500">Select changes to apply automatically</p>
+                <p className="text-sm text-slate-500">Approve or reject each change</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={selectAll}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                onClick={approveAll}
+                className="text-sm text-green-600 hover:text-green-700 font-medium flex items-center gap-1"
               >
-                Select all
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Approve all
               </button>
               <span className="text-slate-300">|</span>
               <button
-                onClick={deselectAll}
-                className="text-sm text-slate-500 hover:text-slate-700"
+                onClick={rejectAll}
+                className="text-sm text-red-500 hover:text-red-600 font-medium flex items-center gap-1"
               >
-                Clear
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+                Reject all
               </button>
             </div>
           </div>
         </div>
 
         <div className="divide-y divide-slate-100">
-          {aiChanges.map((change) => (
-            <label
-              key={change.id}
-              className="flex items-start gap-4 px-5 py-4 hover:bg-slate-50 cursor-pointer transition-colors"
-            >
-              <input
-                type="checkbox"
-                checked={selectedChanges.has(change.id)}
-                onChange={() => toggleChange(change.id)}
-                className="mt-1 h-5 w-5 text-green-600 border-slate-300 rounded focus:ring-green-500"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-slate-400">{getCategoryIcon(change.category)}</span>
-                  <span className="font-medium text-slate-900">{change.title}</span>
-                  <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
-                    {change.riskLevel === 'mechanical' ? 'Mechanical' : 'Low risk'}
-                  </span>
+          {aiChanges.map((change) => {
+            const decision = decisions[change.id];
+            const isApproved = decision === 'approved';
+            const isRejected = decision === 'rejected';
+
+            return (
+              <div
+                key={change.id}
+                className={`px-5 py-4 transition-colors ${
+                  isApproved ? 'bg-green-50' : isRejected ? 'bg-red-50' : 'bg-white'
+                }`}
+              >
+                <div className="flex items-start gap-4">
+                  {/* Tick/Cross buttons */}
+                  <div className="flex flex-col gap-1 flex-shrink-0">
+                    <button
+                      onClick={() => approveChange(change.id)}
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                        isApproved
+                          ? 'bg-green-600 text-white shadow-md'
+                          : 'bg-slate-100 text-slate-400 hover:bg-green-100 hover:text-green-600'
+                      }`}
+                      title="Approve this change"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => rejectChange(change.id)}
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                        isRejected
+                          ? 'bg-red-600 text-white shadow-md'
+                          : 'bg-slate-100 text-slate-400 hover:bg-red-100 hover:text-red-600'
+                      }`}
+                      title="Reject this change"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-slate-900">{change.title}</span>
+                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                        {change.riskLevel === 'mechanical' ? 'Mechanical' : 'Low risk'}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 mb-2">{change.description}</p>
+                    {/* Why explanation in italics */}
+                    <p className="text-sm italic text-slate-500">
+                      {change.why || `Improves report quality and readability.`}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-sm text-slate-600">{change.description}</p>
-                <p className="text-xs text-slate-400 mt-1">Applies to: {change.appliesTo}</p>
               </div>
-            </label>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Apply button */}
+        {/* Status and Submit */}
         <div className="px-5 py-4 border-t border-slate-200 bg-slate-50">
           {!applied ? (
-            <button
-              onClick={handleApply}
-              disabled={selectedChanges.size === 0 || applying}
-              className="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
-            >
-              {applying ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Applying {selectedChanges.size} changes...
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  Apply {selectedChanges.size} Selected Changes
-                </>
-              )}
-            </button>
-          ) : (
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-green-700 bg-green-50 rounded-lg px-4 py-3">
+              {/* Status summary */}
+              <div className="flex items-center justify-center gap-4 text-sm">
+                <span className="flex items-center gap-1 text-green-600">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  {approvedChanges.length} approved
+                </span>
+                <span className="flex items-center gap-1 text-red-500">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                  {rejectedChanges.length} rejected
+                </span>
+                {pendingCount > 0 && (
+                  <span className="text-slate-400">{pendingCount} pending</span>
+                )}
+              </div>
+
+              <button
+                onClick={handleApply}
+                disabled={approvedChanges.length === 0 || applying}
+                className="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              >
+                {applying ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Applying changes...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Submit {approvedChanges.length} Approved Changes
+                  </>
+                )}
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-green-700 bg-green-100 rounded-lg px-4 py-3">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="font-medium">{selectedChanges.size} changes applied successfully</span>
+                <span className="font-medium">{approvedChanges.length} changes applied successfully</span>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+
+              {/* Download Options */}
+              <div className="bg-white rounded-lg border border-slate-200 p-4 space-y-3">
+                <h4 className="font-semibold text-slate-900">Download Your Report</h4>
+
+                {/* PDF Option */}
                 <button
                   onClick={onDownloadUpdated}
-                  className="py-3 bg-slate-600 text-white rounded-lg font-semibold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-slate-700 text-white rounded-lg font-medium hover:bg-slate-800 transition-all flex items-center justify-center gap-3"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                  PDF Report
+                  Download PDF Report
                 </button>
-                <button
-                  onClick={async () => {
-                    setDownloadingDocx(true);
-                    try {
-                      await onDownloadEditable(Array.from(selectedChanges));
-                    } finally {
-                      setDownloadingDocx(false);
-                    }
-                  }}
-                  disabled={downloadingDocx}
-                  className="py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
-                >
-                  {downloadingDocx ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+
+                {/* Editable DOCX Option - Emphasized */}
+                <div className="border-2 border-blue-200 bg-blue-50 rounded-lg p-3">
+                  <button
+                    onClick={async () => {
+                      setDownloadingDocx(true);
+                      try {
+                        await onDownloadEditable(approvedChanges.map(c => c.id));
+                      } finally {
+                        setDownloadingDocx(false);
+                      }
+                    }}
+                    disabled={downloadingDocx}
+                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                  >
+                    {downloadingDocx ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                      </svg>
+                    )}
+                    Download Editable DOCX
+                  </button>
+                  <div className="mt-2 flex items-start gap-2">
+                    <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                     </svg>
-                  )}
-                  Editable DOCX
-                </button>
+                    <p className="text-xs text-blue-700">
+                      <strong>Editable Word document</strong> with all approved changes highlighted in yellow.
+                      You can review, modify, and share with your team.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs text-slate-500 text-center">
-                DOCX includes highlighted changes for easy review and editing
-              </p>
+
+              {/* Summary of what was applied */}
+              <div className="text-sm space-y-2">
+                <p className="font-medium text-slate-700">Changes included:</p>
+                <ul className="space-y-1">
+                  {approvedChanges.map(c => (
+                    <li key={c.id} className="flex items-center gap-2 text-green-700">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      {c.title}
+                    </li>
+                  ))}
+                </ul>
+                {rejectedChanges.length > 0 && (
+                  <>
+                    <p className="font-medium text-slate-500 mt-3">Not included:</p>
+                    <ul className="space-y-1">
+                      {rejectedChanges.map(c => (
+                        <li key={c.id} className="flex items-center gap-2 text-slate-400">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                          {c.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>
       </div>
 
       {/* Human Judgement Changes (collapsible) */}
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-        <button
-          onClick={() => setShowHumanChanges(!showHumanChanges)}
-          className="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-              <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div className="text-left">
-              <h3 className="font-semibold text-slate-900">Changes Requiring Human Judgement</h3>
-              <p className="text-sm text-slate-500">{humanChanges.length} items need manual review</p>
-            </div>
-          </div>
-          <svg
-            className={`w-5 h-5 text-slate-400 transition-transform ${showHumanChanges ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      {humanChanges.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <button
+            onClick={() => setShowHumanChanges(!showHumanChanges)}
+            className="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              </div>
+              <div className="text-left">
+                <h3 className="font-semibold text-slate-900">Changes Requiring Human Judgement</h3>
+                <p className="text-sm text-slate-500">{humanChanges.length} items need manual review</p>
+              </div>
+            </div>
+            <svg
+              className={`w-5 h-5 text-slate-400 transition-transform ${showHumanChanges ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-        {showHumanChanges && (
-          <div className="border-t border-slate-200">
-            <div className="divide-y divide-slate-100">
-              {humanChanges.map((change) => (
-                <div key={change.id} className="px-5 py-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-slate-900">{change.title}</span>
-                        <SeverityBadge severity={change.severity} />
+          {showHumanChanges && (
+            <div className="border-t border-slate-200">
+              <div className="divide-y divide-slate-100">
+                {humanChanges.map((change) => (
+                  <div key={change.id} className="px-5 py-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-medium text-slate-900">{change.title}</span>
+                          <SeverityBadge severity={change.severity} />
+                        </div>
+                        <p className="text-sm text-slate-600">{change.description}</p>
                       </div>
-                      <p className="text-sm text-slate-600">{change.description}</p>
-                    </div>
-                    <div className="text-right flex-shrink-0">
-                      <p className="text-xs text-slate-500">Suggested owner</p>
-                      <p className="text-sm font-medium text-slate-700">{change.suggestedOwner}</p>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-xs text-slate-500">Suggested owner</p>
+                        <p className="text-sm font-medium text-slate-700">{change.suggestedOwner}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="px-5 py-3 bg-amber-50 border-t border-amber-200">
-              <p className="text-xs text-amber-700">
-                These changes involve technical content, regulatory interpretation, or professional judgement.
-                They should be reviewed by the appropriate stakeholder before implementation.
-              </p>
+              <div className="px-5 py-3 bg-amber-50 border-t border-amber-200">
+                <p className="text-xs text-amber-700">
+                  These changes involve technical content, regulatory interpretation, or professional judgement.
+                  They should be reviewed by the appropriate stakeholder before implementation.
+                </p>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-
-      {/* What was changed summary (after applying) */}
-      {applied && (
-        <div className="bg-slate-50 rounded-lg border border-slate-200 p-4">
-          <h4 className="font-medium text-slate-900 mb-2">Changes Applied</h4>
-          <ul className="space-y-1">
-            {aiChanges
-              .filter(c => selectedChanges.has(c.id))
-              .map(c => (
-                <li key={c.id} className="flex items-center gap-2 text-sm text-slate-600">
-                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  {c.title}
-                </li>
-              ))}
-          </ul>
-          {aiChanges.filter(c => !selectedChanges.has(c.id)).length > 0 && (
-            <>
-              <h4 className="font-medium text-slate-900 mt-4 mb-2">Not Applied</h4>
-              <ul className="space-y-1">
-                {aiChanges
-                  .filter(c => !selectedChanges.has(c.id))
-                  .map(c => (
-                    <li key={c.id} className="flex items-center gap-2 text-sm text-slate-400">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                      {c.title}
-                    </li>
-                  ))}
-              </ul>
-            </>
           )}
         </div>
       )}
