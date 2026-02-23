@@ -1429,15 +1429,16 @@ export async function generateEditableDocx(
     })
   );
 
-  const summary = assessment.summary;
+  const criteriaSummary = assessment.criteria_summary;
+  const overallReadiness = Math.round((criteriaSummary.meets / criteriaSummary.total_applicable) * 100);
   children.push(
     new Paragraph({
       children: [
         new TextRun({ text: 'Overall Readiness: ', bold: true }),
         new TextRun({
-          text: `${summary.overallReadiness}%`,
+          text: `${overallReadiness}%`,
           bold: true,
-          color: summary.overallReadiness >= 80 ? '22C55E' : summary.overallReadiness >= 60 ? 'F59E0B' : 'EF4444',
+          color: overallReadiness >= 80 ? '22C55E' : overallReadiness >= 60 ? 'F59E0B' : 'EF4444',
         }),
       ],
       spacing: { after: 100 },
@@ -1448,7 +1449,7 @@ export async function generateEditableDocx(
     new Paragraph({
       children: [
         new TextRun({ text: 'Criteria Assessed: ', bold: true }),
-        new TextRun(`${summary.totalCriteria}`),
+        new TextRun(`${criteriaSummary.total_applicable}`),
       ],
       spacing: { after: 100 },
     })
@@ -1458,13 +1459,13 @@ export async function generateEditableDocx(
     new Paragraph({
       children: [
         new TextRun({ text: 'Met: ', bold: true }),
-        new TextRun({ text: `${summary.metCount}`, color: '22C55E' }),
+        new TextRun({ text: `${criteriaSummary.meets}`, color: '22C55E' }),
         new TextRun({ text: ' | Partial: ', bold: true }),
-        new TextRun({ text: `${summary.partialCount}`, color: 'F59E0B' }),
+        new TextRun({ text: `${criteriaSummary.partial}`, color: 'F59E0B' }),
         new TextRun({ text: ' | Not Met: ', bold: true }),
-        new TextRun({ text: `${summary.notMetCount}`, color: 'EF4444' }),
+        new TextRun({ text: `${criteriaSummary.does_not_meet}`, color: 'EF4444' }),
         new TextRun({ text: ' | N/A: ', bold: true }),
-        new TextRun(`${summary.naCount}`),
+        new TextRun(`${criteriaSummary.not_assessed}`),
       ],
       spacing: { after: 300 },
     })
@@ -1479,8 +1480,8 @@ export async function generateEditableDocx(
     })
   );
 
-  const criticalIssues = assessment.criteriaResults.filter(
-    c => c.status === 'not_met' || c.status === 'partial'
+  const criticalIssues = assessment.results.filter(
+    c => c.status === 'does_not_meet' || c.status === 'partial'
   );
 
   if (criticalIssues.length === 0) {
@@ -1492,8 +1493,8 @@ export async function generateEditableDocx(
     );
   } else {
     for (const issue of criticalIssues.slice(0, 15)) {
-      const statusColor = issue.status === 'not_met' ? 'EF4444' : 'F59E0B';
-      const statusText = issue.status === 'not_met' ? 'NOT MET' : 'PARTIAL';
+      const statusColor = issue.status === 'does_not_meet' ? 'EF4444' : 'F59E0B';
+      const statusText = issue.status === 'does_not_meet' ? 'NOT MET' : 'PARTIAL';
 
       children.push(
         new Paragraph({
@@ -1504,7 +1505,7 @@ export async function generateEditableDocx(
               color: statusColor,
             }),
             new TextRun({
-              text: issue.title,
+              text: issue.matrix_title,
               bold: true,
             }),
           ],
@@ -1514,19 +1515,20 @@ export async function generateEditableDocx(
 
       children.push(
         new Paragraph({
-          text: issue.finding,
+          text: issue.reasoning,
           spacing: { after: 100 },
         })
       );
 
-      if (issue.recommendation) {
-        const isAIEnhanced = appliedActions.includes('add_cross_refs') && issue.recommendation.includes('document');
+      if (issue.actions_required && issue.actions_required.length > 0) {
+        const recommendation = issue.actions_required[0].action;
+        const isAIEnhanced = appliedActions.includes('add_cross_refs') && recommendation.includes('document');
         children.push(
           new Paragraph({
             children: [
               new TextRun({ text: 'Recommendation: ', bold: true }),
               new TextRun({
-                text: issue.recommendation,
+                text: recommendation,
                 highlight: isAIEnhanced ? 'yellow' : undefined,
               }),
             ],
@@ -1535,8 +1537,8 @@ export async function generateEditableDocx(
         );
       }
 
-      if (issue.evidenceRefs && issue.evidenceRefs.length > 0) {
-        const refText = issue.evidenceRefs.map(r => `${r.docTitle} (p.${r.pageRef || '?'})`).join(', ');
+      if (issue.reference_evidence && issue.reference_evidence.found) {
+        const refText = `${issue.reference_evidence.doc_title} (p.${issue.reference_evidence.page || '?'})`;
         const isAIEnhanced = appliedActions.includes('add_page_numbers');
         children.push(
           new Paragraph({

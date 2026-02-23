@@ -35,8 +35,8 @@ export default function ActionableChanges({
   onDownloadUpdated,
   onDownloadEditable,
   hasUpdatedReport: _hasUpdatedReport,
-  packId,
-  versionId
+  packId: _packId,
+  versionId: _versionId
 }: ActionableChangesProps) {
   const [selectedChanges, setSelectedChanges] = useState<Set<string>>(
     new Set(aiChanges.map(c => c.id))

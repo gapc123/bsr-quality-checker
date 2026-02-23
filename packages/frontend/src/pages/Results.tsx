@@ -39,6 +39,37 @@ interface MatrixUISummary {
   };
 }
 
+interface CriterionResult {
+  matrix_id: string;
+  matrix_title: string;
+  category: string;
+  status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed';
+  severity: string;
+  reasoning: string;
+  success_definition: string;
+  pack_evidence: {
+    found: boolean;
+    document: string | null;
+    page: number | null;
+    quote: string | null;
+  };
+  reference_evidence: {
+    found: boolean;
+    doc_id: string | null;
+    doc_title: string | null;
+    page: number | null;
+    quote: string | null;
+  };
+  gaps_identified: string[];
+  actions_required: Array<{
+    action: string;
+    owner: string;
+    effort: string;
+    expected_benefit: string;
+  }>;
+  confidence: 'high' | 'medium' | 'low';
+}
+
 interface AnalysisStatus {
   status: 'pending' | 'running' | 'completed' | 'failed';
   error?: string;
@@ -52,6 +83,8 @@ export default function Results() {
 
   const [status, setStatus] = useState<AnalysisStatus>({ status: 'pending' });
   const [uiSummary, setUiSummary] = useState<MatrixUISummary | null>(null);
+  const [criteriaResults, setCriteriaResults] = useState<CriterionResult[]>([]);
+  const [expandedCriteria, setExpandedCriteria] = useState<Set<string>>(new Set());
   const [packName, setPackName] = useState<string>('');
   const [projectName, setProjectName] = useState<string>('');
   const [versionNumber, setVersionNumber] = useState<number>(0);
@@ -62,6 +95,7 @@ export default function Results() {
   const [aiChanges, setAiChanges] = useState<any[]>([]);
   const [humanChanges, setHumanChanges] = useState<any[]>([]);
   const [hasUpdatedReport, setHasUpdatedReport] = useState(false);
+  const [showCriteriaDetails, setShowCriteriaDetails] = useState(false);
 
   useEffect(() => {
     checkStatusAndFetch();
@@ -95,6 +129,7 @@ export default function Results() {
       if (res.ok) {
         const data = await res.json();
         setUiSummary(data.uiSummary);
+        setCriteriaResults(data.results || []);
         // Show AI actions modal when assessment just completed
         if (showModal) {
           setShowChangesModal(true);
@@ -234,6 +269,54 @@ export default function Results() {
       case 'amber': return { bg: 'bg-amber-50', border: 'border-amber-200', badge: 'bg-amber-500', text: 'text-amber-800' };
       case 'green': return { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-600', text: 'text-emerald-800' };
       default: return { bg: 'bg-slate-50', border: 'border-slate-200', badge: 'bg-slate-600', text: 'text-slate-800' };
+    }
+  };
+
+  const toggleCriterion = (criterionId: string) => {
+    setExpandedCriteria(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(criterionId)) {
+        newSet.delete(criterionId);
+      } else {
+        newSet.add(criterionId);
+      }
+      return newSet;
+    });
+  };
+
+  const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+      case 'meets': return 'bg-emerald-100 text-emerald-700';
+      case 'partial': return 'bg-amber-100 text-amber-700';
+      case 'does_not_meet': return 'bg-red-100 text-red-700';
+      default: return 'bg-slate-100 text-slate-700';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'meets': return 'Pass';
+      case 'partial': return 'Partial';
+      case 'does_not_meet': return 'Fail';
+      default: return 'N/A';
+    }
+  };
+
+  const getSeverityClass = (severity: string) => {
+    switch (severity) {
+      case 'high': return 'bg-red-50 border-red-200 text-red-700';
+      case 'medium': return 'bg-amber-50 border-amber-200 text-amber-700';
+      case 'low': return 'bg-blue-50 border-blue-200 text-blue-700';
+      default: return 'bg-slate-50 border-slate-200 text-slate-700';
+    }
+  };
+
+  const getConfidenceClass = (confidence: string) => {
+    switch (confidence) {
+      case 'high': return 'text-emerald-600';
+      case 'medium': return 'text-amber-600';
+      case 'low': return 'text-red-600';
+      default: return 'text-slate-600';
     }
   };
 
@@ -413,6 +496,181 @@ export default function Results() {
               <p className="text-xs text-slate-500 mt-1">Medium severity</p>
             </div>
           </div>
+
+          {/* Detailed Criteria Results (Expandable) */}
+          {criteriaResults.length > 0 && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <button
+                onClick={() => setShowCriteriaDetails(!showCriteriaDetails)}
+                className="w-full px-5 py-4 flex items-center justify-between bg-gradient-to-r from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-150 transition-colors"
+              >
+                <div>
+                  <h3 className="font-semibold text-slate-900 text-left">Detailed Criteria Assessment</h3>
+                  <p className="text-xs text-slate-500 text-left">Click to see auditability details for each criterion</p>
+                </div>
+                <svg className={`w-5 h-5 text-slate-400 transition-transform ${showCriteriaDetails ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {showCriteriaDetails && (
+                <div className="divide-y divide-slate-100">
+                  {criteriaResults.map((criterion) => (
+                    <div key={criterion.matrix_id} className="border-b border-slate-100 last:border-0">
+                      {/* Criterion Header Row */}
+                      <button
+                        onClick={() => toggleCriterion(criterion.matrix_id)}
+                        className="w-full px-5 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                      >
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <span className="text-xs font-mono text-slate-500 flex-shrink-0">{criterion.matrix_id}</span>
+                          <span className="text-sm text-slate-900 truncate">{criterion.matrix_title}</span>
+                        </div>
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          <span className={`px-2 py-0.5 text-xs font-medium rounded ${getStatusBadgeClass(criterion.status)}`}>
+                            {getStatusLabel(criterion.status)}
+                          </span>
+                          {criterion.status !== 'meets' && (
+                            <span className={`px-2 py-0.5 text-xs font-medium rounded border ${getSeverityClass(criterion.severity)}`}>
+                              {criterion.severity.toUpperCase()}
+                            </span>
+                          )}
+                          <svg className={`w-4 h-4 text-slate-400 transition-transform ${expandedCriteria.has(criterion.matrix_id) ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </button>
+
+                      {/* Expanded Details */}
+                      {expandedCriteria.has(criterion.matrix_id) && (
+                        <div className="px-5 pb-4 bg-slate-50 border-t border-slate-100">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            {/* Left Column: Assessment Details */}
+                            <div className="space-y-4">
+                              {/* Reasoning */}
+                              <div>
+                                <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Assessment Reasoning</h4>
+                                <p className="text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200">
+                                  {criterion.reasoning}
+                                </p>
+                              </div>
+
+                              {/* Confidence */}
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Confidence:</span>
+                                <span className={`text-sm font-medium ${getConfidenceClass(criterion.confidence)}`}>
+                                  {criterion.confidence.charAt(0).toUpperCase() + criterion.confidence.slice(1)}
+                                </span>
+                              </div>
+
+                              {/* Gaps */}
+                              {criterion.gaps_identified.length > 0 && (
+                                <div>
+                                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Gaps Identified</h4>
+                                  <ul className="text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200 space-y-1">
+                                    {criterion.gaps_identified.map((gap, i) => (
+                                      <li key={i} className="flex items-start gap-2">
+                                        <span className="text-red-500 mt-0.5">-</span>
+                                        <span>{gap}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Right Column: Evidence Sources */}
+                            <div className="space-y-4">
+                              {/* Pack Evidence */}
+                              <div>
+                                <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-2">
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                  </svg>
+                                  Evidence from Your Submission
+                                </h4>
+                                <div className={`text-sm p-3 rounded-lg border ${criterion.pack_evidence.found ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-100 border-slate-200'}`}>
+                                  {criterion.pack_evidence.found ? (
+                                    <>
+                                      <p className="font-medium text-emerald-800 mb-1">
+                                        {criterion.pack_evidence.document}
+                                        {criterion.pack_evidence.page && ` (Page ${criterion.pack_evidence.page})`}
+                                      </p>
+                                      {criterion.pack_evidence.quote && (
+                                        <p className="text-emerald-700 italic text-xs border-l-2 border-emerald-300 pl-2">
+                                          "{criterion.pack_evidence.quote}"
+                                        </p>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <p className="text-slate-500 italic">No specific evidence found in submission</p>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Reference Evidence */}
+                              <div>
+                                <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-2">
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                  </svg>
+                                  Regulatory Reference
+                                </h4>
+                                <div className={`text-sm p-3 rounded-lg border ${criterion.reference_evidence.found ? 'bg-blue-50 border-blue-200' : 'bg-slate-100 border-slate-200'}`}>
+                                  {criterion.reference_evidence.found ? (
+                                    <>
+                                      <p className="font-medium text-blue-800 mb-1">
+                                        {criterion.reference_evidence.doc_title}
+                                        {criterion.reference_evidence.page && ` (Page ${criterion.reference_evidence.page})`}
+                                      </p>
+                                      {criterion.reference_evidence.quote && (
+                                        <p className="text-blue-700 italic text-xs border-l-2 border-blue-300 pl-2">
+                                          "{criterion.reference_evidence.quote}"
+                                        </p>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <p className="text-slate-500 italic">No regulatory reference anchor</p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Actions Required */}
+                          {criterion.actions_required.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Recommended Actions</h4>
+                              <div className="bg-white rounded-lg border border-slate-200 divide-y divide-slate-100">
+                                {criterion.actions_required.map((action, i) => (
+                                  <div key={i} className="p-3 flex items-start justify-between gap-4">
+                                    <div className="flex-1">
+                                      <p className="text-sm text-slate-900">{action.action}</p>
+                                      <p className="text-xs text-slate-500 mt-0.5">{action.expected_benefit}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 flex-shrink-0">
+                                      <span className="text-xs text-slate-500">{action.owner}</span>
+                                      <span className={`px-1.5 py-0.5 text-xs font-bold rounded ${
+                                        action.effort === 'S' ? 'bg-green-100 text-green-700' :
+                                        action.effort === 'M' ? 'bg-amber-100 text-amber-700' :
+                                        'bg-red-100 text-red-700'
+                                      }`}>
+                                        {action.effort}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Two Column Layout: Risk Themes + Top Actions */}
           <div className="grid grid-cols-2 gap-6">

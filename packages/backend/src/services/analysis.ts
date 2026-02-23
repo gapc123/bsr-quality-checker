@@ -336,6 +336,7 @@ export async function runMatrixAssessment(packVersionId: string): Promise<FullAs
     include: {
       documents: {
         include: { chunks: true },
+        orderBy: { filename: 'asc' }, // Consistent ordering for deterministic results
       },
     },
   });
@@ -344,16 +345,18 @@ export async function runMatrixAssessment(packVersionId: string): Promise<FullAs
     throw new Error(`Pack version not found: ${packVersionId}`);
   }
 
-  // Prepare pack documents for assessment
-  const packDocs = packVersion.documents.map(doc => ({
-    filename: doc.filename,
-    docType: doc.docType,
-    extractedText: doc.chunks
-      .sort((a, b) => a.chunkIndex - b.chunkIndex)
-      .map(c => c.text)
-      .join('\n')
-      .slice(0, 30000) // Limit per document
-  }));
+  // Prepare pack documents for assessment (sorted alphabetically for determinism)
+  const packDocs = packVersion.documents
+    .map(doc => ({
+      filename: doc.filename,
+      docType: doc.docType,
+      extractedText: doc.chunks
+        .sort((a, b) => a.chunkIndex - b.chunkIndex)
+        .map(c => c.text)
+        .join('\n')
+        .slice(0, 30000) // Limit per document
+    }))
+    .sort((a, b) => a.filename.localeCompare(b.filename)); // Double-ensure sorting
 
   // Determine pack context from version metadata
   const context = determinePackContext(

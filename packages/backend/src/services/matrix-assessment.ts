@@ -235,8 +235,11 @@ async function assessCriterion(
   referenceEvidence: RetrievalResult | null,
   client: Anthropic
 ): Promise<AssessmentResult> {
+  // Sort documents alphabetically by filename for consistent ordering
+  const sortedDocs = [...packDocs].sort((a, b) => a.filename.localeCompare(b.filename));
+
   // Build pack context for the prompt
-  const packContext = packDocs.map(d =>
+  const packContext = sortedDocs.map(d =>
     `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\nContent excerpt:\n${d.extractedText.slice(0, 3000)}`
   ).join('\n\n---\n\n');
 
@@ -244,9 +247,19 @@ async function assessCriterion(
     ? `Reference from ${referenceEvidence.doc_title} (page ${referenceEvidence.page_number}):\n"${referenceEvidence.snippet}"`
     : 'No specific reference excerpt available for this criterion.';
 
-  const prompt = `You are assessing a Gateway 2 submission pack against a specific regulatory success criterion.
+  const systemPrompt = `You are a deterministic regulatory compliance assessor. Your assessments must be:
+1. EVIDENCE-BASED: Only assess based on explicit evidence present in the documents. Do not infer or assume.
+2. CONSISTENT: Given the same documents and criterion, you must always produce the same assessment.
+3. BINARY LOGIC: Use clear decision rules - if specific evidence exists, status is "meets". If evidence is missing or unclear, status is "partial" or "does_not_meet".
+4. QUOTE-DRIVEN: Always cite specific text from documents when available.
 
-## Criterion Being Assessed
+Assessment Rules:
+- "meets": Direct, explicit evidence satisfies the criterion completely
+- "partial": Some evidence exists but is incomplete, vague, or only partially addresses the criterion
+- "does_not_meet": No evidence found or evidence contradicts the criterion
+- "not_assessed": Cannot be evaluated (e.g., criterion doesn't apply)`;
+
+  const prompt = `## Criterion Being Assessed
 ID: ${row.matrix_id}
 Title: ${row.matrix_title}
 Description: ${row.matrix_description}
@@ -264,27 +277,27 @@ ${referenceContext}
 ${packContext}
 
 ## Your Task
-Assess whether the pack meets this criterion. You must:
-1. Determine status: "meets", "partial", "does_not_meet", or "not_assessed"
-2. Provide clear reasoning
-3. Quote specific evidence from the pack if found
-4. Identify gaps between expectation and reality
-5. Recommend specific actions if gaps exist
+Assess whether the pack meets this criterion using ONLY the evidence provided. Apply the following decision logic:
+
+1. Search for explicit evidence that addresses the criterion
+2. If found: quote it directly and assess if it fully or partially satisfies requirements
+3. If not found: mark as "does_not_meet" with clear explanation
+4. Do NOT speculate about what might exist elsewhere
 
 Respond in JSON format:
 {
   "status": "meets" | "partial" | "does_not_meet" | "not_assessed",
-  "reasoning": "Clear explanation of assessment",
+  "reasoning": "Clear explanation citing specific evidence or lack thereof",
   "pack_evidence_found": true | false,
-  "pack_evidence_document": "filename or null",
-  "pack_evidence_quote": "direct quote from pack or null",
-  "gaps": ["gap 1", "gap 2"],
+  "pack_evidence_document": "exact filename or null",
+  "pack_evidence_quote": "exact quote from document or null",
+  "gaps": ["specific gap 1", "specific gap 2"],
   "actions": [
     {
-      "action": "what to do",
-      "owner": "who should do it",
+      "action": "specific action to address gap",
+      "owner": "responsible role",
       "effort": "S" | "M" | "L",
-      "benefit": "expected benefit"
+      "benefit": "expected outcome"
     }
   ],
   "confidence": "high" | "medium" | "low"
@@ -294,6 +307,8 @@ Respond in JSON format:
     const response = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1500,
+      temperature: 0, // Deterministic responses for consistency
+      system: systemPrompt,
       messages: [{ role: 'user', content: prompt }]
     });
 
