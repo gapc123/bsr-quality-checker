@@ -8,7 +8,11 @@ import { ingestDocument } from '../services/ingestion.js';
 const router = Router();
 
 // Configure multer for file uploads
-const uploadsDir = path.join(process.cwd(), '..', '..', 'uploads');
+// In Docker, process.cwd() is /app. In dev, it's /packages/backend
+const isProduction = process.env.NODE_ENV === 'production';
+const uploadsDir = isProduction
+  ? path.join(process.cwd(), 'uploads')
+  : path.join(process.cwd(), '..', '..', 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }

@@ -6,7 +6,11 @@ import { marked } from 'marked';
 import { generateMatrixReport, generateMatrixJSON, generateUISummary } from './matrix-report.js';
 import { FullAssessment } from './matrix-assessment.js';
 
-const REPORTS_DIR = path.join(process.cwd(), '..', '..', 'reports');
+// In Docker, process.cwd() is /app. In dev, it's /packages/backend
+const isProduction = process.env.NODE_ENV === 'production';
+const REPORTS_DIR = isProduction
+  ? path.join(process.cwd(), 'reports')
+  : path.join(process.cwd(), '..', '..', 'reports');
 
 // Ensure reports directory exists
 if (!fs.existsSync(REPORTS_DIR)) {

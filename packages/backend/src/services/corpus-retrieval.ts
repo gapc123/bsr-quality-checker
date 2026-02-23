@@ -8,8 +8,14 @@
 import fs from 'fs';
 import path from 'path';
 
-const EXTRACTED_DIR = path.join(process.cwd(), '..', '..', 'data', 'extracted');
-const CATALOGUE_PATH = path.join(process.cwd(), '..', '..', 'knowledge', 'catalogue.json');
+// In Docker, process.cwd() is /app. In dev, it's /packages/backend
+const isProduction = process.env.NODE_ENV === 'production';
+const EXTRACTED_DIR = isProduction
+  ? path.join(process.cwd(), 'data', 'extracted')
+  : path.join(process.cwd(), '..', '..', 'data', 'extracted');
+const CATALOGUE_PATH = isProduction
+  ? path.join(process.cwd(), 'knowledge', 'catalogue.json')
+  : path.join(process.cwd(), '..', '..', 'knowledge', 'catalogue.json');
 
 interface Catalogue {
   documents: Array<{

@@ -8,7 +8,11 @@ import { ingestDocument } from '../services/ingestion.js';
 const router = Router();
 
 // Configure multer for butler library uploads
-const butlerDir = path.join(process.cwd(), '..', '..', 'data', 'butler');
+// In Docker, process.cwd() is /app. In dev, it's /packages/backend
+const isProduction = process.env.NODE_ENV === 'production';
+const butlerDir = isProduction
+  ? path.join(process.cwd(), 'data', 'butler')
+  : path.join(process.cwd(), '..', '..', 'data', 'butler');
 if (!fs.existsSync(butlerDir)) {
   fs.mkdirSync(butlerDir, { recursive: true });
 }

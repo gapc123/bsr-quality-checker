@@ -16,7 +16,11 @@ import {
   RetrievalResult
 } from './corpus-retrieval.js';
 
-const MATRIX_PATH = path.join(process.cwd(), '..', '..', 'knowledge', 'success_matrix.json');
+// In Docker, process.cwd() is /app. In dev, it's /packages/backend
+const isProduction = process.env.NODE_ENV === 'production';
+const MATRIX_PATH = isProduction
+  ? path.join(process.cwd(), 'knowledge', 'success_matrix.json')
+  : path.join(process.cwd(), '..', '..', 'knowledge', 'success_matrix.json');
 
 // Types
 interface MatrixRow {
