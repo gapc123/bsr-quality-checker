@@ -3,6 +3,7 @@ import path from 'path';
 import prisma from '../db/client.js';
 import puppeteer from 'puppeteer';
 import { marked } from 'marked';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, AlignmentType } from 'docx';
 import { generateMatrixReport, generateMatrixJSON, generateUISummary } from './matrix-report.js';
 import { FullAssessment } from './matrix-assessment.js';
 
@@ -11,6 +12,13 @@ const isProduction = process.env.NODE_ENV === 'production';
 const REPORTS_DIR = isProduction
   ? path.join(process.cwd(), 'reports')
   : path.join(process.cwd(), '..', '..', 'reports');
+
+// Puppeteer configuration for Docker
+const PUPPETEER_OPTIONS = {
+  headless: true,
+  args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+  executablePath: isProduction ? '/usr/bin/chromium' : undefined
+};
 
 // Ensure reports directory exists
 if (!fs.existsSync(REPORTS_DIR)) {
@@ -98,10 +106,7 @@ export async function generatePDFReport(
   const filename = `report-${data.pack.name}-v${data.version.versionNumber}.pdf`;
   const filepath = path.join(REPORTS_DIR, filename);
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
   await page.pdf({
@@ -1233,10 +1238,7 @@ export async function generateMatrixPDFReport(
   const filename = `matrix-report-${packVersion.pack.name}-v${packVersion.versionNumber}.pdf`;
   const filepath = path.join(REPORTS_DIR, filename);
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
   await page.pdf({
@@ -1299,6 +1301,327 @@ export async function generateMatrixJSONExport(
   return filepath;
 }
 
+// AI Actions that can be applied
+export interface AIAction {
+  id: string;
+  title: string;
+  description: string;
+  applied: boolean;
+}
+
+// Generate editable DOCX report with AI changes highlighted
+export async function generateEditableDocx(
+  packVersionId: string,
+  appliedActions: string[]
+): Promise<string> {
+  const packVersion = await prisma.packVersion.findUnique({
+    where: { id: packVersionId },
+    include: {
+      pack: true,
+      documents: true,
+    },
+  });
+
+  if (!packVersion || !packVersion.matrixAssessment) {
+    throw new Error(`Pack version not found or no assessment: ${packVersionId}`);
+  }
+
+  const assessment: FullAssessment = JSON.parse(packVersion.matrixAssessment);
+
+  // Build document sections
+  const children: any[] = [];
+
+  // Title
+  children.push(
+    new Paragraph({
+      text: `BSR Gateway 2 Quality Assessment Report`,
+      heading: HeadingLevel.TITLE,
+      spacing: { after: 200 },
+    })
+  );
+
+  // Project info
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Project: ', bold: true }),
+        new TextRun(packVersion.projectName || packVersion.pack.name),
+      ],
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Generated: ', bold: true }),
+        new TextRun(new Date().toLocaleDateString('en-GB')),
+      ],
+      spacing: { after: 200 },
+    })
+  );
+
+  // AI Changes Applied section (highlighted)
+  if (appliedActions.length > 0) {
+    children.push(
+      new Paragraph({
+        text: 'AI-Applied Enhancements',
+        heading: HeadingLevel.HEADING_1,
+        spacing: { before: 400, after: 200 },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'The following improvements were automatically applied by AI and are highlighted throughout this document:',
+            italics: true,
+          }),
+        ],
+        spacing: { after: 200 },
+      })
+    );
+
+    const actionLabels: Record<string, string> = {
+      'add_toc': 'Table of contents added',
+      'standardise_headings': 'Heading formats standardised',
+      'add_cross_refs': 'Document cross-references added',
+      'format_citations': 'Citation formatting improved',
+      'add_page_numbers': 'Page number references added',
+    };
+
+    for (const actionId of appliedActions) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: '✓ ', color: '22C55E' }),
+            new TextRun({
+              text: actionLabels[actionId] || actionId,
+              highlight: 'yellow',
+            }),
+          ],
+          spacing: { after: 100 },
+        })
+      );
+    }
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: '[Highlighted sections indicate AI-applied changes]',
+            color: 'F59E0B',
+            bold: true,
+          }),
+        ],
+        spacing: { before: 200, after: 400 },
+      })
+    );
+  }
+
+  // Executive Summary
+  children.push(
+    new Paragraph({
+      text: 'Executive Summary',
+      heading: HeadingLevel.HEADING_1,
+      spacing: { before: 400, after: 200 },
+    })
+  );
+
+  const summary = assessment.summary;
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Overall Readiness: ', bold: true }),
+        new TextRun({
+          text: `${summary.overallReadiness}%`,
+          bold: true,
+          color: summary.overallReadiness >= 80 ? '22C55E' : summary.overallReadiness >= 60 ? 'F59E0B' : 'EF4444',
+        }),
+      ],
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Criteria Assessed: ', bold: true }),
+        new TextRun(`${summary.totalCriteria}`),
+      ],
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Met: ', bold: true }),
+        new TextRun({ text: `${summary.metCount}`, color: '22C55E' }),
+        new TextRun({ text: ' | Partial: ', bold: true }),
+        new TextRun({ text: `${summary.partialCount}`, color: 'F59E0B' }),
+        new TextRun({ text: ' | Not Met: ', bold: true }),
+        new TextRun({ text: `${summary.notMetCount}`, color: 'EF4444' }),
+        new TextRun({ text: ' | N/A: ', bold: true }),
+        new TextRun(`${summary.naCount}`),
+      ],
+      spacing: { after: 300 },
+    })
+  );
+
+  // Issues requiring attention
+  children.push(
+    new Paragraph({
+      text: 'Issues Requiring Attention',
+      heading: HeadingLevel.HEADING_1,
+      spacing: { before: 400, after: 200 },
+    })
+  );
+
+  const criticalIssues = assessment.criteriaResults.filter(
+    c => c.status === 'not_met' || c.status === 'partial'
+  );
+
+  if (criticalIssues.length === 0) {
+    children.push(
+      new Paragraph({
+        text: 'No critical issues identified.',
+        spacing: { after: 200 },
+      })
+    );
+  } else {
+    for (const issue of criticalIssues.slice(0, 15)) {
+      const statusColor = issue.status === 'not_met' ? 'EF4444' : 'F59E0B';
+      const statusText = issue.status === 'not_met' ? 'NOT MET' : 'PARTIAL';
+
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `[${statusText}] `,
+              bold: true,
+              color: statusColor,
+            }),
+            new TextRun({
+              text: issue.title,
+              bold: true,
+            }),
+          ],
+          spacing: { before: 200, after: 100 },
+        })
+      );
+
+      children.push(
+        new Paragraph({
+          text: issue.finding,
+          spacing: { after: 100 },
+        })
+      );
+
+      if (issue.recommendation) {
+        const isAIEnhanced = appliedActions.includes('add_cross_refs') && issue.recommendation.includes('document');
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: 'Recommendation: ', bold: true }),
+              new TextRun({
+                text: issue.recommendation,
+                highlight: isAIEnhanced ? 'yellow' : undefined,
+              }),
+            ],
+            spacing: { after: 100 },
+          })
+        );
+      }
+
+      if (issue.evidenceRefs && issue.evidenceRefs.length > 0) {
+        const refText = issue.evidenceRefs.map(r => `${r.docTitle} (p.${r.pageRef || '?'})`).join(', ');
+        const isAIEnhanced = appliedActions.includes('add_page_numbers');
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: 'Evidence: ', bold: true, italics: true }),
+              new TextRun({
+                text: refText,
+                italics: true,
+                highlight: isAIEnhanced ? 'yellow' : undefined,
+              }),
+            ],
+            spacing: { after: 200 },
+          })
+        );
+      }
+    }
+  }
+
+  // Audit Trail
+  children.push(
+    new Paragraph({
+      text: 'Audit Trail',
+      heading: HeadingLevel.HEADING_1,
+      spacing: { before: 400, after: 200 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Assessment completed: ', bold: true }),
+        new TextRun(new Date().toISOString()),
+      ],
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'AI actions applied: ', bold: true }),
+        new TextRun(appliedActions.length > 0 ? appliedActions.join(', ') : 'None'),
+      ],
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: 'Documents analysed: ', bold: true }),
+        new TextRun(`${packVersion.documents.length}`),
+      ],
+      spacing: { after: 100 },
+    })
+  );
+
+  // Create document
+  const doc = new Document({
+    sections: [{
+      properties: {},
+      children,
+    }],
+  });
+
+  // Generate buffer
+  const buffer = await Packer.toBuffer(doc);
+
+  // Save file
+  const filename = `report-${packVersion.pack.name}-v${packVersion.versionNumber}-editable.docx`;
+  const filepath = path.join(REPORTS_DIR, filename);
+  fs.writeFileSync(filepath, buffer);
+
+  // Record artifact
+  await prisma.outputArtifact.create({
+    data: {
+      packVersionId,
+      artifactType: 'editable_docx',
+      path: filepath,
+    },
+  });
+
+  return filepath;
+}
+
 export default {
   generateMarkdownReport,
   generatePDFReport,
@@ -1308,4 +1631,5 @@ export default {
   generateMatrixMarkdownReport,
   generateMatrixPDFReport,
   generateMatrixJSONExport,
+  generateEditableDocx,
 };

@@ -1,5 +1,8 @@
 import { Router, Request, Response } from 'express';
+import fs from 'fs';
+import path from 'path';
 import prisma from '../db/client.js';
+import { generateEditableDocx } from '../services/report.js';
 
 const router = Router();
 
@@ -175,6 +178,34 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
   } catch (error) {
     console.error('Error getting actionable changes:', error);
     res.status(500).json({ error: 'Failed to get actionable changes' });
+  }
+});
+
+// POST /api/packs/:packId/versions/:versionId/generate-editable
+// Generate editable DOCX with AI changes highlighted
+router.post('/:packId/versions/:versionId/generate-editable', async (req: Request, res: Response) => {
+  try {
+    const versionId = String(req.params.versionId);
+    const { appliedActions } = req.body;
+
+    if (!Array.isArray(appliedActions)) {
+      res.status(400).json({ error: 'appliedActions must be an array' });
+      return;
+    }
+
+    // Generate the editable DOCX
+    const filepath = await generateEditableDocx(versionId, appliedActions);
+
+    // Send the file
+    const filename = path.basename(filepath);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+    const fileStream = fs.createReadStream(filepath);
+    fileStream.pipe(res);
+  } catch (error) {
+    console.error('Error generating editable document:', error);
+    res.status(500).json({ error: 'Failed to generate editable document' });
   }
 });
 

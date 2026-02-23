@@ -22,7 +22,10 @@ interface ActionableChangesProps {
   humanChanges: HumanJudgementChange[];
   onApplyChanges: (selectedIds: string[]) => Promise<void>;
   onDownloadUpdated: () => void;
+  onDownloadEditable: (selectedIds: string[]) => Promise<void>;
   hasUpdatedReport: boolean;
+  packId: string;
+  versionId: string;
 }
 
 export default function ActionableChanges({
@@ -30,7 +33,10 @@ export default function ActionableChanges({
   humanChanges,
   onApplyChanges,
   onDownloadUpdated,
-  hasUpdatedReport: _hasUpdatedReport
+  onDownloadEditable,
+  hasUpdatedReport: _hasUpdatedReport,
+  packId,
+  versionId
 }: ActionableChangesProps) {
   const [selectedChanges, setSelectedChanges] = useState<Set<string>>(
     new Set(aiChanges.map(c => c.id))
@@ -38,6 +44,7 @@ export default function ActionableChanges({
   const [applying, setApplying] = useState(false);
   const [applied, setApplied] = useState(false);
   const [showHumanChanges, setShowHumanChanges] = useState(false);
+  const [downloadingDocx, setDownloadingDocx] = useState(false);
 
   const toggleChange = (id: string) => {
     const newSelected = new Set(selectedChanges);
@@ -237,15 +244,41 @@ export default function ActionableChanges({
                 </svg>
                 <span className="font-medium">{selectedChanges.size} changes applied successfully</span>
               </div>
-              <button
-                onClick={onDownloadUpdated}
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-                Download Updated PDF Report
-              </button>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={onDownloadUpdated}
+                  className="py-3 bg-slate-600 text-white rounded-lg font-semibold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                  PDF Report
+                </button>
+                <button
+                  onClick={async () => {
+                    setDownloadingDocx(true);
+                    try {
+                      await onDownloadEditable(Array.from(selectedChanges));
+                    } finally {
+                      setDownloadingDocx(false);
+                    }
+                  }}
+                  disabled={downloadingDocx}
+                  className="py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                >
+                  {downloadingDocx ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                  Editable DOCX
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 text-center">
+                DOCX includes highlighted changes for easy review and editing
+              </p>
             </div>
           )}
         </div>

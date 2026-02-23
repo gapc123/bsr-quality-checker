@@ -58,6 +58,7 @@ export default function Results() {
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [showChangesPanel, setShowChangesPanel] = useState(false);
+  const [showChangesModal, setShowChangesModal] = useState(false);
   const [aiChanges, setAiChanges] = useState<any[]>([]);
   const [humanChanges, setHumanChanges] = useState<any[]>([]);
   const [hasUpdatedReport, setHasUpdatedReport] = useState(false);
@@ -86,7 +87,7 @@ export default function Results() {
     }
   };
 
-  const fetchMatrixReport = async () => {
+  const fetchMatrixReport = async (showModal = false) => {
     try {
       const res = await fetch(
         `/api/packs/${packId}/versions/${versionId}/matrix-report`
@@ -94,6 +95,10 @@ export default function Results() {
       if (res.ok) {
         const data = await res.json();
         setUiSummary(data.uiSummary);
+        // Show AI actions modal when assessment just completed
+        if (showModal) {
+          setShowChangesModal(true);
+        }
       }
 
       // Also fetch pack info
@@ -130,7 +135,8 @@ export default function Results() {
 
         if (data.status === 'completed') {
           clearInterval(pollInterval);
-          fetchMatrixReport();
+          fetchMatrixReport(true); // Show AI actions modal
+          fetchActionableChanges();
         } else if (data.status === 'failed') {
           clearInterval(pollInterval);
         }
@@ -160,6 +166,30 @@ export default function Results() {
       console.error('Error downloading report:', error);
     } finally {
       setDownloading(null);
+    }
+  };
+
+  const downloadEditableDocx = async (appliedActions: string[]) => {
+    try {
+      const res = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/generate-editable`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ appliedActions })
+        }
+      );
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `quality-report-editable.docx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading editable document:', error);
     }
   };
 
@@ -531,7 +561,10 @@ export default function Results() {
                     humanChanges={humanChanges}
                     onApplyChanges={applyChanges}
                     onDownloadUpdated={() => downloadReport('pdf')}
+                    onDownloadEditable={downloadEditableDocx}
                     hasUpdatedReport={hasUpdatedReport}
+                    packId={packId || ''}
+                    versionId={versionId || ''}
                   />
                 </div>
               )}
@@ -566,6 +599,68 @@ export default function Results() {
               This report assesses submission quality against regulatory success criteria. It does not determine compliance or guarantee approval.
               Final decisions rest with the Building Safety Regulator.
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* AI Actions Modal */}
+      {showChangesModal && aiChanges.length > 0 && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-6 text-white">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold">Assessment Complete</h2>
+                    <p className="text-green-100">Would you like us to apply improvements?</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowChangesModal(false)}
+                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <ActionableChanges
+                aiChanges={aiChanges}
+                humanChanges={humanChanges}
+                onApplyChanges={applyChanges}
+                onDownloadUpdated={() => {
+                  downloadReport('pdf');
+                  setShowChangesModal(false);
+                }}
+                onDownloadEditable={async (selectedIds) => {
+                  await downloadEditableDocx(selectedIds);
+                  setShowChangesModal(false);
+                }}
+                hasUpdatedReport={hasUpdatedReport}
+                packId={packId || ''}
+                versionId={versionId || ''}
+              />
+            </div>
+
+            {/* Modal Footer */}
+            <div className="border-t border-slate-200 p-4 bg-slate-50">
+              <button
+                onClick={() => setShowChangesModal(false)}
+                className="w-full py-2 text-slate-600 hover:text-slate-900 font-medium transition-colors"
+              >
+                Skip for now — I'll download the standard report
+              </button>
+            </div>
           </div>
         </div>
       )}
