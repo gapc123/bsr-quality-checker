@@ -7,7 +7,7 @@ const router = Router();
 // Apply AI-actionable changes and generate updated report
 router.post('/:packId/versions/:versionId/apply-changes', async (req: Request, res: Response) => {
   try {
-    const { versionId } = req.params;
+    const versionId = String(req.params.versionId);
     const { selectedChangeIds } = req.body;
 
     if (!Array.isArray(selectedChangeIds)) {
@@ -16,7 +16,7 @@ router.post('/:packId/versions/:versionId/apply-changes', async (req: Request, r
     }
 
     // Get current version with assessment
-    const version = await prisma.packVersion.findUnique({
+    const version = await (prisma.packVersion.findUnique as any)({
       where: { id: versionId },
       include: { documents: true }
     });
@@ -74,7 +74,7 @@ router.post('/:packId/versions/:versionId/apply-changes', async (req: Request, r
     assessment.appliedAt = new Date().toISOString();
 
     // Save updated assessment
-    await prisma.packVersion.update({
+    await (prisma.packVersion.update as any)({
       where: { id: versionId },
       data: { matrixAssessment: JSON.stringify(assessment) }
     });
@@ -94,12 +94,11 @@ router.post('/:packId/versions/:versionId/apply-changes', async (req: Request, r
 // Get list of AI-actionable and human-judgement changes
 router.get('/:packId/versions/:versionId/actionable-changes', async (req: Request, res: Response) => {
   try {
-    const { versionId } = req.params;
+    const versionId = String(req.params.versionId);
 
-    const version = await prisma.packVersion.findUnique({
+    const version = await (prisma.packVersion.findUnique as any)({
       where: { id: versionId },
       include: {
-        issues: true,
         documents: true
       }
     });
@@ -153,11 +152,14 @@ router.get('/:packId/versions/:versionId/actionable-changes', async (req: Reques
       }
     ];
 
-    // Generate human-judgement changes from issues
-    const humanChanges = version.issues
-      .filter(issue => issue.severity === 'high' || issue.severity === 'medium')
+    // Generate human-judgement changes from issues in the assessment
+    const assessment = version.matrixAssessment ? JSON.parse(version.matrixAssessment) : null;
+    const issues = assessment?.issues || [];
+
+    const humanChanges = issues
+      .filter((issue: any) => issue.severity === 'high' || issue.severity === 'medium')
       .slice(0, 10)
-      .map(issue => ({
+      .map((issue: any) => ({
         id: issue.id,
         title: issue.title,
         description: issue.finding,

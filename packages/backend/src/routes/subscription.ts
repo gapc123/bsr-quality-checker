@@ -1,13 +1,11 @@
 import { Router, Request, Response } from 'express';
 import Stripe from 'stripe';
-import { ClerkExpressRequireAuth, RequireAuthProp } from '@clerk/express';
+import { requireAuth, getAuth } from '@clerk/express';
 import prisma from '../db/client.js';
 
 const router = Router();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-11-20.acacia'
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 const PRICE_IDS: Record<string, string> = {
   price_per_submission: process.env.STRIPE_PRICE_PER_SUBMISSION || '',
@@ -15,8 +13,7 @@ const PRICE_IDS: Record<string, string> = {
   price_enterprise_monthly: process.env.STRIPE_PRICE_ENTERPRISE || ''
 };
 
-// Middleware to require authentication
-const requireAuth = ClerkExpressRequireAuth();
+// Middleware to require authentication - using Clerk's requireAuth directly
 
 // Plan limits
 const PLAN_LIMITS: Record<string, number> = {
@@ -25,9 +22,9 @@ const PLAN_LIMITS: Record<string, number> = {
 };
 
 // GET /api/subscription/status - Check subscription status and usage
-router.get('/status', requireAuth, async (req: RequireAuthProp<Request>, res: Response) => {
+router.get('/status', requireAuth, async (req: Request, res: Response) => {
   try {
-    const userId = req.auth.userId;
+    const userId = getAuth(req).userId;
 
     if (!userId) {
       res.status(401).json({ error: 'Unauthorized' });
@@ -90,9 +87,9 @@ router.get('/status', requireAuth, async (req: RequireAuthProp<Request>, res: Re
 });
 
 // POST /api/subscription/check-can-submit - Check if user can submit and reserve a slot
-router.post('/check-can-submit', requireAuth, async (req: RequireAuthProp<Request>, res: Response) => {
+router.post('/check-can-submit', requireAuth, async (req: Request, res: Response) => {
   try {
-    const userId = req.auth.userId;
+    const userId = getAuth(req).userId;
     const { packVersionId } = req.body;
 
     if (!userId) {
@@ -188,9 +185,9 @@ router.post('/check-can-submit', requireAuth, async (req: RequireAuthProp<Reques
 });
 
 // POST /api/subscription/buy-credits - Purchase additional submission credits
-router.post('/buy-credits', requireAuth, async (req: RequireAuthProp<Request>, res: Response) => {
+router.post('/buy-credits', requireAuth, async (req: Request, res: Response) => {
   try {
-    const userId = req.auth.userId;
+    const userId = getAuth(req).userId;
     const { quantity = 1 } = req.body;
 
     if (!userId) {
@@ -240,9 +237,9 @@ router.post('/buy-credits', requireAuth, async (req: RequireAuthProp<Request>, r
 });
 
 // POST /api/subscription/create-checkout - Create Stripe checkout session
-router.post('/create-checkout', requireAuth, async (req: RequireAuthProp<Request>, res: Response) => {
+router.post('/create-checkout', requireAuth, async (req: Request, res: Response) => {
   try {
-    const userId = req.auth.userId;
+    const userId = getAuth(req).userId;
     const { priceId } = req.body;
 
     if (!userId) {
@@ -371,7 +368,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return;
   }
 
-  const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+  const subscription = await stripe.subscriptions.retrieve(session.subscription as string) as any;
 
   await prisma.subscription.upsert({
     where: { stripeSubscriptionId: subscription.id },
@@ -380,28 +377,28 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       stripeSubscriptionId: subscription.id,
       plan: priceId?.includes('enterprise') ? 'enterprise' : 'professional',
       status: 'active',
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000)
+      currentPeriodEnd: new Date((subscription.current_period_end || Math.floor(Date.now() / 1000)) * 1000)
     },
     update: {
       status: 'active',
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000)
+      currentPeriodEnd: new Date((subscription.current_period_end || Math.floor(Date.now() / 1000)) * 1000)
     }
   });
 }
 
-async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+async function handleSubscriptionUpdated(subscription: any) {
   const status = subscription.status === 'active' ? 'active' : 'inactive';
 
   await prisma.subscription.updateMany({
     where: { stripeSubscriptionId: subscription.id },
     data: {
       status,
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000)
+      currentPeriodEnd: new Date((subscription.current_period_end || Math.floor(Date.now() / 1000)) * 1000)
     }
   });
 }
 
-async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+async function handleSubscriptionDeleted(subscription: any) {
   await prisma.subscription.updateMany({
     where: { stripeSubscriptionId: subscription.id },
     data: { status: 'cancelled' }
@@ -409,9 +406,9 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 }
 
 // POST /api/subscription/portal - Create customer portal session
-router.post('/portal', requireAuth, async (req: RequireAuthProp<Request>, res: Response) => {
+router.post('/portal', requireAuth, async (req: Request, res: Response) => {
   try {
-    const userId = req.auth.userId;
+    const userId = getAuth(req).userId;
 
     if (!userId) {
       res.status(401).json({ error: 'Unauthorized' });
