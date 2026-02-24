@@ -234,7 +234,7 @@ function AppContent() {
                 BSR Quality Checker — A reviewability diagnostic for Gateway 2 submissions
               </p>
               <p className="text-xs text-slate-500">
-                Not a compliance tool. For quality assessment only.
+                55+ criteria assessment. Not a compliance certificate.
               </p>
             </div>
           </div>

@@ -9,9 +9,9 @@ export default function Disclaimer() {
             </svg>
           </div>
           <p className="text-sm text-amber-800">
-            <strong className="font-semibold">Not a compliance tool:</strong>{' '}
-            This tool assesses document quality, clarity, and internal consistency only.
-            It does NOT determine regulatory compliance — that is the sole responsibility of the{' '}
+            <strong className="font-semibold">Not a compliance certificate:</strong>{' '}
+            This tool assesses your submission against 55+ deterministic criteria and regulatory requirements using AI analysis.
+            It identifies gaps and suggests improvements, but does NOT certify compliance — final approval is the sole responsibility of the{' '}
             <span className="font-medium">Building Safety Regulator (BSR)</span>.
           </p>
         </div>

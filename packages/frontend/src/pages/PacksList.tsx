@@ -128,10 +128,10 @@ export default function PacksList() {
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
               <div className="text-sm text-blue-100">
-                <strong className="text-white">What this tool does:</strong> Reviews your documents for quality,
-                clarity, and consistency. Cross-references against BSR requirements and produces an
-                actionable gap analysis. <span className="text-blue-200">This is a reviewability diagnostic — it
-                does not certify compliance or replace professional judgement.</span>
+                <strong className="text-white">What this tool does:</strong> Assesses your documents against 55+ deterministic
+                criteria and regulatory requirements using AI analysis. Identifies gaps and produces a
+                prioritised action list. <span className="text-blue-200">This is a submission review tool — it
+                does not certify compliance or replace BSR approval.</span>
               </div>
             </div>
           </div>
@@ -204,7 +204,7 @@ export default function PacksList() {
               </div>
             </div>
             <p className="text-xs text-slate-500 border-t border-slate-200 pt-3">
-              <strong>Important:</strong> This is a quality assessment tool, not a compliance certificate.
+              <strong>Important:</strong> This tool assesses against 55+ criteria using deterministic rules and AI analysis.
               Results do not guarantee regulatory approval. Final decisions rest with the Building Safety Regulator.
             </p>
           </div>
