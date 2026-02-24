@@ -56,8 +56,8 @@ function AppContent() {
                   </svg>
                 </div>
                 <div>
-                  <span className="text-lg font-bold text-white">BSR Quality Checker</span>
-                  <span className="hidden sm:block text-xs text-slate-400">Gateway 2 Document Review Tool</span>
+                  <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Meridian</span>
+                  <span className="hidden sm:block text-xs text-slate-400">AI-Powered Regulatory Compliance</span>
                 </div>
               </Link>
 
@@ -231,7 +231,7 @@ function AppContent() {
           <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="text-sm text-slate-400">
-                BSR Quality Checker — A reviewability diagnostic for Gateway 2 submissions
+                Meridian — AI-powered regulatory compliance for Gateway 2 submissions
               </p>
               <p className="text-xs text-slate-500">
                 55+ criteria assessment. Not a compliance certificate.
