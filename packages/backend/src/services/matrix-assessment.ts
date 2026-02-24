@@ -467,11 +467,11 @@ export async function assessPackAgainstMatrix(
       quote: dr.result.evidence.quote
     },
     reference_evidence: {
-      found: false,
-      doc_id: null,
-      doc_title: null,
+      found: true,
+      doc_id: dr.matrixId,
+      doc_title: `${dr.regulatoryRef.source} - ${dr.regulatoryRef.section}`,
       page: null,
-      quote: null
+      quote: dr.regulatoryRef.requirement
     },
     gaps_identified: dr.result.failureMode ? [dr.result.failureMode] : [],
     actions_required: dr.result.failureMode ? [{

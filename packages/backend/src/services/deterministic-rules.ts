@@ -95,11 +95,75 @@ function extractStoreys(text: string): number[] {
 
 type RuleFunction = (docs: DocumentEvidence[]) => RuleResult;
 
+interface RegulatoryRef {
+  source: string;      // e.g., "Building Regulations 2010, Approved Document B"
+  section: string;     // e.g., "Section B1 - Means of Warning and Escape"
+  requirement: string; // The actual requirement text
+}
+
+// Default regulatory references by category
+const CATEGORY_REGULATORY_REFS: Record<string, RegulatoryRef> = {
+  'FIRE_SAFETY': {
+    source: 'Building Regulations 2010, Approved Document B',
+    section: 'Parts B1-B5',
+    requirement: 'Fire safety requirements covering means of warning and escape, internal fire spread (linings), internal fire spread (structure), external fire spread, and access and facilities for the fire service.'
+  },
+  'PACK_COMPLETENESS': {
+    source: 'Building Safety Act 2022, The Building (Higher-Risk Buildings) (England) Regulations 2023',
+    section: 'Regulation 9 & Schedule 1',
+    requirement: 'Gateway 2 applications must include prescribed documents demonstrating compliance with building regulations, including fire strategy, structural design, and building descriptions.'
+  },
+  'HRB_DUTIES': {
+    source: 'Building Safety Act 2022',
+    section: 'Part 4, Sections 75-91',
+    requirement: 'Dutyholder responsibilities including appointment of Principal Designer and Principal Contractor, competency requirements, and golden thread information management.'
+  },
+  'GOLDEN_THREAD': {
+    source: 'Building Safety Act 2022, The Building (Higher-Risk Buildings) (England) Regulations 2023',
+    section: 'Part 3, Regulations 25-28',
+    requirement: 'Requirements for creating, maintaining and storing golden thread information throughout the building lifecycle, ensuring accurate and up-to-date building information.'
+  },
+  'VENTILATION': {
+    source: 'Building Regulations 2010, Approved Document F',
+    section: 'Ventilation',
+    requirement: 'Requirements for ventilation systems including air quality, extract ventilation, and smoke control measures.'
+  },
+  'STRUCTURAL': {
+    source: 'Building Regulations 2010, Approved Document A',
+    section: 'Structure',
+    requirement: 'Structural requirements for loading, ground movement, and disproportionate collapse prevention.'
+  },
+  'LONDON_SPECIFIC': {
+    source: 'London Plan 2021 / London Fire Brigade Guidance',
+    section: 'Policy D12, LFB Guidance Note 29',
+    requirement: 'London-specific requirements for fire safety, evacuation lifts, and enhanced fire safety measures for tall buildings.'
+  },
+  'CONSISTENCY': {
+    source: 'Building Safety Act 2022',
+    section: 'Competence requirements',
+    requirement: 'Requirements for consistency and accuracy across all submission documents to demonstrate competent design coordination.'
+  },
+  'TRACEABILITY': {
+    source: 'Building Safety Act 2022, The Building (Higher-Risk Buildings) (England) Regulations 2023',
+    section: 'Golden Thread Requirements',
+    requirement: 'Traceability requirements ensuring all design decisions can be traced to source documents and regulatory references.'
+  }
+};
+
+function getDefaultRegulatoryRef(category: string): RegulatoryRef {
+  return CATEGORY_REGULATORY_REFS[category] || {
+    source: 'Building Safety Act 2022 / Building Regulations 2010',
+    section: 'Various',
+    requirement: 'Compliance with applicable building regulations and Building Safety Act requirements.'
+  };
+}
+
 interface DeterministicRule {
   matrixId: string;
   name: string;
   category: string;
   severity: 'high' | 'medium' | 'low';
+  regulatoryRef?: RegulatoryRef; // Optional - uses category default if not specified
   check: RuleFunction;
 }
 
@@ -118,6 +182,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Fire Strategy Report Present and Complete',
     category: 'PACK_COMPLETENESS',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Safety Act 2022 / Building Regulations 2010',
+      section: 'Regulation 38 & Approved Document B',
+      requirement: 'A fire safety strategy must be provided demonstrating compliance with Approved Document B, covering means of escape, compartmentation, external fire spread, structural fire resistance, and firefighter access.'
+    },
     check: (docs) => {
       const fireStrategyDoc = findDocument(docs, ['fire strategy', 'fire safety strategy', 'fire report']);
 
@@ -3419,6 +3488,11 @@ export interface DeterministicAssessment {
   ruleName: string;
   category: string;
   severity: 'high' | 'medium' | 'low';
+  regulatoryRef: {
+    source: string;
+    section: string;
+    requirement: string;
+  };
   result: RuleResult;
   requiresLLMReview: boolean;
 }
@@ -3433,6 +3507,7 @@ export function runDeterministicChecks(docs: DocumentEvidence[]): DeterministicA
       ruleName: rule.name,
       category: rule.category,
       severity: rule.severity,
+      regulatoryRef: rule.regulatoryRef || getDefaultRegulatoryRef(rule.category),
       result,
       requiresLLMReview: result.confidence === 'needs_review'
     });
@@ -3451,6 +3526,7 @@ export function runSingleRule(matrixId: string, docs: DocumentEvidence[]): Deter
     ruleName: rule.name,
     category: rule.category,
     severity: rule.severity,
+    regulatoryRef: rule.regulatoryRef,
     result,
     requiresLLMReview: result.confidence === 'needs_review'
   };
