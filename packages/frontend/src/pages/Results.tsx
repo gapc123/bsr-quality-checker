@@ -698,7 +698,7 @@ export default function Results() {
                               <div>
                                 <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Assessment Reasoning</h4>
                                 <p className="text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200">
-                                  {criterion.reasoning}
+                                  {criterion.reasoning || 'No detailed reasoning available for this criterion.'}
                                 </p>
                               </div>
 

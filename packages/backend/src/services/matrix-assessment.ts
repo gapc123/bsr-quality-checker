@@ -357,7 +357,7 @@ Respond in JSON format:
       category: row.category,
       status: parsed.status,
       severity: row.severity_if_unmet,
-      reasoning: parsed.reasoning,
+      reasoning: parsed.reasoning || `Assessment of ${row.matrix_title} based on submitted documentation.`,
       success_definition: row.success_definition,
       pack_evidence: {
         found: parsed.pack_evidence_found,
