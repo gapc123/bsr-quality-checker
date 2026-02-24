@@ -1309,7 +1309,7 @@ export interface AIAction {
   applied: boolean;
 }
 
-// Generate editable DOCX report with AI changes highlighted
+// Generate editable DOCX with submitted pack content + AI suggestions highlighted
 export async function generateEditableDocx(
   packVersionId: string,
   appliedActions: string[]
@@ -1318,7 +1318,10 @@ export async function generateEditableDocx(
     where: { id: packVersionId },
     include: {
       pack: true,
-      documents: true,
+      documents: {
+        include: { chunks: true },
+        orderBy: { filename: 'asc' },
+      },
     },
   });
 
@@ -1327,274 +1330,792 @@ export async function generateEditableDocx(
   }
 
   const assessment: FullAssessment = JSON.parse(packVersion.matrixAssessment);
-
-  // Build document sections
-  const children: any[] = [];
-
-  // Title
-  children.push(
-    new Paragraph({
-      text: `BSR Gateway 2 Quality Assessment Report`,
-      heading: HeadingLevel.TITLE,
-      spacing: { after: 200 },
-    })
-  );
-
-  // Project info
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'Project: ', bold: true }),
-        new TextRun(packVersion.projectName || packVersion.pack.name),
-      ],
-      spacing: { after: 100 },
-    })
-  );
-
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'Generated: ', bold: true }),
-        new TextRun(new Date().toLocaleDateString('en-GB')),
-      ],
-      spacing: { after: 200 },
-    })
-  );
-
-  // AI Changes Applied section (highlighted)
-  if (appliedActions.length > 0) {
-    children.push(
-      new Paragraph({
-        text: 'AI-Applied Enhancements',
-        heading: HeadingLevel.HEADING_1,
-        spacing: { before: 400, after: 200 },
-      })
-    );
-
-    children.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: 'The following improvements were automatically applied by AI and are highlighted throughout this document:',
-            italics: true,
-          }),
-        ],
-        spacing: { after: 200 },
-      })
-    );
-
-    const actionLabels: Record<string, string> = {
-      'add_toc': 'Table of contents added',
-      'standardise_headings': 'Heading formats standardised',
-      'add_cross_refs': 'Document cross-references added',
-      'format_citations': 'Citation formatting improved',
-      'add_page_numbers': 'Page number references added',
-    };
-
-    for (const actionId of appliedActions) {
-      children.push(
-        new Paragraph({
-          children: [
-            new TextRun({ text: '✓ ', color: '22C55E' }),
-            new TextRun({
-              text: actionLabels[actionId] || actionId,
-              highlight: 'yellow',
-            }),
-          ],
-          spacing: { after: 100 },
-        })
-      );
-    }
-
-    children.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: '[Highlighted sections indicate AI-applied changes]',
-            color: 'F59E0B',
-            bold: true,
-          }),
-        ],
-        spacing: { before: 200, after: 400 },
-      })
-    );
-  }
-
-  // Executive Summary
-  children.push(
-    new Paragraph({
-      text: 'Executive Summary',
-      heading: HeadingLevel.HEADING_1,
-      spacing: { before: 400, after: 200 },
-    })
-  );
-
   const criteriaSummary = assessment.criteria_summary;
-  const overallReadiness = Math.round((criteriaSummary.meets / criteriaSummary.total_applicable) * 100);
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'Overall Readiness: ', bold: true }),
-        new TextRun({
-          text: `${overallReadiness}%`,
-          bold: true,
-          color: overallReadiness >= 80 ? '22C55E' : overallReadiness >= 60 ? 'F59E0B' : 'EF4444',
-        }),
-      ],
-      spacing: { after: 100 },
-    })
-  );
+  const readinessScore = assessment.readiness_score ?? Math.round(((criteriaSummary.meets + criteriaSummary.partial * 0.5) / criteriaSummary.total_applicable) * 100);
 
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'Criteria Assessed: ', bold: true }),
-        new TextRun(`${criteriaSummary.total_applicable}`),
-      ],
-      spacing: { after: 100 },
-    })
-  );
-
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'Met: ', bold: true }),
-        new TextRun({ text: `${criteriaSummary.meets}`, color: '22C55E' }),
-        new TextRun({ text: ' | Partial: ', bold: true }),
-        new TextRun({ text: `${criteriaSummary.partial}`, color: 'F59E0B' }),
-        new TextRun({ text: ' | Not Met: ', bold: true }),
-        new TextRun({ text: `${criteriaSummary.does_not_meet}`, color: 'EF4444' }),
-        new TextRun({ text: ' | N/A: ', bold: true }),
-        new TextRun(`${criteriaSummary.not_assessed}`),
-      ],
-      spacing: { after: 300 },
-    })
-  );
-
-  // Issues requiring attention
-  children.push(
-    new Paragraph({
-      text: 'Issues Requiring Attention',
-      heading: HeadingLevel.HEADING_1,
-      spacing: { before: 400, after: 200 },
-    })
-  );
-
+  // Get issues that need attention (organized by document for inline insertion)
   const criticalIssues = assessment.results.filter(
     c => c.status === 'does_not_meet' || c.status === 'partial'
   );
 
-  if (criticalIssues.length === 0) {
+  // Group issues by the document they reference
+  const issuesByDocument: Record<string, typeof criticalIssues> = {};
+  for (const issue of criticalIssues) {
+    const docName = issue.pack_evidence?.document || 'General';
+    if (!issuesByDocument[docName]) {
+      issuesByDocument[docName] = [];
+    }
+    issuesByDocument[docName].push(issue);
+  }
+
+  // Build document sections
+  const children: any[] = [];
+
+  // ============================================
+  // COVER PAGE
+  // ============================================
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: 'GATEWAY 2 SUBMISSION PACK',
+          bold: true,
+          size: 48,
+          color: '1E40AF',
+        }),
+      ],
+      alignment: 'center',
+      spacing: { after: 50 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: 'WITH AI-SUGGESTED IMPROVEMENTS',
+          bold: true,
+          size: 28,
+          color: '16A34A',
+        }),
+      ],
+      alignment: 'center',
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: packVersion.projectName || packVersion.pack.name,
+          size: 32,
+          color: '475569',
+        }),
+      ],
+      alignment: 'center',
+      spacing: { after: 200 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: `Readiness Score: ${readinessScore}%`,
+          bold: true,
+          size: 28,
+          color: readinessScore >= 80 ? '16A34A' : readinessScore >= 60 ? 'D97706' : 'DC2626',
+        }),
+      ],
+      alignment: 'center',
+      spacing: { after: 100 },
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({ text: `${criticalIssues.length} AI suggestions for improvement`, color: '64748B' }),
+      ],
+      alignment: 'center',
+      spacing: { after: 400 },
+    })
+  );
+
+  // ============================================
+  // HOW TO USE THIS DOCUMENT
+  // ============================================
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: 'HOW TO USE THIS DOCUMENT',
+          bold: true,
+          size: 24,
+          color: '1E40AF',
+        }),
+      ],
+      spacing: { before: 200, after: 150 },
+      shading: { fill: 'EFF6FF' },
+    })
+  );
+
+  const instructions = [
+    '1. This document contains your original submission pack documents',
+    '2. AI-suggested improvements are highlighted in YELLOW - review each one',
+    '3. Accept suggestions by removing the highlight, or delete suggestions you disagree with',
+    '4. Edit freely - this is your editable working copy',
+    '5. Save this document to track your improvements',
+  ];
+
+  for (const instruction of instructions) {
     children.push(
       new Paragraph({
-        text: 'No critical issues identified.',
+        text: instruction,
+        spacing: { after: 50 },
+        indent: { left: 200 },
+      })
+    );
+  }
+
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: 'Yellow highlighted text = AI suggestions. ',
+          bold: true,
+          highlight: 'yellow',
+        }),
+        new TextRun({
+          text: 'Normal text = your original submission.',
+          italics: true,
+          color: '64748B',
+        }),
+      ],
+      spacing: { before: 100, after: 400 },
+      indent: { left: 200 },
+    })
+  );
+
+  // ============================================
+  // TABLE OF CONTENTS - Documents in Pack
+  // ============================================
+  children.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: 'DOCUMENTS IN THIS PACK',
+          bold: true,
+          size: 28,
+          color: '1E40AF',
+        }),
+      ],
+      spacing: { before: 300, after: 200 },
+      border: {
+        bottom: { style: 'single', size: 6, color: '1E40AF' },
+      },
+    })
+  );
+
+  // List each document with suggestion count
+  for (let docIdx = 0; docIdx < packVersion.documents.length; docIdx++) {
+    const doc = packVersion.documents[docIdx];
+    const cleanFilename = doc.filename.replace(/^\d+-\d+-/, '');
+    const docIssues = issuesByDocument[cleanFilename] || issuesByDocument[doc.filename] || [];
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: `${docIdx + 1}. `, bold: true, color: '64748B' }),
+          new TextRun({ text: cleanFilename, bold: true }),
+          docIssues.length > 0
+            ? new TextRun({ text: ` (${docIssues.length} AI suggestions)`, color: '16A34A', italics: true })
+            : new TextRun({ text: ' (no changes needed)', color: '94A3B8', italics: true }),
+        ],
+        spacing: { after: 50 },
+      })
+    );
+  }
+
+  // Summary of suggestions
+  if (criticalIssues.length > 0) {
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: '\nSummary: ', bold: true }),
+          new TextRun({ text: `${criticalIssues.length} total AI suggestions across all documents`, color: '64748B' }),
+        ],
+        spacing: { before: 200, after: 100 },
+      })
+    );
+  }
+
+  // Page break after TOC
+  children.push(
+    new Paragraph({
+      children: [],
+      pageBreakBefore: true,
+    })
+  );
+
+  // ============================================
+  // DOCUMENT CONTENT WITH AI SUGGESTIONS
+  // ============================================
+  // Process each document in the pack
+  for (let docIdx = 0; docIdx < packVersion.documents.length; docIdx++) {
+    const doc = packVersion.documents[docIdx];
+    const cleanFilename = doc.filename.replace(/^\d+-\d+-/, '');
+    const docChunks = (doc as any).chunks || [];
+    const docIssues = issuesByDocument[cleanFilename] || issuesByDocument[doc.filename] || [];
+
+    // Document header
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: `DOCUMENT ${docIdx + 1}: ${cleanFilename}`,
+            bold: true,
+            size: 28,
+            color: '1E40AF',
+          }),
+        ],
+        spacing: { before: 200, after: 100 },
+        border: {
+          bottom: { style: 'single', size: 6, color: '1E40AF' },
+        },
+      })
+    );
+
+    // Document type badge if available
+    if (doc.docType) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Document Type: ', color: '64748B' }),
+            new TextRun({ text: doc.docType, bold: true, color: '475569' }),
+          ],
+          spacing: { after: 100 },
+        })
+      );
+    }
+
+    // Show suggestions count for this document
+    if (docIssues.length > 0) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `${docIssues.length} AI suggestion${docIssues.length > 1 ? 's' : ''} for this document`,
+              italics: true,
+              color: '16A34A',
+            }),
+          ],
+          spacing: { after: 200 },
+        })
+      );
+    }
+
+    // Document content from chunks
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'DOCUMENT CONTENT',
+            bold: true,
+            size: 20,
+            color: '475569',
+          }),
+        ],
+        spacing: { before: 100, after: 100 },
+        border: { bottom: { style: 'single', size: 4, color: 'E2E8F0' } },
+      })
+    );
+
+    // Reconstruct document from chunks and insert AI suggestions inline
+    if (docChunks.length > 0) {
+      // Sort chunks by sequence
+      const sortedChunks = [...docChunks].sort((a: any, b: any) => a.chunkSequence - b.chunkSequence);
+
+      for (const chunk of sortedChunks) {
+        const chunkText = chunk.content || '';
+        const paragraphs = chunkText.split('\n').filter((p: string) => p.trim());
+
+        for (const para of paragraphs) {
+          // Check if any issues relate to this text
+          const relevantIssue = docIssues.find(issue => {
+            const quote = issue.pack_evidence?.quote?.toLowerCase() || '';
+            return quote && para.toLowerCase().includes(quote.substring(0, 50));
+          });
+
+          children.push(
+            new Paragraph({
+              text: para,
+              spacing: { after: 80 },
+            })
+          );
+
+          // If there's a relevant issue for this paragraph, insert AI suggestion after it
+          if (relevantIssue && relevantIssue.actions_required && relevantIssue.actions_required.length > 0) {
+            const action = relevantIssue.actions_required[0];
+
+            // AI Suggestion box
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: '▶ AI SUGGESTION: ',
+                    bold: true,
+                    color: '16A34A',
+                  }),
+                  new TextRun({
+                    text: relevantIssue.matrix_title,
+                    bold: true,
+                    highlight: 'yellow',
+                  }),
+                ],
+                spacing: { before: 100, after: 50 },
+                shading: { fill: 'FFFBEB' },
+                indent: { left: 300 },
+              })
+            );
+
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: action.action,
+                    highlight: 'yellow',
+                  }),
+                ],
+                spacing: { after: 50 },
+                indent: { left: 300 },
+              })
+            );
+
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: `Reason: ${relevantIssue.reasoning}`,
+                    italics: true,
+                    color: '64748B',
+                    size: 20,
+                  }),
+                ],
+                spacing: { after: 100 },
+                indent: { left: 300 },
+              })
+            );
+
+            // Remove this issue from the list so it's not repeated
+            const issueIdx = docIssues.indexOf(relevantIssue);
+            if (issueIdx > -1) {
+              docIssues.splice(issueIdx, 1);
+            }
+          }
+        }
+      }
+    } else {
+      // No chunks available
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: '[Document content not available - please refer to original PDF]',
+              italics: true,
+              color: '94A3B8',
+            }),
+          ],
+          spacing: { after: 100 },
+        })
+      );
+    }
+
+    // Show any remaining issues for this document that weren't matched to specific text
+    if (docIssues.length > 0) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'ADDITIONAL AI SUGGESTIONS FOR THIS DOCUMENT',
+              bold: true,
+              size: 20,
+              color: '16A34A',
+            }),
+          ],
+          spacing: { before: 200, after: 100 },
+          border: { bottom: { style: 'single', size: 4, color: '86EFAC' } },
+        })
+      );
+
+      for (const issue of docIssues) {
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: `▶ ${issue.matrix_title}`,
+                bold: true,
+                highlight: 'yellow',
+              }),
+            ],
+            spacing: { before: 100, after: 50 },
+            shading: { fill: 'FFFBEB' },
+          })
+        );
+
+        if (issue.actions_required && issue.actions_required.length > 0) {
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: issue.actions_required[0].action,
+                  highlight: 'yellow',
+                }),
+              ],
+              spacing: { after: 50 },
+              indent: { left: 300 },
+            })
+          );
+        }
+
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: `Reason: ${issue.reasoning}`,
+                italics: true,
+                color: '64748B',
+                size: 20,
+              }),
+            ],
+            spacing: { after: 150 },
+            indent: { left: 300 },
+          })
+        );
+      }
+    }
+
+    // Page break between documents
+    if (docIdx < packVersion.documents.length - 1) {
+      children.push(
+        new Paragraph({
+          children: [],
+          pageBreakBefore: true,
+        })
+      );
+    }
+  }
+
+  // Show general issues not linked to specific documents
+  const generalIssues = issuesByDocument['General'] || [];
+  if (generalIssues.length > 0) {
+    children.push(
+      new Paragraph({
+        children: [],
+        pageBreakBefore: true,
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'GENERAL AI SUGGESTIONS',
+            bold: true,
+            size: 28,
+            color: '16A34A',
+          }),
+        ],
+        spacing: { before: 200, after: 100 },
+        border: {
+          bottom: { style: 'single', size: 6, color: '16A34A' },
+        },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'These suggestions apply to your submission pack as a whole:',
+            italics: true,
+            color: '64748B',
+          }),
+        ],
         spacing: { after: 200 },
       })
     );
-  } else {
-    for (const issue of criticalIssues.slice(0, 15)) {
-      const statusColor = issue.status === 'does_not_meet' ? 'EF4444' : 'F59E0B';
-      const statusText = issue.status === 'does_not_meet' ? 'NOT MET' : 'PARTIAL';
+
+    for (const issue of generalIssues) {
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `▶ ${issue.matrix_title}`,
+              bold: true,
+              highlight: 'yellow',
+            }),
+          ],
+          spacing: { before: 150, after: 50 },
+          shading: { fill: 'FFFBEB' },
+        })
+      );
+
+      if (issue.actions_required && issue.actions_required.length > 0) {
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: issue.actions_required[0].action,
+                highlight: 'yellow',
+              }),
+            ],
+            spacing: { after: 50 },
+            indent: { left: 300 },
+          })
+        );
+      }
 
       children.push(
         new Paragraph({
           children: [
             new TextRun({
-              text: `[${statusText}] `,
+              text: `Reason: ${issue.reasoning}`,
+              italics: true,
+              color: '64748B',
+              size: 20,
+            }),
+          ],
+          spacing: { after: 150 },
+          indent: { left: 300 },
+        })
+      );
+    }
+  }
+
+  // ============================================
+  // CRITICAL BLOCKING ISSUES - MUST ADDRESS
+  // ============================================
+  // Separate high-priority "does not meet" issues that would block approval
+  const blockingIssues = assessment.results.filter(
+    c => c.status === 'does_not_meet' && c.severity === 'high'
+  );
+
+  if (blockingIssues.length > 0) {
+    children.push(
+      new Paragraph({
+        children: [],
+        pageBreakBefore: true,
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: '⚠️ CRITICAL: LIKELY TO BLOCK REGULATOR APPROVAL',
+            bold: true,
+            size: 32,
+            color: 'DC2626',
+          }),
+        ],
+        spacing: { before: 200, after: 100 },
+        shading: { fill: 'FEF2F2' },
+        border: {
+          bottom: { style: 'single', size: 8, color: 'DC2626' },
+        },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'The following issues are HIGH PRIORITY and MUST be addressed before submission. These are likely to result in rejection by the Building Safety Regulator.',
+            bold: true,
+            color: 'DC2626',
+          }),
+        ],
+        spacing: { after: 200 },
+        shading: { fill: 'FEF2F2' },
+      })
+    );
+
+    for (let i = 0; i < blockingIssues.length; i++) {
+      const issue = blockingIssues[i];
+
+      // Issue header with red badge
+      children.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `BLOCKING ISSUE ${i + 1}: `,
               bold: true,
-              color: statusColor,
+              color: 'DC2626',
             }),
             new TextRun({
               text: issue.matrix_title,
               bold: true,
+              highlight: 'yellow',
             }),
           ],
           spacing: { before: 200, after: 100 },
+          shading: { fill: 'FEF2F2' },
         })
       );
 
+      // Finding
       children.push(
         new Paragraph({
-          text: issue.reasoning,
+          children: [
+            new TextRun({ text: 'Finding: ', bold: true }),
+            new TextRun({ text: issue.reasoning }),
+          ],
           spacing: { after: 100 },
+          indent: { left: 300 },
         })
       );
 
-      if (issue.actions_required && issue.actions_required.length > 0) {
-        const recommendation = issue.actions_required[0].action;
-        const isAIEnhanced = appliedActions.includes('add_cross_refs') && recommendation.includes('document');
+      // Document reference
+      if (issue.pack_evidence?.document) {
         children.push(
           new Paragraph({
             children: [
-              new TextRun({ text: 'Recommendation: ', bold: true }),
-              new TextRun({
-                text: recommendation,
-                highlight: isAIEnhanced ? 'yellow' : undefined,
-              }),
+              new TextRun({ text: 'Affected Document: ', bold: true }),
+              new TextRun({ text: issue.pack_evidence.document }),
+              issue.pack_evidence.page
+                ? new TextRun({ text: ` (page ${issue.pack_evidence.page})`, color: '64748B' })
+                : new TextRun({ text: '' }),
             ],
-            spacing: { after: 100 },
+            spacing: { after: 50 },
+            indent: { left: 300 },
           })
         );
       }
 
-      if (issue.reference_evidence && issue.reference_evidence.found) {
-        const refText = `${issue.reference_evidence.doc_title} (p.${issue.reference_evidence.page || '?'})`;
-        const isAIEnhanced = appliedActions.includes('add_page_numbers');
+      // Required action with highlight
+      if (issue.actions_required && issue.actions_required.length > 0) {
         children.push(
           new Paragraph({
             children: [
-              new TextRun({ text: 'Evidence: ', bold: true, italics: true }),
+              new TextRun({ text: 'Required Action: ', bold: true, color: 'DC2626' }),
               new TextRun({
-                text: refText,
-                italics: true,
-                highlight: isAIEnhanced ? 'yellow' : undefined,
+                text: issue.actions_required[0].action,
+                highlight: 'yellow',
+                bold: true,
               }),
             ],
-            spacing: { after: 200 },
+            spacing: { after: 100 },
+            indent: { left: 300 },
+          })
+        );
+
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: 'Suggested Owner: ', color: '64748B' }),
+              new TextRun({ text: issue.actions_required[0].owner, bold: true }),
+            ],
+            spacing: { after: 150 },
+            indent: { left: 300 },
           })
         );
       }
     }
+
+    // Action tracking section
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: 'BLOCKING ISSUES SIGN-OFF',
+            bold: true,
+            size: 24,
+            color: 'DC2626',
+          }),
+        ],
+        spacing: { before: 300, after: 100 },
+        shading: { fill: 'FEF2F2' },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: 'All blocking issues addressed: ', bold: true }),
+          new TextRun({ text: '☐ Yes  ☐ No  ☐ In Progress' }),
+        ],
+        spacing: { after: 50 },
+        shading: { fill: 'FEF2F2' },
+      })
+    );
+
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: 'Reviewed by: _________________________ ', bold: true }),
+          new TextRun({ text: 'Date: _____________' }),
+        ],
+        spacing: { after: 200 },
+        shading: { fill: 'FEF2F2' },
+      })
+    );
   }
 
-  // Audit Trail
+  // ============================================
+  // APPENDIX: DOCUMENTS ANALYSED
+  // ============================================
   children.push(
     new Paragraph({
-      text: 'Audit Trail',
-      heading: HeadingLevel.HEADING_1,
+      children: [
+        new TextRun({
+          text: 'APPENDIX: DOCUMENTS ANALYSED',
+          bold: true,
+          size: 24,
+          color: '475569',
+        }),
+      ],
       spacing: { before: 400, after: 200 },
+      border: {
+        bottom: { style: 'single', size: 6, color: '475569' },
+      },
     })
   );
 
+  for (const doc of packVersion.documents) {
+    const cleanFilename = doc.filename.replace(/^\d+-\d+-/, '');
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: '• ', bold: true }),
+          new TextRun({ text: cleanFilename, bold: true }),
+          new TextRun({ text: doc.docType ? ` (${doc.docType})` : '', color: '64748B' }),
+        ],
+        spacing: { after: 50 },
+        indent: { left: 300 },
+      })
+    );
+  }
+
+  // ============================================
+  // FOOTER: AUDIT INFO
+  // ============================================
   children.push(
     new Paragraph({
       children: [
-        new TextRun({ text: 'Assessment completed: ', bold: true }),
-        new TextRun(new Date().toISOString()),
+        new TextRun({
+          text: 'AUDIT INFORMATION',
+          bold: true,
+          size: 20,
+          color: '94A3B8',
+        }),
       ],
-      spacing: { after: 100 },
+      spacing: { before: 400, after: 100 },
+      border: {
+        bottom: { style: 'single', size: 4, color: 'E2E8F0' },
+      },
     })
   );
 
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'AI actions applied: ', bold: true }),
-        new TextRun(appliedActions.length > 0 ? appliedActions.join(', ') : 'None'),
-      ],
-      spacing: { after: 100 },
-    })
-  );
+  const auditItems = [
+    { label: 'Assessment date', value: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) },
+    { label: 'Initial readiness score', value: `${readinessScore}%` },
+    { label: 'Criteria assessed', value: `${criteriaSummary.total_applicable}` },
+    { label: 'Generated by', value: 'BSR Quality Checker' },
+  ];
 
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({ text: 'Documents analysed: ', bold: true }),
-        new TextRun(`${packVersion.documents.length}`),
-      ],
-      spacing: { after: 100 },
-    })
-  );
+  for (const item of auditItems) {
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({ text: `${item.label}: `, color: '94A3B8' }),
+          new TextRun({ text: item.value, color: '64748B' }),
+        ],
+        spacing: { after: 30 },
+      })
+    );
+  }
 
   // Create document
   const doc = new Document({
@@ -1608,7 +2129,7 @@ export async function generateEditableDocx(
   const buffer = await Packer.toBuffer(doc);
 
   // Save file
-  const filename = `report-${packVersion.pack.name}-v${packVersion.versionNumber}-editable.docx`;
+  const filename = `submission-pack-with-suggestions-${packVersion.pack.name}-v${packVersion.versionNumber}.docx`;
   const filepath = path.join(REPORTS_DIR, filename);
   fs.writeFileSync(filepath, buffer);
 

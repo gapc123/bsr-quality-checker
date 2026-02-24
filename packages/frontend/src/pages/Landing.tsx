@@ -14,33 +14,33 @@ export default function Landing() {
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">
           <div className="max-w-3xl">
             <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-6 tracking-wider shadow-lg">
-              GATEWAY 2 QUALITY ASSURANCE
+              GATEWAY 2 COMPLIANCE PARTNER
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Submit with Confidence.<br />
-              <span className="text-blue-400">Avoid Costly Rejections.</span>
+              Gateway 2 Submissions.<br />
+              <span className="text-blue-400">Reviewed Before the BSR Does.</span>
             </h1>
             <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-              AI-assisted quality analysis for Building Safety Regulator Gateway 2 submissions.
-              You stay in control. Every recommendation is transparent and auditable.
+              Our proprietary AI reviews your entire submission pack against BSR requirements
+              and delivers a prioritised action list, so you know exactly what to fix before you submit.
             </p>
 
             <div className="flex flex-wrap gap-4">
               <SignedOut>
-                <Link
-                  to="/sign-up"
+                <a
+                  href="#contact"
                   className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg text-lg"
                 >
-                  Get Started Free
+                  Request a Review
                   <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
-                </Link>
+                </a>
                 <Link
-                  to="/pricing"
+                  to="/sign-up"
                   className="inline-flex items-center px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20 text-lg"
                 >
-                  View Pricing
+                  Try It Yourself
                 </Link>
               </SignedOut>
               <SignedIn>
@@ -64,30 +64,41 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              The Cost of Getting It Wrong
+              Gateway 2 is Blocking UK Construction
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Gateway 2 rejections are expensive and time-consuming
+              Over 150 high-rise projects are currently stalled. Only 10% of new build submissions get approved.
+              Cranes are standing idle. The industry cannot afford to wait.
             </p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
             <div className="bg-red-50 rounded-xl p-6 text-center border border-red-100">
-              <div className="text-4xl font-bold text-red-600 mb-2">£5,000+</div>
-              <div className="text-slate-600">Consultant fees to fix deficiencies</div>
+              <div className="text-4xl font-bold text-red-600 mb-2">150+</div>
+              <div className="text-slate-600">Projects currently stalled at Gateway 2</div>
             </div>
             <div className="bg-red-50 rounded-xl p-6 text-center border border-red-100">
-              <div className="text-4xl font-bold text-red-600 mb-2">6-12 wks</div>
-              <div className="text-slate-600">Average delay from rejection</div>
+              <div className="text-4xl font-bold text-red-600 mb-2">12-18 mo</div>
+              <div className="text-slate-600">Schedule delays on affected projects</div>
             </div>
             <div className="bg-red-50 rounded-xl p-6 text-center border border-red-100">
-              <div className="text-4xl font-bold text-red-600 mb-2">£144/hr</div>
-              <div className="text-slate-600">BSR review charges</div>
+              <div className="text-4xl font-bold text-red-600 mb-2">10.7%</div>
+              <div className="text-slate-600">New build approval rate</div>
             </div>
             <div className="bg-red-50 rounded-xl p-6 text-center border border-red-100">
-              <div className="text-4xl font-bold text-red-600 mb-2">£50k+</div>
-              <div className="text-slate-600">Project delay costs</div>
+              <div className="text-4xl font-bold text-red-600 mb-2">40+ wks</div>
+              <div className="text-slate-600">Some applications waiting for decision</div>
             </div>
+          </div>
+
+          <div className="mt-12 bg-slate-900 rounded-2xl p-8 text-center">
+            <p className="text-slate-300 text-lg mb-4">
+              On major developments, each week of delay costs tens of thousands in preliminaries alone.
+              20-30% cost overruns are now common. Funders are losing confidence.
+            </p>
+            <p className="text-white font-semibold">
+              The question isn't whether you can afford a proper review. It's whether you can afford not to have one.
+            </p>
           </div>
         </div>
       </div>
@@ -97,11 +108,11 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-              How It Works
+              How We Work
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              AI-assisted analysis that keeps you in control. Every decision is transparent,
-              every action is auditable, and you decide what gets actioned.
+              Our proprietary AI, trained on Gateway 2 requirements, reviews your complete pack
+              and delivers expert-level analysis. Security-first architecture keeps your data protected.
             </p>
           </div>
 
@@ -112,7 +123,7 @@ export default function Landing() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Upload Documents</h3>
               <p className="text-slate-600">
-                Upload your Gateway 2 submission pack — fire strategy, structural reports,
+                Upload your Gateway 2 submission pack: fire strategy, structural reports,
                 competency declarations, and supporting documentation.
               </p>
             </div>
@@ -123,8 +134,8 @@ export default function Landing() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">AI Analysis</h3>
               <p className="text-slate-600">
-                Our system reviews your documents against 50+ BSR criteria, identifying gaps,
-                inconsistencies, and areas requiring attention.
+                Our proprietary AI reviews your documents against 50+ BSR criteria at speed,
+                identifying gaps, inconsistencies, and areas requiring attention.
               </p>
             </div>
 
@@ -148,15 +159,15 @@ export default function Landing() {
                   <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
-                  <span className="text-sm font-semibold text-blue-300">AI AS YOUR CO-PILOT</span>
+                  <span className="text-sm font-semibold text-blue-300">AI AGENTS, HUMAN IN THE LOOP</span>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                  Intelligent Triage, Human Control
+                  We Do More For You, For Less
                 </h3>
                 <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                  Our AI doesn't act blindly. It intelligently categorises every recommendation into
-                  actions that require your professional judgement and routine tasks it can complete
-                  independently — but only with your explicit approval.
+                  Our AI agents action changes with you always in control. We separate routine
+                  improvements we can handle from decisions that need your professional judgement
+                  so you get more done with less effort.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
@@ -293,14 +304,14 @@ export default function Landing() {
                 <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
-                <span className="text-sm font-semibold text-green-300">SECURITY BY DESIGN</span>
+                <span className="text-sm font-semibold text-green-300">SECURITY AT OUR CORE</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Your Data, Protected
+                AI-Native, Security-First
               </h2>
               <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-                We understand that Gateway 2 submissions contain sensitive project information.
-                Security and data protection are core product features, not afterthoughts.
+                We're built AI-native from the ground up, with security at our core.
+                Your Gateway 2 submissions contain sensitive project information. We treat that seriously.
               </p>
 
               <div className="space-y-6">
@@ -492,21 +503,21 @@ export default function Landing() {
             Ready to Submit with Confidence?
           </h2>
           <p className="text-xl text-slate-300 mb-8">
-            Join professionals who use BSR Quality Checker to avoid costly rejections.
+            Get your submission reviewed before the BSR does. We'll tell you exactly what needs fixing.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <SignedOut>
-              <Link
-                to="/sign-up"
+              <a
+                href="#contact"
                 className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg text-lg"
               >
-                Get Started Now
-              </Link>
+                Request a Review
+              </a>
               <Link
-                to="/pricing"
+                to="/sign-up"
                 className="inline-flex items-center px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20 text-lg"
               >
-                View Pricing
+                Try It Yourself
               </Link>
             </SignedOut>
             <SignedIn>
@@ -521,15 +532,140 @@ export default function Landing() {
         </div>
       </div>
 
+      {/* Contact Section */}
+      <div className="py-20 bg-white" id="contact">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
+              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span className="text-sm font-semibold text-blue-700">GET IN TOUCH</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+              Have Questions?
+            </h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              We'd love to hear from you. Whether you have questions about the product,
+              need a demo, or want to discuss enterprise options.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8 md:p-12 border border-slate-200">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">Send us an enquiry</h3>
+                <p className="text-slate-600 mb-6">
+                  Fill out the form and we'll get back to you within 24 hours.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 text-slate-600">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <a href="mailto:georgeapclarke@gmail.com" className="hover:text-blue-600 transition-colors">
+                      georgeapclarke@gmail.com
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-3 text-slate-600">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Response within 24 hours</span>
+                  </div>
+                </div>
+              </div>
+
+              <form
+                action="https://formsubmit.co/georgeapclarke@gmail.com"
+                method="POST"
+                className="space-y-4"
+              >
+                <input type="hidden" name="_subject" value="BSR Quality Checker Enquiry" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value="https://bsr-app-v2-production.up.railway.app/?submitted=true" />
+
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="Your name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="your@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium text-slate-700 mb-1">
+                    Company (optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="Your company"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    placeholder="How can we help you?"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md"
+                >
+                  Send Enquiry
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Footer */}
       <footer className="bg-slate-900 border-t border-slate-800 py-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-slate-400 text-sm">
-            BSR Quality Checker — AI-assisted reviewability diagnostic for Gateway 2 submissions
+            BSR Quality Checker | AI-native compliance review, built with security at our core
           </p>
           <p className="text-slate-500 text-xs mt-2">
-            Not a compliance certification tool. For quality assessment and preparation only.
+            We help you prepare better submissions. Not a compliance certification.
           </p>
+          <div className="mt-4">
+            <a href="#contact" className="text-blue-400 hover:text-blue-300 text-sm transition-colors">
+              Contact Us
+            </a>
+          </div>
         </div>
       </footer>
     </div>
