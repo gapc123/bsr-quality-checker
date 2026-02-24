@@ -88,7 +88,7 @@ export default function ActionableChanges({
       {/* AI-Actionable Changes */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-200 bg-gradient-to-r from-green-50 to-emerald-50">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ export default function ActionableChanges({
               </div>
               <div>
                 <h3 className="font-semibold text-slate-900">AI-Actionable Changes</h3>
-                <p className="text-sm text-slate-500">Approve or reject each change</p>
+                <p className="text-sm text-slate-500">Format & structure improvements only</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -121,6 +121,12 @@ export default function ActionableChanges({
                 Reject all
               </button>
             </div>
+          </div>
+          {/* Explanation of AI limitations */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs text-blue-800">
+            <strong>Why only formatting changes?</strong> AI can safely make structural and formatting improvements
+            (navigation, citations, headings) without professional judgement. Substantive compliance changes
+            require human expertise and are listed separately below.
           </div>
         </div>
 
@@ -172,8 +178,8 @@ export default function ActionableChanges({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium text-slate-900">{change.title}</span>
-                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
-                        {change.riskLevel === 'mechanical' ? 'Mechanical' : 'Low risk'}
+                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full capitalize">
+                        {change.category || 'formatting'}
                       </span>
                     </div>
                     <p className="text-sm text-slate-600 mb-2">{change.description}</p>
