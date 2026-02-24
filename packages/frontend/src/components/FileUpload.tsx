@@ -76,6 +76,11 @@ export default function FileUpload({
               <p className="text-sm text-slate-500 mt-1">
                 or <span className="text-blue-600 hover:text-blue-700">browse</span> to select
               </p>
+              {multiple && (
+                <p className="text-xs text-slate-400 mt-2">
+                  You can add multiple documents - drag more files or click to add additional PDFs
+                </p>
+              )}
             </div>
           )}
         </div>
