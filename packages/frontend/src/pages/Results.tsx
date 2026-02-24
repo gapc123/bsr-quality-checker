@@ -386,11 +386,11 @@ export default function Results() {
             </svg>
           </div>
           <span className="inline-block bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-wider">
-            THE ALGORITHM
+            PROPRIETARY ALGORITHM
           </span>
           <h2 className="text-2xl font-semibold text-slate-900 mb-2">Ready for Quality Assessment</h2>
           <p className="text-slate-600 mb-8 max-w-lg mx-auto">
-            Run the AI-powered assessment against the <strong>Regulatory Success Matrix</strong> - 28 criteria derived from Building Safety Act 2022 requirements.
+            Run our proprietary AI assessment against the <strong>Regulatory Success Matrix</strong>: 55+ deterministic criteria plus LLM analysis, derived from Building Safety Act 2022 and BSR requirements.
           </p>
           <button
             onClick={startAnalysis}
@@ -421,7 +421,7 @@ export default function Results() {
           </span>
           <h2 className="text-2xl font-semibold text-slate-900 mb-2">Assessment in Progress</h2>
           <p className="text-slate-600 max-w-md mx-auto">
-            Assessing {uiSummary?.criteria.total || 28} criteria against your submission pack.
+            Assessing 55+ deterministic criteria plus LLM analysis against your submission pack.
             This typically takes 2-3 minutes.
           </p>
         </div>
@@ -449,9 +449,12 @@ export default function Results() {
       {/* Completed State with Summary */}
       {status.status === 'completed' && uiSummary && (
         <div className="space-y-6">
-          {/* Overall Status Banner */}
+          {/* Overall Status Banner with Score */}
           {(() => {
             const colors = getStatusColor(uiSummary.overallStatus.color);
+            const readinessScore = uiSummary.criteria.total > 0
+              ? Math.round(((uiSummary.criteria.pass + uiSummary.criteria.partial * 0.5) / uiSummary.criteria.total) * 100)
+              : 0;
             return (
               <div className={`rounded-xl border-2 p-6 ${colors.bg} ${colors.border}`}>
                 <div className="flex items-start justify-between gap-6">
@@ -459,6 +462,9 @@ export default function Results() {
                     <div className="flex items-center gap-3 mb-3">
                       <span className={`px-4 py-1.5 rounded-full text-white text-sm font-bold ${colors.badge}`}>
                         {uiSummary.overallStatus.label.toUpperCase()}
+                      </span>
+                      <span className="px-3 py-1 rounded-full bg-slate-800 text-white text-sm font-bold">
+                        {readinessScore}% Ready
                       </span>
                     </div>
                     <p className={`text-lg font-medium ${colors.text}`}>
@@ -468,14 +474,34 @@ export default function Results() {
                   <div className="text-right">
                     <p className="text-sm text-slate-500">Criteria assessed</p>
                     <p className="text-3xl font-bold text-slate-900">{uiSummary.criteria.total}</p>
+                    <p className="text-xs text-slate-400 mt-1">55+ checks via proprietary matrix</p>
                   </div>
                 </div>
               </div>
             );
           })()}
 
-          {/* Quick Stats Grid */}
-          <div className="grid grid-cols-5 gap-4">
+          {/* Readiness Score + Quick Stats Grid */}
+          <div className="grid grid-cols-6 gap-4">
+            {/* Large Readiness Score */}
+            <div className="col-span-2 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl p-5 text-white shadow-lg">
+              <p className="text-xs uppercase tracking-wider opacity-80 mb-1">Regulatory Readiness</p>
+              <p className="text-5xl font-bold">
+                {uiSummary.criteria.total > 0
+                  ? Math.round(((uiSummary.criteria.pass + uiSummary.criteria.partial * 0.5) / uiSummary.criteria.total) * 100)
+                  : 0}%
+              </p>
+              <p className="text-sm opacity-80 mt-2">
+                Based on {uiSummary.criteria.total} criteria from our proprietary BSR matrix
+              </p>
+              <div className="mt-3 bg-white/20 rounded-full h-2 overflow-hidden">
+                <div
+                  className="h-full bg-white rounded-full transition-all"
+                  style={{ width: `${uiSummary.criteria.total > 0 ? Math.round(((uiSummary.criteria.pass + uiSummary.criteria.partial * 0.5) / uiSummary.criteria.total) * 100) : 0}%` }}
+                />
+              </div>
+            </div>
+            {/* Pass/Partial/Fail */}
             <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl border border-emerald-200 p-4 text-center shadow-sm">
               <p className="text-3xl font-bold text-emerald-600">{uiSummary.criteria.pass}</p>
               <p className="text-sm text-emerald-700 mt-1 font-medium">Pass</p>
@@ -488,13 +514,23 @@ export default function Results() {
               <p className="text-3xl font-bold text-red-600">{uiSummary.criteria.fail}</p>
               <p className="text-sm text-red-700 mt-1 font-medium">Fail</p>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border-l-4 border-red-500 p-4">
-              <p className="text-2xl font-bold text-red-600">{uiSummary.severity.high}</p>
-              <p className="text-xs text-slate-500 mt-1">High severity</p>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border-l-4 border-amber-500 p-4">
-              <p className="text-2xl font-bold text-amber-600">{uiSummary.severity.medium}</p>
-              <p className="text-xs text-slate-500 mt-1">Medium severity</p>
+            {/* Severity Summary */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+              <p className="text-xs text-slate-500 mb-2">Severity Breakdown</p>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-red-600 font-medium">High</span>
+                  <span className="text-sm font-bold text-red-600">{uiSummary.severity.high}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-amber-600 font-medium">Medium</span>
+                  <span className="text-sm font-bold text-amber-600">{uiSummary.severity.medium}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-blue-600 font-medium">Low</span>
+                  <span className="text-sm font-bold text-blue-600">{uiSummary.severity.low || 0}</span>
+                </div>
+              </div>
             </div>
           </div>
 

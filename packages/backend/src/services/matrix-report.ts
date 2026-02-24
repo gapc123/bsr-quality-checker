@@ -539,8 +539,20 @@ export function generateUISummary(data: ReportData): object {
   const partialResults = data.assessment.results.filter(r => r.status === 'partial');
   const riskThemes = getRiskThemes(data.assessment.results);
 
+  // Calculate readiness score if not already present
+  const totalCriteria = data.assessment.criteria_summary.total_applicable;
+  const readinessScore = data.assessment.readiness_score ??
+    (totalCriteria > 0 ? Math.round(((passResults.length + partialResults.length * 0.5) / totalCriteria) * 100) : 0);
+
+  // Get assessment phase info (with backwards compatibility)
+  const assessmentPhases = data.assessment.assessment_phases ?? {
+    deterministic: { total_rules: 0, passed: 0, failed: 0, needs_review: 0 },
+    llm_analysis: { total_criteria: totalCriteria, assessed: totalCriteria }
+  };
+
   return {
     overallStatus: getOverallStatusLabel(data.assessment),
+    readinessScore,
     criteria: {
       total: data.assessment.criteria_summary.total_applicable,
       pass: passResults.length,
@@ -548,13 +560,30 @@ export function generateUISummary(data: ReportData): object {
       fail: failResults.length,
       notAssessed: data.assessment.criteria_summary.not_assessed
     },
-    severity: data.assessment.flagged_by_severity,
+    severity: {
+      ...data.assessment.flagged_by_severity,
+      low: data.assessment.flagged_by_severity.low || 0
+    },
+    assessmentPhases: {
+      deterministic: {
+        totalRules: assessmentPhases.deterministic.total_rules,
+        passed: assessmentPhases.deterministic.passed,
+        failed: assessmentPhases.deterministic.failed,
+        needsReview: assessmentPhases.deterministic.needs_review
+      },
+      llmAnalysis: {
+        totalCriteria: assessmentPhases.llm_analysis.total_criteria,
+        assessed: assessmentPhases.llm_analysis.assessed
+      }
+    },
     riskThemes: riskThemes.slice(0, 5),
     topActions: getTopActions(data.assessment.results, 5),
     confidence: {
       documentsAnalysed: data.documentCount,
       referenceAnchorRate: data.assessment.guardrail_stats.reference_anchor_rate,
-      corpusBackedCriteria: data.assessment.guardrail_stats.corpus_backed_criteria
+      corpusBackedCriteria: data.assessment.guardrail_stats.corpus_backed_criteria,
+      deterministicRuleCount: data.assessment.guardrail_stats.deterministic_rule_count || 55,
+      llmCriteriaCount: data.assessment.guardrail_stats.llm_criteria_count || 0
     }
   };
 }

@@ -1,8 +1,11 @@
 /**
  * Matrix-Based Assessment Engine
  *
- * Assesses submission packs against the Regulatory Success Matrix,
- * using corpus retrieval to provide evidence-backed findings.
+ * Two-phase assessment:
+ * 1. DETERMINISTIC PHASE: 55 proprietary rules with explicit if-then logic
+ * 2. LLM ANALYSIS PHASE: Nuanced assessment requiring human-like judgement
+ *
+ * Uses corpus retrieval to provide evidence-backed findings.
  */
 
 import fs from 'fs';
@@ -15,6 +18,11 @@ import {
   hasExtractedContent,
   RetrievalResult
 } from './corpus-retrieval.js';
+import {
+  runDeterministicChecks,
+  DeterministicAssessment,
+  DocumentEvidence
+} from './deterministic-rules.js';
 
 // In Docker, process.cwd() is /app. In dev, it's /packages/backend
 const isProduction = process.env.NODE_ENV === 'production';
@@ -116,11 +124,29 @@ export interface FullAssessment {
     low: number;
   };
   results: AssessmentResult[];
+  // New: Two-phase assessment tracking
+  assessment_phases: {
+    deterministic: {
+      total_rules: number;
+      passed: number;
+      failed: number;
+      needs_review: number;
+      results: DeterministicAssessment[];
+    };
+    llm_analysis: {
+      total_criteria: number;
+      assessed: number;
+      results_count: number;
+    };
+  };
+  readiness_score: number; // 0-100 percentage
   assessment_date: string;
   guardrail_stats: {
     corpus_backed_criteria: number;
     criteria_with_reference_anchors: number;
     reference_anchor_rate: number;
+    deterministic_rule_count: number;
+    llm_criteria_count: number;
   };
 }
 
@@ -379,7 +405,9 @@ Respond in JSON format:
 /**
  * Main assessment function
  *
- * Assesses a submission pack against the Regulatory Success Matrix
+ * TWO-PHASE ASSESSMENT:
+ * Phase 1: Deterministic Rules (55 proprietary checks with if-then logic)
+ * Phase 2: LLM Analysis (nuanced criteria requiring human-like judgement)
  */
 export async function assessPackAgainstMatrix(
   packDocs: PackDocument[],
@@ -388,22 +416,88 @@ export async function assessPackAgainstMatrix(
   const client = new Anthropic();
   const matrix = loadMatrix();
 
-  // Filter to applicable criteria
-  const applicableCriteria = filterApplicableCriteria(matrix.matrix, context);
+  console.log(`\n${'='.repeat(60)}`);
+  console.log(`[ASSESSMENT ENGINE] Starting two-phase regulatory assessment`);
+  console.log(`${'='.repeat(60)}`);
+  console.log(`Pack context: London=${context.isLondon}, HRB=${context.isHRB}, Type=${context.buildingType}`);
 
-  console.log(`[Matrix Assessment] Pack context: London=${context.isLondon}, HRB=${context.isHRB}, Type=${context.buildingType}`);
-  console.log(`[Matrix Assessment] Applicable criteria: ${applicableCriteria.length} of ${matrix.matrix.length}`);
+  // ============================================
+  // PHASE 1: DETERMINISTIC RULES (55 checks)
+  // ============================================
+  console.log(`\n${'─'.repeat(40)}`);
+  console.log(`PHASE 1: DETERMINISTIC RULES`);
+  console.log(`${'─'.repeat(40)}`);
+
+  // Convert packDocs to DocumentEvidence format for deterministic rules
+  const docEvidence: DocumentEvidence[] = packDocs.map(d => ({
+    filename: d.filename,
+    docType: d.docType,
+    extractedText: d.extractedText
+  }));
+
+  // Run all 55 deterministic rules
+  const deterministicResults = runDeterministicChecks(docEvidence);
+
+  const deterministicPassed = deterministicResults.filter(r => r.result.passed).length;
+  const deterministicFailed = deterministicResults.filter(r => !r.result.passed).length;
+  const deterministicNeedsReview = deterministicResults.filter(r => r.requiresLLMReview).length;
+
+  console.log(`  ✓ Ran ${deterministicResults.length} deterministic rules`);
+  console.log(`  ✓ Passed: ${deterministicPassed}, Failed: ${deterministicFailed}, Needs Review: ${deterministicNeedsReview}`);
+
+  // Convert deterministic results to AssessmentResult format
+  const deterministicAssessmentResults: AssessmentResult[] = deterministicResults.map(dr => ({
+    matrix_id: dr.matrixId,
+    matrix_title: dr.ruleName,
+    category: dr.category,
+    status: dr.result.passed ? 'meets' : (dr.result.confidence === 'needs_review' ? 'partial' : 'does_not_meet'),
+    severity: dr.severity,
+    reasoning: dr.result.reasoning,
+    success_definition: `Deterministic check: ${dr.ruleName}`,
+    pack_evidence: {
+      found: dr.result.evidence.found,
+      document: dr.result.evidence.document,
+      page: null,
+      quote: dr.result.evidence.quote
+    },
+    reference_evidence: {
+      found: false,
+      doc_id: null,
+      doc_title: null,
+      page: null,
+      quote: null
+    },
+    gaps_identified: dr.result.failureMode ? [dr.result.failureMode] : [],
+    actions_required: dr.result.failureMode ? [{
+      action: `Address: ${dr.result.failureMode}`,
+      owner: 'Project Team',
+      effort: dr.severity === 'high' ? 'L' : (dr.severity === 'medium' ? 'M' : 'S'),
+      expected_benefit: `Resolve ${dr.category} compliance gap`
+    }] : [],
+    confidence: dr.result.confidence === 'definitive' ? 'high' : (dr.result.confidence === 'high' ? 'high' : 'medium')
+  }));
+
+  // ============================================
+  // PHASE 2: LLM ANALYSIS (Nuanced criteria)
+  // ============================================
+  console.log(`\n${'─'.repeat(40)}`);
+  console.log(`PHASE 2: LLM ANALYSIS`);
+  console.log(`${'─'.repeat(40)}`);
+
+  // Filter to applicable criteria from the matrix (these are the LLM-based criteria)
+  const applicableCriteria = filterApplicableCriteria(matrix.matrix, context);
+  console.log(`  Applicable LLM criteria: ${applicableCriteria.length} of ${matrix.matrix.length}`);
 
   // Build reference standards summary
   const referenceStandards = buildReferenceStandardsSummary(applicableCriteria, context);
 
-  // Assess each criterion
-  const results: AssessmentResult[] = [];
+  // Assess each LLM criterion
+  const llmResults: AssessmentResult[] = [];
   let corpusBackedCount = 0;
   let withReferenceAnchor = 0;
 
   for (const row of applicableCriteria) {
-    console.log(`[Matrix Assessment] Assessing ${row.matrix_id}: ${row.matrix_title}`);
+    console.log(`  [LLM] Assessing ${row.matrix_id}: ${row.matrix_title}`);
 
     // Get corpus evidence
     const referenceEvidence = getCorpusEvidence(row);
@@ -415,43 +509,63 @@ export async function assessPackAgainstMatrix(
       }
     }
 
-    // Assess the criterion
+    // Assess the criterion using LLM
     const result = await assessCriterion(row, packDocs, referenceEvidence, client);
-    results.push(result);
+    llmResults.push(result);
   }
 
-  // Calculate summary statistics
-  const assessed = results.filter(r => r.status !== 'not_assessed').length;
-  const notAssessed = results.filter(r => r.status === 'not_assessed').length;
-  const meets = results.filter(r => r.status === 'meets').length;
-  const partial = results.filter(r => r.status === 'partial').length;
-  const doesNotMeet = results.filter(r => r.status === 'does_not_meet').length;
+  console.log(`  ✓ Completed ${llmResults.length} LLM assessments`);
 
-  const flaggedHigh = results.filter(r =>
+  // ============================================
+  // COMBINE RESULTS
+  // ============================================
+  console.log(`\n${'─'.repeat(40)}`);
+  console.log(`COMBINING RESULTS`);
+  console.log(`${'─'.repeat(40)}`);
+
+  // Combine both result sets
+  const allResults = [...deterministicAssessmentResults, ...llmResults];
+
+  // Calculate summary statistics
+  const assessed = allResults.filter(r => r.status !== 'not_assessed').length;
+  const notAssessed = allResults.filter(r => r.status === 'not_assessed').length;
+  const meets = allResults.filter(r => r.status === 'meets').length;
+  const partial = allResults.filter(r => r.status === 'partial').length;
+  const doesNotMeet = allResults.filter(r => r.status === 'does_not_meet').length;
+
+  const flaggedHigh = allResults.filter(r =>
     r.status !== 'meets' && r.severity === 'high'
   ).length;
-  const flaggedMedium = results.filter(r =>
+  const flaggedMedium = allResults.filter(r =>
     r.status !== 'meets' && r.severity === 'medium'
   ).length;
-  const flaggedLow = results.filter(r =>
+  const flaggedLow = allResults.filter(r =>
     r.status !== 'meets' && r.severity === 'low'
   ).length;
+
+  // Calculate readiness score (weighted: full pass = 1, partial = 0.5, fail = 0)
+  const totalCriteria = allResults.length;
+  const weightedScore = meets + (partial * 0.5);
+  const readinessScore = totalCriteria > 0 ? Math.round((weightedScore / totalCriteria) * 100) : 0;
 
   // Calculate guardrail stats
   const referenceAnchorRate = corpusBackedCount > 0
     ? (withReferenceAnchor / corpusBackedCount) * 100
     : 0;
 
-  console.log(`[Matrix Assessment] Guardrail stats:`);
-  console.log(`  - Corpus-backed criteria: ${corpusBackedCount}`);
-  console.log(`  - With reference anchors: ${withReferenceAnchor}`);
-  console.log(`  - Reference anchor rate: ${referenceAnchorRate.toFixed(1)}%`);
+  console.log(`\n${'='.repeat(60)}`);
+  console.log(`ASSESSMENT COMPLETE`);
+  console.log(`${'='.repeat(60)}`);
+  console.log(`  Total criteria: ${allResults.length} (${deterministicResults.length} deterministic + ${llmResults.length} LLM)`);
+  console.log(`  Readiness score: ${readinessScore}%`);
+  console.log(`  Pass: ${meets}, Partial: ${partial}, Fail: ${doesNotMeet}`);
+  console.log(`  High severity issues: ${flaggedHigh}`);
 
   return {
     pack_context: context,
     reference_standards_applied: referenceStandards,
     criteria_summary: {
-      total_applicable: applicableCriteria.length,
+      total_applicable: allResults.length,
       assessed,
       not_assessed: notAssessed,
       meets,
@@ -463,12 +577,29 @@ export async function assessPackAgainstMatrix(
       medium: flaggedMedium,
       low: flaggedLow
     },
-    results,
+    results: allResults,
+    assessment_phases: {
+      deterministic: {
+        total_rules: deterministicResults.length,
+        passed: deterministicPassed,
+        failed: deterministicFailed,
+        needs_review: deterministicNeedsReview,
+        results: deterministicResults
+      },
+      llm_analysis: {
+        total_criteria: applicableCriteria.length,
+        assessed: llmResults.length,
+        results_count: llmResults.length
+      }
+    },
+    readiness_score: readinessScore,
     assessment_date: new Date().toISOString(),
     guardrail_stats: {
       corpus_backed_criteria: corpusBackedCount,
       criteria_with_reference_anchors: withReferenceAnchor,
-      reference_anchor_rate: referenceAnchorRate
+      reference_anchor_rate: referenceAnchorRate,
+      deterministic_rule_count: deterministicResults.length,
+      llm_criteria_count: llmResults.length
     }
   };
 }
