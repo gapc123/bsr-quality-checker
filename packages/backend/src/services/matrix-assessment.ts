@@ -435,6 +435,12 @@ export async function assessPackAgainstMatrix(
     extractedText: d.extractedText
   }));
 
+  // Debug: Log document content availability
+  console.log(`  Documents for analysis: ${docEvidence.length}`);
+  for (const doc of docEvidence) {
+    console.log(`    - ${doc.filename}: ${doc.extractedText?.length || 0} chars`);
+  }
+
   // Run all 55 deterministic rules
   const deterministicResults = runDeterministicChecks(docEvidence);
 

@@ -1615,10 +1615,10 @@ export async function generateEditableDocx(
     // Reconstruct document from chunks and insert AI suggestions inline
     if (docChunks.length > 0) {
       // Sort chunks by sequence
-      const sortedChunks = [...docChunks].sort((a: any, b: any) => a.chunkSequence - b.chunkSequence);
+      const sortedChunks = [...docChunks].sort((a: any, b: any) => a.chunkIndex - b.chunkIndex);
 
       for (const chunk of sortedChunks) {
-        const chunkText = chunk.content || '';
+        const chunkText = chunk.text || '';
         const paragraphs = chunkText.split('\n').filter((p: string) => p.trim());
 
         for (const para of paragraphs) {
