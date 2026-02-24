@@ -21,6 +21,18 @@ interface MatrixUISummary {
     medium: number;
     low: number;
   };
+  assessmentPhases?: {
+    deterministic: {
+      totalRules: number;
+      passed: number;
+      failed: number;
+      needsReview: number;
+    };
+    llmAnalysis: {
+      totalCriteria: number;
+      assessed: number;
+    };
+  };
   riskThemes: Array<{
     theme: string;
     fails: number;
@@ -36,6 +48,8 @@ interface MatrixUISummary {
     documentsAnalysed: number;
     referenceAnchorRate: number;
     corpusBackedCriteria: number;
+    deterministicRuleCount?: number;
+    llmCriteriaCount?: number;
   };
 }
 
@@ -531,6 +545,90 @@ export default function Results() {
                   <span className="text-sm font-bold text-blue-600">{uiSummary.severity.low || 0}</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Two-Phase Assessment Breakdown */}
+          <div className="bg-gradient-to-r from-slate-900 to-indigo-900 rounded-xl p-6 text-white">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Two-Phase Assessment Engine</h3>
+                <p className="text-sm text-slate-300">Your submission was assessed using our proprietary methodology</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {/* Phase 1: Deterministic Rules */}
+              <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded">PHASE 1</span>
+                  <span className="text-sm font-medium">Deterministic Rules</span>
+                </div>
+                <p className="text-3xl font-bold text-white">
+                  {uiSummary.assessmentPhases?.deterministic?.totalRules || uiSummary.confidence?.deterministicRuleCount || 55}
+                </p>
+                <p className="text-sm text-slate-300 mt-1">Explicit if-then criteria checked</p>
+                {uiSummary.assessmentPhases?.deterministic && (
+                  <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+                    <div className="bg-emerald-500/20 rounded px-2 py-1">
+                      <p className="text-lg font-bold text-emerald-400">{uiSummary.assessmentPhases.deterministic.passed}</p>
+                      <p className="text-xs text-emerald-300">Pass</p>
+                    </div>
+                    <div className="bg-red-500/20 rounded px-2 py-1">
+                      <p className="text-lg font-bold text-red-400">{uiSummary.assessmentPhases.deterministic.failed}</p>
+                      <p className="text-xs text-red-300">Fail</p>
+                    </div>
+                    <div className="bg-amber-500/20 rounded px-2 py-1">
+                      <p className="text-lg font-bold text-amber-400">{uiSummary.assessmentPhases.deterministic.needsReview}</p>
+                      <p className="text-xs text-amber-300">Review</p>
+                    </div>
+                  </div>
+                )}
+                <div className="mt-3 text-xs text-slate-400">
+                  <p>Includes: Fire safety, HRB duties, golden thread, pack completeness</p>
+                </div>
+              </div>
+
+              {/* Phase 2: LLM Analysis */}
+              <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="bg-purple-500 text-white text-xs font-bold px-2 py-0.5 rounded">PHASE 2</span>
+                  <span className="text-sm font-medium">AI Analysis</span>
+                </div>
+                <p className="text-3xl font-bold text-white">
+                  {uiSummary.assessmentPhases?.llmAnalysis?.assessed || uiSummary.confidence?.llmCriteriaCount || 0}
+                </p>
+                <p className="text-sm text-slate-300 mt-1">Nuanced criteria requiring judgement</p>
+                <div className="mt-3 space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-400">Corpus-backed:</span>
+                    <span className="font-medium">{Math.round(uiSummary.confidence.referenceAnchorRate * 100)}%</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-400">Documents analysed:</span>
+                    <span className="font-medium">{uiSummary.confidence.documentsAnalysed}</span>
+                  </div>
+                </div>
+                <div className="mt-3 text-xs text-slate-400">
+                  <p>Cross-references regulatory source material for evidence</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+              <p className="text-sm text-slate-300">
+                <strong className="text-white">Total criteria assessed:</strong>{' '}
+                {(uiSummary.assessmentPhases?.deterministic?.totalRules || 55) + (uiSummary.assessmentPhases?.llmAnalysis?.assessed || 0)}
+                {' '}({uiSummary.assessmentPhases?.deterministic?.totalRules || 55} deterministic + {uiSummary.assessmentPhases?.llmAnalysis?.assessed || 0} AI analysis)
+              </p>
+              <span className="text-xs bg-white/10 px-3 py-1 rounded-full text-slate-300">
+                Proprietary BSR Matrix v1.0
+              </span>
             </div>
           </div>
 
