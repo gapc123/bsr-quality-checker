@@ -12,9 +12,7 @@ import Pricing from './pages/Pricing';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import SubscriptionGate from './components/SubscriptionGate';
-
-// Demo user gets free access
-const DEMO_EMAIL = 'georgeapclarke@gmail.com';
+import { DEMO_USER_EMAIL } from './config/contact';
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -39,7 +37,7 @@ function AppContent() {
   const location = useLocation();
   const { user } = useUser();
   const isLandingPage = location.pathname === '/';
-  const isDemoUser = user?.primaryEmailAddress?.emailAddress === DEMO_EMAIL;
+  const isDemoUser = user?.primaryEmailAddress?.emailAddress === DEMO_USER_EMAIL;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -124,12 +122,12 @@ function AppContent() {
                   <Link to="/sign-in" className="text-white/80 hover:text-white font-medium transition-colors">
                     Sign In
                   </Link>
-                  <Link
-                    to="/sign-up"
+                  <a
+                    href="/#contact"
                     className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
                   >
-                    Get Started
-                  </Link>
+                    Book a Demo
+                  </a>
                 </SignedOut>
                 <SignedIn>
                   <Link

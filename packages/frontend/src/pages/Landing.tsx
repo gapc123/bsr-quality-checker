@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { useState } from 'react';
+import { CONTACT_EMAIL, CALENDAR_BOOKING_URL, FORM_SUBMIT_URL } from '../config/contact';
 
 export default function Landing() {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -43,12 +44,12 @@ export default function Landing() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </button>
-                <Link
-                  to="/sign-up"
+                <a
+                  href="#contact"
                   className="inline-flex items-center px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20 text-lg"
                 >
-                  Try It Yourself
-                </Link>
+                  Contact Us
+                </a>
               </SignedOut>
               <SignedIn>
                 <Link
@@ -85,9 +86,9 @@ export default function Landing() {
               </button>
             </div>
             <div className="p-6">
-              {/* Cal.com embed - replace YOUR_USERNAME with actual Cal.com username */}
+              {/* Cal.com embed - configured in config/contact.ts */}
               <iframe
-                src="https://cal.com/george-clarke-sxbbdr/30min"
+                src={CALENDAR_BOOKING_URL}
                 className="w-full h-[500px] border-0 rounded-lg"
                 title="Book a demo"
               />
@@ -475,12 +476,12 @@ export default function Landing() {
                   <span className="text-slate-700">Editable output documents</span>
                 </li>
               </ul>
-              <Link
-                to="/sign-up"
+              <a
+                href="#contact"
                 className="block w-full py-3 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors text-center"
               >
-                Start Free Trial
-              </Link>
+                Request Access
+              </a>
             </div>
           </div>
         </div>
@@ -503,12 +504,12 @@ export default function Landing() {
               >
                 Book a Demo
               </button>
-              <Link
-                to="/sign-up"
+              <a
+                href="#contact"
                 className="inline-flex items-center px-8 py-4 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20 text-lg"
               >
-                Try It Yourself
-              </Link>
+                Contact Us
+              </a>
             </SignedOut>
             <SignedIn>
               <Link
@@ -546,15 +547,15 @@ export default function Landing() {
                     <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <a href="mailto:hello@meridian.build" className="hover:text-blue-600 transition-colors">
-                      hello@meridian.build
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-blue-600 transition-colors">
+                      {CONTACT_EMAIL}
                     </a>
                   </div>
                 </div>
               </div>
 
               <form
-                action="https://formsubmit.co/georgeapclarke@gmail.com"
+                action={FORM_SUBMIT_URL}
                 method="POST"
                 className="space-y-4"
               >

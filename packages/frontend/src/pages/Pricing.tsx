@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { CONTACT_EMAIL } from '../config/contact';
 
 const plans = [
   {
@@ -253,8 +254,8 @@ export default function Pricing() {
       <div className="max-w-2xl mx-auto mt-12 text-center">
         <p className="text-slate-600">
           Questions? Contact us at{' '}
-          <a href="mailto:hello@bsrqualitychecker.com" className="text-blue-600 hover:underline">
-            hello@bsrqualitychecker.com
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-blue-600 hover:underline">
+            {CONTACT_EMAIL}
           </a>
         </p>
       </div>

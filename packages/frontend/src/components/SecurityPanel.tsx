@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SECURITY_EMAIL } from '../config/contact';
 
 interface SecurityPanelProps {
   variant?: 'inline' | 'compact';
@@ -135,10 +136,10 @@ export default function SecurityPanel({ variant = 'inline' }: SecurityPanelProps
 
         <div className="mt-4 pt-4 border-t border-slate-100">
           <p className="text-xs text-slate-500">
-            BSR Quality Checker complies with UK GDPR and data protection requirements.
+            Meridian complies with UK GDPR and data protection requirements.
             For questions, contact{' '}
-            <a href="mailto:security@bsrqualitychecker.com" className="text-blue-600 hover:underline">
-              security@bsrqualitychecker.com
+            <a href={`mailto:${SECURITY_EMAIL}`} className="text-blue-600 hover:underline">
+              {SECURITY_EMAIL}
             </a>
           </p>
         </div>
