@@ -8,6 +8,7 @@ import analysisRouter from './routes/analysis.js';
 import changesRouter from './routes/changes.js';
 import clientsRouter from './routes/clients.js';
 import teamRouter from './routes/team.js';
+import templatesRouter from './routes/templates.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +31,7 @@ app.use('/api/packs', changesRouter);
 app.use('/api/clients', clientsRouter);
 app.use('/api/butler', butlerRouter);
 app.use('/api/team', teamRouter);
+app.use('/api/templates', templatesRouter);
 app.use('/api', analysisRouter);
 
 // Health check

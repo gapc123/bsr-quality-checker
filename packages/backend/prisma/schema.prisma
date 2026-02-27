@@ -23,6 +23,27 @@ model Client {
   summaryUpdatedAt DateTime?
 }
 
+// Service package templates for auto-creating tasks
+model ServicePackageTemplate {
+  id          String @id @default(uuid())
+  packageType String @unique // gap_assessment, full_pack_prep, compliance_review, ongoing_support
+
+  displayName       String
+  description       String?
+  estimatedDuration Int?    // days
+  slaTargetDays     Int?    // SLA in days
+
+  // Template data (JSON)
+  taskTemplates      String  // JSON: [{ title, description, category, priority, estimatedHours, dayOffset, dependsOnIndices }]
+  milestoneTemplates String? // JSON: [{ name, dayOffset }]
+  defaultTags        String? // JSON: ["tag1", "tag2"]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([packageType])
+}
+
 model Pack {
   id        String        @id @default(uuid())
   name      String

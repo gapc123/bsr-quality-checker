@@ -56,21 +56,35 @@ const SERVICE_PACKAGES = [
   { value: 'ongoing_support', label: 'Ongoing Support', description: 'Continuous compliance monitoring' },
 ];
 
+interface Template {
+  id: string;
+  packageType: string;
+  displayName: string;
+  description: string;
+  estimatedDuration: number;
+  taskTemplates: any[];
+  milestoneTemplates: any[];
+}
+
 export default function PacksList() {
   const [packs, setPacks] = useState<Pack[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newPackName, setNewPackName] = useState('');
   const [selectedClientId, setSelectedClientId] = useState('');
   const [selectedServicePackage, setSelectedServicePackage] = useState('');
   const [requirements, setRequirements] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [applyTemplateNow, setApplyTemplateNow] = useState(true);
   const [filterClientId, setFilterClientId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     fetchPacks();
     fetchClients();
+    fetchTemplates();
   }, [filterClientId]);
 
   const fetchPacks = async () => {
@@ -96,11 +110,22 @@ export default function PacksList() {
     }
   };
 
+  const fetchTemplates = async () => {
+    try {
+      const res = await fetch('/api/templates');
+      const data = await res.json();
+      setTemplates(data);
+    } catch (error) {
+      console.error('Error fetching templates:', error);
+    }
+  };
+
   const createPack = async () => {
     if (!newPackName.trim()) return;
 
     setCreating(true);
     try {
+      // Create the pack
       const res = await fetch('/api/packs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -111,11 +136,34 @@ export default function PacksList() {
           requirements: requirements.trim() || null,
         }),
       });
+
       if (res.ok) {
+        const pack = await res.json();
+
+        // Apply template if selected and checkbox is checked
+        if (selectedTemplate && applyTemplateNow) {
+          try {
+            await fetch('/api/templates/apply', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                packId: pack.id,
+                packageType: selectedTemplate,
+              }),
+            });
+          } catch (error) {
+            console.error('Error applying template:', error);
+            // Don't fail the whole operation if template application fails
+          }
+        }
+
+        // Reset form and close modal
         setNewPackName('');
         setSelectedClientId('');
         setSelectedServicePackage('');
         setRequirements('');
+        setSelectedTemplate('');
+        setApplyTemplateNow(true);
         setShowCreateModal(false);
         fetchPacks();
       }
@@ -456,6 +504,45 @@ export default function PacksList() {
                   rows={3}
                   className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 />
+              </div>
+
+              {/* Template Selection */}
+              <div className="border-t border-slate-200 pt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Task Template (Optional)
+                </label>
+                <select
+                  value={selectedTemplate}
+                  onChange={(e) => setSelectedTemplate(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">No template (create empty pack)</option>
+                  {templates.map((template) => (
+                    <option key={template.id} value={template.packageType}>
+                      {template.displayName} ({template.taskTemplates.length} tasks, ~{template.estimatedDuration} days)
+                    </option>
+                  ))}
+                </select>
+                {selectedTemplate && (
+                  <div className="mt-3">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={applyTemplateNow}
+                        onChange={(e) => setApplyTemplateNow(e.target.checked)}
+                        className="rounded"
+                      />
+                      <span className="text-sm text-slate-600">
+                        Apply template now (auto-create {templates.find(t => t.packageType === selectedTemplate)?.taskTemplates.length} tasks with due dates)
+                      </span>
+                    </label>
+                    {templates.find(t => t.packageType === selectedTemplate)?.description && (
+                      <p className="text-xs text-slate-500 mt-2">
+                        {templates.find(t => t.packageType === selectedTemplate)?.description}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex justify-end gap-3 mt-6">
