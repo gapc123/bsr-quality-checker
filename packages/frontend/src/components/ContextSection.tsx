@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Editorial Context Sections - News Headlines & Construction Imagery
