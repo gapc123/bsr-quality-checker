@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import prisma from '../db/client.js';
 import { ingestDocument } from '../services/ingestion.js';
+import { getPackSummary } from '../services/ai-summary.js';
 
 const router = Router();
 
@@ -73,7 +74,7 @@ router.get('/', async (req: Request, res: Response) => {
 // POST /api/packs - Create a new pack
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, clientId } = req.body;
+    const { name, clientId, servicePackage, requirements } = req.body;
 
     if (!name || typeof name !== 'string') {
       res.status(400).json({ error: 'Pack name is required' });
@@ -84,10 +85,15 @@ router.post('/', async (req: Request, res: Response) => {
       data: {
         name,
         clientId: clientId || null,
+        servicePackage: servicePackage || null,
+        requirements: requirements || null,
       },
       include: {
         client: {
           select: { id: true, name: true, company: true },
+        },
+        tasks: {
+          orderBy: { sortOrder: 'asc' },
         },
       },
     });
@@ -109,6 +115,9 @@ router.get('/:id', async (req: Request, res: Response) => {
       include: {
         client: {
           select: { id: true, name: true, company: true },
+        },
+        tasks: {
+          orderBy: { sortOrder: 'asc' },
         },
         versions: {
           orderBy: { versionNumber: 'desc' },
@@ -134,6 +143,146 @@ router.get('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error getting pack:', error);
     res.status(500).json({ error: 'Failed to get pack' });
+  }
+});
+
+// PUT /api/packs/:id - Update pack details
+router.put('/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const { name, clientId, servicePackage, requirements } = req.body;
+
+    const pack = await prisma.pack.update({
+      where: { id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(clientId !== undefined && { clientId: clientId || null }),
+        ...(servicePackage !== undefined && { servicePackage: servicePackage || null }),
+        ...(requirements !== undefined && { requirements: requirements || null }),
+      },
+      include: {
+        client: {
+          select: { id: true, name: true, company: true },
+        },
+        tasks: {
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
+    });
+
+    res.json(pack);
+  } catch (error) {
+    console.error('Error updating pack:', error);
+    res.status(500).json({ error: 'Failed to update pack' });
+  }
+});
+
+// GET /api/packs/:id/summary - Get AI summary for pack
+router.get('/:id/summary', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const refresh = req.query.refresh === 'true';
+
+    const result = await getPackSummary(id, refresh);
+    res.json(result);
+  } catch (error) {
+    console.error('Error getting pack summary:', error);
+    res.status(500).json({ error: 'Failed to get pack summary' });
+  }
+});
+
+// ==================== TASK ENDPOINTS ====================
+
+// GET /api/packs/:id/tasks - Get all tasks for a pack
+router.get('/:id/tasks', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+
+    const tasks = await prisma.packTask.findMany({
+      where: { packId: id },
+      orderBy: { sortOrder: 'asc' },
+    });
+
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error getting tasks:', error);
+    res.status(500).json({ error: 'Failed to get tasks' });
+  }
+});
+
+// POST /api/packs/:id/tasks - Create a new task
+router.post('/:id/tasks', async (req: Request, res: Response) => {
+  try {
+    const packId = req.params.id as string;
+    const { title, description } = req.body;
+
+    if (!title || typeof title !== 'string') {
+      res.status(400).json({ error: 'Task title is required' });
+      return;
+    }
+
+    // Get max sortOrder for this pack
+    const maxOrder = await prisma.packTask.aggregate({
+      where: { packId },
+      _max: { sortOrder: true },
+    });
+
+    const task = await prisma.packTask.create({
+      data: {
+        packId,
+        title,
+        description: description || null,
+        sortOrder: (maxOrder._max.sortOrder || 0) + 1,
+      },
+    });
+
+    res.status(201).json(task);
+  } catch (error) {
+    console.error('Error creating task:', error);
+    res.status(500).json({ error: 'Failed to create task' });
+  }
+});
+
+// PUT /api/packs/:packId/tasks/:taskId - Update a task
+router.put('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
+  try {
+    const taskId = req.params.taskId as string;
+    const { title, description, completed, sortOrder } = req.body;
+
+    const updateData: Record<string, unknown> = {};
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description || null;
+    if (sortOrder !== undefined) updateData.sortOrder = sortOrder;
+    if (completed !== undefined) {
+      updateData.completed = completed;
+      updateData.completedAt = completed ? new Date() : null;
+    }
+
+    const task = await prisma.packTask.update({
+      where: { id: taskId },
+      data: updateData,
+    });
+
+    res.json(task);
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(500).json({ error: 'Failed to update task' });
+  }
+});
+
+// DELETE /api/packs/:packId/tasks/:taskId - Delete a task
+router.delete('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
+  try {
+    const taskId = req.params.taskId as string;
+
+    await prisma.packTask.delete({
+      where: { id: taskId },
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({ error: 'Failed to delete task' });
   }
 });
 

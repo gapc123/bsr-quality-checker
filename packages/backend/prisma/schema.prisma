@@ -17,17 +17,48 @@ model Client {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   packs        Pack[]
+
+  // AI-generated summary (cached)
+  aiSummary        String?
+  summaryUpdatedAt DateTime?
 }
 
 model Pack {
   id        String        @id @default(uuid())
   name      String
   createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt @default(now())
   versions  PackVersion[]
+  tasks     PackTask[]
 
   // Client relationship for agency workflow
   clientId  String?
   client    Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  // Service package type
+  servicePackage String?   // gap_assessment, full_pack_prep, compliance_review, ongoing_support
+
+  // Initial requirements/brief captured at project kickoff
+  requirements   String?
+
+  // AI-generated summary (cached)
+  aiSummary      String?
+  summaryUpdatedAt DateTime?
+}
+
+// Task/checklist items for tracking pack progress
+model PackTask {
+  id          String    @id @default(uuid())
+  packId      String
+  pack        Pack      @relation(fields: [packId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  @@index([packId])
 }
 
 model PackVersion {

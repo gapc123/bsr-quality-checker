@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../db/client.js';
+import { getClientSummary } from '../services/ai-summary.js';
 
 const router = Router();
 
@@ -32,12 +33,15 @@ router.get('/:id', async (req: Request, res: Response) => {
       include: {
         packs: {
           include: {
+            tasks: {
+              orderBy: { sortOrder: 'asc' },
+            },
             versions: {
               orderBy: { versionNumber: 'desc' },
               take: 1,
             },
             _count: {
-              select: { versions: true },
+              select: { versions: true, tasks: true },
             },
           },
           orderBy: { createdAt: 'desc' },
@@ -56,6 +60,20 @@ router.get('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching client:', error);
     res.status(500).json({ error: 'Failed to fetch client' });
+  }
+});
+
+// GET /api/clients/:id/summary - Get AI summary for client
+router.get('/:id/summary', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const refresh = req.query.refresh === 'true';
+
+    const result = await getClientSummary(id, refresh);
+    res.json(result);
+  } catch (error) {
+    console.error('Error getting client summary:', error);
+    res.status(500).json({ error: 'Failed to get client summary' });
   }
 });
 

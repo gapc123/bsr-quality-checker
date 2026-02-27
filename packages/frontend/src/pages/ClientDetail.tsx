@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import AISummary from '../components/AISummary';
 
 interface Pack {
   id: string;
@@ -159,6 +160,11 @@ export default function ClientDetail() {
             <p className="text-sm text-slate-600">{client.notes}</p>
           </div>
         )}
+      </div>
+
+      {/* AI Summary */}
+      <div className="mb-6">
+        <AISummary entityType="client" entityId={client.id} entityName={client.name} />
       </div>
 
       {/* Client Packs */}

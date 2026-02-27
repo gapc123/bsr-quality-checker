@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import AISummary from '../components/AISummary';
+import TaskChecklist from '../components/TaskChecklist';
 
 interface Document {
   id: string;
@@ -24,12 +26,36 @@ interface PackVersion {
   };
 }
 
+interface Task {
+  id: string;
+  title: string;
+  description: string | null;
+  completed: boolean;
+  completedAt: string | null;
+  sortOrder: number;
+}
+
 interface Pack {
   id: string;
   name: string;
   createdAt: string;
+  servicePackage: string | null;
+  requirements: string | null;
+  client: {
+    id: string;
+    name: string;
+    company: string | null;
+  } | null;
+  tasks: Task[];
   versions: PackVersion[];
 }
+
+const SERVICE_PACKAGE_LABELS: Record<string, string> = {
+  gap_assessment: 'Gap Assessment',
+  full_pack_prep: 'Full Pack Preparation',
+  compliance_review: 'Compliance Review',
+  ongoing_support: 'Ongoing Support',
+};
 
 export default function PackDetail() {
   const { packId } = useParams<{ packId: string }>();
@@ -90,9 +116,25 @@ export default function PackDetail() {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">{pack.name}</h1>
-            <p className="text-slate-600 mt-1">
-              Created {new Date(pack.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
+            <div className="flex items-center gap-3 mt-1 text-slate-600">
+              {pack.client && (
+                <Link to={`/clients/${pack.client.id}`} className="hover:text-blue-600 flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  {pack.client.name}
+                </Link>
+              )}
+              {pack.servicePackage && (
+                <span className="inline-block bg-purple-100 text-purple-700 text-xs font-medium px-2 py-0.5 rounded">
+                  {SERVICE_PACKAGE_LABELS[pack.servicePackage] || pack.servicePackage}
+                </span>
+              )}
+              <span className="text-slate-400">|</span>
+              <span>
+                Created {new Date(pack.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </span>
+            </div>
           </div>
           <Link
             to={`/packs/${packId}/upload`}
@@ -104,6 +146,32 @@ export default function PackDetail() {
             Upload New Version
           </Link>
         </div>
+      </div>
+
+      {/* AI Summary */}
+      <div className="mb-6">
+        <AISummary entityType="pack" entityId={pack.id} entityName={pack.name} />
+      </div>
+
+      {/* Requirements & Task Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Requirements */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Initial Requirements
+          </h3>
+          {pack.requirements ? (
+            <p className="text-slate-600 whitespace-pre-wrap">{pack.requirements}</p>
+          ) : (
+            <p className="text-slate-400 italic">No requirements captured yet</p>
+          )}
+        </div>
+
+        {/* Task Checklist */}
+        <TaskChecklist packId={pack.id} tasks={pack.tasks || []} onTasksChange={fetchPack} />
       </div>
 
       {/* Versions List */}

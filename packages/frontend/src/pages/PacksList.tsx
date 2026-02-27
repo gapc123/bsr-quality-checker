@@ -47,6 +47,13 @@ const WORKFLOW_STEPS = [
   },
 ];
 
+const SERVICE_PACKAGES = [
+  { value: 'gap_assessment', label: 'Gap Assessment', description: 'Identify compliance gaps and required actions' },
+  { value: 'full_pack_prep', label: 'Full Pack Preparation', description: 'Complete submission pack preparation' },
+  { value: 'compliance_review', label: 'Compliance Review', description: 'Review and verify existing submission' },
+  { value: 'ongoing_support', label: 'Ongoing Support', description: 'Continuous compliance monitoring' },
+];
+
 export default function PacksList() {
   const [packs, setPacks] = useState<Pack[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
@@ -54,6 +61,8 @@ export default function PacksList() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newPackName, setNewPackName] = useState('');
   const [selectedClientId, setSelectedClientId] = useState('');
+  const [selectedServicePackage, setSelectedServicePackage] = useState('');
+  const [requirements, setRequirements] = useState('');
   const [filterClientId, setFilterClientId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
 
@@ -96,11 +105,15 @@ export default function PacksList() {
         body: JSON.stringify({
           name: newPackName.trim(),
           clientId: selectedClientId || null,
+          servicePackage: selectedServicePackage || null,
+          requirements: requirements.trim() || null,
         }),
       });
       if (res.ok) {
         setNewPackName('');
         setSelectedClientId('');
+        setSelectedServicePackage('');
+        setRequirements('');
         setShowCreateModal(false);
         fetchPacks();
       }
@@ -411,6 +424,35 @@ export default function PacksList() {
                 <p className="text-xs text-slate-400 mt-1">
                   <Link to="/clients" className="text-blue-500 hover:text-blue-600">Manage clients</Link>
                 </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Service Package
+                </label>
+                <select
+                  value={selectedServicePackage}
+                  onChange={(e) => setSelectedServicePackage(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select service type...</option>
+                  {SERVICE_PACKAGES.map((pkg) => (
+                    <option key={pkg.value} value={pkg.value}>
+                      {pkg.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Initial Requirements
+                </label>
+                <textarea
+                  value={requirements}
+                  onChange={(e) => setRequirements(e.target.value)}
+                  placeholder="Brief description of the project, key requirements, target dates, etc."
+                  rows={3}
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                />
               </div>
             </div>
             <div className="flex justify-end gap-3 mt-6">
