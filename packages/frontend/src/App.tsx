@@ -8,6 +8,7 @@ import ButlerLibrary from './pages/ButlerLibrary';
 import ClientsList from './pages/ClientsList';
 import ClientDetail from './pages/ClientDetail';
 import SignInPage from './pages/SignIn';
+import Landing from './pages/Landing';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -31,6 +32,30 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 }
 
 function AppContent() {
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
+  const isSignInPage = location.pathname.startsWith('/sign-in');
+
+  // Landing page and sign-in have their own layouts (no internal tool header)
+  if (isLandingPage || isSignInPage) {
+    return (
+      <Routes>
+        <Route path="/" element={
+          <>
+            <SignedOut>
+              <Landing />
+            </SignedOut>
+            <SignedIn>
+              <Navigate to="/clients" replace />
+            </SignedIn>
+          </>
+        } />
+        <Route path="/sign-in/*" element={<SignInPage />} />
+      </Routes>
+    );
+  }
+
+  // Internal tool layout (with header and navigation)
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -62,7 +87,7 @@ function AppContent() {
                 </nav>
                 <div className="ml-4 pl-4 border-l border-slate-700">
                   <UserButton
-                    afterSignOutUrl="/sign-in"
+                    afterSignOutUrl="/"
                     appearance={{
                       elements: {
                         avatarBox: "w-9 h-9"
@@ -94,11 +119,6 @@ function AppContent() {
       <main className="flex-1 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <Routes>
-            {/* Redirect root to clients */}
-            <Route path="/" element={<Navigate to="/clients" replace />} />
-
-            {/* Auth routes */}
-            <Route path="/sign-in/*" element={<SignInPage />} />
 
             {/* Protected routes */}
             <Route
