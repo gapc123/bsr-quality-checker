@@ -44,6 +44,43 @@ model Pack {
   // AI-generated summary (cached)
   aiSummary      String?
   summaryUpdatedAt DateTime?
+
+  // Lifecycle status tracking
+  status               String    @default("draft") // draft, in_progress, under_review, client_review, revision_needed, completed, archived
+  startedAt            DateTime? // When status changed from draft to in_progress
+  targetCompletionDate DateTime? // Expected completion date
+  actualCompletionDate DateTime? // When status changed to completed
+
+  // Ownership
+  leadAssignee String? // Clerk userId of primary responsible person
+  leadName     String? // Cached display name
+
+  // Milestones (JSON)
+  milestones String? // JSON: [{ name, targetDate, completedDate, assignedTo }]
+
+  // Relations
+  statusHistory PackStatusChange[]
+
+  @@index([status])
+  @@index([targetCompletionDate])
+  @@index([leadAssignee])
+}
+
+// Pack status change history for audit trail
+model PackStatusChange {
+  id            String   @id @default(uuid())
+  packId        String
+  pack          Pack     @relation(fields: [packId], references: [id], onDelete: Cascade)
+
+  fromStatus    String?  // null for initial status
+  toStatus      String
+  changedBy     String   // Clerk userId
+  changedByName String   // Cached display name
+  notes         String?  // Optional notes about why status changed
+  createdAt     DateTime @default(now())
+
+  @@index([packId])
+  @@index([createdAt])
 }
 
 // Task/checklist items for tracking pack progress

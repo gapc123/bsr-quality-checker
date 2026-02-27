@@ -131,6 +131,10 @@ router.get('/:id', async (req: Request, res: Response) => {
             },
           },
         },
+        statusHistory: {
+          orderBy: { createdAt: 'desc' },
+          take: 5, // Last 5 status changes
+        },
       },
     });
 
@@ -139,7 +143,18 @@ router.get('/:id', async (req: Request, res: Response) => {
       return;
     }
 
-    res.json(pack);
+    // Parse JSON fields
+    const packWithParsedData = {
+      ...pack,
+      milestones: pack.milestones ? JSON.parse(pack.milestones) : null,
+      tasks: pack.tasks.map(task => ({
+        ...task,
+        blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
+        tags: task.tags ? JSON.parse(task.tags) : [],
+      })),
+    };
+
+    res.json(packWithParsedData);
   } catch (error) {
     console.error('Error getting pack:', error);
     res.status(500).json({ error: 'Failed to get pack' });
@@ -150,16 +165,34 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
-    const { name, clientId, servicePackage, requirements } = req.body;
+    const {
+      name,
+      clientId,
+      servicePackage,
+      requirements,
+      leadAssignee,
+      leadName,
+      targetCompletionDate,
+      milestones,
+    } = req.body;
+
+    const updateData: any = {};
+    if (name !== undefined) updateData.name = name;
+    if (clientId !== undefined) updateData.clientId = clientId || null;
+    if (servicePackage !== undefined) updateData.servicePackage = servicePackage || null;
+    if (requirements !== undefined) updateData.requirements = requirements || null;
+    if (leadAssignee !== undefined) updateData.leadAssignee = leadAssignee || null;
+    if (leadName !== undefined) updateData.leadName = leadName || null;
+    if (targetCompletionDate !== undefined) {
+      updateData.targetCompletionDate = targetCompletionDate ? new Date(targetCompletionDate) : null;
+    }
+    if (milestones !== undefined) {
+      updateData.milestones = milestones ? JSON.stringify(milestones) : null;
+    }
 
     const pack = await prisma.pack.update({
       where: { id },
-      data: {
-        ...(name !== undefined && { name }),
-        ...(clientId !== undefined && { clientId: clientId || null }),
-        ...(servicePackage !== undefined && { servicePackage: servicePackage || null }),
-        ...(requirements !== undefined && { requirements: requirements || null }),
-      },
+      data: updateData,
       include: {
         client: {
           select: { id: true, name: true, company: true },
@@ -170,7 +203,13 @@ router.put('/:id', async (req: Request, res: Response) => {
       },
     });
 
-    res.json(pack);
+    // Parse milestones for response
+    const packWithParsedData = {
+      ...pack,
+      milestones: pack.milestones ? JSON.parse(pack.milestones) : null,
+    };
+
+    res.json(packWithParsedData);
   } catch (error) {
     console.error('Error updating pack:', error);
     res.status(500).json({ error: 'Failed to update pack' });
@@ -188,6 +227,106 @@ router.get('/:id/summary', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error getting pack summary:', error);
     res.status(500).json({ error: 'Failed to get pack summary' });
+  }
+});
+
+// ==================== STATUS ENDPOINTS ====================
+
+// Valid status transitions
+const VALID_STATUS_TRANSITIONS: Record<string, string[]> = {
+  draft: ['in_progress', 'archived'],
+  in_progress: ['under_review', 'revision_needed', 'archived'],
+  under_review: ['client_review', 'revision_needed', 'in_progress'],
+  client_review: ['revision_needed', 'completed'],
+  revision_needed: ['in_progress'],
+  completed: ['archived'],
+  archived: ['in_progress'], // Re-open
+};
+
+// PUT /api/packs/:id/status - Change pack status with validation
+router.put('/:id/status', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const { status, notes, userId, userName } = req.body;
+
+    if (!status || !userId || !userName) {
+      res.status(400).json({ error: 'status, userId, and userName are required' });
+      return;
+    }
+
+    // Get current pack
+    const pack = await prisma.pack.findUnique({
+      where: { id },
+      select: { status: true },
+    });
+
+    if (!pack) {
+      res.status(404).json({ error: 'Pack not found' });
+      return;
+    }
+
+    // Validate status transition
+    const currentStatus = pack.status;
+    const validTransitions = VALID_STATUS_TRANSITIONS[currentStatus];
+
+    if (!validTransitions?.includes(status)) {
+      res.status(400).json({
+        error: `Invalid status transition from ${currentStatus} to ${status}`,
+        validTransitions,
+      });
+      return;
+    }
+
+    // Update pack status
+    const updateData: any = { status };
+
+    // Set timestamps based on status
+    if (status === 'in_progress' && currentStatus === 'draft') {
+      updateData.startedAt = new Date();
+    }
+
+    if (status === 'completed') {
+      updateData.actualCompletionDate = new Date();
+    }
+
+    const updatedPack = await prisma.pack.update({
+      where: { id },
+      data: updateData,
+    });
+
+    // Record status change in history
+    await prisma.packStatusChange.create({
+      data: {
+        packId: id,
+        fromStatus: currentStatus,
+        toStatus: status,
+        changedBy: userId,
+        changedByName: userName,
+        notes: notes || null,
+      },
+    });
+
+    res.json(updatedPack);
+  } catch (error) {
+    console.error('Error changing pack status:', error);
+    res.status(500).json({ error: 'Failed to change pack status' });
+  }
+});
+
+// GET /api/packs/:id/status-history - Get pack status history
+router.get('/:id/status-history', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id as string;
+
+    const history = await prisma.packStatusChange.findMany({
+      where: { packId: id },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.json(history);
+  } catch (error) {
+    console.error('Error getting status history:', error);
+    res.status(500).json({ error: 'Failed to get status history' });
   }
 });
 

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PackStatusBadge from '../components/PackStatusBadge';
 
 interface Pack {
   id: string;
   name: string;
   createdAt: string;
   clientId: string | null;
+  status: string;
   client: {
     id: string;
     name: string;
@@ -324,6 +326,7 @@ export default function PacksList() {
                         >
                           {pack.name}
                         </Link>
+                        <PackStatusBadge status={pack.status} size="sm" />
                         {pack.client && (
                           <Link
                             to={`/clients/${pack.client.id}`}

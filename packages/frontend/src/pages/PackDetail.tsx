@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import AISummary from '../components/AISummary';
 import TaskChecklist from '../components/TaskChecklist';
+import PackStatusBadge from '../components/PackStatusBadge';
+import PackStatusChangeModal from '../components/PackStatusChangeModal';
+import PackTimeline from '../components/PackTimeline';
 
 interface Document {
   id: string;
@@ -61,6 +64,14 @@ interface Pack {
   } | null;
   tasks: Task[];
   versions: PackVersion[];
+  status: string;
+  startedAt: string | null;
+  targetCompletionDate: string | null;
+  actualCompletionDate: string | null;
+  leadAssignee: string | null;
+  leadName: string | null;
+  milestones: any[] | null;
+  statusHistory?: any[];
 }
 
 const SERVICE_PACKAGE_LABELS: Record<string, string> = {
@@ -74,6 +85,7 @@ export default function PackDetail() {
   const { packId } = useParams<{ packId: string }>();
   const [pack, setPack] = useState<Pack | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showStatusModal, setShowStatusModal] = useState(false);
 
   useEffect(() => {
     fetchPack();
@@ -128,7 +140,10 @@ export default function PackDetail() {
         </nav>
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">{pack.name}</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-2xl font-bold text-slate-900">{pack.name}</h1>
+              <PackStatusBadge status={pack.status} size="md" />
+            </div>
             <div className="flex items-center gap-3 mt-1 text-slate-600">
               {pack.client && (
                 <Link to={`/clients/${pack.client.id}`} className="hover:text-blue-600 flex items-center gap-1">
@@ -149,21 +164,43 @@ export default function PackDetail() {
               </span>
             </div>
           </div>
-          <Link
-            to={`/packs/${packId}/upload`}
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            Upload New Version
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowStatusModal(true)}
+              className="inline-flex items-center gap-2 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Change Status
+            </button>
+            <Link
+              to={`/packs/${packId}/upload`}
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Upload New Version
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* AI Summary */}
       <div className="mb-6">
         <AISummary entityType="pack" entityId={pack.id} entityName={pack.name} />
+      </div>
+
+      {/* Timeline */}
+      <div className="mb-6">
+        <PackTimeline
+          packId={pack.id}
+          packCreatedAt={pack.createdAt}
+          startedAt={pack.startedAt}
+          targetCompletionDate={pack.targetCompletionDate}
+          actualCompletionDate={pack.actualCompletionDate}
+        />
       </div>
 
       {/* Requirements & Task Grid */}
@@ -316,6 +353,16 @@ export default function PackDetail() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Status Change Modal */}
+      {showStatusModal && (
+        <PackStatusChangeModal
+          packId={pack.id}
+          currentStatus={pack.status}
+          onClose={() => setShowStatusModal(false)}
+          onStatusChanged={fetchPack}
+        />
       )}
     </div>
   );
