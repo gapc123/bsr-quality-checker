@@ -39,10 +39,74 @@ export async function generatePackSummary(packId: string): Promise<string> {
 
   const latestVersion = pack.versions[0];
   const tasks = pack.tasks || [];
-  const completedTasks = tasks.filter((t) => t.completed).length;
-  const totalTasks = tasks.length;
+  const now = new Date();
 
-  // Build context for the LLM
+  // Enhanced task breakdown
+  const tasksByStatus = {
+    not_started: tasks.filter((t) => t.status === 'not_started').length,
+    in_progress: tasks.filter((t) => t.status === 'in_progress').length,
+    blocked: tasks.filter((t) => t.status === 'blocked').length,
+    completed: tasks.filter((t) => t.status === 'completed').length,
+  };
+
+  const tasksByPriority = {
+    high: tasks.filter((t) => t.priority === 'high').length,
+    medium: tasks.filter((t) => t.priority === 'medium').length,
+    low: tasks.filter((t) => t.priority === 'low').length,
+  };
+
+  // Identify critical tasks
+  const overdueTasks = tasks.filter(
+    (t) => t.dueDate && new Date(t.dueDate) < now && t.status !== 'completed'
+  );
+
+  const dueSoonTasks = tasks.filter((t) => {
+    if (!t.dueDate || t.status === 'completed') return false;
+    const dueDate = new Date(t.dueDate);
+    const daysUntil = (dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+    return daysUntil >= 0 && daysUntil <= 7;
+  });
+
+  const blockedTasks = tasks.filter((t) => t.status === 'blocked');
+
+  const highPriorityPending = tasks.filter(
+    (t) => t.priority === 'high' && t.status !== 'completed'
+  );
+
+  // Calculate progress
+  const totalTasks = tasks.length;
+  const completedTasks = tasksByStatus.completed;
+  const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  // Timeline info
+  const daysRemaining = pack.targetCompletionDate
+    ? Math.ceil((new Date(pack.targetCompletionDate).getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    : null;
+
+  // Parse milestones
+  let nextMilestone = null;
+  if (pack.milestones) {
+    try {
+      const milestones = JSON.parse(pack.milestones);
+      const upcomingMilestones = milestones.filter(
+        (m: any) => !m.completedDate && m.targetDate && new Date(m.targetDate) >= now
+      );
+      if (upcomingMilestones.length > 0) {
+        nextMilestone = upcomingMilestones[0];
+      }
+    } catch (e) {
+      // Invalid JSON, skip
+    }
+  }
+
+  // Team info
+  const assignedMembers = new Set(
+    tasks.filter((t) => t.assignedToName).map((t) => t.assignedToName)
+  );
+
+  const completedTasks_old = tasks.filter((t) => t.completed).length;
+
+  // Build enhanced context for the LLM
   const context = {
     packName: pack.name,
     clientName: pack.client?.name || 'Unassigned',
@@ -51,11 +115,52 @@ export async function generatePackSummary(packId: string): Promise<string> {
       ? SERVICE_PACKAGES[pack.servicePackage] || pack.servicePackage
       : 'Not specified',
     requirements: pack.requirements || 'No requirements captured',
-    taskProgress: totalTasks > 0 ? `${completedTasks} of ${totalTasks}` : 'No tasks defined',
-    taskList: tasks.map((t) => ({
-      title: t.title,
-      completed: t.completed,
-    })),
+
+    // Enhanced task insights
+    taskBreakdown: {
+      total: totalTasks,
+      byStatus: tasksByStatus,
+      byPriority: tasksByPriority,
+      progressPercent,
+      overdueTasks: overdueTasks.map((t) => ({
+        title: t.title,
+        dueDate: t.dueDate,
+        priority: t.priority,
+        assignedTo: t.assignedToName,
+      })),
+      dueSoonTasks: dueSoonTasks.map((t) => ({
+        title: t.title,
+        dueDate: t.dueDate,
+        priority: t.priority,
+      })),
+      blockedTasks: blockedTasks.map((t) => ({
+        title: t.title,
+        priority: t.priority,
+      })),
+      highPriorityPending: highPriorityPending.map((t) => ({
+        title: t.title,
+        status: t.status,
+        dueDate: t.dueDate,
+      })),
+    },
+
+    // Timeline info
+    timeline: {
+      status: pack.status,
+      startedAt: pack.startedAt,
+      targetCompletionDate: pack.targetCompletionDate,
+      actualCompletionDate: pack.actualCompletionDate,
+      daysRemaining,
+      nextMilestone,
+    },
+
+    // Team info
+    team: {
+      leadAssignee: pack.leadName,
+      assignedMembers: Array.from(assignedMembers),
+    },
+
+    // Document and assessment info (existing)
     documentsUploaded: latestVersion?.documents.length || 0,
     documentTypes: latestVersion?.documents.map((d) => d.docType || d.filename) || [],
     issueCount: {
@@ -77,21 +182,29 @@ export async function generatePackSummary(packId: string): Promise<string> {
     versionCount: pack.versions.length || 0,
   };
 
-  const systemPrompt = `You are an internal project assistant for a building safety consultancy. Generate a concise, professional summary of a client's submission pack status.
+  const systemPrompt = `You are an internal project assistant for a building safety consultancy. Generate a comprehensive, actionable summary of a client's submission pack status.
 
-The summary should be 2-4 sentences that cover:
-1. Client and project identification
-2. Service type and key requirements
-3. Current progress (documents, tasks, assessment status)
-4. Any critical issues or next steps
+The summary should be 4-6 sentences that focus on:
+1. Current Status & Progress: Pack status, where are we in the workflow, task completion percentage
+2. Immediate Actions Needed: What needs attention NOW (overdue tasks, blocked tasks, high-priority pending items)
+3. Timeline & Deadlines: Are we on track? Days remaining until target date? Upcoming milestones?
+4. Team Activity: Who's leading, who's working on what
+5. Risks & Blockers: Any impediments or concerns to highlight
 
-Be factual and specific. Use natural language, not bullet points. Reference specific numbers and findings.`;
+CRITICAL: Be specific with numbers, dates, and action items. Highlight urgent issues clearly. Use natural language suitable for a busy team dashboard.`;
 
-  const userPrompt = `Generate a pack summary based on this data:
+  const userPrompt = `Generate an enhanced pack summary based on this comprehensive data:
 
 ${JSON.stringify(context, null, 2)}
 
-Write a concise summary paragraph (2-4 sentences) suitable for display on a dashboard.`;
+Write a detailed summary (4-6 sentences) that helps the team understand:
+- Progress status and percentage
+- Urgent action items (overdue/blocked tasks)
+- Timeline health (on track, at risk, or delayed)
+- Key team members involved
+- Any blockers or risks
+
+Make it actionable and highlight anything requiring immediate attention.`;
 
   const summary = await callClaude(systemPrompt, [{ role: 'user', content: userPrompt }], 500);
 
@@ -135,20 +248,48 @@ export async function generateClientSummary(clientId: string): Promise<string> {
     throw new Error('Client not found');
   }
 
-  // Aggregate data across all packs
+  const now = new Date();
+
+  // Aggregate data across all packs with enhanced metrics
   const packSummaries = client.packs.map((pack) => {
     const latestVersion = pack.versions[0];
     const tasks = pack.tasks || [];
-    const completedTasks = tasks.filter((t) => t.completed).length;
+    const completedTasks = tasks.filter((t) => t.status === 'completed').length;
+    const overdueTasks = tasks.filter(
+      (t) => t.dueDate && new Date(t.dueDate) < now && t.status !== 'completed'
+    );
+    const blockedTasks = tasks.filter((t) => t.status === 'blocked');
+    const daysRemaining = pack.targetCompletionDate
+      ? Math.ceil((new Date(pack.targetCompletionDate).getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+      : null;
 
     return {
       name: pack.name,
+      status: pack.status,
       servicePackage: pack.servicePackage
         ? SERVICE_PACKAGES[pack.servicePackage] || pack.servicePackage
         : 'Not specified',
       requirements: pack.requirements,
       taskProgress:
-        tasks.length > 0 ? { completed: completedTasks, total: tasks.length } : null,
+        tasks.length > 0
+          ? {
+              completed: completedTasks,
+              total: tasks.length,
+              percent: Math.round((completedTasks / tasks.length) * 100),
+            }
+          : null,
+      overdueTaskCount: overdueTasks.length,
+      blockedTaskCount: blockedTasks.length,
+      daysRemaining,
+      timelineHealth:
+        daysRemaining === null
+          ? 'unknown'
+          : daysRemaining < 0
+          ? 'delayed'
+          : daysRemaining <= 7
+          ? 'at-risk'
+          : 'on-track',
+      leadAssignee: pack.leadName,
       documentsUploaded: latestVersion?.documents.length || 0,
       issues: {
         high: latestVersion?.issues.filter((i) => i.severity === 'high').length || 0,
@@ -157,7 +298,7 @@ export async function generateClientSummary(clientId: string): Promise<string> {
       },
       hasAssessment: !!latestVersion?.matrixAssessment,
       projectName: latestVersion?.projectName,
-      targetDate: latestVersion?.targetDate,
+      targetDate: pack.targetCompletionDate,
     };
   });
 
@@ -165,6 +306,12 @@ export async function generateClientSummary(clientId: string): Promise<string> {
   const totalMediumIssues = packSummaries.reduce((sum, p) => sum + p.issues.medium, 0);
   const totalDocuments = packSummaries.reduce((sum, p) => sum + p.documentsUploaded, 0);
   const packsWithAssessments = packSummaries.filter((p) => p.hasAssessment).length;
+  const totalOverdueTasks = packSummaries.reduce((sum, p) => sum + p.overdueTaskCount, 0);
+  const totalBlockedTasks = packSummaries.reduce((sum, p) => sum + p.blockedTaskCount, 0);
+  const packsAtRisk = packSummaries.filter((p) => p.timelineHealth === 'at-risk' || p.timelineHealth === 'delayed').length;
+  const packsRequiringAttention = packSummaries.filter(
+    (p) => p.overdueTaskCount > 0 || p.blockedTaskCount > 0 || p.timelineHealth === 'delayed'
+  );
 
   const context = {
     clientName: client.name,
@@ -176,25 +323,46 @@ export async function generateClientSummary(clientId: string): Promise<string> {
     totalDocuments,
     totalHighIssues,
     totalMediumIssues,
+
+    // Enhanced metrics
+    totalOverdueTasks,
+    totalBlockedTasks,
+    packsAtRisk,
+    packsRequiringUrgentAttention: packsRequiringAttention.map((p) => ({
+      name: p.name,
+      status: p.status,
+      overdueTaskCount: p.overdueTaskCount,
+      blockedTaskCount: p.blockedTaskCount,
+      timelineHealth: p.timelineHealth,
+      daysRemaining: p.daysRemaining,
+    })),
+
     packs: packSummaries,
   };
 
-  const systemPrompt = `You are an internal project assistant for a building safety consultancy. Generate a concise, professional summary of a client's overall engagement status.
+  const systemPrompt = `You are an internal project assistant for a building safety consultancy. Generate a comprehensive, actionable summary of a client's overall engagement status.
 
-The summary should be 3-5 sentences that cover:
+The summary should be 4-6 sentences that focus on:
 1. Client identification and relationship overview
-2. Number of active projects and their service types
-3. Overall progress across all packs
-4. Key issues or priorities requiring attention
-5. Any patterns or notable observations
+2. Portfolio health: Number of active projects, their statuses, and overall progress
+3. Urgent items: Highlight packs requiring immediate attention (overdue tasks, delayed timelines)
+4. Timeline assessment: How many packs are on track vs at risk vs delayed
+5. Key priorities and action items across all projects
 
-Be factual and specific. Use natural language. Highlight anything that needs attention.`;
+CRITICAL: Prioritize urgent issues. Be specific about which packs need attention and why. Include numbers and timelines.`;
 
-  const userPrompt = `Generate a client summary based on this data:
+  const userPrompt = `Generate an enhanced client summary based on this comprehensive data:
 
 ${JSON.stringify(context, null, 2)}
 
-Write a concise summary (3-5 sentences) suitable for display on a client overview dashboard.`;
+Write a detailed summary (4-6 sentences) that helps the team understand:
+- Overall client engagement health
+- Which packs need urgent attention and why
+- Timeline status across all packs (on track vs at risk)
+- Key action items and priorities
+- Any patterns or concerns across the portfolio
+
+Make it actionable and highlight anything requiring immediate attention.`;
 
   const summary = await callClaude(systemPrompt, [{ role: 'user', content: userPrompt }], 600);
 
