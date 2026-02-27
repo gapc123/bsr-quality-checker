@@ -280,7 +280,7 @@ export function ConstructionSection() {
 // Configure your YouTube video here
 // Use the video ID from the YouTube URL (e.g., for https://youtube.com/watch?v=ABC123, use "ABC123")
 const TIMELAPSE_CONFIG = {
-  videoId: 'WLEjdMxBFZo', // The Shard construction timelapse - replace with your preferred video
+  videoId: 'UOl10AknR_0',
   title: 'London High-Rise Construction',
   caption: 'The reality of high-rise development in the UK',
 };
