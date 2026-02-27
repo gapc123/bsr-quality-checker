@@ -33,6 +33,19 @@ interface Task {
   completed: boolean;
   completedAt: string | null;
   sortOrder: number;
+  status: string;
+  assignedTo: string | null;
+  assignedToName: string | null;
+  dueDate: string | null;
+  priority: string;
+  blockedByIds: string[];
+  tags: string[];
+  category: string | null;
+  estimatedHours: number | null;
+  actualHours: number | null;
+  _count?: {
+    comments: number;
+  };
 }
 
 interface Pack {

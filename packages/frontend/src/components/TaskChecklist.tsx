@@ -43,12 +43,6 @@ const STATUS_LABELS = {
   completed: 'Completed',
 };
 
-const PRIORITY_COLORS = {
-  low: 'text-slate-500',
-  medium: 'text-yellow-500',
-  high: 'text-red-500',
-};
-
 export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChecklistProps) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [adding, setAdding] = useState(false);
@@ -56,7 +50,6 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterPriority, setFilterPriority] = useState<string>('all');
-  const [filterAssignee, setFilterAssignee] = useState<string>('all');
   const [showOverdueOnly, setShowOverdueOnly] = useState(false);
   const [sortBy, setSortBy] = useState<string>('sortOrder');
 
@@ -74,10 +67,6 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
 
   if (filterPriority !== 'all') {
     filteredTasks = filteredTasks.filter((t) => t.priority === filterPriority);
-  }
-
-  if (filterAssignee !== 'all') {
-    filteredTasks = filteredTasks.filter((t) => t.assignedTo === filterAssignee);
   }
 
   if (showOverdueOnly) {
@@ -103,11 +92,6 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
         return a.sortOrder - b.sortOrder;
     }
   });
-
-  // Get unique assignees for filter
-  const uniqueAssignees = Array.from(
-    new Set(tasks.filter((t) => t.assignedTo).map((t) => ({ id: t.assignedTo, name: t.assignedToName })))
-  );
 
   const isOverdue = (dueDate: string | null, status: string) => {
     if (!dueDate || status === 'completed') return false;
@@ -135,19 +119,6 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
     if (diffDays <= 7) return `in ${diffDays}d`;
 
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  };
-
-  const updateTaskStatus = async (taskId: string, status: string) => {
-    try {
-      await fetch(`/api/packs/${packId}/tasks/${taskId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
-      });
-      onTasksChange();
-    } catch (error) {
-      console.error('Error updating task status:', error);
-    }
   };
 
   const addTask = async () => {
