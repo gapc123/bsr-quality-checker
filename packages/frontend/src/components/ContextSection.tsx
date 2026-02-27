@@ -353,8 +353,11 @@ export function TimelapseSection() {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             loading="lazy"
             onLoad={() => setIsLoaded(true)}
-            style={{ border: 'none' }}
+            style={{ border: 'none', pointerEvents: 'none' }}
           />
+
+          {/* Transparent overlay to block all YouTube UI on hover */}
+          <div className="absolute inset-0 pointer-events-none" />
         </div>
       </div>
     </section>
