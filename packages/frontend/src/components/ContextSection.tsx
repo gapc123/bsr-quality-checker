@@ -78,10 +78,14 @@ function ImageCard({ src, alt, size, isVisible, muted = false }: ImageCardProps)
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
+  // For headlines (large): contain full image, no cropping
+  // For construction (small): cover is fine, atmospheric
+  const isHeadline = size === 'large';
+
   const sizeClasses = {
-    large: 'w-96 h-56',      // Headlines - larger for readability
-    medium: 'w-72 h-44',     // Medium option
-    small: 'w-48 h-32',      // Construction - smaller, atmospheric
+    large: 'h-52',           // Headlines - fixed height, auto width
+    medium: 'h-44',          // Medium option
+    small: 'w-48 h-32',      // Construction - fixed dimensions, cover ok
   };
 
   if (error) {
@@ -95,6 +99,7 @@ function ImageCard({ src, alt, size, isVisible, muted = false }: ImageCardProps)
       className={`
         context-image-card flex-shrink-0 rounded-lg overflow-hidden shadow-lg
         ${sizeClasses[size]}
+        ${isHeadline ? 'bg-slate-950' : ''}
         transition-opacity duration-700
         ${loaded ? 'opacity-100' : 'opacity-0'}
         ${muted ? 'opacity-60' : ''}
@@ -106,7 +111,10 @@ function ImageCard({ src, alt, size, isVisible, muted = false }: ImageCardProps)
         loading={isVisible ? 'eager' : 'lazy'}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        className="w-full h-full object-cover object-center"
+        className={`
+          h-full
+          ${isHeadline ? 'w-auto object-contain' : 'w-full object-cover object-center'}
+        `}
       />
     </div>
   );
@@ -288,50 +296,48 @@ const TIMELAPSE_CONFIG = {
 export function TimelapseSection() {
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // YouTube params for seamless autoplay:
+  // autoplay=1, mute=1 (required for autoplay), loop=1, controls=0, showinfo=0
+  // playlist param needed for loop to work
+  const embedParams = new URLSearchParams({
+    autoplay: '1',
+    mute: '1',
+    loop: '1',
+    controls: '0',
+    showinfo: '0',
+    rel: '0',
+    modestbranding: '1',
+    playlist: TIMELAPSE_CONFIG.videoId, // Required for loop
+  }).toString();
+
   return (
     <section
       id="timelapse"
-      className="relative bg-slate-900 py-12 overflow-hidden"
+      className="relative bg-slate-900 overflow-hidden"
       aria-label="Construction timelapse video"
     >
-      <div className="max-w-5xl mx-auto px-4">
-        {/* Section label */}
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px flex-1 bg-slate-700" />
-          <span className="text-slate-500 text-xs font-medium tracking-widest uppercase">
-            {TIMELAPSE_CONFIG.title}
-          </span>
-          <div className="h-px flex-1 bg-slate-700" />
+      {/* Full-width immersive video - no container padding */}
+      <div className="relative w-full bg-slate-900">
+        {/* 21:9 cinematic aspect ratio for more immersive feel */}
+        <div className="relative w-full" style={{ paddingBottom: '42.85%' }}>
+          {/* Loading placeholder */}
+          {!isLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
+              <div className="text-slate-600 text-sm animate-pulse">Loading...</div>
+            </div>
+          )}
+
+          {/* YouTube embed - autoplay, muted, looping, no controls */}
+          <iframe
+            className="absolute inset-0 w-full h-full"
+            src={`https://www.youtube-nocookie.com/embed/${TIMELAPSE_CONFIG.videoId}?${embedParams}`}
+            title={TIMELAPSE_CONFIG.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            loading="lazy"
+            onLoad={() => setIsLoaded(true)}
+            style={{ border: 'none' }}
+          />
         </div>
-
-        {/* Video container with aspect ratio */}
-        <div className="relative rounded-xl overflow-hidden shadow-2xl bg-slate-800">
-          {/* 16:9 aspect ratio container */}
-          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-            {/* Loading placeholder */}
-            {!isLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-800">
-                <div className="text-slate-500 text-sm">Loading video...</div>
-              </div>
-            )}
-
-            {/* YouTube embed */}
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube-nocookie.com/embed/${TIMELAPSE_CONFIG.videoId}?rel=0&modestbranding=1&color=white`}
-              title={TIMELAPSE_CONFIG.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-              onLoad={() => setIsLoaded(true)}
-            />
-          </div>
-        </div>
-
-        {/* Caption */}
-        <p className="text-slate-500 text-sm text-center mt-6">
-          {TIMELAPSE_CONFIG.caption}
-        </p>
       </div>
     </section>
   );
