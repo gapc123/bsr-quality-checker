@@ -615,11 +615,12 @@ router.put('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
 router.delete('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
   try {
     const taskId = req.params.taskId as string;
+    const packId = req.params.packId as string;
 
     // Remove this task from other tasks' blockedByIds
     const allTasks = await prisma.packTask.findMany({
       where: {
-        packId: req.params.packId,
+        packId,
       },
     });
 

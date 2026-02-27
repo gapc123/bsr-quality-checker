@@ -38,46 +38,6 @@ function addBusinessDays(startDate: Date, daysToAdd: number): Date {
 /**
  * Apply a service package template to a pack
  */
-export async function applyTemplateToPackimport prisma from '../db/client.js';
-
-interface TaskTemplate {
-  title: string;
-  description: string;
-  category: string;
-  priority: string;
-  estimatedHours: number;
-  dayOffset: number;
-  dependsOnIndices: number[];
-}
-
-interface MilestoneTemplate {
-  name: string;
-  dayOffset: number;
-}
-
-/**
- * Calculate a date by adding business days (Monday-Friday) to a base date
- */
-function addBusinessDays(startDate: Date, daysToAdd: number): Date {
-  const result = new Date(startDate);
-  let daysAdded = 0;
-
-  while (daysAdded < daysToAdd) {
-    result.setDate(result.getDate() + 1);
-    // Check if it's a weekday (Monday = 1, Friday = 5)
-    const dayOfWeek = result.getDay();
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-      // Not Sunday (0) or Saturday (6)
-      daysAdded++;
-    }
-  }
-
-  return result;
-}
-
-/**
- * Apply a service package template to a pack
- */
 export async function applyTemplateToPack(
   packId: string,
   packageType: string,
