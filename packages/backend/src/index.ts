@@ -5,16 +5,14 @@ import fs from 'fs';
 import packsRouter from './routes/packs.js';
 import butlerRouter from './routes/butler.js';
 import analysisRouter from './routes/analysis.js';
-import subscriptionRouter from './routes/subscription.js';
 import changesRouter from './routes/changes.js';
 import clientsRouter from './routes/clients.js';
+import teamRouter from './routes/team.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Stripe webhook needs raw body
-app.use('/api/subscription/webhook', express.raw({ type: 'application/json' }));
 
 // Middleware
 app.use(cors());
@@ -31,7 +29,7 @@ app.use('/api/packs', packsRouter);
 app.use('/api/packs', changesRouter);
 app.use('/api/clients', clientsRouter);
 app.use('/api/butler', butlerRouter);
-app.use('/api/subscription', subscriptionRouter);
+app.use('/api/team', teamRouter);
 app.use('/api', analysisRouter);
 
 // Health check

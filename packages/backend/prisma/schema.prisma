@@ -51,14 +51,60 @@ model PackTask {
   id          String    @id @default(uuid())
   packId      String
   pack        Pack      @relation(fields: [packId], references: [id], onDelete: Cascade)
+
+  // Core fields
   title       String
   description String?
-  completed   Boolean   @default(false)
-  completedAt DateTime?
   sortOrder   Int       @default(0)
   createdAt   DateTime  @default(now())
 
+  // Enhanced status (replaces boolean completed)
+  status      String    @default("not_started")  // not_started, in_progress, blocked, completed
+  completed   Boolean   @default(false)          // Keep for backward compatibility
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  // Assignment & ownership
+  assignedTo     String?  // Clerk userId
+  assignedToName String?  // Cached display name
+
+  // Scheduling & priority
+  dueDate     DateTime?
+  priority    String    @default("medium") // low, medium, high
+
+  // Dependencies (stored as JSON array of task IDs)
+  blockedByIds String?  // JSON array: ["task-id-1", "task-id-2"]
+
+  // Categorization & tracking
+  tags           String?  // JSON array: ["tag1", "tag2"]
+  category       String?  // Align with service package phases
+  estimatedHours Float?
+  actualHours    Float?
+
+  // Relations
+  comments    TaskComment[]
+
   @@index([packId])
+  @@index([assignedTo])
+  @@index([status])
+  @@index([dueDate])
+}
+
+// Comments on tasks for team collaboration
+model TaskComment {
+  id        String   @id @default(uuid())
+  taskId    String
+  task      PackTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId    String   // Clerk userId
+  userName  String   // Cached display name
+  content   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+  @@index([createdAt])
 }
 
 model PackVersion {
@@ -151,42 +197,24 @@ model OutputArtifact {
   createdAt     DateTime    @default(now())
 }
 
-// Auth & Subscription models
-model StripeCustomer {
-  id               String   @id @default(uuid())
-  userId           String   @unique // Clerk user ID
-  stripeCustomerId String   @unique
-  createdAt        DateTime @default(now())
-}
+// Team collaboration models (optional - for future audit trail)
+// Uncomment when implementing team member tracking
+// model Organization {
+//   id        String   @id @default(uuid())
+//   name      String
+//   createdAt DateTime @default(now())
+//   members   TeamMember[]
+// }
 
-model Subscription {
-  id                   String   @id @default(uuid())
-  userId               String
-  stripeSubscriptionId String   @unique
-  plan                 String   // professional, enterprise
-  status               String   // active, cancelled, inactive
-  currentPeriodEnd     DateTime
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-}
-
-// Track submissions per user
-model SubmissionUsage {
-  id            String   @id @default(uuid())
-  userId        String
-  packVersionId String   @unique
-  createdAt     DateTime @default(now())
-
-  @@index([userId, createdAt])
-}
-
-// Track purchased submission credits (pay-as-you-go)
-model SubmissionCredit {
-  id                String   @id @default(uuid())
-  userId            String
-  stripePaymentId   String?  @unique
-  creditsRemaining  Int      @default(1)
-  createdAt         DateTime @default(now())
-
-  @@index([userId])
-}
+// model TeamMember {
+//   id             String       @id @default(uuid())
+//   organizationId String
+//   organization   Organization @relation(fields: [organizationId], references: [id])
+//   userId         String       // Clerk user ID
+//   userName       String
+//   email          String
+//   role           String       // admin, member
+//   createdAt      DateTime     @default(now())
+//
+//   @@unique([organizationId, userId])
+// }

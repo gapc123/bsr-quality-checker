@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import TaskDetailModal from './TaskDetailModal';
 
 interface Task {
   id: string;
@@ -7,6 +8,19 @@ interface Task {
   completed: boolean;
   completedAt: string | null;
   sortOrder: number;
+  status: string;
+  assignedTo: string | null;
+  assignedToName: string | null;
+  dueDate: string | null;
+  priority: string;
+  blockedByIds: string[];
+  tags: string[];
+  category: string | null;
+  estimatedHours: number | null;
+  actualHours: number | null;
+  _count?: {
+    comments: number;
+  };
 }
 
 interface TaskChecklistProps {
@@ -15,25 +29,124 @@ interface TaskChecklistProps {
   onTasksChange: () => void;
 }
 
+const STATUS_COLORS = {
+  not_started: 'bg-slate-100 text-slate-700 border-slate-300',
+  in_progress: 'bg-blue-100 text-blue-700 border-blue-300',
+  blocked: 'bg-red-100 text-red-700 border-red-300',
+  completed: 'bg-green-100 text-green-700 border-green-300',
+};
+
+const STATUS_LABELS = {
+  not_started: 'Not Started',
+  in_progress: 'In Progress',
+  blocked: 'Blocked',
+  completed: 'Completed',
+};
+
+const PRIORITY_COLORS = {
+  low: 'text-slate-500',
+  medium: 'text-yellow-500',
+  high: 'text-red-500',
+};
+
 export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChecklistProps) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [adding, setAdding] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterPriority, setFilterPriority] = useState<string>('all');
+  const [filterAssignee, setFilterAssignee] = useState<string>('all');
+  const [showOverdueOnly, setShowOverdueOnly] = useState(false);
+  const [sortBy, setSortBy] = useState<string>('sortOrder');
 
-  const completedCount = tasks.filter((t) => t.completed).length;
+  // Calculate stats
+  const completedCount = tasks.filter((t) => t.status === 'completed').length;
   const totalCount = tasks.length;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  const toggleTask = async (taskId: string, completed: boolean) => {
+  // Filter tasks
+  let filteredTasks = [...tasks];
+
+  if (filterStatus !== 'all') {
+    filteredTasks = filteredTasks.filter((t) => t.status === filterStatus);
+  }
+
+  if (filterPriority !== 'all') {
+    filteredTasks = filteredTasks.filter((t) => t.priority === filterPriority);
+  }
+
+  if (filterAssignee !== 'all') {
+    filteredTasks = filteredTasks.filter((t) => t.assignedTo === filterAssignee);
+  }
+
+  if (showOverdueOnly) {
+    const now = new Date();
+    filteredTasks = filteredTasks.filter(
+      (t) => t.dueDate && new Date(t.dueDate) < now && t.status !== 'completed'
+    );
+  }
+
+  // Sort tasks
+  filteredTasks.sort((a, b) => {
+    switch (sortBy) {
+      case 'dueDate':
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      case 'priority':
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        return priorityOrder[a.priority as keyof typeof priorityOrder] - priorityOrder[b.priority as keyof typeof priorityOrder];
+      case 'status':
+        return a.status.localeCompare(b.status);
+      default:
+        return a.sortOrder - b.sortOrder;
+    }
+  });
+
+  // Get unique assignees for filter
+  const uniqueAssignees = Array.from(
+    new Set(tasks.filter((t) => t.assignedTo).map((t) => ({ id: t.assignedTo, name: t.assignedToName })))
+  );
+
+  const isOverdue = (dueDate: string | null, status: string) => {
+    if (!dueDate || status === 'completed') return false;
+    return new Date(dueDate) < new Date();
+  };
+
+  const isDueSoon = (dueDate: string | null, status: string) => {
+    if (!dueDate || status === 'completed') return false;
+    const now = new Date();
+    const due = new Date(dueDate);
+    const daysUntilDue = (due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+    return daysUntilDue > 0 && daysUntilDue <= 7;
+  };
+
+  const formatDueDate = (dueDate: string | null) => {
+    if (!dueDate) return null;
+    const date = new Date(dueDate);
+    const now = new Date();
+    const diffDays = Math.ceil((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Tomorrow';
+    if (diffDays === -1) return 'Yesterday';
+    if (diffDays < 0) return `${Math.abs(diffDays)}d overdue`;
+    if (diffDays <= 7) return `in ${diffDays}d`;
+
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
+  const updateTaskStatus = async (taskId: string, status: string) => {
     try {
       await fetch(`/api/packs/${packId}/tasks/${taskId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ completed }),
+        body: JSON.stringify({ status }),
       });
       onTasksChange();
     } catch (error) {
-      console.error('Error toggling task:', error);
+      console.error('Error updating task status:', error);
     }
   };
 
@@ -73,7 +186,7 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200">
       <div className="px-6 py-4 border-b border-slate-200">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="font-semibold text-slate-900">Task Checklist</h3>
             <p className="text-sm text-slate-500">
@@ -92,6 +205,55 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
             </div>
           )}
         </div>
+
+        {/* Filters */}
+        {tasks.length > 0 && (
+          <div className="flex flex-wrap gap-2 items-center">
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="text-xs border border-slate-300 rounded px-2 py-1"
+            >
+              <option value="all">All Status</option>
+              <option value="not_started">Not Started</option>
+              <option value="in_progress">In Progress</option>
+              <option value="blocked">Blocked</option>
+              <option value="completed">Completed</option>
+            </select>
+
+            <select
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
+              className="text-xs border border-slate-300 rounded px-2 py-1"
+            >
+              <option value="all">All Priority</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="text-xs border border-slate-300 rounded px-2 py-1"
+            >
+              <option value="sortOrder">Default Order</option>
+              <option value="dueDate">Due Date</option>
+              <option value="priority">Priority</option>
+              <option value="status">Status</option>
+            </select>
+
+            <label className="flex items-center gap-1 text-xs text-slate-600">
+              <input
+                type="checkbox"
+                checked={showOverdueOnly}
+                onChange={(e) => setShowOverdueOnly(e.target.checked)}
+                className="rounded"
+              />
+              Overdue only
+            </label>
+          </div>
+        )}
       </div>
 
       <div className="p-4">
@@ -110,54 +272,99 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
           </div>
         ) : (
           <div className="space-y-2">
-            {tasks.map((task) => (
-              <div
-                key={task.id}
-                className={`flex items-center gap-3 p-3 rounded-lg transition-colors group ${
-                  task.completed ? 'bg-green-50' : 'bg-slate-50 hover:bg-slate-100'
-                }`}
-              >
-                <button
-                  onClick={() => toggleTask(task.id, !task.completed)}
-                  className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                    task.completed
-                      ? 'bg-green-500 border-green-500 text-white'
-                      : 'border-slate-300 hover:border-blue-400'
+            {filteredTasks.length === 0 ? (
+              <p className="text-center py-4 text-slate-500 text-sm">No tasks match the filters</p>
+            ) : (
+              filteredTasks.map((task) => (
+                <div
+                  key={task.id}
+                  onClick={() => setSelectedTask(task)}
+                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors cursor-pointer group border ${
+                    task.status === 'completed'
+                      ? 'bg-green-50 border-green-200'
+                      : 'bg-slate-50 hover:bg-slate-100 border-transparent'
                   }`}
                 >
-                  {task.completed && (
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  {/* Priority indicator */}
+                  <div className={`w-1 h-8 rounded ${
+                    task.priority === 'high' ? 'bg-red-500' :
+                    task.priority === 'medium' ? 'bg-yellow-500' :
+                    'bg-slate-300'
+                  }`} />
+
+                  {/* Status badge */}
+                  <div className={`px-2 py-1 rounded text-xs font-medium ${STATUS_COLORS[task.status as keyof typeof STATUS_COLORS]}`}>
+                    {STATUS_LABELS[task.status as keyof typeof STATUS_LABELS]}
+                  </div>
+
+                  {/* Task title */}
+                  <span
+                    className={`flex-1 ${
+                      task.status === 'completed' ? 'text-slate-500 line-through' : 'text-slate-700'
+                    }`}
+                  >
+                    {task.title}
+                  </span>
+
+                  {/* Due date badge */}
+                  {task.dueDate && (
+                    <span
+                      className={`text-xs px-2 py-1 rounded ${
+                        isOverdue(task.dueDate, task.status)
+                          ? 'bg-red-100 text-red-700'
+                          : isDueSoon(task.dueDate, task.status)
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-slate-100 text-slate-600'
+                      }`}
+                    >
+                      {formatDueDate(task.dueDate)}
+                    </span>
+                  )}
+
+                  {/* Assignee */}
+                  {task.assignedToName && (
+                    <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                      {task.assignedToName}
+                    </span>
+                  )}
+
+                  {/* Comments count */}
+                  {task._count && task._count.comments > 0 && (
+                    <span className="text-xs text-slate-500 flex items-center gap-1">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                      </svg>
+                      {task._count.comments}
+                    </span>
+                  )}
+
+                  {/* Blocked indicator */}
+                  {task.blockedByIds && task.blockedByIds.length > 0 && (
+                    <span className="text-xs text-red-600" title="Blocked by other tasks">
+                      🔒
+                    </span>
+                  )}
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteTask(task.id);
+                    }}
+                    className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-red-500 transition-all"
+                    title="Delete task"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                       />
                     </svg>
-                  )}
-                </button>
-                <span
-                  className={`flex-1 ${
-                    task.completed ? 'text-slate-500 line-through' : 'text-slate-700'
-                  }`}
-                >
-                  {task.title}
-                </span>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-red-500 transition-all"
-                  title="Delete task"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </button>
-              </div>
-            ))}
+                  </button>
+                </div>
+              ))
+            )}
 
             {showAddForm ? (
               <div className="flex items-center gap-2 p-2">
@@ -207,6 +414,17 @@ export default function TaskChecklist({ packId, tasks, onTasksChange }: TaskChec
           </div>
         )}
       </div>
+
+      {/* Task Detail Modal */}
+      {selectedTask && (
+        <TaskDetailModal
+          packId={packId}
+          task={selectedTask}
+          allTasks={tasks}
+          onClose={() => setSelectedTask(null)}
+          onUpdate={onTasksChange}
+        />
+      )}
     </div>
   );
 }

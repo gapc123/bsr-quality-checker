@@ -193,20 +193,122 @@ router.get('/:id/summary', async (req: Request, res: Response) => {
 
 // ==================== TASK ENDPOINTS ====================
 
-// GET /api/packs/:id/tasks - Get all tasks for a pack
+// GET /api/packs/:id/tasks - Get all tasks for a pack with filtering and sorting
 router.get('/:id/tasks', async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
+    const { status, assignedTo, priority, overdue, blocked, sort, order } = req.query;
+
+    // Build where clause
+    const where: any = { packId: id };
+
+    if (status) {
+      where.status = status as string;
+    }
+
+    if (assignedTo) {
+      where.assignedTo = assignedTo as string;
+    }
+
+    if (priority) {
+      where.priority = priority as string;
+    }
+
+    if (overdue === 'true') {
+      where.dueDate = { lt: new Date() };
+      where.status = { not: 'completed' };
+    }
+
+    if (blocked === 'true') {
+      where.status = 'blocked';
+    }
+
+    // Build orderBy clause
+    let orderBy: any = { sortOrder: 'asc' };
+    if (sort) {
+      const direction = order === 'desc' ? 'desc' : 'asc';
+      switch (sort) {
+        case 'dueDate':
+          orderBy = { dueDate: direction };
+          break;
+        case 'priority':
+          orderBy = { priority: direction };
+          break;
+        case 'status':
+          orderBy = { status: direction };
+          break;
+        case 'createdAt':
+          orderBy = { createdAt: direction };
+          break;
+        default:
+          orderBy = { sortOrder: direction };
+      }
+    }
 
     const tasks = await prisma.packTask.findMany({
-      where: { packId: id },
-      orderBy: { sortOrder: 'asc' },
+      where,
+      orderBy,
+      include: {
+        _count: {
+          select: { comments: true },
+        },
+      },
     });
 
-    res.json(tasks);
+    // Parse JSON fields
+    const tasksWithParsedData = tasks.map(task => ({
+      ...task,
+      blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
+      tags: task.tags ? JSON.parse(task.tags) : [],
+    }));
+
+    res.json(tasksWithParsedData);
   } catch (error) {
     console.error('Error getting tasks:', error);
     res.status(500).json({ error: 'Failed to get tasks' });
+  }
+});
+
+// GET /api/packs/:packId/tasks/:taskId - Get single task with full details
+router.get('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
+  try {
+    const taskId = req.params.taskId as string;
+    const packId = req.params.packId as string;
+
+    const task = await prisma.packTask.findFirst({
+      where: { id: taskId, packId },
+      include: {
+        comments: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    if (!task) {
+      res.status(404).json({ error: 'Task not found' });
+      return;
+    }
+
+    // Parse JSON fields
+    const taskWithParsedData = {
+      ...task,
+      blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
+      tags: task.tags ? JSON.parse(task.tags) : [],
+    };
+
+    // If task has blockedByIds, fetch those tasks for display
+    if (taskWithParsedData.blockedByIds.length > 0) {
+      const blockingTasks = await prisma.packTask.findMany({
+        where: { id: { in: taskWithParsedData.blockedByIds } },
+        select: { id: true, title: true, status: true },
+      });
+      (taskWithParsedData as any).blockingTasks = blockingTasks;
+    }
+
+    res.json(taskWithParsedData);
+  } catch (error) {
+    console.error('Error getting task:', error);
+    res.status(500).json({ error: 'Failed to get task' });
   }
 });
 
@@ -247,23 +349,123 @@ router.post('/:id/tasks', async (req: Request, res: Response) => {
 router.put('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
   try {
     const taskId = req.params.taskId as string;
-    const { title, description, completed, sortOrder } = req.body;
+    const packId = req.params.packId as string;
+    const {
+      title,
+      description,
+      completed,
+      status,
+      sortOrder,
+      assignedTo,
+      assignedToName,
+      dueDate,
+      priority,
+      blockedByIds,
+      tags,
+      category,
+      estimatedHours,
+      actualHours,
+    } = req.body;
+
+    // Validate circular dependencies if blockedByIds is being updated
+    if (blockedByIds !== undefined && Array.isArray(blockedByIds)) {
+      // Check for self-reference
+      if (blockedByIds.includes(taskId)) {
+        res.status(400).json({ error: 'A task cannot block itself' });
+        return;
+      }
+
+      // Check for circular dependencies using simple BFS
+      const visited = new Set<string>([taskId]);
+      const queue = [...blockedByIds];
+
+      while (queue.length > 0) {
+        const currentId = queue.shift()!;
+        if (visited.has(currentId)) {
+          res.status(400).json({ error: 'Circular dependency detected' });
+          return;
+        }
+        visited.add(currentId);
+
+        // Get dependencies of current task
+        const currentTask = await prisma.packTask.findUnique({
+          where: { id: currentId },
+          select: { blockedByIds: true },
+        });
+
+        if (currentTask?.blockedByIds) {
+          const deps = JSON.parse(currentTask.blockedByIds);
+          queue.push(...deps);
+        }
+      }
+    }
 
     const updateData: Record<string, unknown> = {};
+
     if (title !== undefined) updateData.title = title;
     if (description !== undefined) updateData.description = description || null;
     if (sortOrder !== undefined) updateData.sortOrder = sortOrder;
-    if (completed !== undefined) {
+    if (category !== undefined) updateData.category = category || null;
+    if (estimatedHours !== undefined) updateData.estimatedHours = estimatedHours;
+    if (actualHours !== undefined) updateData.actualHours = actualHours;
+
+    // Handle status update
+    if (status !== undefined) {
+      updateData.status = status;
+      if (status === 'completed') {
+        updateData.completed = true;
+        updateData.completedAt = new Date();
+      } else {
+        updateData.completed = false;
+        if (status !== 'completed') updateData.completedAt = null;
+      }
+    }
+
+    // Backward compatibility for completed field
+    if (completed !== undefined && status === undefined) {
       updateData.completed = completed;
       updateData.completedAt = completed ? new Date() : null;
+      updateData.status = completed ? 'completed' : 'not_started';
+    }
+
+    // Assignment
+    if (assignedTo !== undefined) updateData.assignedTo = assignedTo || null;
+    if (assignedToName !== undefined) updateData.assignedToName = assignedToName || null;
+
+    // Dates
+    if (dueDate !== undefined) {
+      updateData.dueDate = dueDate ? new Date(dueDate) : null;
+    }
+
+    // Priority
+    if (priority !== undefined) updateData.priority = priority;
+
+    // JSON fields
+    if (blockedByIds !== undefined) {
+      updateData.blockedByIds = JSON.stringify(blockedByIds);
+    }
+    if (tags !== undefined) {
+      updateData.tags = JSON.stringify(tags);
     }
 
     const task = await prisma.packTask.update({
       where: { id: taskId },
       data: updateData,
+      include: {
+        _count: {
+          select: { comments: true },
+        },
+      },
     });
 
-    res.json(task);
+    // Parse JSON fields for response
+    const taskWithParsedData = {
+      ...task,
+      blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
+      tags: task.tags ? JSON.parse(task.tags) : [],
+    };
+
+    res.json(taskWithParsedData);
   } catch (error) {
     console.error('Error updating task:', error);
     res.status(500).json({ error: 'Failed to update task' });
@@ -275,6 +477,26 @@ router.delete('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
   try {
     const taskId = req.params.taskId as string;
 
+    // Remove this task from other tasks' blockedByIds
+    const allTasks = await prisma.packTask.findMany({
+      where: {
+        packId: req.params.packId,
+      },
+    });
+
+    for (const task of allTasks) {
+      if (task.blockedByIds) {
+        const blockedByIds = JSON.parse(task.blockedByIds);
+        if (blockedByIds.includes(taskId)) {
+          const updatedIds = blockedByIds.filter((id: string) => id !== taskId);
+          await prisma.packTask.update({
+            where: { id: task.id },
+            data: { blockedByIds: JSON.stringify(updatedIds) },
+          });
+        }
+      }
+    }
+
     await prisma.packTask.delete({
       where: { id: taskId },
     });
@@ -283,6 +505,102 @@ router.delete('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error deleting task:', error);
     res.status(500).json({ error: 'Failed to delete task' });
+  }
+});
+
+// POST /api/packs/:packId/tasks/:taskId/comments - Add comment to task
+router.post('/:packId/tasks/:taskId/comments', async (req: Request, res: Response) => {
+  try {
+    const taskId = req.params.taskId as string;
+    const { userId, userName, content } = req.body;
+
+    if (!content || typeof content !== 'string') {
+      res.status(400).json({ error: 'Comment content is required' });
+      return;
+    }
+
+    if (!userId || !userName) {
+      res.status(400).json({ error: 'User information is required' });
+      return;
+    }
+
+    const comment = await prisma.taskComment.create({
+      data: {
+        taskId,
+        userId,
+        userName,
+        content,
+      },
+    });
+
+    res.status(201).json(comment);
+  } catch (error) {
+    console.error('Error creating comment:', error);
+    res.status(500).json({ error: 'Failed to create comment' });
+  }
+});
+
+// DELETE /api/packs/:packId/tasks/:taskId/comments/:commentId - Delete comment
+router.delete('/:packId/tasks/:taskId/comments/:commentId', async (req: Request, res: Response) => {
+  try {
+    const commentId = req.params.commentId as string;
+
+    await prisma.taskComment.delete({
+      where: { id: commentId },
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    res.status(500).json({ error: 'Failed to delete comment' });
+  }
+});
+
+// POST /api/packs/:packId/tasks/bulk - Bulk create tasks (for templates)
+router.post('/:packId/tasks/bulk', async (req: Request, res: Response) => {
+  try {
+    const packId = req.params.packId as string;
+    const { tasks } = req.body;
+
+    if (!Array.isArray(tasks) || tasks.length === 0) {
+      res.status(400).json({ error: 'Tasks array is required' });
+      return;
+    }
+
+    // Create all tasks
+    const createdTasks = await Promise.all(
+      tasks.map((task, index) =>
+        prisma.packTask.create({
+          data: {
+            packId,
+            title: task.title,
+            description: task.description || null,
+            sortOrder: task.sortOrder !== undefined ? task.sortOrder : index,
+            status: task.status || 'not_started',
+            priority: task.priority || 'medium',
+            dueDate: task.dueDate ? new Date(task.dueDate) : null,
+            category: task.category || null,
+            estimatedHours: task.estimatedHours || null,
+            tags: task.tags ? JSON.stringify(task.tags) : null,
+            blockedByIds: task.blockedByIds ? JSON.stringify(task.blockedByIds) : null,
+            assignedTo: task.assignedTo || null,
+            assignedToName: task.assignedToName || null,
+          },
+        })
+      )
+    );
+
+    // Parse JSON fields for response
+    const tasksWithParsedData = createdTasks.map(task => ({
+      ...task,
+      blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
+      tags: task.tags ? JSON.parse(task.tags) : [],
+    }));
+
+    res.status(201).json(tasksWithParsedData);
+  } catch (error) {
+    console.error('Error bulk creating tasks:', error);
+    res.status(500).json({ error: 'Failed to bulk create tasks' });
   }
 });
 
