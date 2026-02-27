@@ -194,12 +194,18 @@ ${lowSeverity.map(r => formatFindingCompact(r)).join('\n')}
   }
 
   // ============================================
-  // PASSED CRITERIA (Compact List)
+  // PASSED CRITERIA - How Compliance Was Demonstrated
   // ============================================
   if (passResults.length > 0) {
-    sections.push(`## Passed Criteria
+    sections.push(`## Compliance Demonstrated
 
-${passResults.map(r => `- **${r.matrix_id}:** ${r.matrix_title}`).join('\n')}
+The following criteria were successfully met. Each shows how your submission demonstrates compliance with BSR requirements.
+
+<div class="compliance-section">
+
+${passResults.map(r => formatPassedCriterion(r)).join('\n')}
+
+</div>
 
 ---
 
@@ -308,7 +314,11 @@ function formatFindingCompact(result: AssessmentResult): string {
   const gaps = result.gaps_identified.slice(0, 2);
   const topAction = result.actions_required[0];
 
-  // Very compact: ID, title, status on one line, brief reasoning, one key action
+  // Enhanced format aligning with BSR compliance narrative:
+  // 1. IDENTIFY the requirement (success_definition)
+  // 2. CLARIFY the standard (reference_evidence)
+  // 3. JUSTIFY with evidence from submission or explain gap
+  // 4. ADDRESS with action
   return `<div class="finding ${result.severity}">
 <div class="finding-header">
 <span class="finding-id">${result.matrix_id}</span>
@@ -316,11 +326,32 @@ function formatFindingCompact(result: AssessmentResult): string {
 ${statusBadge(result.status)}
 </div>
 
-${truncateText(result.reasoning, 180)}
+<div class="requirement-box">
+<strong>BSR Requirement:</strong> ${truncateText(result.success_definition, 200)}
+</div>
 
-${gaps.length > 0 ? `**Gaps:** ${gaps.map(g => truncateText(g, 60)).join(' - ')}` : ''}
+${result.reference_evidence.found ? `<div class="reference-box">
+<strong>Regulatory Reference:</strong> ${result.reference_evidence.doc_title || 'Building Regulations'}
+${result.reference_evidence.quote ? `<blockquote>"${truncateText(result.reference_evidence.quote, 150)}"</blockquote>` : ''}
+</div>` : ''}
 
-${topAction ? `**Action:** ${topAction.action} *(${topAction.owner})*` : ''}
+<div class="assessment-box">
+<strong>Assessment:</strong> ${result.reasoning}
+</div>
+
+${result.pack_evidence.found ? `<div class="evidence-box ${result.status === 'meets' ? 'pass' : 'partial'}">
+<strong>Your Submission:</strong> Found in ${result.pack_evidence.document || 'documents'}
+${result.pack_evidence.quote ? `<blockquote>"${truncateText(result.pack_evidence.quote, 150)}"</blockquote>` : ''}
+</div>` : ''}
+
+${gaps.length > 0 ? `<div class="gaps-box">
+<strong>Gaps Identified:</strong>
+<ul>${gaps.map(g => `<li>${g}</li>`).join('')}</ul>
+</div>` : ''}
+
+${topAction ? `<div class="action-box">
+<strong>Required Action:</strong> ${topAction.action} <em>(Owner: ${topAction.owner}, Effort: ${topAction.effort})</em>
+</div>` : ''}
 </div>
 
 `;
@@ -329,6 +360,29 @@ ${topAction ? `**Action:** ${topAction.action} *(${topAction.owner})*` : ''}
 function truncateText(text: string, maxLen: number): string {
   if (text.length <= maxLen) return text;
   return text.substring(0, maxLen).trim() + '...';
+}
+
+/**
+ * Format a passed criterion showing HOW compliance was demonstrated
+ * This aligns with the landing page narrative: Identify, Clarify, Justify
+ */
+function formatPassedCriterion(result: AssessmentResult): string {
+  return `<div class="compliance-item pass">
+<div class="compliance-header">
+<span class="badge pass">PASS</span>
+<strong>${result.matrix_id}: ${result.matrix_title}</strong>
+</div>
+
+<div class="compliance-details">
+<p><strong>Requirement:</strong> ${truncateText(result.success_definition, 150)}</p>
+${result.pack_evidence.found && result.pack_evidence.quote
+  ? `<p><strong>Evidence Found:</strong> "${truncateText(result.pack_evidence.quote, 120)}" <em>— ${result.pack_evidence.document || 'Submission'}</em></p>`
+  : `<p><strong>Compliance:</strong> ${truncateText(result.reasoning, 150)}</p>`
+}
+</div>
+</div>
+
+`;
 }
 
 function statusBadge(status: string): string {

@@ -990,6 +990,105 @@ function markdownToHtml(markdown: string): string {
     .finding th { padding: 0.35rem 0.5rem; }
     .finding td { padding: 0.35rem 0.5rem; }
 
+    /* Compliance Narrative Boxes - aligns with landing page: Identify, Clarify, Justify, Address */
+    .requirement-box {
+      background: #f0f9ff;
+      border-left: 3px solid #0284c7;
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+    }
+    .reference-box {
+      background: #faf5ff;
+      border-left: 3px solid #9333ea;
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+    }
+    .reference-box blockquote {
+      margin: 0.3rem 0 0 0;
+      padding-left: 0.5rem;
+      border-left: 2px solid #c4b5fd;
+      color: #6b21a8;
+      font-style: italic;
+      font-size: 0.75rem;
+    }
+    .assessment-box {
+      background: #f8fafc;
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+    }
+    .evidence-box {
+      background: #f0fdf4;
+      border-left: 3px solid #22c55e;
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+    }
+    .evidence-box.partial {
+      background: #fefce8;
+      border-left-color: #eab308;
+    }
+    .evidence-box blockquote {
+      margin: 0.3rem 0 0 0;
+      padding-left: 0.5rem;
+      border-left: 2px solid #86efac;
+      color: #166534;
+      font-style: italic;
+      font-size: 0.75rem;
+    }
+    .gaps-box {
+      background: #fef2f2;
+      border-left: 3px solid #ef4444;
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+    }
+    .gaps-box ul {
+      margin: 0.3rem 0 0 1rem;
+      padding: 0;
+    }
+    .gaps-box li {
+      margin: 0.2rem 0;
+      font-size: 0.75rem;
+    }
+    .action-box {
+      background: #fffbeb;
+      border-left: 3px solid #f59e0b;
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.8rem;
+    }
+
+    /* Compliance Demonstrated Section */
+    .compliance-section { margin: 1rem 0; }
+    .compliance-item {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      page-break-inside: avoid;
+    }
+    .compliance-item.pass {
+      border-left: 4px solid #22c55e;
+      background: linear-gradient(90deg, #f0fdf4 0%, white 15%);
+    }
+    .compliance-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .compliance-details {
+      font-size: 0.8rem;
+      color: #475569;
+    }
+    .compliance-details p {
+      margin: 0.3rem 0;
+    }
+
     /* Disclaimer */
     .disclaimer {
       background: #f1f5f9;
