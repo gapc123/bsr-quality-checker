@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SecurityPanel from '../components/SecurityPanel';
 import ActionableChanges from '../components/ActionableChanges';
+import CriterionCarousel, { CriterionDecision } from '../components/CriterionCarousel';
 
 interface MatrixUISummary {
   overallStatus: {
@@ -82,6 +83,7 @@ interface CriterionResult {
     expected_benefit: string;
   }>;
   confidence: 'high' | 'medium' | 'low';
+  proposed_change?: string | null;
 }
 
 interface AnalysisStatus {
@@ -110,6 +112,13 @@ export default function Results() {
   const [humanChanges, setHumanChanges] = useState<any[]>([]);
   const [hasUpdatedReport, setHasUpdatedReport] = useState(false);
   const [showCriteriaDetails, setShowCriteriaDetails] = useState(true); // Show by default
+  const [showCarousel, setShowCarousel] = useState(false);
+  const [generatingDocuments, setGeneratingDocuments] = useState(false);
+  const [generatedDocuments, setGeneratedDocuments] = useState<{
+    amendedDocx?: { filename: string; downloadUrl: string };
+    amendedPdf?: { filename: string; downloadUrl: string };
+    outstandingIssues?: { filename: string; downloadUrl: string };
+  } | null>(null);
 
   useEffect(() => {
     checkStatusAndFetch();
@@ -145,9 +154,9 @@ export default function Results() {
         const data = await res.json();
         setUiSummary(data.uiSummary);
         setCriteriaResults(data.results || []);
-        // Show AI actions modal when assessment just completed
-        if (showModal) {
-          setShowChangesModal(true);
+        // Show carousel automatically when assessment completes
+        if (showModal && data.results?.some((c: CriterionResult) => c.status !== 'meets' && c.status !== 'not_assessed')) {
+          setShowCarousel(true);
         }
       }
 
@@ -185,7 +194,7 @@ export default function Results() {
 
         if (data.status === 'completed') {
           clearInterval(pollInterval);
-          fetchMatrixReport(true); // Show AI actions modal
+          fetchMatrixReport(true); // Show carousel automatically
           fetchActionableChanges();
         } else if (data.status === 'failed') {
           clearInterval(pollInterval);
@@ -275,6 +284,44 @@ export default function Results() {
     } catch (error) {
       console.error('Error applying changes:', error);
       throw error;
+    }
+  };
+
+  const handleCarouselComplete = async (decisions: CriterionDecision[]) => {
+    setShowCarousel(false);
+    setGeneratingDocuments(true);
+
+    const acceptedChanges = decisions
+      .filter(d => d.accepted === true && d.proposed_change)
+      .map(d => ({
+        matrix_id: d.matrix_id,
+        proposed_change: d.proposed_change!
+      }));
+
+    const skippedCriteriaIds = decisions
+      .filter(d => d.accepted === false || d.accepted === null)
+      .map(d => d.matrix_id);
+
+    try {
+      const res = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/generate-amended-documents`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ acceptedChanges, skippedCriteriaIds })
+        }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setGeneratedDocuments(data);
+      } else {
+        console.error('Failed to generate documents');
+      }
+    } catch (error) {
+      console.error('Error generating amended documents:', error);
+    } finally {
+      setGeneratingDocuments(false);
     }
   };
 
@@ -904,6 +951,178 @@ export default function Results() {
             </div>
           </div>
 
+          {/* Criteria Carousel Section */}
+          {criteriaResults.some(c => c.status !== 'meets' && c.status !== 'not_assessed') && !generatedDocuments && (() => {
+            const actionableCriteria = criteriaResults.filter(c => c.status !== 'meets' && c.status !== 'not_assessed');
+            const aiActionableCount = actionableCriteria.filter(c => c.proposed_change).length;
+            const humanInterventionCount = actionableCriteria.filter(c => !c.proposed_change).length;
+
+            return (
+              <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 text-white shadow-lg mb-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold mb-3">Review Assessment Results</h3>
+
+                    {/* Segmented Counts */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      {/* AI Actionable Changes */}
+                      <div className="bg-green-500/20 border border-green-400/30 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                          <span className="text-lg font-bold text-green-400">AI Actionable Changes: {aiActionableCount}</span>
+                        </div>
+                        <p className="text-xs text-green-200/80">
+                          Text changes AI can apply directly to your documents. Review and accept or reject each proposed change.
+                        </p>
+                      </div>
+
+                      {/* Human Intervention Required */}
+                      <div className="bg-amber-500/20 border border-amber-400/30 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                          </svg>
+                          <span className="text-lg font-bold text-amber-400">Human Intervention Required: {humanInterventionCount}</span>
+                        </div>
+                        <p className="text-xs text-amber-200/80">
+                          Issues requiring new documents, expert analysis, or evidence. These will be added to your Outstanding Issues Report.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => setShowCarousel(true)}
+                        disabled={generatingDocuments}
+                        className="px-6 py-3 bg-white text-slate-800 rounded-lg font-semibold hover:bg-slate-100 transition-colors shadow-md flex items-center gap-2"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Review All Items
+                      </button>
+                      <span className="text-slate-400 text-sm">
+                        {aiActionableCount > 0 && `${aiActionableCount} AI changes to review`}
+                        {aiActionableCount > 0 && humanInterventionCount > 0 && ' • '}
+                        {humanInterventionCount > 0 && `${humanInterventionCount} items for Outstanding Issues Report`}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Document Generation Progress */}
+          {generatingDocuments && (
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 mb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900">Generating Your Documents</h3>
+                  <p className="text-sm text-slate-600">Applying your approved changes and creating download files...</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Generated Documents Ready */}
+          {generatedDocuments && (
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-6 mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900">Your Documents Are Ready</h3>
+                  <p className="text-sm text-slate-600">Download your amended submission and review outstanding issues</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Amended Word Doc */}
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    <h4 className="font-semibold text-slate-900">Amended Document</h4>
+                  </div>
+                  <p className="text-xs text-slate-600 mb-3">
+                    Word document with your approved changes. Includes table of contents and explanation of amendments.
+                  </p>
+                  <a
+                    href={generatedDocuments.amendedDocx?.downloadUrl}
+                    download={generatedDocuments.amendedDocx?.filename}
+                    className="block w-full py-2 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 text-sm"
+                  >
+                    Download DOCX
+                  </a>
+                </div>
+
+                {/* PDF Version */}
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                    </svg>
+                    <h4 className="font-semibold text-slate-900">PDF Version</h4>
+                  </div>
+                  <p className="text-xs text-slate-600 mb-3">
+                    Same amended content as PDF for sharing or printing.
+                  </p>
+                  <a
+                    href={generatedDocuments.amendedPdf?.downloadUrl}
+                    download={generatedDocuments.amendedPdf?.filename}
+                    className="block w-full py-2 bg-slate-700 text-white text-center rounded-lg font-medium hover:bg-slate-800 text-sm"
+                  >
+                    Download PDF
+                  </a>
+                </div>
+
+                {/* Outstanding Issues */}
+                <div className="bg-white rounded-lg p-4 border border-amber-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <h4 className="font-semibold text-slate-900">Outstanding Issues</h4>
+                  </div>
+                  <p className="text-xs text-slate-600 mb-3">
+                    Items you skipped that require manual review by your team.
+                  </p>
+                  <a
+                    href={generatedDocuments.outstandingIssues?.downloadUrl}
+                    download={generatedDocuments.outstandingIssues?.filename}
+                    className="block w-full py-2 bg-amber-500 text-white text-center rounded-lg font-medium hover:bg-amber-600 text-sm"
+                  >
+                    Download Issues
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-xs text-blue-800">
+                  <strong>What's in each document:</strong> The Amended Document contains your original submission with AI-suggested
+                  changes integrated (highlighted in yellow). The Outstanding Issues report lists all criteria you skipped,
+                  with full context and recommended actions for your team to address manually.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Download Section - Two Options */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* PDF Option */}
@@ -1090,6 +1309,15 @@ export default function Results() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Criterion Carousel Modal */}
+      {showCarousel && (
+        <CriterionCarousel
+          criteria={criteriaResults}
+          onComplete={handleCarouselComplete}
+          onClose={() => setShowCarousel(false)}
+        />
       )}
     </div>
   );

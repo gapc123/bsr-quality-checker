@@ -1,7 +1,7 @@
-# Meridian Outreach Target List
+# Attlee Outreach Target List
 ## Gateway 2 Decision Makers - UK/London
 
-*20 potential buyers for Meridian platform*
+*20 potential buyers for Attlee platform*
 
 ---
 
@@ -69,7 +69,7 @@
 
 ### Message Angle
 - Lead with the problem: "76% of Gateway 2 decisions are London projects, with some waiting 48 weeks"
-- Position Meridian as reducing rejection risk: "Only 1/3 of submissions approved first time"
+- Position Attlee as reducing rejection risk: "Only 1/3 of submissions approved first time"
 - Differentiate from generic AI: "55 deterministic rules, not ChatGPT"
 
 ### Suggested Channels

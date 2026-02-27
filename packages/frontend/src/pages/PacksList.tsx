@@ -17,21 +17,21 @@ interface Pack {
 const WORKFLOW_STEPS = [
   {
     number: '1',
-    title: 'Upload Documents',
-    description: 'Add your Gateway 2 pack documents (fire strategy, drawings, etc.)',
-    note: 'Optional but recommended for tailored analysis',
+    title: 'Upload Client Documents',
+    description: 'Add client Gateway 2 pack documents (fire strategy, drawings, etc.)',
+    note: 'Supports PDF, Word, and image files',
   },
   {
     number: '2',
-    title: 'Run Quality Check',
-    description: 'Cross-reference against BSR requirements and reference materials',
-    note: 'Takes 1-2 minutes to analyse',
+    title: 'Run Assessment',
+    description: 'AI analysis against 55+ BSR criteria with deterministic checks',
+    note: 'Takes 1-2 minutes to complete',
   },
   {
     number: '3',
-    title: 'Review Gaps & Actions',
-    description: 'Get a prioritised list of issues with recommended next steps',
-    note: 'Export as PDF, Markdown, or JSON',
+    title: 'Review & Verify',
+    description: 'Review AI findings, verify accuracy, and prepare client deliverables',
+    note: 'Export as PDF report or amended documents',
   },
 ];
 
@@ -81,7 +81,7 @@ export default function PacksList() {
   };
 
   const deletePack = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this submission pack?')) return;
+    if (!confirm('Are you sure you want to delete this client pack?')) return;
 
     try {
       await fetch(`/api/packs/${id}`, { method: 'DELETE' });
@@ -101,37 +101,34 @@ export default function PacksList() {
 
   return (
     <div>
-      {/* Hero Section with Background Image */}
+      {/* Internal Tool Header */}
       <div className="relative rounded-xl overflow-hidden shadow-lg mb-6">
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80')" }}
-        />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-800/90 to-blue-900/85" />
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900" />
         {/* Content */}
         <div className="relative p-8">
           <div className="max-w-3xl">
-            <span className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-wider shadow-md">
-              GATEWAY 2
-            </span>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="inline-block bg-amber-500 text-amber-950 text-xs font-bold px-3 py-1 rounded-full tracking-wider">
+                INTERNAL TOOL
+              </span>
+              <span className="inline-block bg-blue-500/20 text-blue-300 text-xs font-bold px-3 py-1 rounded-full tracking-wider border border-blue-500/30">
+                GATEWAY 2
+              </span>
+            </div>
             <h1 className="text-3xl font-bold text-white mb-2">
-              Submission Quality Checker
+              Client Assessment Dashboard
             </h1>
-            <p className="text-lg text-blue-100 mb-6">
-              Upload your Gateway 2 pack, check clarity and consistency, and get an actions-first
-              gap analysis with evidence and references.
+            <p className="text-lg text-slate-300 mb-6">
+              Upload client submission packs, run AI-powered assessments, verify findings, and generate deliverables.
             </p>
             <div className="flex items-start gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-              <svg className="w-5 h-5 text-blue-300 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
-              <div className="text-sm text-blue-100">
-                <strong className="text-white">What this tool does:</strong> Assesses your documents against 55+ deterministic
-                criteria and regulatory requirements using AI analysis. Identifies gaps and produces a
-                prioritised action list. <span className="text-blue-200">This is a submission review tool — it
-                does not certify compliance or replace BSR approval.</span>
+              <div className="text-sm text-slate-300">
+                <strong className="text-white">Reminder:</strong> All AI findings must be reviewed and verified before
+                including in client deliverables. This tool assists your analysis — final sign-off is your responsibility.
               </div>
             </div>
           </div>
@@ -165,7 +162,7 @@ export default function PacksList() {
         </div>
       </div>
 
-      {/* How It Works - AI/Methodology Section */}
+      {/* AI Methodology Note */}
       <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 p-6 mb-8">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0">
@@ -176,48 +173,43 @@ export default function PacksList() {
             </div>
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-900 mb-2">Powered by Proprietary AI</h3>
+            <h3 className="font-semibold text-slate-900 mb-2">Our Proprietary Assessment Engine</h3>
             <p className="text-sm text-slate-600 mb-3">
-              This tool uses a <strong>proprietary Regulatory Success Matrix</strong> developed from comprehensive
-              analysis of BSR guidance, Building Regulations, and Gateway 2 requirements. Your documents are assessed
-              using <strong>advanced AI and machine learning algorithms</strong> that cross-reference your submission
-              against authoritative regulatory source material.
+              This tool uses our <strong>proprietary Regulatory Success Matrix</strong> with 55+ deterministic checks
+              and LLM-powered analysis. Documents are cross-referenced against BSR guidance, Building Regulations,
+              and Gateway 2 requirements.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                <span>LLM-powered document analysis</span>
+                <span>Deterministic rule checks</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                <span>Evidence-anchored assessments</span>
+                <span>Evidence-anchored citations</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-500">
-                <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                <span>Corpus-backed references</span>
+                <span>No hallucinations</span>
               </div>
             </div>
-            <p className="text-xs text-slate-500 border-t border-slate-200 pt-3">
-              <strong>Important:</strong> This tool assesses against 55+ criteria using deterministic rules and AI analysis.
-              Results do not guarantee regulatory approval. Final decisions rest with the Building Safety Regulator.
-            </p>
           </div>
         </div>
       </div>
 
-      {/* Packs Section */}
+      {/* Client Packs Section */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         <div className="px-6 py-4 border-b border-slate-200">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">Your Submission Packs</h2>
-              <p className="text-sm text-slate-500">Create a pack for each project or building</p>
+              <h2 className="text-lg font-semibold text-slate-900">Client Submission Packs</h2>
+              <p className="text-sm text-slate-500">Create a pack for each client project</p>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
@@ -226,7 +218,7 @@ export default function PacksList() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              New Submission Pack
+              New Client Pack
             </button>
           </div>
         </div>
@@ -239,9 +231,9 @@ export default function PacksList() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No submission packs yet</h3>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">No client packs yet</h3>
               <p className="text-slate-500 mb-6 max-w-sm mx-auto">
-                Create your first submission pack to begin reviewing your Gateway 2 documents.
+                Create a pack for your first client to begin their Gateway 2 assessment.
               </p>
               <button
                 onClick={() => setShowCreateModal(true)}
@@ -250,7 +242,7 @@ export default function PacksList() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                Create Your First Pack
+                Create First Client Pack
               </button>
             </div>
           ) : (
@@ -317,7 +309,7 @@ export default function PacksList() {
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Create Submission Pack</h2>
+              <h2 className="text-lg font-semibold text-slate-900">Create Client Pack</h2>
               <button
                 onClick={() => setShowCreateModal(false)}
                 className="text-slate-400 hover:text-slate-600"
@@ -328,7 +320,7 @@ export default function PacksList() {
               </button>
             </div>
             <p className="text-sm text-slate-500 mb-4">
-              Give your submission pack a descriptive name, such as the project name and submission type.
+              Enter the client project name and submission type for easy identification.
             </p>
             <input
               type="text"

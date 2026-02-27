@@ -12,7 +12,7 @@ import Pricing from './pages/Pricing';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import SubscriptionGate from './components/SubscriptionGate';
-import { DEMO_USER_EMAIL } from './config/contact';
+import { DEMO_USER_EMAIL, BOOK_DEMO_URL } from './config/contact';
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -54,8 +54,8 @@ function AppContent() {
                   </svg>
                 </div>
                 <div>
-                  <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Meridian</span>
-                  <span className="hidden sm:block text-xs text-slate-400">AI-Powered Regulatory Compliance</span>
+                  <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Attlee.AI</span>
+                  <span className="hidden sm:block text-xs text-slate-400">AI-Powered Consultancy</span>
                 </div>
               </Link>
 
@@ -68,7 +68,7 @@ function AppContent() {
                     </span>
                   )}
                   <nav className="flex items-center gap-2">
-                    <NavLink to="/dashboard">Submission Packs</NavLink>
+                    <NavLink to="/dashboard">Client Packs</NavLink>
                     <NavLink to="/butler">Reference Library</NavLink>
                   </nav>
                   <div className="ml-4 pl-4 border-l border-slate-700">
@@ -111,40 +111,22 @@ function AppContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <span className="text-lg font-bold text-white">BSR Quality Checker</span>
+                <div>
+                  <span className="text-lg font-bold text-white">Attlee.AI</span>
+                  <span className="block text-xs text-white/60">AI-Powered Consultancy</span>
+                </div>
               </Link>
 
               <nav className="flex items-center gap-4">
-                <SignedOut>
-                  <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
-                    Pricing
-                  </Link>
-                  <Link to="/sign-in" className="text-white/80 hover:text-white font-medium transition-colors">
-                    Sign In
-                  </Link>
-                  <a
-                    href="/#contact"
-                    className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
-                  >
-                    Book a Demo
-                  </a>
-                </SignedOut>
-                <SignedIn>
-                  <Link
-                    to="/dashboard"
-                    className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
-                  >
-                    Dashboard
-                  </Link>
-                  <UserButton
-                    afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-9 h-9"
-                      }
-                    }}
-                  />
-                </SignedIn>
+                <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
+                  Pricing
+                </Link>
+                <a
+                  href={BOOK_DEMO_URL}
+                  className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
+                >
+                  Book a Demo
+                </a>
               </nav>
             </div>
           </div>
@@ -228,11 +210,16 @@ function AppContent() {
         <footer className="bg-slate-900 border-t border-slate-800">
           <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-sm text-slate-400">
-                Meridian — AI-powered regulatory compliance for Gateway 2 submissions
-              </p>
+              <div>
+                <p className="text-sm text-slate-400">
+                  <span className="font-semibold text-blue-400">Attlee.AI</span> — AI-Powered Building Safety Consultancy
+                </p>
+                <p className="text-xs text-amber-400 font-medium mt-1">
+                  AI-First. Human-Verified. Always.
+                </p>
+              </div>
               <p className="text-xs text-slate-500">
-                55+ criteria assessment. Not a compliance certificate.
+                <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">george@attlee.ai</a>
               </p>
             </div>
           </div>

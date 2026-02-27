@@ -90,6 +90,70 @@ function extractStoreys(text: string): number[] {
 }
 
 // ============================================
+// CITATION ACCURACY HELPERS
+// ============================================
+
+/**
+ * Find evidence for keywords and track which document/keyword triggered the match.
+ * This ensures the evidence quote shown to users contains the actual trigger text.
+ */
+interface TrackedEvidence {
+  found: boolean;
+  document: string | null;
+  quote: string | null;
+  triggerKeyword: string | null;
+  matchType: 'keyword' | 'pattern' | 'absence';
+}
+
+function findAndTrackEvidence(docs: DocumentEvidence[], keywords: string[]): TrackedEvidence {
+  for (const doc of docs) {
+    for (const kw of keywords) {
+      if (containsAnyKeyword(doc.extractedText, [kw])) {
+        return {
+          found: true,
+          document: doc.filename,
+          quote: extractQuote(doc.extractedText, kw),
+          triggerKeyword: kw,
+          matchType: 'keyword'
+        };
+      }
+    }
+  }
+  return {
+    found: false,
+    document: null,
+    quote: null,
+    triggerKeyword: null,
+    matchType: 'absence'
+  };
+}
+
+/**
+ * Find evidence in a SPECIFIC document for keywords.
+ * Use this when you've already identified the relevant document.
+ */
+function findEvidenceInDocument(doc: DocumentEvidence, keywords: string[]): TrackedEvidence {
+  for (const kw of keywords) {
+    if (containsAnyKeyword(doc.extractedText, [kw])) {
+      return {
+        found: true,
+        document: doc.filename,
+        quote: extractQuote(doc.extractedText, kw),
+        triggerKeyword: kw,
+        matchType: 'keyword'
+      };
+    }
+  }
+  return {
+    found: false,
+    document: doc.filename,
+    quote: null,
+    triggerKeyword: null,
+    matchType: 'absence'
+  };
+}
+
+// ============================================
 // RULE TYPE DEFINITION
 // ============================================
 
@@ -268,6 +332,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Means of Escape Clearly Defined',
     category: 'FIRE_SAFETY',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Regulations 2010, Approved Document B Volume 1 & 2',
+      section: 'Section B1 - Means of Warning and Escape',
+      requirement: 'Building design must provide means of escape that allow all occupants to reach safety. For residential buildings over 18m, this includes defined evacuation strategy, protected stairways, maximum travel distances (typically 7.5m-18m depending on direction and building type), and appropriately sized exits.'
+    },
     check: (docs) => {
       const fireStrategyDoc = findDocument(docs, ['fire strategy', 'fire safety', 'means of escape']);
 
@@ -351,6 +420,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Compartmentation Strategy with Fire Resistance Periods',
     category: 'FIRE_SAFETY',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Regulations 2010, Approved Document B Volume 2',
+      section: 'Section B3 - Internal Fire Spread (Structure)',
+      requirement: 'Buildings must be designed to prevent internal fire spread using compartmentation. For residential buildings over 18m, compartment walls and floors must achieve minimum 60-minute fire resistance (REI 60), with fire stopping at all penetrations and proper sealing at junctions. Maximum compartment sizes apply.'
+    },
     check: (docs) => {
       const fireStrategyDoc = findDocument(docs, ['fire strategy', 'fire safety', 'compartmentation']);
 
@@ -435,6 +509,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'External Wall System Fire Performance Specified',
     category: 'FIRE_SAFETY',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Regulations 2010, Regulation 7 & Approved Document B',
+      section: 'Regulation 7 (Ban on combustible materials) & Section B4 - External Fire Spread',
+      requirement: 'For buildings over 18m with residential use, external wall materials must be Class A1 or A2-s1,d0. Cladding systems must specify fire classifications, cavity barriers, insulation types, and demonstrate compliance with the ban on combustible materials (Regulation 7).'
+    },
     check: (docs) => {
       const relevantDocs = docs.filter(d =>
         containsAnyKeyword(d.filename + ' ' + (d.docType || ''), ['external wall', 'cladding', 'facade', 'fire strategy', 'wall schedule', 'specification']) ||
@@ -472,29 +551,45 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       const passedChecks = checks.filter(c => c.passed);
       const failedCritical = checks.filter(c => c.critical && !c.passed);
 
+      // Find the best document and quote for evidence - prioritize where we found evidence
+      const findBestEvidence = () => {
+        const keywords = ['external wall', 'cladding', 'facade', 'class a', 'euroclass', 'cavity barrier'];
+        for (const doc of relevantDocs) {
+          for (const kw of keywords) {
+            const quote = extractQuote(doc.extractedText, kw);
+            if (quote) {
+              return { document: doc.filename, quote };
+            }
+          }
+        }
+        return { document: primaryDoc.filename, quote: null };
+      };
+
       if (passedChecks.length >= 4) {
-        const quote = extractQuote(combinedText, 'external wall') || extractQuote(combinedText, 'cladding');
+        const evidence = findBestEvidence();
         return {
           passed: true,
           confidence: 'high',
-          evidence: { found: true, document: primaryDoc.filename, quote, matchType: 'pattern' },
+          evidence: { found: true, document: evidence.document, quote: evidence.quote, matchType: 'pattern' },
           reasoning: `External wall fire performance fully specified: ${passedChecks.map(c => c.name).join(', ')}.`,
           failureMode: null
         };
       } else if (failedCritical.length === 0 && passedChecks.length >= 2) {
+        const evidence = findBestEvidence();
         return {
           passed: true,
           confidence: 'needs_review',
-          evidence: { found: true, document: primaryDoc.filename, quote: null, matchType: 'pattern' },
+          evidence: { found: true, document: evidence.document, quote: evidence.quote, matchType: 'pattern' },
           reasoning: `External wall specification present with ${passedChecks.map(c => c.name).join(', ')}. May need enhancement.`,
           failureMode: null
         };
       } else {
         const failedChecks = checks.filter(c => !c.passed);
+        const evidence = findBestEvidence();
         return {
           passed: false,
           confidence: 'high',
-          evidence: { found: true, document: primaryDoc.filename, quote: null, matchType: 'pattern' },
+          evidence: { found: true, document: evidence.document, quote: evidence.quote, matchType: 'pattern' },
           reasoning: `External wall documentation incomplete. Missing: ${failedChecks.map(c => c.name).join(', ')}.`,
           failureMode: failedCritical.length > 0 ? `No ${failedCritical[0].name}` : 'Claims compliance without specifying materials'
         };
@@ -904,6 +999,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Principal Designer Identified with Competence Evidence',
     category: 'HRB_DUTIES',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Safety Act 2022',
+      section: 'Section 76 - Duties relating to Principal Designer',
+      requirement: 'The client must appoint a Principal Designer for higher-risk building work. The Principal Designer must be competent, with the skills, knowledge, experience and behaviours needed to fulfil their duties, including securing cooperation and coordination between all persons working on the design.'
+    },
     check: (docs) => {
       const combinedText = docs.map(d => d.extractedText).join(' ');
 
@@ -975,13 +1075,16 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Principal Contractor Identified with Competence Evidence',
     category: 'HRB_DUTIES',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Safety Act 2022',
+      section: 'Section 77 - Duties relating to Principal Contractor',
+      requirement: 'The client must appoint a Principal Contractor for higher-risk building work. The Principal Contractor must be competent, with the skills, knowledge, experience and behaviours needed to plan, manage and monitor construction work, including ensuring building work complies with building regulations.'
+    },
     check: (docs) => {
-      const combinedText = docs.map(d => d.extractedText).join(' ');
+      // Find document containing Principal Contractor reference
+      const pcDoc = docs.find(d => containsAnyKeyword(d.extractedText, ['principal contractor']));
 
-      const hasPC = containsAnyKeyword(combinedText, ['principal contractor']);
-      const hasTBC = containsAnyKeyword(combinedText, ['to be confirmed', 'tbc', 'to be appointed', 'tba', 'not yet appointed']);
-
-      if (!hasPC) {
+      if (!pcDoc) {
         return {
           passed: false,
           confidence: 'definitive',
@@ -991,26 +1094,40 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         };
       }
 
-      const pcDoc = docs.find(d => containsAnyKeyword(d.extractedText, ['principal contractor'])) || docs[0];
       const text = pcDoc.extractedText;
+
+      // Check for TBC ONLY in the document that mentions Principal Contractor
+      // (not across all documents - that was causing false positives)
+      const tbcKeywords = ['to be confirmed', 'tbc', 'to be appointed', 'tba', 'not yet appointed'];
+      const hasTBC = containsAnyKeyword(text, tbcKeywords);
+
+      // Find the actual TBC text to show as evidence if it exists
+      let tbcQuote: string | null = null;
+      if (hasTBC) {
+        for (const kw of tbcKeywords) {
+          tbcQuote = extractQuote(text, kw);
+          if (tbcQuote) break;
+        }
+      }
 
       if (hasTBC) {
         const hasAppointmentProcess = containsAnyKeyword(text, ['procurement', 'tender', 'appointment process', 'selection', 'framework']);
         if (hasAppointmentProcess) {
+          // Show the TBC quote to make it clear why this needs review
           return {
             passed: true,
             confidence: 'needs_review',
-            evidence: { found: true, document: pcDoc.filename, quote: extractQuote(text, 'principal contractor'), matchType: 'keyword' },
-            reasoning: 'Principal Contractor appointment pending with procurement process described.',
+            evidence: { found: true, document: pcDoc.filename, quote: tbcQuote || extractQuote(text, 'principal contractor'), matchType: 'keyword' },
+            reasoning: 'Principal Contractor stated as TBC but appointment/procurement process described. Verify appointment is progressing.',
             failureMode: null
           };
         } else {
           return {
             passed: false,
             confidence: 'high',
-            evidence: { found: true, document: pcDoc.filename, quote: extractQuote(text, 'principal contractor'), matchType: 'keyword' },
-            reasoning: 'Principal Contractor stated as TBC without explaining appointment process.',
-            failureMode: 'States "TBC" without explaining appointment process'
+            evidence: { found: true, document: pcDoc.filename, quote: tbcQuote || extractQuote(text, 'principal contractor'), matchType: 'keyword' },
+            reasoning: 'Principal Contractor stated as TBC/to be confirmed without explaining appointment process.',
+            failureMode: 'Principal Contractor stated as TBC without appointment process'
           };
         }
       }
@@ -1056,6 +1173,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Golden Thread Information Strategy Defined',
     category: 'GOLDEN_THREAD',
     severity: 'high',
+    regulatoryRef: {
+      source: 'Building Safety Act 2022 / The Building (Higher-Risk Buildings) Regulations 2023',
+      section: 'Section 88 & Regulations 25-28 - Golden Thread',
+      requirement: 'Dutyholders must establish, maintain and keep under review golden thread information throughout design and construction. Information must be accurate, accessible, up-to-date, and in an accessible electronic format. Strategy must address how information will be stored, managed, and transferred to the Accountable Person at completion.'
+    },
     check: (docs) => {
       const combinedText = docs.map(d => d.extractedText).join(' ');
 
@@ -1126,6 +1248,11 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Change Control Process Defined',
     category: 'HRB_DUTIES',
     severity: 'medium',
+    regulatoryRef: {
+      source: 'Building Safety Act 2022 / The Building (Higher-Risk Buildings) Regulations 2023',
+      section: 'Sections 82-85 & Regulation 19 - Change Control',
+      requirement: 'Major changes to higher-risk building work require notification to BSR. A change control process must be in place defining: what constitutes a notifiable change, who is responsible for assessment, and the process for notifying BSR. Changes affecting fire safety, structural safety or means of escape are likely notifiable.'
+    },
     check: (docs) => {
       const combinedText = docs.map(d => d.extractedText).join(' ');
 

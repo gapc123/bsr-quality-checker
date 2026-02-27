@@ -24,6 +24,128 @@ import {
   DocumentEvidence
 } from './deterministic-rules.js';
 
+// ============================================
+// PROPOSED CHANGE VALIDATION
+// Filters out generic/weak proposed_changes that require human intervention
+// ============================================
+
+interface ProposedChangeValidation {
+  valid: boolean;
+  reason?: string;
+}
+
+/**
+ * Validates a proposed_change to ensure it's specific, actionable, and insertable.
+ * Returns { valid: false } for generic prompts that require human intervention.
+ */
+function validateProposedChange(change: string | null): ProposedChangeValidation {
+  if (!change) {
+    return { valid: false, reason: 'no_change' };
+  }
+
+  const changeLower = change.toLowerCase();
+
+  // Too short = probably generic (need at least ~150 chars for substantive content)
+  if (change.length < 120) {
+    return { valid: false, reason: 'too_short' };
+  }
+
+  // Starts with generic directive phrases
+  const genericStarts = [
+    /^add\s+(documentation|information|details|evidence|text|content|section)/i,
+    /^provide\s+(documentation|information|details|evidence|text|content)/i,
+    /^include\s+(documentation|information|details|evidence|text|content)/i,
+    /^document\s+(the|how|what|when|where|why)/i,
+    /^ensure\s+(that|the|compliance)/i,
+    /^update\s+(the|documentation|to)/i,
+    /^address\s+(the|this|gap|issue)/i,
+    /^specify\s+(the|how|what)/i,
+  ];
+  if (genericStarts.some(p => p.test(change))) {
+    return { valid: false, reason: 'generic_directive' };
+  }
+
+  // Contains "Add documentation addressing" pattern (common generic output)
+  if (/add documentation addressing/i.test(change)) {
+    return { valid: false, reason: 'generic_addressing_pattern' };
+  }
+
+  // Contains placeholders that need to be filled in
+  if (/\[.*?\]/.test(change) || /\{.*?\}/.test(change)) {
+    return { valid: false, reason: 'has_placeholders' };
+  }
+
+  // Contains TBC/TBA/XXX markers
+  if (/\b(tbc|tba|xxx|to be confirmed|to be advised|to be determined)\b/i.test(change)) {
+    return { valid: false, reason: 'has_tbc_markers' };
+  }
+
+  // Asks for things that require human input
+  const humanRequiredPatterns = [
+    /obtain.*from/i,
+    /commission\s+(a|an|the)/i,
+    /engage\s+(a|an|the).*specialist/i,
+    /prepare\s+(a|an|the).*report/i,
+    /provide\s+(a|an|the).*certification/i,
+    /confirm\s+(with|that the)/i,
+    /appoint\s+(a|an|the)/i,
+    /create\s+(a|an|the|new)/i,
+    /produce\s+(a|an|the)/i,
+    /undertake\s+(a|an|the)/i,
+    /carry out\s+(a|an|the)/i,
+  ];
+  if (humanRequiredPatterns.some(p => p.test(change))) {
+    return { valid: false, reason: 'requires_human_action' };
+  }
+
+  // Keywords indicating human intervention needed
+  const humanKeywords = [
+    'principal contractor',
+    'principal designer',
+    'fire engineer',
+    'structural engineer',
+    'specialist',
+    'competence evidence',
+    'appointment',
+    'certification',
+    'test result',
+    'calculation',
+    'assessment by',
+    'review by',
+    'sign off',
+    'sign-off',
+    'approval from',
+  ];
+  if (humanKeywords.some(kw => changeLower.includes(kw))) {
+    return { valid: false, reason: 'references_human_role' };
+  }
+
+  // If it's just telling you what to do rather than providing text
+  const imperativeOnly = [
+    /^(you should|should|must|need to|please|consider)/i,
+  ];
+  if (imperativeOnly.some(p => p.test(change))) {
+    return { valid: false, reason: 'imperative_instruction' };
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Filters proposed_change: returns the change if valid, null otherwise
+ */
+function filterProposedChange(change: string | null): string | null {
+  const validation = validateProposedChange(change);
+  if (!validation.valid) {
+    // Log for debugging during development
+    if (change && process.env.NODE_ENV !== 'production') {
+      console.log(`    [Filtered proposed_change] Reason: ${validation.reason}, Text: "${change.slice(0, 80)}..."`);
+    }
+    return null;
+  }
+  return change;
+}
+
 // In Docker, process.cwd() is /app. In dev, it's /packages/backend
 const isProduction = process.env.NODE_ENV === 'production';
 const MATRIX_PATH = isProduction
@@ -101,6 +223,8 @@ export interface AssessmentResult {
     expected_benefit: string;
   }>;
   confidence: 'high' | 'medium' | 'low';
+  proposed_change?: string | null;  // Suggested text to add/modify in the submission
+  proposed_change_source?: string | null;  // Source document if info came from cross-document search
 }
 
 export interface FullAssessment {
@@ -303,12 +427,24 @@ ${referenceContext}
 ${packContext}
 
 ## Your Task
-Assess whether the pack meets this criterion using ONLY the evidence provided. Apply the following decision logic:
+Assess whether the pack meets this criterion using the evidence provided. Apply the following decision logic:
 
-1. Search for explicit evidence that addresses the criterion
+1. Search for explicit evidence that addresses the criterion IN ALL DOCUMENTS
 2. If found: quote it directly and assess if it fully or partially satisfies requirements
-3. If not found: mark as "does_not_meet" with clear explanation
-4. Do NOT speculate about what might exist elsewhere
+3. If not found in the primary document but found elsewhere: note the cross-reference
+4. If not found anywhere: mark as "does_not_meet" with clear explanation
+
+## CROSS-DOCUMENT INTELLIGENCE (Important!)
+When assessing gaps, actively search ALL provided documents for missing information:
+- If Document A is missing information about building height, check if it's stated in Document B
+- If you find the information in another document, you CAN propose adding it to fill the gap
+- Include SOURCE ATTRIBUTION: "Based on [source document]: [specific text to add]"
+- This allows the AI to consolidate scattered information into comprehensive documentation
+
+Example: If Fire Strategy is missing building height, but Planning Application states "24.5m":
+- Gap exists in Fire Strategy
+- Information exists in Planning Application
+- Proposed change: "Based on Planning Application: The building height is 24.5m as measured from ground level."
 
 Respond in JSON format:
 {
@@ -326,7 +462,47 @@ Respond in JSON format:
       "benefit": "expected outcome"
     }
   ],
-  "confidence": "high" | "medium" | "low"
+  "confidence": "high" | "medium" | "low",
+  "proposed_change_source": "If proposed_change uses info from another document, state that document's filename here. Otherwise null.",
+  "proposed_change": "CRITICAL INSTRUCTIONS FOR PROPOSED_CHANGE:
+
+ONLY provide a proposed_change if ALL of these conditions are true:
+1. You can write COMPLETE, SPECIFIC text (at least 2-3 sentences of substantive content)
+2. The text can be DIRECTLY INSERTED into an existing document without modification
+3. NO professional judgement is required (not calculations, certifications, or expert assessment)
+4. NO new information needs to be gathered (you have everything needed in the documents)
+
+Set proposed_change to NULL if ANY of these apply:
+- Status is 'meets' (no change needed)
+- Issue requires creating a NEW DOCUMENT (fire strategy, structural report, etc.)
+- Issue requires EXPERT ANALYSIS (fire engineering, structural calculations)
+- Issue requires PHYSICAL EVIDENCE (test certificates, material certifications)
+- Issue requires APPOINTING someone (Principal Designer, Principal Contractor)
+- Issue requires PROFESSIONAL JUDGEMENT or DESIGN DECISIONS
+- You would write something generic like 'Add documentation about X' or 'Include evidence of Y'
+- The text contains placeholders like [X], {Y}, or TBC
+
+INVALID proposed_change examples (should be null):
+- 'Add documentation addressing the compartmentation gap'
+- 'Include evidence of Principal Designer competence'
+- 'Provide fire strategy details for means of escape'
+- 'Document the golden thread approach'
+- 'Add information about [specific item]'
+
+VALID proposed_change examples (specific, insertable text):
+- 'The building is classified as a Higher-Risk Building under the Building Safety Act 2022, with a height of 24.5m and containing 8 residential storeys above ground level. This classification requires compliance with the enhanced regulatory requirements of Part 4 of the Act.'
+- 'Horizontal compartmentation is achieved through 60-minute fire-rated separating floors constructed of 150mm reinforced concrete with intumescent seals at all service penetrations. Vertical compartmentation uses 60-minute fire-rated walls with fire-stopped service penetrations.'
+- 'The evacuation strategy is simultaneous evacuation, with all occupants directed to leave the building immediately upon activation of the fire alarm. This approach is appropriate for the building height and occupancy type as assessed by the fire engineer.'
+
+CROSS-DOCUMENT proposed_change examples (pulling info from other documents):
+- 'Based on the Planning Application Form: The building has a total height of 24.5 metres and contains 8 residential storeys above ground level, meeting the threshold for classification as a Higher-Risk Building under the Building Safety Act 2022.'
+- 'As stated in the Structural Engineering Report: The primary structural frame achieves 90-minute fire resistance in accordance with BS EN 1992-1-2, with all connections and junctions detailed to maintain compartmentation integrity.'
+- 'Refer to Section 4.2 of the Fire Strategy Report for full compartmentation details. The separating floors achieve 60-minute fire resistance as confirmed by the fire engineer.'
+
+When using cross-document information:
+1. Always cite the SOURCE DOCUMENT by name
+2. Quote or paraphrase the specific information found
+3. Explain how it addresses the gap in the target document"
 }`;
 
   try {
@@ -374,7 +550,10 @@ Respond in JSON format:
       },
       gaps_identified: parsed.gaps || [],
       actions_required: parsed.actions || [],
-      confidence: parsed.confidence || 'medium'
+      confidence: parsed.confidence || 'medium',
+      // Apply validation filter to LLM-generated proposed_change
+      proposed_change: filterProposedChange(parsed.proposed_change || null),
+      proposed_change_source: parsed.proposed_change_source || null
     };
   } catch (error) {
     console.error(`Error assessing ${row.matrix_id}:`, error);
@@ -397,7 +576,9 @@ Respond in JSON format:
       },
       gaps_identified: [],
       actions_required: [],
-      confidence: 'low'
+      confidence: 'low',
+      proposed_change: null,
+      proposed_change_source: null
     };
   }
 }
@@ -480,7 +661,13 @@ export async function assessPackAgainstMatrix(
       effort: dr.severity === 'high' ? 'L' : (dr.severity === 'medium' ? 'M' : 'S'),
       expected_benefit: `Resolve ${dr.category} compliance gap`
     }] : [],
-    confidence: dr.result.confidence === 'definitive' ? 'high' : (dr.result.confidence === 'high' ? 'high' : 'medium')
+    confidence: dr.result.confidence === 'definitive' ? 'high' : (dr.result.confidence === 'high' ? 'high' : 'medium'),
+    // Deterministic rules don't generate proposed_change - they identify gaps
+    // Only LLM can generate specific, insertable text. Deterministic failures
+    // are either: (a) missing documents (human required), or (b) gaps that need
+    // LLM to generate specific text based on document context.
+    // Setting to null means these will be triaged as "Human Intervention" in the carousel.
+    proposed_change: null
   }));
 
   // ============================================

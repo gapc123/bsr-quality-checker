@@ -136,7 +136,7 @@ export default function SecurityPanel({ variant = 'inline' }: SecurityPanelProps
 
         <div className="mt-4 pt-4 border-t border-slate-100">
           <p className="text-xs text-slate-500">
-            Meridian complies with UK GDPR and data protection requirements.
+            Attlee complies with UK GDPR and data protection requirements.
             For questions, contact{' '}
             <a href={`mailto:${SECURITY_EMAIL}`} className="text-blue-600 hover:underline">
               {SECURITY_EMAIL}

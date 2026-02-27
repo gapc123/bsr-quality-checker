@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import prisma from '../db/client.js';
 import { generateEditableDocx } from '../services/report.js';
+import { generateAmendedDocuments } from '../services/document-amendment.js';
 
 const router = Router();
 
@@ -211,6 +212,83 @@ router.post('/:packId/versions/:versionId/generate-editable', async (req: Reques
   } catch (error) {
     console.error('Error generating editable document:', error);
     res.status(500).json({ error: 'Failed to generate editable document' });
+  }
+});
+
+// POST /api/packs/:packId/versions/:versionId/generate-amended-documents
+// Generate amended documents based on carousel decisions
+router.post('/:packId/versions/:versionId/generate-amended-documents', async (req: Request, res: Response) => {
+  try {
+    const versionId = String(req.params.versionId);
+    const { acceptedChanges, skippedCriteriaIds } = req.body;
+
+    if (!Array.isArray(acceptedChanges)) {
+      res.status(400).json({ error: 'acceptedChanges must be an array' });
+      return;
+    }
+
+    if (!Array.isArray(skippedCriteriaIds)) {
+      res.status(400).json({ error: 'skippedCriteriaIds must be an array' });
+      return;
+    }
+
+    // Generate all documents
+    const result = await generateAmendedDocuments({
+      packVersionId: versionId,
+      acceptedChanges,
+      skippedCriteriaIds,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error generating amended documents:', error);
+    res.status(500).json({ error: 'Failed to generate amended documents' });
+  }
+});
+
+// GET /api/packs/:packId/versions/:versionId/download-amended/:type
+// Download amended documents
+router.get('/:packId/versions/:versionId/download-amended/:type', async (req: Request, res: Response) => {
+  try {
+    const versionId = String(req.params.versionId);
+    const docType = String(req.params.type);
+
+    // Get the latest artifact of this type
+    const artifactType = docType === 'docx' ? 'amended-docx' :
+                         docType === 'pdf' ? 'amended-pdf' :
+                         docType === 'issues' ? 'outstanding-issues' : null;
+
+    if (!artifactType) {
+      res.status(400).json({ error: 'Invalid document type. Use: docx, pdf, or issues' });
+      return;
+    }
+
+    const artifact = await prisma.outputArtifact.findFirst({
+      where: {
+        packVersionId: versionId,
+        artifactType,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!artifact || !fs.existsSync(artifact.path)) {
+      res.status(404).json({ error: 'Document not found. Please generate documents first.' });
+      return;
+    }
+
+    const filename = path.basename(artifact.path);
+    const contentType = docType === 'docx'
+      ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      : 'application/pdf';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+    const fileStream = fs.createReadStream(artifact.path);
+    fileStream.pipe(res);
+  } catch (error) {
+    console.error('Error downloading amended document:', error);
+    res.status(500).json({ error: 'Failed to download document' });
   }
 });
 

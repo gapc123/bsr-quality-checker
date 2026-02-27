@@ -10,7 +10,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 const PRICE_IDS: Record<string, string> = {
   price_per_submission: process.env.STRIPE_PRICE_PER_SUBMISSION || '',
   price_professional_monthly: process.env.STRIPE_PRICE_PROFESSIONAL || '',
-  price_enterprise_monthly: process.env.STRIPE_PRICE_ENTERPRISE || ''
+  price_enterprise_monthly: process.env.STRIPE_PRICE_ENTERPRISE || '',
+  price_agency_basic: process.env.STRIPE_PRICE_AGENCY_BASIC || '',
+  price_agency_premium: process.env.STRIPE_PRICE_AGENCY_PREMIUM || ''
 };
 
 // Middleware to require authentication - using Clerk's requireAuth directly
@@ -273,7 +275,9 @@ router.post('/create-checkout', requireAuth, async (req: Request, res: Response)
 
     // Create checkout session
     const baseUrl = process.env.APP_URL || 'http://localhost:5173';
-    const isOneTime = priceId === 'price_per_submission';
+    const isAgency = priceId === 'price_agency_basic' || priceId === 'price_agency_premium';
+    const isOneTime = priceId === 'price_per_submission' || isAgency;
+    const agencyTier = priceId === 'price_agency_premium' ? 'premium' : priceId === 'price_agency_basic' ? 'basic' : null;
 
     const session = await stripe.checkout.sessions.create({
       customer: customer.stripeCustomerId,
@@ -285,11 +289,14 @@ router.post('/create-checkout', requireAuth, async (req: Request, res: Response)
           quantity: 1
         }
       ],
-      success_url: `${baseUrl}/?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${baseUrl}/?session_id={CHECKOUT_SESSION_ID}${isAgency ? `&service=agency&tier=${agencyTier}` : ''}`,
       cancel_url: `${baseUrl}/pricing`,
       metadata: {
         userId,
-        priceId
+        priceId,
+        serviceType: isAgency ? 'agency' : 'saas',
+        agencyTier: agencyTier || '',
+        type: isOneTime && !isAgency ? 'credit_purchase' : isAgency ? 'agency_purchase' : 'subscription'
       }
     });
 
@@ -319,9 +326,11 @@ router.post('/webhook', async (req: Request, res: Response) => {
   switch (event.type) {
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session;
-      // Check if this is a credit purchase or subscription
+      // Check if this is a credit purchase, agency purchase, or subscription
       if (session.metadata?.type === 'credit_purchase') {
         await handleCreditPurchase(session);
+      } else if (session.metadata?.type === 'agency_purchase') {
+        await handleAgencyPurchase(session);
       } else {
         await handleCheckoutCompleted(session);
       }
@@ -358,6 +367,29 @@ async function handleCreditPurchase(session: Stripe.Checkout.Session) {
       creditsRemaining: quantity
     }
   });
+}
+
+async function handleAgencyPurchase(session: Stripe.Checkout.Session) {
+  const userId = session.metadata?.userId;
+
+  if (!userId || !session.payment_intent) {
+    return;
+  }
+
+  // Add 1 agency credit to user account (agency packs include 1 submission + expert review)
+  await prisma.submissionCredit.create({
+    data: {
+      userId,
+      stripePaymentId: session.payment_intent as string,
+      creditsRemaining: 1
+    }
+  });
+
+  // TODO: In future, could track agency purchases separately for:
+  // - Flagging packs that require expert review
+  // - Triggering notifications to the review team
+  // - Tracking agency vs self-service usage analytics
+  console.log(`Agency purchase completed for user ${userId}, payment: ${session.payment_intent}`);
 }
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
