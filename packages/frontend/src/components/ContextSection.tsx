@@ -78,28 +78,49 @@ function ImageCard({ src, alt, size, isVisible, muted = false }: ImageCardProps)
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
-  // For headlines (large): contain full image, no cropping
-  // For construction (small): cover is fine, atmospheric
-  const isHeadline = size === 'large';
-
-  const sizeClasses = {
-    large: 'h-52',           // Headlines - fixed height, auto width
-    medium: 'h-44',          // Medium option
-    small: 'w-48 h-32',      // Construction - fixed dimensions, cover ok
-  };
+  const isHeadline = size === 'large' || size === 'medium';
 
   if (error) {
     return (
-      <div className={`context-image-card flex-shrink-0 rounded-lg overflow-hidden ${sizeClasses[size]} bg-slate-800`} />
+      <div className="context-image-card flex-shrink-0 rounded-lg overflow-hidden w-64 h-40 bg-slate-800" />
     );
   }
 
+  // For headlines: show full image at natural aspect ratio
+  // Fixed height, width scales naturally - no cropping
+  if (isHeadline) {
+    return (
+      <div
+        className={`
+          context-image-card flex-shrink-0 rounded-lg overflow-hidden shadow-lg
+          bg-white
+          transition-opacity duration-700
+          ${loaded ? 'opacity-100' : 'opacity-0'}
+        `}
+        style={{ height: '180px' }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          loading={isVisible ? 'eager' : 'lazy'}
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+          style={{
+            height: '100%',
+            width: 'auto',
+            display: 'block',
+          }}
+        />
+      </div>
+    );
+  }
+
+  // For construction: fixed size with cover (cropping ok)
   return (
     <div
       className={`
         context-image-card flex-shrink-0 rounded-lg overflow-hidden shadow-lg
-        ${sizeClasses[size]}
-        ${isHeadline ? 'bg-slate-950' : ''}
+        w-48 h-32
         transition-opacity duration-700
         ${loaded ? 'opacity-100' : 'opacity-0'}
         ${muted ? 'opacity-60' : ''}
@@ -111,10 +132,7 @@ function ImageCard({ src, alt, size, isVisible, muted = false }: ImageCardProps)
         loading={isVisible ? 'eager' : 'lazy'}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        className={`
-          h-full
-          ${isHeadline ? 'w-auto object-contain' : 'w-full object-cover object-center'}
-        `}
+        className="w-full h-full object-cover object-center"
       />
     </div>
   );
