@@ -46,7 +46,9 @@ function AppContent() {
               </div>
               <div>
                 <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Attlee.AI</span>
-                <span className="hidden sm:block text-xs text-slate-400">BSR Quality Checker</span>
+                <p className="hidden sm:block text-xs text-slate-400 italic">
+                  Our mission is to help get more safe homes built in the UK, faster
+                </p>
               </div>
             </Link>
 
@@ -161,19 +163,32 @@ function AppContent() {
 
       {/* Footer */}
       <footer className="bg-slate-900 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="text-sm text-slate-400">
-                <span className="font-semibold text-blue-400">Attlee.AI</span> — AI-Powered Building Safety Consultancy
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex flex-col gap-6">
+            {/* Mission Statement */}
+            <div className="text-center border-b border-slate-800 pb-6">
+              <p className="text-sm text-slate-400 mb-2">
+                The UK needs more safe, quality homes. The path to building them is too slow, too complex.
               </p>
-              <p className="text-xs text-amber-400 font-medium mt-1">
-                AI-First. Human-Verified. Always.
+              <p className="text-base font-semibold bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                Our mission is to help get more safe homes built in the UK, faster.
               </p>
             </div>
-            <p className="text-xs text-slate-500">
-              <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">george@attlee.ai</a>
-            </p>
+
+            {/* Footer Info */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <p className="text-sm text-slate-400">
+                  <span className="font-semibold text-blue-400">Attlee.AI</span> — AI-Powered Building Safety Consultancy
+                </p>
+                <p className="text-xs text-amber-400 font-medium mt-1">
+                  AI-First. Human-Verified. Always.
+                </p>
+              </div>
+              <p className="text-xs text-slate-500">
+                <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">george@attlee.ai</a>
+              </p>
+            </div>
           </div>
         </div>
       </footer>
