@@ -76,6 +76,213 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* SECTION A: Why Generic AI Falls Short */}
+      <section className="relative py-20 bg-slate-900">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-slate-800/50 border-2 border-slate-700 rounded-2xl p-8 md:p-10 space-y-6">
+            <h2 className="text-3xl font-bold text-white mb-6">
+              Why Generic AI Falls Short
+            </h2>
+
+            <div className="space-y-4 text-slate-300 leading-relaxed">
+              <p>
+                Large Language Models (LLMs) generate text by predicting the most likely next word. They are probabilistic by design.
+              </p>
+              <p>
+                This makes them good at summarising, extracting, and rewriting information.
+              </p>
+              <p>
+                It also means their outputs can vary and cannot be relied on for strict pass/fail decisions.
+              </p>
+              <p>
+                Regulatory compliance is deterministic. A requirement is either met or it is not.
+              </p>
+              <p className="font-medium text-slate-200">
+                In regulated workflows, "probably compliant" is not an acceptable outcome.
+              </p>
+            </div>
+
+            <div className="pt-6 mt-6 border-t border-slate-700">
+              <p className="text-sm text-cyan-400 italic">
+                The problem isn't AI. It's using the wrong kind of AI for the decision.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION B: How Attlee Makes Compliance Reliable */}
+      <section className="relative py-20 bg-gradient-to-b from-slate-900 to-slate-800">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-slate-800/50 border-2 border-cyan-600/30 rounded-2xl p-8 md:p-10 space-y-8">
+            <h2 className="text-3xl font-bold text-white mb-6">
+              How attlee.ai Makes Compliance Reliable
+            </h2>
+
+            {/* Step 1 */}
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">1</span>
+                AI is used for speed, not judgement
+              </h3>
+              <div className="pl-10 space-y-2 text-slate-300">
+                <p>The LLM is used to read documents quickly, extract relevant sections, and structure evidence.</p>
+                <p className="font-medium text-slate-200">It does not decide whether something is compliant.</p>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">2</span>
+                Deterministic rules make the decision
+              </h3>
+              <div className="pl-10 space-y-2 text-slate-300">
+                <p>Each regulatory requirement is encoded as a deterministic rule mapped to a regulatory matrix.</p>
+                <p>Rules evaluate the extracted evidence and return a clear Yes or No per requirement.</p>
+                <p className="font-medium text-slate-200">The same input always produces the same output.</p>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">3</span>
+                Full auditability by default
+              </h3>
+              <div className="pl-10 space-y-2 text-slate-300">
+                <p>Every decision includes:</p>
+                <ul className="list-disc list-inside space-y-1 pl-4">
+                  <li>The regulatory clause being tested</li>
+                  <li>The rule applied</li>
+                  <li>The source text used as evidence</li>
+                </ul>
+                <p className="font-medium text-slate-200">This makes outcomes explainable, reviewable, and defensible to auditors and regulators.</p>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">4</span>
+                Human experts remain in control
+              </h3>
+              <div className="pl-10 space-y-2 text-slate-300">
+                <p>Edge cases are flagged for human review.</p>
+                <p>Experts can approve, reject, or override with a recorded rationale.</p>
+                <p className="font-medium text-slate-200">This creates a clear human-in-the-loop safety mechanism.</p>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="pt-6 mt-6 border-t border-slate-700 text-center">
+              <p className="text-lg font-semibold text-cyan-400">
+                AI accelerates the work. Rules enforce the standard. Humans provide assurance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION C: Why Our Approach Is Different */}
+      <section className="relative py-20 bg-slate-800">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Why Our Approach Is Different
+            </h2>
+          </div>
+
+          {/* Comparison Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {/* ChatGPT / Generic AI */}
+            <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-200">ChatGPT / Generic AI</h3>
+                <span className="px-3 py-1 bg-amber-600/20 text-amber-400 text-xs font-semibold rounded-full border border-amber-600/30">
+                  Probabilistic
+                </span>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li className="flex items-start gap-2">
+                  <span className="text-slate-600 mt-1">•</span>
+                  <span>Generates likely answers</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-slate-600 mt-1">•</span>
+                  <span>No deterministic pass/fail logic</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-slate-600 mt-1">•</span>
+                  <span>No embedded regulatory matrix</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Traditional Consultant */}
+            <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-200">Traditional Consultant</h3>
+                <span className="px-3 py-1 bg-slate-600/20 text-slate-400 text-xs font-semibold rounded-full border border-slate-600/30">
+                  4–6 weeks
+                </span>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-400">
+                <li className="flex items-start gap-2">
+                  <span className="text-slate-600 mt-1">•</span>
+                  <span>Manual interpretation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-slate-600 mt-1">•</span>
+                  <span>Variable outcomes between reviewers</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-slate-600 mt-1">•</span>
+                  <span>Hard to scale</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Attlee - Dominant */}
+            <div className="bg-gradient-to-br from-cyan-600/20 to-blue-600/20 border-2 border-cyan-600/50 rounded-xl p-6 space-y-4 md:scale-105 shadow-xl shadow-cyan-600/20">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-white">attlee.ai</h3>
+                <span className="px-3 py-1 bg-cyan-600 text-white text-xs font-semibold rounded-full">
+                  Best of both
+                </span>
+              </div>
+              <ul className="space-y-2 text-sm text-slate-200">
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>AI-powered extraction and structuring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Deterministic Yes/No decisions per regulation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Full audit trail and expert verification</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Closing Statement */}
+          <div className="text-center">
+            <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              The speed of AI. The certainty of rules. The assurance of experts.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Team Access Section */}
       <SignedOut>
         <section className="relative py-12 bg-gradient-to-b from-slate-900 to-slate-800">
