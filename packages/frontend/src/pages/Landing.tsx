@@ -283,40 +283,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Team Access Section */}
-      <SignedOut>
-        <section className="relative py-12 bg-gradient-to-b from-slate-900 to-slate-800">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 text-center space-y-6">
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-white">
-                  Internal Team Access
-                </h3>
-                <p className="text-slate-400">
-                  attlee.ai is operated by a dedicated internal team managing client submissions.
-                  <br />
-                  Team members use secure authentication to access the full platform.
-                </p>
-              </div>
-              <div className="pt-4">
-                <Link
-                  to="/sign-in"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold rounded-lg transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                  </svg>
-                  Team Sign In
-                </Link>
-              </div>
-              <p className="text-xs text-slate-500 italic pt-2">
-                Access is invite-only for authorized team members
-              </p>
-            </div>
-          </div>
-        </section>
-      </SignedOut>
-
       {/* News Headlines Context */}
       <HeadlinesSection />
 
@@ -569,6 +535,13 @@ export default function Landing() {
                   george@attlee.ai
                 </a>
               </p>
+              <SignedOut>
+                <p className="text-xs text-slate-600">
+                  <Link to="/sign-in" className="hover:text-slate-400 transition-colors">
+                    Team Login
+                  </Link>
+                </p>
+              </SignedOut>
               <p className="text-xs text-slate-600">
                 © 2026 attlee.ai. Building safe homes, faster.
               </p>
