@@ -5,6 +5,12 @@ interface Pack {
   id: string;
   name: string;
   createdAt: string;
+  clientId: string | null;
+  client: {
+    id: string;
+    name: string;
+    company: string | null;
+  } | null;
   _count: {
     versions: number;
   };
@@ -12,6 +18,12 @@ interface Pack {
     versionNumber: number;
     createdAt: string;
   }>;
+}
+
+interface Client {
+  id: string;
+  name: string;
+  company: string | null;
 }
 
 const WORKFLOW_STEPS = [
@@ -37,24 +49,39 @@ const WORKFLOW_STEPS = [
 
 export default function PacksList() {
   const [packs, setPacks] = useState<Pack[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newPackName, setNewPackName] = useState('');
+  const [selectedClientId, setSelectedClientId] = useState('');
+  const [filterClientId, setFilterClientId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     fetchPacks();
-  }, []);
+    fetchClients();
+  }, [filterClientId]);
 
   const fetchPacks = async () => {
     try {
-      const res = await fetch('/api/packs');
+      const url = filterClientId ? `/api/packs?clientId=${filterClientId}` : '/api/packs';
+      const res = await fetch(url);
       const data = await res.json();
       setPacks(data);
     } catch (error) {
       console.error('Error fetching packs:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchClients = async () => {
+    try {
+      const res = await fetch('/api/clients');
+      const data = await res.json();
+      setClients(data);
+    } catch (error) {
+      console.error('Error fetching clients:', error);
     }
   };
 
@@ -66,10 +93,14 @@ export default function PacksList() {
       const res = await fetch('/api/packs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newPackName.trim() }),
+        body: JSON.stringify({
+          name: newPackName.trim(),
+          clientId: selectedClientId || null,
+        }),
       });
       if (res.ok) {
         setNewPackName('');
+        setSelectedClientId('');
         setShowCreateModal(false);
         fetchPacks();
       }
@@ -211,15 +242,29 @@ export default function PacksList() {
               <h2 className="text-lg font-semibold text-slate-900">Client Submission Packs</h2>
               <p className="text-sm text-slate-500">Create a pack for each client project</p>
             </div>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              New Client Pack
-            </button>
+            <div className="flex items-center gap-3">
+              <select
+                value={filterClientId || ''}
+                onChange={(e) => setFilterClientId(e.target.value || null)}
+                className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">All Clients</option>
+                {clients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                New Pack
+              </button>
+            </div>
           </div>
         </div>
 
@@ -259,12 +304,22 @@ export default function PacksList() {
                       </svg>
                     </div>
                     <div>
-                      <Link
-                        to={`/packs/${pack.id}`}
-                        className="font-medium text-slate-900 hover:text-blue-600 transition-colors"
-                      >
-                        {pack.name}
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          to={`/packs/${pack.id}`}
+                          className="font-medium text-slate-900 hover:text-blue-600 transition-colors"
+                        >
+                          {pack.name}
+                        </Link>
+                        {pack.client && (
+                          <Link
+                            to={`/clients/${pack.client.id}`}
+                            className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full hover:bg-blue-100 transition-colors"
+                          >
+                            {pack.client.name}
+                          </Link>
+                        )}
+                      </div>
                       <div className="flex items-center gap-3 text-sm text-slate-500">
                         <span className="flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,17 +375,44 @@ export default function PacksList() {
               </button>
             </div>
             <p className="text-sm text-slate-500 mb-4">
-              Enter the client project name and submission type for easy identification.
+              Enter the project name and optionally assign to a client.
             </p>
-            <input
-              type="text"
-              value={newPackName}
-              onChange={(e) => setNewPackName(e.target.value)}
-              placeholder="e.g., Riverside Tower - Gateway 2"
-              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              autoFocus
-              onKeyDown={(e) => e.key === 'Enter' && createPack()}
-            />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Pack Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={newPackName}
+                  onChange={(e) => setNewPackName(e.target.value)}
+                  placeholder="e.g., Riverside Tower - Gateway 2"
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  autoFocus
+                  onKeyDown={(e) => e.key === 'Enter' && createPack()}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Client (Optional)
+                </label>
+                <select
+                  value={selectedClientId}
+                  onChange={(e) => setSelectedClientId(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">No client assigned</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name}{client.company ? ` (${client.company})` : ''}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-slate-400 mt-1">
+                  <Link to="/clients" className="text-blue-500 hover:text-blue-600">Manage clients</Link>
+                </p>
+              </div>
+            </div>
             <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={() => setShowCreateModal(false)}

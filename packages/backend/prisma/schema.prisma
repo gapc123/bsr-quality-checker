@@ -7,11 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Client model for agency workflow - groups packs by customer
+model Client {
+  id           String   @id @default(uuid())
+  name         String
+  company      String?
+  contactEmail String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  packs        Pack[]
+}
+
 model Pack {
   id        String        @id @default(uuid())
   name      String
   createdAt DateTime      @default(now())
   versions  PackVersion[]
+
+  // Client relationship for agency workflow
+  clientId  String?
+  client    Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
 }
 
 model PackVersion {

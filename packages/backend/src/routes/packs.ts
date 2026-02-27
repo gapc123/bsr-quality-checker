@@ -41,11 +41,17 @@ const upload = multer({
   },
 });
 
-// GET /api/packs - List all packs
+// GET /api/packs - List all packs (optionally filter by clientId)
 router.get('/', async (req: Request, res: Response) => {
   try {
+    const { clientId } = req.query;
+
     const packs = await prisma.pack.findMany({
+      where: clientId ? { clientId: clientId as string } : undefined,
       include: {
+        client: {
+          select: { id: true, name: true, company: true },
+        },
         versions: {
           orderBy: { versionNumber: 'desc' },
           take: 1,
@@ -67,7 +73,7 @@ router.get('/', async (req: Request, res: Response) => {
 // POST /api/packs - Create a new pack
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name } = req.body;
+    const { name, clientId } = req.body;
 
     if (!name || typeof name !== 'string') {
       res.status(400).json({ error: 'Pack name is required' });
@@ -75,7 +81,15 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     const pack = await prisma.pack.create({
-      data: { name },
+      data: {
+        name,
+        clientId: clientId || null,
+      },
+      include: {
+        client: {
+          select: { id: true, name: true, company: true },
+        },
+      },
     });
 
     res.status(201).json(pack);
@@ -93,6 +107,9 @@ router.get('/:id', async (req: Request, res: Response) => {
     const pack = await prisma.pack.findUnique({
       where: { id },
       include: {
+        client: {
+          select: { id: true, name: true, company: true },
+        },
         versions: {
           orderBy: { versionNumber: 'desc' },
           include: {

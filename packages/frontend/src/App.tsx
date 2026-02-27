@@ -6,6 +6,8 @@ import PackDetail from './pages/PackDetail';
 import Upload from './pages/Upload';
 import Results from './pages/Results';
 import ButlerLibrary from './pages/ButlerLibrary';
+import ClientsList from './pages/ClientsList';
+import ClientDetail from './pages/ClientDetail';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import Pricing from './pages/Pricing';
@@ -68,7 +70,8 @@ function AppContent() {
                     </span>
                   )}
                   <nav className="flex items-center gap-2">
-                    <NavLink to="/dashboard">Client Packs</NavLink>
+                    <NavLink to="/clients">Clients</NavLink>
+                    <NavLink to="/dashboard">Packs</NavLink>
                     <NavLink to="/butler">Reference Library</NavLink>
                   </nav>
                   <div className="ml-4 pl-4 border-l border-slate-700">
@@ -151,6 +154,26 @@ function AppContent() {
             <Route path="/pricing" element={<Pricing />} />
 
             {/* Protected routes (require auth + subscription) */}
+            <Route
+              path="/clients"
+              element={
+                <ProtectedRoute>
+                  <SubscriptionGate>
+                    <ClientsList />
+                  </SubscriptionGate>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/clients/:clientId"
+              element={
+                <ProtectedRoute>
+                  <SubscriptionGate>
+                    <ClientDetail />
+                  </SubscriptionGate>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/dashboard"
               element={

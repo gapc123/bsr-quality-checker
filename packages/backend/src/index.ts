@@ -7,6 +7,7 @@ import butlerRouter from './routes/butler.js';
 import analysisRouter from './routes/analysis.js';
 import subscriptionRouter from './routes/subscription.js';
 import changesRouter from './routes/changes.js';
+import clientsRouter from './routes/clients.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,6 +29,7 @@ app.use('/uploads', express.static(uploadsPath));
 // API Routes
 app.use('/api/packs', packsRouter);
 app.use('/api/packs', changesRouter);
+app.use('/api/clients', clientsRouter);
 app.use('/api/butler', butlerRouter);
 app.use('/api/subscription', subscriptionRouter);
 app.use('/api', analysisRouter);
