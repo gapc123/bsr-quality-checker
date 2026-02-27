@@ -20,7 +20,7 @@ export default function Landing() {
                   </svg>
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  Attlee.AI
+                  attlee.ai
                 </span>
               </div>
             </div>
@@ -86,7 +86,7 @@ export default function Landing() {
                   Internal Team Access
                 </h3>
                 <p className="text-slate-400">
-                  Attlee AI is operated by a dedicated internal team managing client submissions.
+                  attlee.ai is operated by a dedicated internal team managing client submissions.
                   <br />
                   Team members use secure authentication to access the full platform.
                 </p>
@@ -345,7 +345,7 @@ export default function Landing() {
             <div className="text-center md:text-left">
               <div className="flex items-center gap-3 justify-center md:justify-start mb-2">
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  Attlee.AI
+                  attlee.ai
                 </span>
               </div>
               <p className="text-sm text-slate-400">
@@ -363,7 +363,7 @@ export default function Landing() {
                 </a>
               </p>
               <p className="text-xs text-slate-600">
-                © 2026 Attlee.AI. Building safe homes, faster.
+                © 2026 attlee.ai. Building safe homes, faster.
               </p>
             </div>
           </div>

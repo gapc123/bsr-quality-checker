@@ -70,7 +70,7 @@ function AppContent() {
                 </svg>
               </div>
               <div>
-                <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Attlee.AI</span>
+                <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">attlee.ai</span>
                 <p className="hidden sm:block text-xs text-slate-400 italic">
                   Our mission is to help get more safe homes built in the UK, faster
                 </p>
@@ -199,7 +199,7 @@ function AppContent() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <p className="text-sm text-slate-400">
-                  <span className="font-semibold text-blue-400">Attlee.AI</span> — AI-Powered Building Safety Consultancy
+                  <span className="font-semibold text-blue-400">attlee.ai</span> — AI-Powered Building Safety Consultancy
                 </p>
                 <p className="text-xs text-amber-400 font-medium mt-1">
                   AI-First. Human-Verified. Always.

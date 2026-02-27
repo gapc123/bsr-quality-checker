@@ -8,7 +8,7 @@ export default function SignInPage() {
         <span className="inline-block bg-slate-900 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3 tracking-wider">
           TEAM PORTAL
         </span>
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">Attlee.AI Internal Tools</h1>
+        <h1 className="text-2xl font-bold text-slate-900 mb-1">attlee.ai Internal Tools</h1>
         <p className="text-slate-500 text-sm">Sign in to access client assessment tools</p>
       </div>
 
@@ -31,7 +31,7 @@ export default function SignInPage() {
       />
 
       <p className="mt-6 text-xs text-slate-400 max-w-sm text-center">
-        This portal is for Attlee.AI team members only.
+        This portal is for attlee.ai team members only.
         If you're a client looking to engage our services, please visit our{' '}
         <a href="/" className="text-blue-600 hover:underline">homepage</a>.
       </p>
