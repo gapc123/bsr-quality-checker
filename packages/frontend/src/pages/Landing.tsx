@@ -77,6 +77,9 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* News Headlines Context */}
+      <HeadlinesSection />
+
       {/* SECTION A: Why Generic AI Falls Short */}
       <section className="relative py-20 bg-slate-900">
         <div className="max-w-4xl mx-auto px-4">
@@ -293,9 +296,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      {/* News Headlines Context */}
-      <HeadlinesSection />
 
       {/* Section 1: AI Review, Not AI Content Generation */}
       <section className="relative py-20 bg-slate-900">
