@@ -42,8 +42,8 @@ export default function Landing() {
               </h1>
 
               <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                We've built proprietary AI technology combined with a deterministic rules engine—then put expert consultants in control.
-                Delivering intelligent document review at the scale and speed of AI, with the reliability of human oversight.
+                We've built a proprietary rules engine layered over secure AI—then put expert consultants in control.
+                Delivering intelligent document review at the scale and speed of AI, with the reliability of deterministic logic and human oversight.
               </p>
             </div>
 
@@ -72,7 +72,7 @@ export default function Landing() {
             We're an AI-first consultancy helping get more safe homes built in the UK, faster.
           </p>
           <p className="text-base text-slate-400 max-w-3xl mx-auto pt-2">
-            We've built our own AI + rules-based technology platform. Our expert consultants use it to deliver faster, more reliable building safety reviews—with human experts maintaining final authority on every decision.
+            We use secure, enterprise-grade AI combined with our proprietary rules engine (55 deterministic rules mapped to Gateway 2 requirements). Our expert consultants use this platform to deliver faster, more reliable building safety reviews—with human experts maintaining final authority on every decision.
           </p>
         </div>
       </section>
@@ -121,7 +121,7 @@ export default function Landing() {
                 How attlee.ai Makes Compliance Reliable
               </h2>
               <p className="text-slate-400 italic">
-                We built our own AI system—not just using off-the-shelf tools—designed specifically for building safety compliance.
+                We've built a proprietary rules engine specifically for building safety compliance—layered over secure, enterprise-grade AI.
               </p>
             </div>
 
@@ -129,11 +129,11 @@ export default function Landing() {
             <div className="space-y-3">
               <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">1</span>
-                Our proprietary AI extracts and structures information
+                Secure AI extracts and structures information
               </h3>
               <div className="pl-10 space-y-2 text-slate-300">
-                <p>We've developed custom AI models trained on building safety regulations. The AI reads documents quickly, extracts relevant sections, and structures evidence.</p>
-                <p className="font-medium text-slate-200">But our AI doesn't make compliance decisions—that's where our rules engine comes in.</p>
+                <p>We use enterprise-grade Claude AI to read documents quickly, extract relevant sections, and structure evidence with custom prompts designed for building safety regulations.</p>
+                <p className="font-medium text-slate-200">But the AI doesn't make compliance decisions—that's where our proprietary rules engine comes in.</p>
               </div>
             </div>
 
@@ -185,10 +185,10 @@ export default function Landing() {
             {/* Summary */}
             <div className="pt-6 mt-6 border-t border-slate-700 text-center space-y-3">
               <p className="text-lg font-semibold text-cyan-400">
-                Our proprietary AI delivers efficiency. Our rules engine ensures consistency. Our expert consultants provide assurance.
+                Secure AI delivers efficiency. Our proprietary rules engine ensures consistency. Our expert consultants provide assurance.
               </p>
               <p className="text-sm text-slate-400">
-                We're not just using AI—we've built a complete system with human oversight at its core.
+                It's the combination that makes it reliable—AI for speed, rules for decisions, humans for oversight.
               </p>
             </div>
           </div>
