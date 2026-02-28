@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { SignedIn } from '@clerk/clerk-react';
 import { HeadlinesSection, ConstructionSection, TimelapseSection } from '../components/ContextSection';
 
 export default function Landing() {
@@ -27,6 +27,12 @@ export default function Landing() {
 
             {/* Headline */}
             <div className="space-y-6">
+              <div className="inline-block mx-auto mb-4">
+                <span className="px-4 py-2 bg-cyan-600/20 text-cyan-400 text-sm font-semibold rounded-full border border-cyan-600/30">
+                  AI Consultancy with Proprietary Technology
+                </span>
+              </div>
+
               <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight">
                 AI-Powered Building Safety
                 <br />
@@ -36,30 +42,22 @@ export default function Landing() {
               </h1>
 
               <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                Intelligent document review at scale. Understanding regulation beyond human capacity.
-                Identifying gaps, risks, and inconsistencies before submission.
+                We've built proprietary AI technology combined with a deterministic rules engine—then put expert consultants in control.
+                Delivering intelligent document review at the scale and speed of AI, with the reliability of human oversight.
               </p>
             </div>
 
-            {/* CTA */}
-            <div className="flex justify-center gap-4 pt-6">
-              <SignedOut>
-                <Link
-                  to="/sign-in"
-                  className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-blue-600/20"
-                >
-                  Sign In
-                </Link>
-              </SignedOut>
-              <SignedIn>
+            {/* CTA - Sign-in hidden from public, accessible via /sign-in URL */}
+            <SignedIn>
+              <div className="flex justify-center gap-4 pt-6">
                 <Link
                   to="/clients"
                   className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-blue-600/20"
                 >
                   Go to Dashboard
                 </Link>
-              </SignedIn>
-            </div>
+              </div>
+            </SignedIn>
           </div>
         </div>
       </header>
@@ -71,7 +69,10 @@ export default function Landing() {
             The UK needs more safe, quality homes. The path to building them is too slow, too complex.
           </p>
           <p className="text-2xl font-semibold bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-            Our mission is to help get more safe homes built in the UK, faster.
+            We're an AI-first consultancy helping get more safe homes built in the UK, faster.
+          </p>
+          <p className="text-base text-slate-400 max-w-3xl mx-auto pt-2">
+            We've built our own AI + rules-based technology platform. Our expert consultants use it to deliver faster, more reliable building safety reviews—with human experts maintaining final authority on every decision.
           </p>
         </div>
       </section>
@@ -115,19 +116,24 @@ export default function Landing() {
       <section className="relative py-20 bg-gradient-to-b from-slate-900 to-slate-800">
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-slate-800/50 border-2 border-cyan-600/30 rounded-2xl p-8 md:p-10 space-y-8">
-            <h2 className="text-3xl font-bold text-white mb-6">
-              How attlee.ai Makes Compliance Reliable
-            </h2>
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold text-white mb-2">
+                How attlee.ai Makes Compliance Reliable
+              </h2>
+              <p className="text-slate-400 italic">
+                We built our own AI system—not just using off-the-shelf tools—designed specifically for building safety compliance.
+              </p>
+            </div>
 
             {/* Step 1 */}
             <div className="space-y-3">
               <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">1</span>
-                AI is used for speed, not judgement
+                Our proprietary AI extracts and structures information
               </h3>
               <div className="pl-10 space-y-2 text-slate-300">
-                <p>The LLM is used to read documents quickly, extract relevant sections, and structure evidence.</p>
-                <p className="font-medium text-slate-200">It does not decide whether something is compliant.</p>
+                <p>We've developed custom AI models trained on building safety regulations. The AI reads documents quickly, extracts relevant sections, and structures evidence.</p>
+                <p className="font-medium text-slate-200">But our AI doesn't make compliance decisions—that's where our rules engine comes in.</p>
               </div>
             </div>
 
@@ -135,12 +141,12 @@ export default function Landing() {
             <div className="space-y-3">
               <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">2</span>
-                Deterministic rules make the decision
+                Our deterministic rules engine makes recommendations
               </h3>
               <div className="pl-10 space-y-2 text-slate-300">
-                <p>Each regulatory requirement is encoded as a deterministic rule mapped to a regulatory matrix.</p>
-                <p>Rules evaluate the extracted evidence and return a clear Yes or No per requirement.</p>
-                <p className="font-medium text-slate-200">The same input always produces the same output.</p>
+                <p>We've encoded all 55 Gateway 2 requirements as deterministic rules mapped to a regulatory matrix.</p>
+                <p>The rules engine evaluates the AI-extracted evidence and returns clear pass/fail recommendations per requirement.</p>
+                <p className="font-medium text-slate-200">The same input always produces the same output—zero probabilistic guesswork.</p>
               </div>
             </div>
 
@@ -148,16 +154,17 @@ export default function Landing() {
             <div className="space-y-3">
               <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">3</span>
-                Full auditability by default
+                Full audit trail for every recommendation
               </h3>
               <div className="pl-10 space-y-2 text-slate-300">
-                <p>Every decision includes:</p>
+                <p>Every recommendation includes:</p>
                 <ul className="list-disc list-inside space-y-1 pl-4">
-                  <li>The regulatory clause being tested</li>
-                  <li>The rule applied</li>
+                  <li>The specific regulatory clause being tested</li>
+                  <li>The deterministic rule applied</li>
                   <li>The source text used as evidence</li>
+                  <li>The confidence level of the assessment</li>
                 </ul>
-                <p className="font-medium text-slate-200">This makes outcomes explainable, reviewable, and defensible to auditors and regulators.</p>
+                <p className="font-medium text-slate-200">This makes our recommendations explainable, reviewable, and defensible to auditors and regulators.</p>
               </div>
             </div>
 
@@ -165,19 +172,23 @@ export default function Landing() {
             <div className="space-y-3">
               <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">4</span>
-                Human experts remain in control
+                Our expert consultants have the final word
               </h3>
               <div className="pl-10 space-y-2 text-slate-300">
-                <p>Edge cases are flagged for human review.</p>
-                <p>Experts can approve, reject, or override with a recorded rationale.</p>
-                <p className="font-medium text-slate-200">This creates a clear human-in-the-loop safety mechanism.</p>
+                <p>AI and rules provide speed and consistency. But <span className="font-semibold text-white">human experts always maintain final authority</span>.</p>
+                <p>Our building safety consultants review every assessment, especially edge cases flagged by the system.</p>
+                <p>Experts can approve, reject, or override any recommendation with a recorded rationale.</p>
+                <p className="font-medium text-slate-200">The technology serves the experts—not the other way around.</p>
               </div>
             </div>
 
             {/* Summary */}
-            <div className="pt-6 mt-6 border-t border-slate-700 text-center">
+            <div className="pt-6 mt-6 border-t border-slate-700 text-center space-y-3">
               <p className="text-lg font-semibold text-cyan-400">
-                AI accelerates the work. Rules enforce the standard. Humans provide assurance.
+                Our proprietary AI delivers efficiency. Our rules engine ensures consistency. Our expert consultants provide assurance.
+              </p>
+              <p className="text-sm text-slate-400">
+                We're not just using AI—we've built a complete system with human oversight at its core.
               </p>
             </div>
           </div>
@@ -535,13 +546,6 @@ export default function Landing() {
                   george@attlee.ai
                 </a>
               </p>
-              <SignedOut>
-                <p className="text-xs text-slate-600">
-                  <Link to="/sign-in" className="hover:text-slate-400 transition-colors">
-                    Team Login
-                  </Link>
-                </p>
-              </SignedOut>
               <p className="text-xs text-slate-600">
                 © 2026 attlee.ai. Building safe homes, faster.
               </p>
