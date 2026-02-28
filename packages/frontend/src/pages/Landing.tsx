@@ -522,6 +522,103 @@ export default function Landing() {
       {/* Construction Timelapse Video */}
       <TimelapseSection />
 
+      {/* Data Security Section */}
+      <section className="relative py-20 bg-slate-900 border-t border-slate-800">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="space-y-12">
+            {/* Heading */}
+            <div className="text-center space-y-4">
+              <h2 className="text-4xl font-bold text-white">
+                Enterprise-Grade Data Security
+              </h2>
+              <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full" />
+              <p className="text-slate-400 text-lg">
+                Your sensitive building safety documents are protected
+              </p>
+            </div>
+
+            {/* Core Message */}
+            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 space-y-8">
+              {/* Why Claude API is Secure */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  We Use Claude API (Anthropic) for AI Processing
+                </h3>
+                <div className="pl-9 space-y-3 text-slate-300">
+                  <p className="font-medium text-slate-200">
+                    Why Claude API specifically protects your data:
+                  </p>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-cyan-400 mt-1">✓</span>
+                      <span><strong className="text-white">SOC 2 Type II and ISO 27001 certified</strong> – independently audited security controls</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-cyan-400 mt-1">✓</span>
+                      <span><strong className="text-white">Your data is NEVER used to train AI models</strong> – API/commercial customers are excluded from training</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-cyan-400 mt-1">✓</span>
+                      <span><strong className="text-white">30-day data retention</strong> – processed data is automatically deleted</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-cyan-400 mt-1">✓</span>
+                      <span><strong className="text-white">No third-party data sharing</strong> – Anthropic never sells customer data</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Additional Security Measures */}
+              <div className="pt-6 border-t border-slate-700 space-y-4">
+                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Our Additional Security Measures
+                </h3>
+                <div className="pl-9 grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="text-cyan-400 font-semibold">Secure Authentication</div>
+                    <div className="text-sm text-slate-400">
+                      Team access protected by Clerk (enterprise authentication provider)
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-cyan-400 font-semibold">HTTPS Encryption</div>
+                    <div className="text-sm text-slate-400">
+                      All data transmitted over encrypted connections
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-cyan-400 font-semibold">Secure Database</div>
+                    <div className="text-sm text-slate-400">
+                      PostgreSQL database with access controls
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-cyan-400 font-semibold">Environment Isolation</div>
+                    <div className="text-sm text-slate-400">
+                      API keys and credentials stored securely as environment variables
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Summary */}
+              <div className="pt-6 border-t border-slate-700 text-center">
+                <p className="text-lg text-cyan-400 font-medium">
+                  Enterprise-grade AI security from Anthropic, combined with professional data handling practices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="relative bg-slate-900 border-t border-slate-800 py-12">
         <div className="max-w-7xl mx-auto px-4">
