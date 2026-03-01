@@ -9,6 +9,10 @@ import ClientsList from './pages/ClientsList';
 import ClientDetail from './pages/ClientDetail';
 import SignInPage from './pages/SignIn';
 import Landing from './pages/Landing';
+import Problem from './pages/Problem';
+import System from './pages/System';
+import Approach from './pages/Approach';
+import Security from './pages/Security';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -33,11 +37,11 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 
 function AppContent() {
   const location = useLocation();
-  const isLandingPage = location.pathname === '/';
+  const isPublicPage = ['/', '/problem', '/system', '/approach', '/security'].includes(location.pathname);
   const isSignInPage = location.pathname.startsWith('/sign-in');
 
-  // Landing page and sign-in have their own layouts (no internal tool header)
-  if (isLandingPage || isSignInPage) {
+  // Public pages (landing, problem, system, approach, security) and sign-in have their own layouts
+  if (isPublicPage || isSignInPage) {
     return (
       <Routes>
         <Route path="/" element={
@@ -50,6 +54,10 @@ function AppContent() {
             </SignedIn>
           </>
         } />
+        <Route path="/problem" element={<Problem />} />
+        <Route path="/system" element={<System />} />
+        <Route path="/approach" element={<Approach />} />
+        <Route path="/security" element={<Security />} />
         <Route path="/sign-in/*" element={<SignInPage />} />
       </Routes>
     );

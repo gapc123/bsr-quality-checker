@@ -1,626 +1,179 @@
 import { Link } from 'react-router-dom';
 import { SignedIn } from '@clerk/clerk-react';
-import { HeadlinesSection, ConstructionSection, TimelapseSection } from '../components/ContextSection';
+import { HeadlinesSection } from '../components/ContextSection';
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      {/* Hero Section */}
-      <header className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-cyan-600/10" />
-
-        <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">
-          <div className="text-center space-y-8">
+    <div className="min-h-screen bg-slate-950">
+      {/* Minimal Header */}
+      <header className="relative border-b border-slate-800/50">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex justify-center">
-              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-slate-800/50 border border-slate-700">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  attlee.ai
-                </span>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                attlee.ai
+              </span>
             </div>
 
-            {/* Headline */}
-            <div className="space-y-6">
-              <div className="inline-block mx-auto mb-4">
-                <span className="px-4 py-2 bg-cyan-600/20 text-cyan-400 text-sm font-semibold rounded-full border border-cyan-600/30">
-                  AI Consultancy with Proprietary Technology
-                </span>
-              </div>
-
-              <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight">
-                AI-Powered Building Safety
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-                  Review & Triage
-                </span>
-              </h1>
-
-              <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                We've built a proprietary rules engine layered over secure AI—then put expert consultants in control.
-                Delivering intelligent document review at the scale and speed of AI, with the reliability of deterministic logic and human oversight.
-              </p>
-            </div>
+            {/* Navigation */}
+            <nav className="hidden md:flex items-center gap-6 text-sm">
+              <a href="#problem" className="text-slate-400 hover:text-white transition-colors">
+                Problem
+              </a>
+              <a href="#system" className="text-slate-400 hover:text-white transition-colors">
+                System
+              </a>
+              <a href="#approach" className="text-slate-400 hover:text-white transition-colors">
+                Approach
+              </a>
+            </nav>
 
             {/* CTA - Sign-in hidden from public, accessible via /sign-in URL */}
             <SignedIn>
-              <div className="flex justify-center gap-4 pt-6">
-                <Link
-                  to="/clients"
-                  className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-blue-600/20"
-                >
-                  Go to Dashboard
-                </Link>
-              </div>
+              <Link
+                to="/clients"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                Dashboard
+              </Link>
             </SignedIn>
           </div>
         </div>
       </header>
 
-      {/* Mission Statement */}
-      <section className="relative py-16 bg-slate-800/50 border-y border-slate-700">
-        <div className="max-w-5xl mx-auto px-4 text-center space-y-4">
-          <p className="text-lg text-slate-400">
-            The UK needs more safe, quality homes. The path to building them is too slow, too complex.
-          </p>
-          <p className="text-2xl font-semibold bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-            We're an AI-first consultancy helping get more safe homes built in the UK, faster.
-          </p>
-          <p className="text-base text-slate-400 max-w-3xl mx-auto pt-2">
-            We use secure, enterprise-grade AI combined with our proprietary rules engine (55 deterministic rules mapped to Gateway 2 requirements). Our expert consultants use this platform to deliver faster, more reliable building safety reviews—with human experts maintaining final authority on every decision.
-          </p>
+      {/* Hero Section - Maximum Impact, Minimum Words */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/5 via-transparent to-transparent" />
+
+        <div className="relative max-w-5xl mx-auto px-4 py-32 sm:py-40">
+          <div className="text-center space-y-12">
+            {/* Provocative Statement */}
+            <div className="space-y-6">
+              <h1 className="text-5xl sm:text-7xl font-bold text-white leading-tight tracking-tight">
+                AI doesn't work for
+                <br />
+                regulatory compliance.
+              </h1>
+
+              <div className="h-px w-24 bg-gradient-to-r from-transparent via-slate-600 to-transparent mx-auto" />
+
+              <h2 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+                We built a system that does.
+              </h2>
+            </div>
+
+            {/* Minimal Tagline */}
+            <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">
+              Deterministic rules. AI extraction. Expert oversight.
+            </p>
+
+            {/* Scroll Indicator */}
+            <div className="pt-8">
+              <div className="inline-flex flex-col items-center gap-2 text-slate-500 animate-bounce">
+                <span className="text-xs uppercase tracking-wider">Explore</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* News Headlines Context */}
+      {/* Navigation Cards - Primary Click-Through Mechanism */}
+      <section className="relative py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+
+            {/* Card 1: The Problem */}
+            <NavigationCard
+              id="problem"
+              title="The Problem"
+              description="Why the UK needs this now"
+              detail="Housing delivery is too slow. Gateway approvals take months. The process is too complex."
+              href="/problem"
+              gradient="from-red-600/20 to-orange-600/20"
+              borderGradient="from-red-500 to-orange-500"
+              icon={
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              }
+            />
+
+            {/* Card 2: The System */}
+            <NavigationCard
+              id="system"
+              title="The System"
+              description="How it actually works"
+              detail="55 deterministic rules mapped to Gateway 2. AI extracts evidence. Experts verify."
+              href="/system"
+              gradient="from-blue-600/20 to-cyan-600/20"
+              borderGradient="from-blue-500 to-cyan-500"
+              icon={
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+              }
+              featured
+            />
+
+            {/* Card 3: Why Different */}
+            <NavigationCard
+              id="approach"
+              title="Why Different"
+              description="Our competitive advantage"
+              detail="AI for speed. Deterministic rules for certainty. Human experts for assurance."
+              href="/approach"
+              gradient="from-purple-600/20 to-pink-600/20"
+              borderGradient="from-purple-500 to-pink-500"
+              icon={
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              }
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Headlines Context - Preserved Carousel */}
       <HeadlinesSection />
 
-      {/* SECTION A: Why Generic AI Falls Short */}
-      <section className="relative py-20 bg-slate-900">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-slate-800/50 border-2 border-slate-700 rounded-2xl p-8 md:p-10 space-y-6">
-            <h2 className="text-3xl font-bold text-white mb-6">
-              Why Generic AI Falls Short
-            </h2>
-
-            <div className="space-y-4 text-slate-300 leading-relaxed">
-              <p>
-                Large Language Models (LLMs) generate text by predicting the most likely next word. They are probabilistic by design.
-              </p>
-              <p>
-                This makes them good at summarising, extracting, and rewriting information.
-              </p>
-              <p>
-                It also means their outputs can vary and cannot be relied on for strict pass/fail decisions.
-              </p>
-              <p>
-                Regulatory compliance is deterministic. A requirement is either met or it is not.
-              </p>
-              <p className="font-medium text-slate-200">
-                In regulated workflows, "probably compliant" is not an acceptable outcome.
-              </p>
-            </div>
-
-            <div className="pt-6 mt-6 border-t border-slate-700">
-              <p className="text-sm text-cyan-400 italic">
-                The problem isn't AI. It's using the wrong kind of AI for the decision.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION B: How Attlee Makes Compliance Reliable */}
-      <section className="relative py-20 bg-gradient-to-b from-slate-900 to-slate-800">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-slate-800/50 border-2 border-cyan-600/30 rounded-2xl p-8 md:p-10 space-y-8">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold text-white mb-2">
-                How attlee.ai Makes Compliance Reliable
-              </h2>
-              <p className="text-slate-400 italic">
-                We've built a proprietary rules engine specifically for building safety compliance—layered over secure, enterprise-grade AI.
-              </p>
-            </div>
-
-            {/* Step 1 */}
-            <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">1</span>
-                Secure AI extracts and structures information
-              </h3>
-              <div className="pl-10 space-y-2 text-slate-300">
-                <p>We use enterprise-grade Claude AI to read documents quickly, extract relevant sections, and structure evidence with custom prompts designed for building safety regulations.</p>
-                <p className="font-medium text-slate-200">But the AI doesn't make compliance decisions—that's where our proprietary rules engine comes in.</p>
-              </div>
-            </div>
-
-            {/* Step 2 */}
-            <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">2</span>
-                Our deterministic rules engine makes recommendations
-              </h3>
-              <div className="pl-10 space-y-2 text-slate-300">
-                <p>We've encoded all 55 Gateway 2 requirements as deterministic rules mapped to a regulatory matrix.</p>
-                <p>The rules engine evaluates the AI-extracted evidence and returns clear pass/fail recommendations per requirement.</p>
-                <p className="font-medium text-slate-200">The same input always produces the same output—zero probabilistic guesswork.</p>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">3</span>
-                Full audit trail for every recommendation
-              </h3>
-              <div className="pl-10 space-y-2 text-slate-300">
-                <p>Every recommendation includes:</p>
-                <ul className="list-disc list-inside space-y-1 pl-4">
-                  <li>The specific regulatory clause being tested</li>
-                  <li>The deterministic rule applied</li>
-                  <li>The source text used as evidence</li>
-                  <li>The confidence level of the assessment</li>
-                </ul>
-                <p className="font-medium text-slate-200">This makes our recommendations explainable, reviewable, and defensible to auditors and regulators.</p>
-              </div>
-            </div>
-
-            {/* Step 4 */}
-            <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-cyan-400 flex items-center gap-2">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-cyan-600/20 text-cyan-400 text-sm font-bold">4</span>
-                Our expert consultants have the final word
-              </h3>
-              <div className="pl-10 space-y-2 text-slate-300">
-                <p>AI and rules provide speed and consistency. But <span className="font-semibold text-white">human experts always maintain final authority</span>.</p>
-                <p>Our building safety consultants review every assessment, especially edge cases flagged by the system.</p>
-                <p>Experts can approve, reject, or override any recommendation with a recorded rationale.</p>
-                <p className="font-medium text-slate-200">The technology serves the experts—not the other way around.</p>
-              </div>
-            </div>
-
-            {/* Summary */}
-            <div className="pt-6 mt-6 border-t border-slate-700 text-center space-y-3">
-              <p className="text-lg font-semibold text-cyan-400">
-                Secure AI delivers efficiency. Our proprietary rules engine ensures consistency. Our expert consultants provide assurance.
-              </p>
-              <p className="text-sm text-slate-400">
-                It's the combination that makes it reliable—AI for speed, rules for decisions, humans for oversight.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION C: Why Our Approach Is Different */}
-      <section className="relative py-20 bg-slate-800">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Why Our Approach Is Different
-            </h2>
-          </div>
-
-          {/* Comparison Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {/* ChatGPT / Generic AI */}
-            <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-200">ChatGPT / Generic AI</h3>
-                <span className="px-3 py-1 bg-amber-600/20 text-amber-400 text-xs font-semibold rounded-full border border-amber-600/30">
-                  Probabilistic
-                </span>
-              </div>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-start gap-2">
-                  <span className="text-slate-600 mt-1">•</span>
-                  <span>Generates likely answers</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-slate-600 mt-1">•</span>
-                  <span>No deterministic pass/fail logic</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-slate-600 mt-1">•</span>
-                  <span>No embedded regulatory matrix</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Traditional Consultant */}
-            <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-200">Traditional Consultant</h3>
-                <span className="px-3 py-1 bg-slate-600/20 text-slate-400 text-xs font-semibold rounded-full border border-slate-600/30">
-                  4–6 weeks
-                </span>
-              </div>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-start gap-2">
-                  <span className="text-slate-600 mt-1">•</span>
-                  <span>Manual interpretation</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-slate-600 mt-1">•</span>
-                  <span>Variable outcomes between reviewers</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-slate-600 mt-1">•</span>
-                  <span>Hard to scale</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Attlee - Dominant */}
-            <div className="bg-gradient-to-br from-cyan-600/20 to-blue-600/20 border-2 border-cyan-600/50 rounded-xl p-6 space-y-4 md:scale-105 shadow-xl shadow-cyan-600/20">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">attlee.ai</h3>
-                <span className="px-3 py-1 bg-cyan-600 text-white text-xs font-semibold rounded-full">
-                  Best of both
-                </span>
-              </div>
-              <ul className="space-y-2 text-sm text-slate-200">
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>AI-powered extraction and structuring</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Deterministic Yes/No decisions per regulation</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Full audit trail and expert verification</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Closing Statement */}
-          <div className="text-center">
-            <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              The speed of AI. The certainty of rules. The assurance of experts.
+      {/* Quick Links Section */}
+      <section className="relative py-16 bg-slate-950 border-t border-slate-800/50">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center space-y-8">
+            <p className="text-slate-500 text-sm uppercase tracking-wider">
+              Or jump straight to
             </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Section 1: AI Review, Not AI Content Generation */}
-      <section className="relative py-20 bg-slate-900">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="space-y-12">
-            {/* Heading */}
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold text-white">
-                Intelligent Review, Not Content Generation
-              </h2>
-              <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full" />
-            </div>
-
-            {/* Core Message */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 space-y-6">
-              <p className="text-lg text-slate-300 leading-relaxed">
-                This system does not attempt to replace professional judgement or generate free-form compliance documents.
-                Instead, it provides <span className="text-cyan-400 font-semibold">intelligent review and triage at a scale no individual human can achieve</span>.
-              </p>
-
-              {/* What the AI Does */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <span className="w-2 h-2 bg-blue-500 rounded-full" />
-                  What the AI Does
-                </h3>
-                <ul className="space-y-3 text-slate-300 ml-5">
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Reviews documents across entire submission packs for consistency</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Understands building safety regulations at granular detail</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Identifies gaps, risks, and inconsistencies early in the process</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Cross-references requirements across dozens of documents simultaneously</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Agentic Behavior */}
-              <div className="space-y-4 pt-4 border-t border-slate-700">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <span className="w-2 h-2 bg-cyan-500 rounded-full" />
-                  Agentic Behaviour (Where AI Acts Autonomously)
-                </h3>
-                <ul className="grid sm:grid-cols-2 gap-3 text-slate-300">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" />
-                    Formatting and structural consistency checks
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" />
-                    Cross-referencing between documents
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" />
-                    Language clarity assessment
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" />
-                    Highlighting missing sections
-                  </li>
-                </ul>
-              </div>
-
-              {/* What AI Defers */}
-              <div className="space-y-4 pt-4 border-t border-slate-700">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <span className="w-2 h-2 bg-amber-500 rounded-full" />
-                  What the AI Always Defers to Humans
-                </h3>
-                <ul className="grid sm:grid-cols-2 gap-3 text-slate-300">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
-                    Professional engineering judgement
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
-                    Creation of new technical documents
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
-                    Final sign-off and accountability
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
-                    Physical testing and site inspections
-                  </li>
-                </ul>
-              </div>
-
-              {/* The Goal */}
-              <div className="pt-6 border-t border-slate-700">
-                <p className="text-lg text-cyan-400 font-medium italic">
-                  The Goal: Reduce the human workload by handling repetitive review tasks,
-                  while keeping human expertise and accountability at the center of every submission.
-                </p>
-              </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="mailto:george@attlee.ai"
+                className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-600"
+              >
+                Book a Demo
+              </a>
+              <Link
+                to="/security"
+                className="px-6 py-3 text-slate-400 hover:text-white font-medium transition-colors"
+              >
+                View Security Details →
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Construction Imagery Context */}
-      <ConstructionSection />
-
-      {/* Section 2: Continuous Improvement Through Real Outcomes */}
-      <section className="relative py-20 bg-slate-800/30">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="space-y-12">
-            {/* Heading */}
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold text-white">
-                A Growing Regulatory Intelligence Layer
-              </h2>
-              <div className="h-1 w-24 bg-gradient-to-r from-cyan-500 to-blue-400 mx-auto rounded-full" />
-              <p className="text-slate-400 text-lg">
-                Not a static rules engine
-              </p>
-            </div>
-
-            {/* Core Message */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 space-y-6">
-              <p className="text-lg text-slate-300 leading-relaxed">
-                Unlike static compliance checklists, this system <span className="text-cyan-400 font-semibold">learns from real regulatory outcomes</span>.
-                Every submission—whether successful or not—contributes to the system's understanding of what the Building Safety Regulator expects.
-              </p>
-
-              {/* What the System Learns From */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <span className="w-2 h-2 bg-blue-500 rounded-full" />
-                  What the System Learns From
-                </h3>
-                <ul className="space-y-3 text-slate-300">
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                    </svg>
-                    <span>Successful Gateway 2 submissions and their common patterns</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                    <span>Submissions that failed and the specific reasons why</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                    </svg>
-                    <span>Direct feedback from BSR reviews and queries</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Changes in regulatory interpretation over time</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* How This Improves */}
-              <div className="space-y-4 pt-4 border-t border-slate-700">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <span className="w-2 h-2 bg-cyan-500 rounded-full" />
-                  How This Improves the System
-                </h3>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="bg-slate-900/50 rounded-lg p-4 space-y-2">
-                    <div className="text-cyan-400 font-semibold">Pattern Recognition</div>
-                    <div className="text-sm text-slate-400">
-                      Better identification of what constitutes submission-ready documentation
-                    </div>
-                  </div>
-                  <div className="bg-slate-900/50 rounded-lg p-4 space-y-2">
-                    <div className="text-cyan-400 font-semibold">Risk Identification</div>
-                    <div className="text-sm text-slate-400">
-                      Earlier detection of issues likely to trigger regulator queries
-                    </div>
-                  </div>
-                  <div className="bg-slate-900/50 rounded-lg p-4 space-y-2">
-                    <div className="text-cyan-400 font-semibold">Confidence Calibration</div>
-                    <div className="text-sm text-slate-400">
-                      More accurate assessment of which areas need further review
-                    </div>
-                  </div>
-                  <div className="bg-slate-900/50 rounded-lg p-4 space-y-2">
-                    <div className="text-cyan-400 font-semibold">Conservative Guidance</div>
-                    <div className="text-sm text-slate-400">
-                      More cautious where regulatory standards remain ambiguous
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* The Result */}
-              <div className="pt-6 border-t border-slate-700">
-                <p className="text-lg text-cyan-400 font-medium italic">
-                  The Result: Over time, the system becomes not just faster, but more accurate—helping teams
-                  anticipate regulator expectations before submission, reducing delays and rework.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Construction Timelapse Video */}
-      <TimelapseSection />
-
-      {/* Data Security Section */}
-      <section className="relative py-20 bg-slate-900 border-t border-slate-800">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="space-y-12">
-            {/* Heading */}
-            <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold text-white">
-                Enterprise-Grade Data Security
-              </h2>
-              <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full" />
-              <p className="text-slate-400 text-lg">
-                Your sensitive building safety documents are protected
-              </p>
-            </div>
-
-            {/* Core Message */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 space-y-8">
-              {/* Why Claude API is Secure */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  We Use Claude API (Anthropic) for AI Processing
-                </h3>
-                <div className="pl-9 space-y-3 text-slate-300">
-                  <p className="font-medium text-slate-200">
-                    Why Claude API specifically protects your data:
-                  </p>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-400 mt-1">✓</span>
-                      <span><strong className="text-white">SOC 2 Type II and ISO 27001 certified</strong> – independently audited security controls</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-400 mt-1">✓</span>
-                      <span><strong className="text-white">Your data is NEVER used to train AI models</strong> – API/commercial customers are excluded from training</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-400 mt-1">✓</span>
-                      <span><strong className="text-white">30-day data retention</strong> – processed data is automatically deleted</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-400 mt-1">✓</span>
-                      <span><strong className="text-white">No third-party data sharing</strong> – Anthropic never sells customer data</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Additional Security Measures */}
-              <div className="pt-6 border-t border-slate-700 space-y-4">
-                <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  Our Additional Security Measures
-                </h3>
-                <div className="pl-9 grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Secure Authentication</div>
-                    <div className="text-sm text-slate-400">
-                      Team access protected by Clerk (enterprise authentication provider)
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">HTTPS Encryption</div>
-                    <div className="text-sm text-slate-400">
-                      All data transmitted over encrypted connections
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Secure Database</div>
-                    <div className="text-sm text-slate-400">
-                      PostgreSQL database with access controls
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Environment Isolation</div>
-                    <div className="text-sm text-slate-400">
-                      API keys and credentials stored securely as environment variables
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Summary */}
-              <div className="pt-6 border-t border-slate-700 text-center">
-                <p className="text-lg text-cyan-400 font-medium">
-                  Enterprise-grade AI security from Anthropic, combined with professional data handling practices.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="relative bg-slate-900 border-t border-slate-800 py-12">
+      {/* Minimal Footer */}
+      <footer className="relative bg-slate-950 border-t border-slate-800/50 py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
@@ -629,27 +182,117 @@ export default function Landing() {
                   attlee.ai
                 </span>
               </div>
-              <p className="text-sm text-slate-400">
-                AI-Powered Building Safety Consultancy
-              </p>
-              <p className="text-xs text-amber-400 font-medium mt-1">
-                AI-First. Human-Verified. Always.
+              <p className="text-sm text-slate-500">
+                AI-powered building safety consultancy
               </p>
             </div>
 
             <div className="text-center md:text-right space-y-2">
-              <p className="text-xs text-slate-500">
+              <p className="text-sm text-slate-500">
                 <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">
                   george@attlee.ai
                 </a>
               </p>
               <p className="text-xs text-slate-600">
-                © 2026 attlee.ai. Building safe homes, faster.
+                © 2026 attlee.ai
               </p>
             </div>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+// Navigation Card Component
+interface NavigationCardProps {
+  id: string;
+  title: string;
+  description: string;
+  detail: string;
+  href: string;
+  gradient: string;
+  borderGradient: string;
+  icon: React.ReactNode;
+  featured?: boolean;
+}
+
+function NavigationCard({
+  id,
+  title,
+  description,
+  detail,
+  href,
+  gradient,
+  borderGradient,
+  icon,
+  featured = false
+}: NavigationCardProps) {
+  return (
+    <a
+      id={id}
+      href={href}
+      className={`
+        group relative block bg-slate-900 rounded-2xl overflow-hidden
+        transition-all duration-300 hover:scale-105
+        ${featured ? 'md:scale-105 shadow-2xl' : 'shadow-xl'}
+        border border-slate-800 hover:border-slate-700
+      `}
+    >
+      {/* Background Gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-50 group-hover:opacity-70 transition-opacity`} />
+
+      {/* Border Gradient Glow */}
+      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br ${borderGradient} blur-xl -z-10`} />
+
+      {/* Content */}
+      <div className="relative p-8 space-y-6">
+        {/* Icon */}
+        <div className={`
+          w-12 h-12 rounded-xl bg-gradient-to-br ${borderGradient}
+          flex items-center justify-center text-white
+          group-hover:scale-110 transition-transform
+        `}>
+          {icon}
+        </div>
+
+        {/* Title & Description */}
+        <div className="space-y-2">
+          <h3 className="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+            {title}
+          </h3>
+          <p className="text-sm text-slate-400 font-medium">
+            {description}
+          </p>
+        </div>
+
+        {/* Detail Text */}
+        <p className="text-slate-300 text-sm leading-relaxed">
+          {detail}
+        </p>
+
+        {/* Arrow CTA */}
+        <div className="flex items-center gap-2 text-slate-400 group-hover:text-white transition-colors">
+          <span className="text-sm font-medium">Learn more</span>
+          <svg
+            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Featured Badge */}
+      {featured && (
+        <div className="absolute top-4 right-4">
+          <div className="px-3 py-1 bg-cyan-600 text-white text-xs font-bold rounded-full shadow-lg">
+            Core
+          </div>
+        </div>
+      )}
+    </a>
   );
 }
