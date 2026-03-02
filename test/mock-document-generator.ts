@@ -42,8 +42,12 @@ export interface PackCharacteristics {
  * Extract characteristics from a test pack by reading its README and ground truth
  */
 export function extractPackCharacteristics(packPath: string): PackCharacteristics {
-  const readmePath = path.join(packPath, 'README.md');
-  const groundTruthPath = path.join(packPath, 'ground-truth.json');
+  // packPath should be the directory containing README.md and ground-truth.json
+  // Remove '/documents' if present
+  const actualPackPath = packPath.replace(/\/documents$/, '');
+
+  const readmePath = path.join(actualPackPath, 'README.md');
+  const groundTruthPath = path.join(actualPackPath, 'ground-truth.json');
 
   const readme = fs.readFileSync(readmePath, 'utf-8');
   const groundTruth = JSON.parse(fs.readFileSync(groundTruthPath, 'utf-8'));
