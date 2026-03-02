@@ -39,6 +39,27 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Debug endpoint to check frontend path
+app.get('/api/debug', (req, res) => {
+  const frontendPath = path.join(process.cwd(), 'packages', 'frontend', 'dist');
+  const exists = fs.existsSync(frontendPath);
+  const cwd = process.cwd();
+  let files: string[] = [];
+
+  if (exists) {
+    files = fs.readdirSync(frontendPath);
+  }
+
+  res.json({
+    cwd,
+    frontendPath,
+    exists,
+    files,
+    isProduction,
+    nodeEnv: process.env.NODE_ENV
+  });
+});
+
 // Serve frontend static files in production
 if (isProduction) {
   // When running from /app with CMD ["node", "packages/backend/dist/index.js"]
