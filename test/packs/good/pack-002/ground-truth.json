@@ -1,0 +1,449 @@
+{
+  "pack_id": "pack-002",
+  "pack_name": "Parkside Heights - Student Accommodation",
+  "quality": "good",
+  "gateway_2_outcome": "passed",
+  "notes": "High-quality 19m student accommodation with CLT timber frame. All documents present and comprehensive. Passed Gateway 2 in Sept 2025.",
+
+  "rule_expectations": {
+    "SM-001": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire Strategy Report present (38 pages), all required sections complete",
+      "critical": true,
+      "document_reference": "04_Fire_Strategy_Report.pdf"
+    },
+
+    "SM-002": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Means of escape clearly defined: 2 staircases, max 15m travel distance stated explicitly",
+      "critical": true,
+      "document_reference": "Fire Strategy p.4-12, Section 2"
+    },
+
+    "SM-003": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Compartmentation strategy with 60-minute fire resistance periods explicitly stated",
+      "critical": true,
+      "document_reference": "Fire Strategy p.13-20, Section 3"
+    },
+
+    "SM-004": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "External wall system: brick (A1), mineral wool (A1) - fully non-combustible with test certificates",
+      "critical": true,
+      "document_reference": "Fire Strategy p.21-25, Test Certificates"
+    },
+
+    "SM-005": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Sprinklers specified throughout to BS EN 12845:2015",
+      "critical": true,
+      "document_reference": "Fire Strategy p.34-38, Sprinkler Calculations"
+    },
+
+    "SM-006": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Firefighting access: 3.7m roads, dry risers, fire main to BS 9990",
+      "critical": true,
+      "document_reference": "Fire Strategy p.29-33"
+    },
+
+    "SM-007": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "19m student building with 2 staircases (required for >18m)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.4-12, Application Form"
+    },
+
+    "SM-008": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Structural calculations present with fire resistance section (60-min CLT protection)",
+      "critical": true,
+      "document_reference": "06_Structural_Calculations.pdf"
+    },
+
+    "SM-009": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire strategy states 60 min, structural calcs state 60 min - aligned",
+      "critical": true,
+      "document_reference": "Fire Strategy p.26-28, Structural Calcs"
+    },
+
+    "SM-010": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Principal Designer: Fire Safety Solutions Ltd, competence evidence (IFE, CABE, 8+ HRB projects)",
+      "critical": true,
+      "document_reference": "12_Principal_Designer_Appointment.pdf"
+    },
+
+    "SM-011": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Principal Contractor: Premier Build Ltd, competence evidence (ISO 9001, 12 HRB projects)",
+      "critical": true,
+      "document_reference": "13_Principal_Contractor_Appointment.pdf"
+    },
+
+    "SM-012": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Golden Thread Strategy with BIM Level 2 and handover process",
+      "critical": true,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-013": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Change Control Plan present",
+      "critical": false,
+      "document_reference": "15_Change_Control_Plan.pdf"
+    },
+
+    "SM-014": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Design and Access Statement present",
+      "critical": false,
+      "document_reference": "11_Design_and_Access_Statement.pdf"
+    },
+
+    "SM-015": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "MEP Specification present",
+      "critical": false,
+      "document_reference": "08_MEP_Specification.pdf"
+    },
+
+    "SM-016": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Ventilation strategy complying with ADF 2021",
+      "critical": false,
+      "document_reference": "09_Ventilation_Strategy.pdf"
+    },
+
+    "SM-017": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire detection: L1 system to BS 5839-1:2017",
+      "critical": false,
+      "document_reference": "Fire Strategy p.34-38"
+    },
+
+    "SM-018": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Smoke control: AOV in staircases",
+      "critical": false,
+      "document_reference": "Fire Strategy p.34-38"
+    },
+
+    "SM-019": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Evacuation strategy: Stay put (simultaneous if needed) - explicitly stated",
+      "critical": true,
+      "document_reference": "Fire Strategy p.4-12"
+    },
+
+    "SM-020": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building height 19m stated consistently across all documents",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-021": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Storey count: 6 storeys consistently stated",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-022": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire Risk Assessment included",
+      "critical": false,
+      "document_reference": "05_Fire_Risk_Assessment.pdf"
+    },
+
+    "SM-023": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Project in Birmingham, not London",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-024": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Not London residential",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-025": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Documents cross-reference (fire strategy refs structural, etc.)",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-026": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building Regulations Compliance Statement present",
+      "critical": false,
+      "document_reference": "03_Building_Regs_Compliance_Statement.pdf"
+    },
+
+    "SM-027": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Document version control (Fire Strategy dated Sept 2025)",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-028": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Construction Phase Plan in Construction Control Plan",
+      "critical": false,
+      "document_reference": "14_Construction_Control_Plan.pdf"
+    },
+
+    "SM-029": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building description clear: 19m, 6 storeys, 180 studios, student accommodation",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-030": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site location: 15 Park Road, Birmingham, B5 4TH",
+      "critical": false,
+      "document_reference": "02_Site_Location_Plan.pdf"
+    },
+
+    "SM-031": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire door ratings specified: FD60 throughout",
+      "critical": true,
+      "document_reference": "Fire Strategy p.13-20"
+    },
+
+    "SM-032": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Emergency lighting specified",
+      "critical": false,
+      "document_reference": "Fire Strategy, MEP Spec"
+    },
+
+    "SM-033": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire stopping and penetration seals detailed",
+      "critical": true,
+      "document_reference": "Fire Strategy p.13-20"
+    },
+
+    "SM-034": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Student resident communication of evacuation strategy addressed",
+      "critical": false,
+      "document_reference": "Fire Strategy, Management Plan"
+    },
+
+    "SM-035": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Wayfinding and escape signage specified",
+      "critical": false,
+      "document_reference": "Fire Strategy"
+    },
+
+    "SM-036": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Dry riser in both staircases",
+      "critical": true,
+      "document_reference": "Fire Strategy p.29-33"
+    },
+
+    "SM-037": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Balcony fire safety addressed",
+      "critical": false,
+      "document_reference": "Fire Strategy, Architectural drawings"
+    },
+
+    "SM-038": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No basement in this building",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-039": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No separate car park structure",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-040": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Refuse store fire safety addressed",
+      "critical": false,
+      "document_reference": "Fire Strategy, Architectural drawings"
+    },
+
+    "SM-041": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Competent Person Scheme references (IFE, CABE)",
+      "critical": false,
+      "document_reference": "Principal Designer appointment"
+    },
+
+    "SM-042": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Building Safety Manager considerations in handover",
+      "critical": false,
+      "document_reference": "Golden Thread Strategy"
+    },
+
+    "SM-043": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No partial occupation planned",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-044": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Specialist subcontractor competence approach outlined",
+      "critical": false,
+      "document_reference": "Construction Control Plan"
+    },
+
+    "SM-045": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "As-built documentation commitment in Golden Thread",
+      "critical": false,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-046": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "BIM strategy for Golden Thread (BIM Level 2)",
+      "critical": false,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-047": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Drawing revision control (Rev D on architectural drawings)",
+      "critical": false,
+      "document_reference": "Architectural and structural drawings"
+    },
+
+    "SM-048": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Overheating risk assessment in ventilation strategy",
+      "critical": false,
+      "document_reference": "09_Ventilation_Strategy.pdf"
+    },
+
+    "SM-049": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Common area ventilation specified",
+      "critical": false,
+      "document_reference": "MEP Spec, Ventilation Strategy"
+    },
+
+    "SM-050": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Kitchen extract specified (studio kitchens)",
+      "critical": false,
+      "document_reference": "MEP Spec, Ventilation Strategy"
+    },
+
+    "SM-051": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building use (Sui Generis student accommodation, 180 studios) consistently described",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-052": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site address (15 Park Road, Birmingham, B5 4TH) consistently referenced",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-053": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Project name (Parkside Heights) consistently used",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-054": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Design team identified: Architect, Structural Engineer, MEP, Fire Safety Consultant",
+      "critical": false,
+      "document_reference": "Application Form"
+    },
+
+    "SM-055": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Documents dated within last 12 months (Fire Strategy Sept 2025)",
+      "critical": false,
+      "document_reference": "Document dates"
+    }
+  }
+}

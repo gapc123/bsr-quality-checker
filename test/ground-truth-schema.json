@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ground Truth Schema",
+  "description": "Schema for labeling expected deterministic rule results for test packs",
+  "type": "object",
+  "required": ["pack_id", "pack_name", "quality", "rule_expectations"],
+  "properties": {
+    "pack_id": {
+      "type": "string",
+      "description": "Unique identifier for this test pack",
+      "pattern": "^pack-\\d{3}$",
+      "examples": ["pack-001", "pack-010"]
+    },
+    "pack_name": {
+      "type": "string",
+      "description": "Human-readable name of the project",
+      "examples": ["Example Tower - Gateway 2", "Riverside Development"]
+    },
+    "quality": {
+      "type": "string",
+      "enum": ["good", "borderline", "poor"],
+      "description": "Overall quality category of this pack"
+    },
+    "gateway_2_outcome": {
+      "type": "string",
+      "enum": ["passed", "passed_with_conditions", "failed", "not_submitted"],
+      "description": "Actual Gateway 2 outcome (if known)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any additional context about this pack"
+    },
+    "rule_expectations": {
+      "type": "object",
+      "description": "Expected results for each of the 55 deterministic rules",
+      "patternProperties": {
+        "^SM-\\d{3}$": {
+          "type": "object",
+          "required": ["expected_status", "confidence", "reasoning"],
+          "properties": {
+            "expected_status": {
+              "type": "string",
+              "enum": ["pass", "fail", "not_applicable"],
+              "description": "What the rule SHOULD return for this pack"
+            },
+            "confidence": {
+              "type": "string",
+              "enum": ["definitive", "high", "needs_review"],
+              "description": "How confident we are in this ground truth label"
+            },
+            "reasoning": {
+              "type": "string",
+              "description": "Why we expect this result (reference to specific evidence or lack thereof)"
+            },
+            "critical": {
+              "type": "boolean",
+              "description": "Is this a critical safety issue if missed? (helps weight accuracy)",
+              "default": false
+            },
+            "document_reference": {
+              "type": "string",
+              "description": "Specific document and page where evidence exists (or should exist)",
+              "examples": ["Fire Strategy p.12", "N/A - document missing"]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    {
+      "pack_id": "pack-001",
+      "pack_name": "Example Tower - Gateway 2 Submission",
+      "quality": "good",
+      "gateway_2_outcome": "passed",
+      "notes": "Well-documented residential tower, 22m height, sprinklered",
+      "rule_expectations": {
+        "SM-001": {
+          "expected_status": "pass",
+          "confidence": "definitive",
+          "reasoning": "Fire strategy report present with all 5 required sections",
+          "critical": true,
+          "document_reference": "Fire Strategy Report - All Sections"
+        },
+        "SM-002": {
+          "expected_status": "pass",
+          "confidence": "high",
+          "reasoning": "Means of escape defined with travel distances stated (max 18m)",
+          "critical": true,
+          "document_reference": "Fire Strategy p.12-15"
+        },
+        "SM-020": {
+          "expected_status": "pass",
+          "confidence": "definitive",
+          "reasoning": "Height stated as 22m consistently across all documents",
+          "critical": false,
+          "document_reference": "Multiple documents"
+        }
+      }
+    }
+  ]
+}

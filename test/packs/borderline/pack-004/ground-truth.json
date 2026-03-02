@@ -1,0 +1,449 @@
+{
+  "pack_id": "pack-004",
+  "pack_name": "Victoria Court - Borderline Quality",
+  "quality": "borderline",
+  "gateway_2_outcome": "passed_with_clarifications",
+  "notes": "Borderline 20m residential building. All documents present but minimal quality. Passed Gateway 2 after clarifications requested.",
+
+  "rule_expectations": {
+    "SM-001": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Fire Strategy present (22 pages), covers all 7 required sections even if briefly. Meets minimum requirement.",
+      "critical": true,
+      "document_reference": "04_Fire_Strategy_Report.pdf"
+    },
+
+    "SM-002": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Means of escape defined: 2 staircases, max 18m travel stated. Basic but meets requirement for 'clearly defined'.",
+      "critical": true,
+      "document_reference": "Fire Strategy p.3-6"
+    },
+
+    "SM-003": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Compartmentation with 60-minute periods explicitly stated (meets requirement even if detail limited)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.7-10"
+    },
+
+    "SM-004": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "External walls non-combustible (brick, mineral wool) - meets basic requirement",
+      "critical": true,
+      "document_reference": "Fire Strategy p.11-13"
+    },
+
+    "SM-005": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Sprinklers specified to BS EN 12845:2015 (meets requirement)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.19-22"
+    },
+
+    "SM-006": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Firefighting access and dry riser mentioned (basic compliance)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.16-18"
+    },
+
+    "SM-007": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "20m building with 2 staircases (required for >18m) - clear compliance",
+      "critical": true,
+      "document_reference": "Fire Strategy p.3-6"
+    },
+
+    "SM-008": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Structural calculations present with fire resistance section (even if brief - 2 pages)",
+      "critical": true,
+      "document_reference": "06_Structural_Calculations.pdf"
+    },
+
+    "SM-009": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Both documents state 60-min fire resistance - aligned",
+      "critical": true,
+      "document_reference": "Fire Strategy p.14-15, Structural Calcs"
+    },
+
+    "SM-010": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Principal Designer: Safety First Consultants, competence shown (5 HRB projects, IFE member) - meets minimum threshold",
+      "critical": true,
+      "document_reference": "12_Principal_Designer_Appointment.pdf"
+    },
+
+    "SM-011": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Principal Contractor: competence shown (6 years, 3 HRB projects) - meets minimum",
+      "critical": true,
+      "document_reference": "13_Principal_Contractor_Appointment.pdf"
+    },
+
+    "SM-012": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Golden Thread Strategy present (even if basic approach without BIM)",
+      "critical": true,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-013": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Change Control Plan present",
+      "critical": false,
+      "document_reference": "15_Change_Control_Plan.pdf"
+    },
+
+    "SM-014": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Design and Access Statement present (even if brief)",
+      "critical": false,
+      "document_reference": "11_Design_and_Access_Statement.pdf"
+    },
+
+    "SM-015": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "MEP Specification present (generic but adequate)",
+      "critical": false,
+      "document_reference": "08_MEP_Specification.pdf"
+    },
+
+    "SM-016": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Ventilation strategy stating ADF 2021 compliance (adequate)",
+      "critical": false,
+      "document_reference": "09_Ventilation_Strategy.pdf"
+    },
+
+    "SM-017": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire detection system specified (BS 5839-1)",
+      "critical": false,
+      "document_reference": "Fire Strategy p.19-22"
+    },
+
+    "SM-018": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Smoke control mentioned (basic provision)",
+      "critical": false,
+      "document_reference": "Fire Strategy p.19-22"
+    },
+
+    "SM-019": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Evacuation strategy stated (stay put)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.3-6"
+    },
+
+    "SM-020": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building height 20m consistent across documents",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-021": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Storey count: 7 storeys consistent",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-022": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire Risk Assessment present (basic but adequate)",
+      "critical": false,
+      "document_reference": "05_Fire_Risk_Assessment.pdf"
+    },
+
+    "SM-023": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Project in Bristol, not London",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-024": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Not London residential",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-025": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Documents do not clearly cross-reference each other (weak integration)",
+      "critical": false,
+      "document_reference": "Multiple documents - poor cross-referencing"
+    },
+
+    "SM-026": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Building Regulations Compliance Statement present (brief but adequate)",
+      "critical": false,
+      "document_reference": "03_Building_Regs_Compliance_Statement.pdf"
+    },
+
+    "SM-027": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Version control basic (only Rev A, Rev B) without full audit trail or dates",
+      "critical": false,
+      "document_reference": "Drawings show minimal version control"
+    },
+
+    "SM-028": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Construction Control Plan present",
+      "critical": false,
+      "document_reference": "14_Construction_Control_Plan.pdf"
+    },
+
+    "SM-029": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building description: 20m, 7 storeys, 72 apartments, C3",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-030": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site location: 45 Victoria Street, Bristol, BS1 6AD",
+      "critical": false,
+      "document_reference": "Application Form, Site Plan"
+    },
+
+    "SM-031": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Fire door ratings mentioned (60-minute) even if not detailed",
+      "critical": true,
+      "document_reference": "Fire Strategy p.7-10"
+    },
+
+    "SM-032": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Emergency lighting mentioned",
+      "critical": false,
+      "document_reference": "Fire Strategy, MEP Spec"
+    },
+
+    "SM-033": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Fire stopping mentioned but NOT detailed (no product specifications, no detailed strategy)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.7-10 - Inadequate detail"
+    },
+
+    "SM-034": {
+      "expected_status": "pass",
+      "confidence": "needs_review",
+      "reasoning": "Resident communication mentioned but not detailed",
+      "critical": false,
+      "document_reference": "Fire Strategy - Brief mention"
+    },
+
+    "SM-035": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Wayfinding mentioned",
+      "critical": false,
+      "document_reference": "Fire Strategy"
+    },
+
+    "SM-036": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Dry riser mentioned in both staircases",
+      "critical": true,
+      "document_reference": "Fire Strategy p.16-18"
+    },
+
+    "SM-037": {
+      "expected_status": "pass",
+      "confidence": "needs_review",
+      "reasoning": "Balcony fire safety briefly mentioned",
+      "critical": false,
+      "document_reference": "Fire Strategy, Drawings"
+    },
+
+    "SM-038": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No basement",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-039": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No separate car park",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-040": {
+      "expected_status": "pass",
+      "confidence": "needs_review",
+      "reasoning": "Refuse store mentioned",
+      "critical": false,
+      "document_reference": "Drawings"
+    },
+
+    "SM-041": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Minimal competent person scheme references (only IFE mentioned, no detailed scheme membership evidence)",
+      "critical": false,
+      "document_reference": "Principal Designer appointment - Minimal evidence"
+    },
+
+    "SM-042": {
+      "expected_status": "pass",
+      "confidence": "needs_review",
+      "reasoning": "Building Safety Manager mentioned in Golden Thread",
+      "critical": false,
+      "document_reference": "Golden Thread Strategy"
+    },
+
+    "SM-043": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No partial occupation planned",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-044": {
+      "expected_status": "pass",
+      "confidence": "needs_review",
+      "reasoning": "Specialist subcontractor competence mentioned but not detailed",
+      "critical": false,
+      "document_reference": "Construction Control Plan"
+    },
+
+    "SM-045": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "As-built documentation mentioned in Golden Thread",
+      "critical": false,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-046": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Golden Thread strategy does NOT include BIM (just basic document handover)",
+      "critical": false,
+      "document_reference": "16_Golden_Thread_Strategy.pdf - No BIM"
+    },
+
+    "SM-047": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Drawing revision control minimal (only Rev A, Rev B without dates or full tracking)",
+      "critical": false,
+      "document_reference": "Drawings - Poor version control"
+    },
+
+    "SM-048": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Overheating risk assessment minimal (compliance stated but no detailed analysis)",
+      "critical": false,
+      "document_reference": "Ventilation Strategy - Inadequate analysis"
+    },
+
+    "SM-049": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Common area ventilation specified (basic)",
+      "critical": false,
+      "document_reference": "MEP Spec, Ventilation Strategy"
+    },
+
+    "SM-050": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Kitchen extract mentioned",
+      "critical": false,
+      "document_reference": "MEP Spec"
+    },
+
+    "SM-051": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building use (C3 Residential, 72 apartments) consistent",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-052": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site address consistent",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-053": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Project name (Victoria Court) consistent",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-054": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Design team identified (basic information)",
+      "critical": false,
+      "document_reference": "Application Form"
+    },
+
+    "SM-055": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Documents dated July 2025 (within 12 months)",
+      "critical": false,
+      "document_reference": "Document dates"
+    }
+  }
+}

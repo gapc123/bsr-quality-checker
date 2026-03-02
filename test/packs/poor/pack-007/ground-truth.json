@@ -1,0 +1,449 @@
+{
+  "pack_id": "pack-007",
+  "pack_name": "Skyline Apartments - Incomplete Submission",
+  "quality": "poor",
+  "gateway_2_outcome": "failed",
+  "notes": "Poor quality submission with critical safety issues: combustible cladding, no sprinklers, missing fire resistance periods, height contradictions. Designed to test if system catches dangerous failures.",
+
+  "rule_expectations": {
+    "SM-001": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Fire Strategy present but only 12 pages and incomplete. Missing key sections (structure, detailed compartmentation). Authored by architect not fire specialist.",
+      "critical": true,
+      "document_reference": "03_Fire_Strategy_Report.pdf - Incomplete, 12 pages"
+    },
+
+    "SM-002": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Means of escape mentioned but NOT clearly defined: no travel distances, no route widths, only 1 staircase mentioned",
+      "critical": true,
+      "document_reference": "Fire Strategy p.3-5 - Inadequate detail"
+    },
+
+    "SM-003": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Compartmentation mentioned but NO fire resistance periods stated (not 30, 60, 90, or 120 min). Cannot assess compliance.",
+      "critical": true,
+      "document_reference": "Fire Strategy p.6-7 - No periods specified"
+    },
+
+    "SM-004": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "External walls are ACM (aluminium composite - COMBUSTIBLE). Banned for buildings >18m. This is 24m. Critical safety failure.",
+      "critical": true,
+      "document_reference": "Fire Strategy p.8-9 - ACM cladding"
+    },
+
+    "SM-005": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "NO sprinklers specified. Building is 24m residential. Sprinklers required for >11m. Critical omission.",
+      "critical": true,
+      "document_reference": "Fire Strategy p.12 - No sprinklers mentioned"
+    },
+
+    "SM-006": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Firefighting access briefly mentioned but no dry riser, no firefighting lift for 24m building",
+      "critical": true,
+      "document_reference": "Fire Strategy p.10-11 - Inadequate"
+    },
+
+    "SM-007": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Only 1 staircase for 24m residential building. 2 staircases required for >18m. Critical failure.",
+      "critical": true,
+      "document_reference": "Fire Strategy p.3-5 - Only 1 staircase"
+    },
+
+    "SM-008": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Structural calculations present but incomplete - no fire resistance section",
+      "critical": true,
+      "document_reference": "04_Structural_Calculations.pdf - Incomplete"
+    },
+
+    "SM-009": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Fire strategy has no fire resistance periods. Structural calcs have no fire section. Cannot assess alignment.",
+      "critical": true,
+      "document_reference": "Both documents inadequate"
+    },
+
+    "SM-010": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Principal Designer appointed (ABC Architects) but NO competence evidence. No qualifications, experience, or accreditation shown.",
+      "critical": true,
+      "document_reference": "06_Principal_Designer_Appointment.pdf - No evidence"
+    },
+
+    "SM-011": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Principal Contractor appointment document missing entirely",
+      "critical": true,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-012": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Golden Thread Information Strategy missing entirely",
+      "critical": true,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-013": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Change Control Plan missing",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-014": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Design and Access Statement present",
+      "critical": false,
+      "document_reference": "05_Design_and_Access_Statement.pdf"
+    },
+
+    "SM-015": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "MEP Systems Specification missing",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-016": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Ventilation Strategy missing",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-017": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Fire detection mentioned but no system type or standard specified",
+      "critical": false,
+      "document_reference": "Fire Strategy p.12 - Vague mention only"
+    },
+
+    "SM-018": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Smoke control not specified",
+      "critical": false,
+      "document_reference": "N/A - Not mentioned"
+    },
+
+    "SM-019": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Evacuation strategy not explicitly stated (stay put vs simultaneous unclear)",
+      "critical": true,
+      "document_reference": "Fire Strategy - Not clearly stated"
+    },
+
+    "SM-020": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Building height INCONSISTENT: Application says 24m, Fire Strategy says 22m, D&A says 22m. Contradiction.",
+      "critical": false,
+      "document_reference": "Application (24m) vs Fire Strategy (22m)"
+    },
+
+    "SM-021": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Storey count consistent: 8 storeys stated across documents",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-022": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Fire Risk Assessment missing",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-023": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Project in Manchester, not London. London Fire Statement not applicable.",
+      "critical": false,
+      "document_reference": "N/A - Not London"
+    },
+
+    "SM-024": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Not London residential",
+      "critical": false,
+      "document_reference": "N/A - Not London"
+    },
+
+    "SM-025": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Documents don't cross-reference (fire strategy doesn't ref structural, etc.)",
+      "critical": false,
+      "document_reference": "Multiple documents - poor integration"
+    },
+
+    "SM-026": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Building Regulations Compliance Statement missing",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-027": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Fire Strategy dated 2024-08-20 (over 12 months old). Version control unclear.",
+      "critical": false,
+      "document_reference": "Fire Strategy - Outdated"
+    },
+
+    "SM-028": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Construction Control Plan missing",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-029": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Building description present: 8 storeys, 85 apartments, residential",
+      "critical": false,
+      "document_reference": "Application, Fire Strategy"
+    },
+
+    "SM-030": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site location documented: 123 High Street, Manchester",
+      "critical": false,
+      "document_reference": "Application, Site Plan"
+    },
+
+    "SM-031": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Fire door ratings not specified (no FD30/FD60 mentioned)",
+      "critical": true,
+      "document_reference": "Fire Strategy - Not mentioned"
+    },
+
+    "SM-032": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Emergency lighting not specified",
+      "critical": false,
+      "document_reference": "Fire Strategy - Not mentioned"
+    },
+
+    "SM-033": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Fire stopping and penetration seals not detailed",
+      "critical": true,
+      "document_reference": "Fire Strategy p.6-7 - Not specified"
+    },
+
+    "SM-034": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Resident communication of evacuation strategy not addressed",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-035": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Wayfinding and signage not specified",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-036": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Dry riser not specified (required for 24m building)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.10-11 - Not mentioned"
+    },
+
+    "SM-037": {
+      "expected_status": "fail",
+      "confidence": "needs_review",
+      "reasoning": "Balcony fire safety not addressed (if balconies exist)",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-038": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No basement in this building",
+      "critical": false,
+      "document_reference": "Application - No basement"
+    },
+
+    "SM-039": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No separate car park structure",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-040": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Refuse store fire safety not addressed",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-041": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "No competent person scheme references",
+      "critical": false,
+      "document_reference": "Principal Designer appointment - No schemes"
+    },
+
+    "SM-042": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Building Safety Manager not mentioned",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-043": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No partial occupation planned",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-044": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Specialist subcontractor competence not addressed",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-045": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "As-built documentation commitment missing (no Golden Thread)",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-046": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "BIM strategy missing (no Golden Thread)",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-047": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Drawing revision control unclear (architectural drawings missing)",
+      "critical": false,
+      "document_reference": "Drawings missing"
+    },
+
+    "SM-048": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Overheating risk assessment missing (no ventilation strategy)",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-049": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Common area ventilation not specified (no MEP spec)",
+      "critical": false,
+      "document_reference": "N/A - Document missing"
+    },
+
+    "SM-050": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Kitchen extract not specified",
+      "critical": false,
+      "document_reference": "Not mentioned"
+    },
+
+    "SM-051": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building use (C3 Residential, 85 apartments) consistently described",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-052": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site address (123 High Street, Manchester, M1 1AA) consistently referenced",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-053": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Project name (Skyline Apartments) consistently used",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-054": {
+      "expected_status": "fail",
+      "confidence": "high",
+      "reasoning": "Design team partially identified but incomplete (no MEP, no specialist fire)",
+      "critical": false,
+      "document_reference": "Application - Incomplete team"
+    },
+
+    "SM-055": {
+      "expected_status": "fail",
+      "confidence": "definitive",
+      "reasoning": "Fire Strategy dated 2024-08-20 (over 12 months old - outside acceptable date range)",
+      "critical": false,
+      "document_reference": "Fire Strategy - Outdated Aug 2024"
+    }
+  }
+}

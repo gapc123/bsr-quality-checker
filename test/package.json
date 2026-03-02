@@ -1,0 +1,15 @@
+{
+  "name": "bsr-phase-0-tests",
+  "version": "1.0.0",
+  "description": "Phase 0 baseline accuracy measurement infrastructure",
+  "private": true,
+  "scripts": {
+    "test:baseline": "tsx baseline-measurement.ts",
+    "validate:packs": "find packs/ -name 'ground-truth.json' -exec node -e \"require('{}');\" \\;",
+    "count:packs": "find packs/ -name 'ground-truth.json' | wc -l"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.0"
+  }
+}

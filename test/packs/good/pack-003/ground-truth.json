@@ -1,0 +1,449 @@
+{
+  "pack_id": "pack-003",
+  "pack_name": "Broadway Junction - Mixed Use Development",
+  "quality": "good",
+  "gateway_2_outcome": "passed",
+  "notes": "High-quality 25m mixed-use building (retail + residential). Enhanced fire safety measures. Passed Gateway 2 in Aug 2025.",
+
+  "rule_expectations": {
+    "SM-001": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire Strategy Report present (52 pages), comprehensively addresses mixed-use complexity",
+      "critical": true,
+      "document_reference": "04_Fire_Strategy_Report.pdf"
+    },
+
+    "SM-002": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Means of escape clearly defined for both retail and residential: 2 residential staircases, max 20m travel, separate retail exits",
+      "critical": true,
+      "document_reference": "Fire Strategy p.5-20"
+    },
+
+    "SM-003": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Compartmentation: 90-min retail/residential separation, 60-min within residential - explicitly stated",
+      "critical": true,
+      "document_reference": "Fire Strategy p.21-30"
+    },
+
+    "SM-004": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "External walls: brick (A1), mineral wool (A1) - fully non-combustible with test certificates",
+      "critical": true,
+      "document_reference": "Fire Strategy p.31-36, Test Certificates"
+    },
+
+    "SM-005": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Sprinklers throughout all floors including retail to BS EN 12845:2015",
+      "critical": true,
+      "document_reference": "Fire Strategy p.46-52, Sprinkler Calcs"
+    },
+
+    "SM-006": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Firefighting access: 3.7m roads, dry risers, firefighting lift, fire main to BS 9990",
+      "critical": true,
+      "document_reference": "Fire Strategy p.41-45"
+    },
+
+    "SM-007": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "25m residential building with 2 staircases serving residential floors (required for >18m)",
+      "critical": true,
+      "document_reference": "Fire Strategy p.5-15"
+    },
+
+    "SM-008": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Structural calculations present with fire resistance section (90-min ground, 60-min upper)",
+      "critical": true,
+      "document_reference": "06_Structural_Calculations.pdf"
+    },
+
+    "SM-009": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire strategy and structural calcs aligned: 90-min ground floor, 60-min upper floors",
+      "critical": true,
+      "document_reference": "Fire Strategy p.37-40, Structural Calcs"
+    },
+
+    "SM-010": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Principal Designer: Integrated Fire Design Ltd, competence evidence (IFE Chartered, 15+ HRB, mixed-use experience)",
+      "critical": true,
+      "document_reference": "12_Principal_Designer_Appointment.pdf"
+    },
+
+    "SM-011": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Principal Contractor: Apex Construction Group, competence evidence (ISO 9001, 20 HRB including mixed-use)",
+      "critical": true,
+      "document_reference": "13_Principal_Contractor_Appointment.pdf"
+    },
+
+    "SM-012": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Golden Thread Strategy with BIM and separate info for retail/residential",
+      "critical": true,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-013": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Change Control Plan present",
+      "critical": false,
+      "document_reference": "15_Change_Control_Plan.pdf"
+    },
+
+    "SM-014": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Design and Access Statement present with mixed-use rationale",
+      "critical": false,
+      "document_reference": "11_Design_and_Access_Statement.pdf"
+    },
+
+    "SM-015": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "MEP Specification present covering retail and residential",
+      "critical": false,
+      "document_reference": "08_MEP_Specification.pdf"
+    },
+
+    "SM-016": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Ventilation strategy for both retail and residential, ADF 2021 compliant",
+      "critical": false,
+      "document_reference": "09_Ventilation_Strategy.pdf"
+    },
+
+    "SM-017": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire detection: L1 system to BS 5839-1:2017 across entire building",
+      "critical": false,
+      "document_reference": "Fire Strategy p.46-52"
+    },
+
+    "SM-018": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Smoke control: AOV in residential staircases",
+      "critical": false,
+      "document_reference": "Fire Strategy p.46-52"
+    },
+
+    "SM-019": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Evacuation strategy: Stay put for residential, simultaneous for retail - explicitly stated",
+      "critical": true,
+      "document_reference": "Fire Strategy p.5-20"
+    },
+
+    "SM-020": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building height 25m stated consistently across documents",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-021": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Storey count: 8 storeys consistently stated (1 retail + 7 residential)",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-022": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire Risk Assessment included addressing mixed-use",
+      "critical": false,
+      "document_reference": "05_Fire_Risk_Assessment.pdf"
+    },
+
+    "SM-023": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Project in Leeds, not London",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-024": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "Not London residential",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-025": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Documents cross-reference comprehensively",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-026": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building Regulations Compliance Statement present addressing mixed-use",
+      "critical": false,
+      "document_reference": "03_Building_Regs_Compliance_Statement.pdf"
+    },
+
+    "SM-027": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Document version control (Fire Strategy dated Aug 2025)",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-028": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Construction Phase Plan in Construction Control Plan",
+      "critical": false,
+      "document_reference": "14_Construction_Control_Plan.pdf"
+    },
+
+    "SM-029": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building description clear: 25m, 8 storeys, mixed-use (retail + 95 apartments)",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-030": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site location: 200 Broadway, Leeds, LS9 8AA",
+      "critical": false,
+      "document_reference": "02_Site_Location_Plan.pdf"
+    },
+
+    "SM-031": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire door ratings specified: FD60 for apartments",
+      "critical": true,
+      "document_reference": "Fire Strategy p.21-30"
+    },
+
+    "SM-032": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Emergency lighting specified for both retail and residential",
+      "critical": false,
+      "document_reference": "Fire Strategy, MEP Spec"
+    },
+
+    "SM-033": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Fire stopping and penetration seals detailed, especially at retail/residential interface",
+      "critical": true,
+      "document_reference": "Fire Strategy p.21-30"
+    },
+
+    "SM-034": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Resident communication of evacuation strategy addressed",
+      "critical": false,
+      "document_reference": "Fire Strategy, Retail Management Strategy"
+    },
+
+    "SM-035": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Wayfinding and escape signage specified for both uses",
+      "critical": false,
+      "document_reference": "Fire Strategy"
+    },
+
+    "SM-036": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Dry riser in both residential staircases",
+      "critical": true,
+      "document_reference": "Fire Strategy p.41-45"
+    },
+
+    "SM-037": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Balcony fire safety addressed (residential floors)",
+      "critical": false,
+      "document_reference": "Fire Strategy, Architectural drawings"
+    },
+
+    "SM-038": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No basement in this building",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-039": {
+      "expected_status": "not_applicable",
+      "confidence": "definitive",
+      "reasoning": "No separate car park structure",
+      "critical": false,
+      "document_reference": "N/A"
+    },
+
+    "SM-040": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Refuse store fire safety addressed (separate for retail/residential)",
+      "critical": false,
+      "document_reference": "Fire Strategy, Architectural drawings"
+    },
+
+    "SM-041": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Competent Person Scheme references (IFE Chartered)",
+      "critical": false,
+      "document_reference": "Principal Designer appointment"
+    },
+
+    "SM-042": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Building Safety Manager considerations for residential part",
+      "critical": false,
+      "document_reference": "Golden Thread Strategy"
+    },
+
+    "SM-043": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Partial occupation addressed: retail may open before residential completion",
+      "critical": false,
+      "document_reference": "Construction Control Plan"
+    },
+
+    "SM-044": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Specialist subcontractor competence approach outlined",
+      "critical": false,
+      "document_reference": "Construction Control Plan"
+    },
+
+    "SM-045": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "As-built documentation commitment in Golden Thread",
+      "critical": false,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-046": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "BIM strategy for Golden Thread (BIM Level 2)",
+      "critical": false,
+      "document_reference": "16_Golden_Thread_Strategy.pdf"
+    },
+
+    "SM-047": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Drawing revision control system evident",
+      "critical": false,
+      "document_reference": "Architectural and structural drawings"
+    },
+
+    "SM-048": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Overheating risk assessment in ventilation strategy",
+      "critical": false,
+      "document_reference": "09_Ventilation_Strategy.pdf"
+    },
+
+    "SM-049": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Common area ventilation specified (residential corridors)",
+      "critical": false,
+      "document_reference": "MEP Spec, Ventilation Strategy"
+    },
+
+    "SM-050": {
+      "expected_status": "pass",
+      "confidence": "high",
+      "reasoning": "Kitchen extract specified (apartment kitchens)",
+      "critical": false,
+      "document_reference": "MEP Spec, Ventilation Strategy"
+    },
+
+    "SM-051": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Building use (A1 retail + C3 residential, 95 apartments) consistently described",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-052": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Site address (200 Broadway, Leeds, LS9 8AA) consistently referenced",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-053": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Project name (Broadway Junction) consistently used",
+      "critical": false,
+      "document_reference": "Multiple documents"
+    },
+
+    "SM-054": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Design team identified: Architect, Structural, MEP, Fire Safety Consultant",
+      "critical": false,
+      "document_reference": "Application Form"
+    },
+
+    "SM-055": {
+      "expected_status": "pass",
+      "confidence": "definitive",
+      "reasoning": "Documents dated within last 12 months (Fire Strategy Aug 2025)",
+      "critical": false,
+      "document_reference": "Document dates"
+    }
+  }
+}
