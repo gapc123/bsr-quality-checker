@@ -10,6 +10,7 @@
     "dev:backend": "npm run dev --workspace=packages/backend",
     "dev:frontend": "npm run dev --workspace=packages/frontend",
     "build": "npm run build --workspaces",
+    "start": "npm run start --workspace=packages/backend",
     "db:setup": "npm run db:setup --workspace=packages/backend",
     "test": "npm run test --workspaces --if-present"
   },
