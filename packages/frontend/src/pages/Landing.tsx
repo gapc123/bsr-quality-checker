@@ -53,6 +53,14 @@ export default function Landing() {
 
         <div className="relative max-w-5xl mx-auto px-4 py-32 sm:py-40">
           <div className="text-center space-y-12">
+            {/* BSR Focus Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/10 border border-blue-500/30 rounded-full text-sm font-medium text-blue-300">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              Building Safety Regulator · Gateway 2
+            </div>
+
             {/* Provocative Statement */}
             <div className="space-y-6">
               <h1 className="text-5xl sm:text-7xl font-bold text-white leading-tight tracking-tight">
@@ -68,8 +76,13 @@ export default function Landing() {
               </h2>
             </div>
 
-            {/* Minimal Tagline */}
-            <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">
+            {/* Mission Statement */}
+            <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto">
+              Starting with BSR Gateway 2. Making high-risk building approvals faster and more certain.
+            </p>
+
+            {/* System Approach */}
+            <p className="text-base text-slate-500">
               Deterministic rules. AI extraction. Expert oversight.
             </p>
 
