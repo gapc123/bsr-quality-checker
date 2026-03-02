@@ -11,7 +11,7 @@ import teamRouter from './routes/team.js';
 import templatesRouter from './routes/templates.js';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(process.env.PORT || '3001', 10);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -87,11 +87,12 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`BSR Quality Checker API running on http://localhost:${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/api/health`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`BSR Quality Checker API running on port ${PORT}`);
+  console.log(`Health check: /api/health`);
+  console.log(`Environment: ${isProduction ? 'Production' : 'Development'}`);
   if (isProduction) {
-    console.log(`Mode: Production (serving frontend)`);
+    console.log(`Serving frontend from: ${process.cwd()}/packages/frontend/dist`);
   }
 });
 
