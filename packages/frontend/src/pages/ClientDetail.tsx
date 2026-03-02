@@ -58,10 +58,14 @@ export default function ClientDetail() {
   };
 
   const createPack = async () => {
-    if (!newPackName.trim()) return;
+    if (!newPackName.trim()) {
+      alert('Please enter a pack name');
+      return;
+    }
 
     setCreatingPack(true);
     try {
+      console.log('Creating pack:', { name: newPackName.trim(), clientId });
       const res = await fetch('/api/packs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,13 +74,23 @@ export default function ClientDetail() {
           clientId: clientId,
         }),
       });
+
+      console.log('Response status:', res.status);
+
       if (res.ok) {
+        const pack = await res.json();
+        console.log('Pack created:', pack);
         setNewPackName('');
         setShowCreatePackModal(false);
         fetchClient();
+      } else {
+        const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('Failed to create pack:', errorData);
+        alert(`Failed to create pack: ${errorData.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error creating pack:', error);
+      alert(`Error creating pack: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setCreatingPack(false);
     }
