@@ -63,7 +63,10 @@ app.get('/api/debug', (req, res) => {
 // Serve frontend static files in production
 if (isProduction) {
   // When running from /app with CMD ["node", "packages/backend/dist/index.js"]
-  const frontendPath = path.join(process.cwd(), 'packages', 'frontend', 'dist');
+  // Handle both cwd=/app and cwd=/app/packages/backend
+  const frontendPath = process.cwd().endsWith('packages/backend')
+    ? path.join(process.cwd(), '..', 'frontend', 'dist')
+    : path.join(process.cwd(), 'packages', 'frontend', 'dist');
 
   if (fs.existsSync(frontendPath)) {
     app.use(express.static(frontendPath));
