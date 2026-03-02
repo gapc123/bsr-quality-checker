@@ -54,5 +54,8 @@ RUN npm run build --workspace=packages/backend
 # Set production mode for runtime
 ENV NODE_ENV=production
 
+# Expose the port Railway will use
+EXPOSE 3001
+
 # Start command
 CMD ["node", "packages/backend/dist/index.js"]
