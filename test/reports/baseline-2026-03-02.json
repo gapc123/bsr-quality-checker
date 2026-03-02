@@ -1,0 +1,809 @@
+{
+  "test_date": "2026-03-02T13:44:30.660Z",
+  "total_packs": 10,
+  "packs_by_quality": {
+    "good": 3,
+    "borderline": 4,
+    "poor": 3
+  },
+  "overall": {
+    "total_rule_evaluations": 550,
+    "correct_predictions": 268,
+    "incorrect_predictions": 282,
+    "overall_accuracy": 48.72727272727273
+  },
+  "errors": {
+    "false_positives": 33,
+    "false_negatives": 207,
+    "false_positive_rate": 20.88607594936709,
+    "false_negative_rate": 59.14285714285714,
+    "critical_misses": 8
+  },
+  "per_rule_accuracy": [
+    {
+      "rule_id": "SM-001",
+      "rule_name": "Rule SM-001",
+      "total_tests": 10,
+      "correct": 4,
+      "accuracy": 40,
+      "false_positives": 0,
+      "false_negatives": 6,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-002",
+      "rule_name": "Rule SM-002",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-003",
+      "rule_name": "Rule SM-003",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-004",
+      "rule_name": "Rule SM-004",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-005",
+      "rule_name": "Rule SM-005",
+      "total_tests": 10,
+      "correct": 4,
+      "accuracy": 40,
+      "false_positives": 0,
+      "false_negatives": 6,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-006",
+      "rule_name": "Rule SM-006",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-007",
+      "rule_name": "Rule SM-007",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-008",
+      "rule_name": "Rule SM-008",
+      "total_tests": 10,
+      "correct": 4,
+      "accuracy": 40,
+      "false_positives": 0,
+      "false_negatives": 6,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-009",
+      "rule_name": "Rule SM-009",
+      "total_tests": 10,
+      "correct": 8,
+      "accuracy": 80,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "critical_misses": 2
+    },
+    {
+      "rule_id": "SM-010",
+      "rule_name": "Rule SM-010",
+      "total_tests": 10,
+      "correct": 4,
+      "accuracy": 40,
+      "false_positives": 0,
+      "false_negatives": 6,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-011",
+      "rule_name": "Rule SM-011",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 3
+    },
+    {
+      "rule_id": "SM-012",
+      "rule_name": "Rule SM-012",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-013",
+      "rule_name": "Rule SM-013",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-014",
+      "rule_name": "Rule SM-014",
+      "total_tests": 10,
+      "correct": 0,
+      "accuracy": 0,
+      "false_positives": 0,
+      "false_negatives": 10,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-015",
+      "rule_name": "Rule SM-015",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-016",
+      "rule_name": "Rule SM-016",
+      "total_tests": 10,
+      "correct": 4,
+      "accuracy": 40,
+      "false_positives": 0,
+      "false_negatives": 6,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-017",
+      "rule_name": "Rule SM-017",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-018",
+      "rule_name": "Rule SM-018",
+      "total_tests": 10,
+      "correct": 4,
+      "accuracy": 40,
+      "false_positives": 0,
+      "false_negatives": 6,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-019",
+      "rule_name": "Rule SM-019",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-020",
+      "rule_name": "Rule SM-020",
+      "total_tests": 10,
+      "correct": 8,
+      "accuracy": 80,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-021",
+      "rule_name": "Rule SM-021",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-022",
+      "rule_name": "Rule SM-022",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-023",
+      "rule_name": "Rule SM-023",
+      "total_tests": 10,
+      "correct": 2,
+      "accuracy": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-024",
+      "rule_name": "Rule SM-024",
+      "total_tests": 10,
+      "correct": 1,
+      "accuracy": 10,
+      "false_positives": 1,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-025",
+      "rule_name": "Rule SM-025",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-026",
+      "rule_name": "Rule SM-026",
+      "total_tests": 10,
+      "correct": 6,
+      "accuracy": 60,
+      "false_positives": 4,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-027",
+      "rule_name": "Rule SM-027",
+      "total_tests": 10,
+      "correct": 6,
+      "accuracy": 60,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-028",
+      "rule_name": "Rule SM-028",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-029",
+      "rule_name": "Rule SM-029",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-030",
+      "rule_name": "Rule SM-030",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-031",
+      "rule_name": "Rule SM-031",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-032",
+      "rule_name": "Rule SM-032",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-033",
+      "rule_name": "Rule SM-033",
+      "total_tests": 10,
+      "correct": 5,
+      "accuracy": 50,
+      "false_positives": 0,
+      "false_negatives": 5,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-034",
+      "rule_name": "Rule SM-034",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-035",
+      "rule_name": "Rule SM-035",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-036",
+      "rule_name": "Rule SM-036",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 3
+    },
+    {
+      "rule_id": "SM-037",
+      "rule_name": "Rule SM-037",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-038",
+      "rule_name": "Rule SM-038",
+      "total_tests": 10,
+      "correct": 2,
+      "accuracy": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-039",
+      "rule_name": "Rule SM-039",
+      "total_tests": 10,
+      "correct": 0,
+      "accuracy": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-040",
+      "rule_name": "Rule SM-040",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-041",
+      "rule_name": "Rule SM-041",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-042",
+      "rule_name": "Rule SM-042",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-043",
+      "rule_name": "Rule SM-043",
+      "total_tests": 10,
+      "correct": 2,
+      "accuracy": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-044",
+      "rule_name": "Rule SM-044",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-045",
+      "rule_name": "Rule SM-045",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-046",
+      "rule_name": "Rule SM-046",
+      "total_tests": 10,
+      "correct": 6,
+      "accuracy": 60,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-047",
+      "rule_name": "Rule SM-047",
+      "total_tests": 10,
+      "correct": 6,
+      "accuracy": 60,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-048",
+      "rule_name": "Rule SM-048",
+      "total_tests": 10,
+      "correct": 5,
+      "accuracy": 50,
+      "false_positives": 0,
+      "false_negatives": 5,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-049",
+      "rule_name": "Rule SM-049",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-050",
+      "rule_name": "Rule SM-050",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-051",
+      "rule_name": "Rule SM-051",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-052",
+      "rule_name": "Rule SM-052",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-053",
+      "rule_name": "Rule SM-053",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-054",
+      "rule_name": "Rule SM-054",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-055",
+      "rule_name": "Rule SM-055",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    }
+  ],
+  "worst_performing_rules": [
+    {
+      "rule_id": "SM-014",
+      "rule_name": "Rule SM-014",
+      "total_tests": 10,
+      "correct": 0,
+      "accuracy": 0,
+      "false_positives": 0,
+      "false_negatives": 10,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-039",
+      "rule_name": "Rule SM-039",
+      "total_tests": 10,
+      "correct": 0,
+      "accuracy": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-024",
+      "rule_name": "Rule SM-024",
+      "total_tests": 10,
+      "correct": 1,
+      "accuracy": 10,
+      "false_positives": 1,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-023",
+      "rule_name": "Rule SM-023",
+      "total_tests": 10,
+      "correct": 2,
+      "accuracy": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-038",
+      "rule_name": "Rule SM-038",
+      "total_tests": 10,
+      "correct": 2,
+      "accuracy": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-043",
+      "rule_name": "Rule SM-043",
+      "total_tests": 10,
+      "correct": 2,
+      "accuracy": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-002",
+      "rule_name": "Rule SM-002",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-003",
+      "rule_name": "Rule SM-003",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-004",
+      "rule_name": "Rule SM-004",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-006",
+      "rule_name": "Rule SM-006",
+      "total_tests": 10,
+      "correct": 3,
+      "accuracy": 30,
+      "false_positives": 0,
+      "false_negatives": 7,
+      "critical_misses": 0
+    }
+  ],
+  "best_performing_rules": [
+    {
+      "rule_id": "SM-053",
+      "rule_name": "Rule SM-053",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-052",
+      "rule_name": "Rule SM-052",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-051",
+      "rule_name": "Rule SM-051",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-030",
+      "rule_name": "Rule SM-030",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-029",
+      "rule_name": "Rule SM-029",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-021",
+      "rule_name": "Rule SM-021",
+      "total_tests": 10,
+      "correct": 10,
+      "accuracy": 100,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-020",
+      "rule_name": "Rule SM-020",
+      "total_tests": 10,
+      "correct": 8,
+      "accuracy": 80,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-009",
+      "rule_name": "Rule SM-009",
+      "total_tests": 10,
+      "correct": 8,
+      "accuracy": 80,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "critical_misses": 2
+    },
+    {
+      "rule_id": "SM-055",
+      "rule_name": "Rule SM-055",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    },
+    {
+      "rule_id": "SM-054",
+      "rule_name": "Rule SM-054",
+      "total_tests": 10,
+      "correct": 7,
+      "accuracy": 70,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "critical_misses": 0
+    }
+  ],
+  "confidence_calibration": [
+    {
+      "confidence_level": "definitive",
+      "total_predictions": 60,
+      "correct_predictions": 21,
+      "accuracy": 35,
+      "note": "⚠️ \"Definitive\" confidence should be >95% accurate"
+    },
+    {
+      "confidence_level": "high",
+      "total_predictions": 187,
+      "correct_predictions": 81,
+      "accuracy": 43.31550802139038,
+      "note": "⚠️ \"High\" confidence should be >85% accurate"
+    },
+    {
+      "confidence_level": "needs_review",
+      "total_predictions": 303,
+      "correct_predictions": 166,
+      "accuracy": 54.78547854785478,
+      "note": ""
+    }
+  ],
+  "accuracy_by_quality": {
+    "good": 33.33333333333333,
+    "borderline": 42.72727272727273,
+    "poor": 72.12121212121212
+  },
+  "phase_0_complete": true,
+  "ready_for_phase_1": true,
+  "baseline_locked": true
+}
