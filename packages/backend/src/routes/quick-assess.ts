@@ -69,18 +69,35 @@ function classifyDocType(filename: string, text: string): string | null {
  * Convert deterministic assessment to frontend format
  */
 function formatResults(assessments: DeterministicAssessment[]) {
-  return assessments.map(assessment => ({
-    id: assessment.matrixId,
-    name: assessment.ruleName,
-    status: assessment.result.status,
-    evidence: assessment.result.evidence || 'No evidence found',
-    reasoning: assessment.result.reasoning || '',
-    proposedChanges: '', // Can be enriched with LLM later
-    regulatoryReference: assessment.regulatoryRef,
-    phase: 'deterministic' as const,
-    category: assessment.category,
-    severity: assessment.severity
-  }));
+  return assessments.map(assessment => {
+    // Determine status from passed boolean and evidence
+    let status: 'pass' | 'fail' | 'n/a';
+    if (!assessment.result.evidence.found) {
+      status = 'n/a';
+    } else if (assessment.result.passed) {
+      status = 'pass';
+    } else {
+      status = 'fail';
+    }
+
+    // Format evidence text
+    const evidenceText = assessment.result.evidence.found
+      ? assessment.result.evidence.quote || `Found in ${assessment.result.evidence.document}`
+      : 'No evidence found in submitted documents';
+
+    return {
+      id: assessment.matrixId,
+      name: assessment.ruleName,
+      status,
+      evidence: evidenceText,
+      reasoning: assessment.result.reasoning || '',
+      proposedChanges: assessment.result.failureMode || '',
+      regulatoryReference: assessment.regulatoryRef,
+      phase: 'deterministic' as const,
+      category: assessment.category,
+      severity: assessment.severity
+    };
+  });
 }
 
 /**
