@@ -19,7 +19,7 @@ cmds = [
 ]
 
 [start]
-cmd = "cd packages/backend && chmod +x start.sh && ./start.sh"
+cmd = "chmod +x packages/backend/start.sh && bash packages/backend/start.sh"
 
 [variables]
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
