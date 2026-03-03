@@ -19,7 +19,7 @@ cmds = [
 ]
 
 [start]
-cmd = "node packages/backend/dist/index.js"
+cmd = "cd packages/backend && chmod +x start.sh && ./start.sh"
 
 [variables]
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"

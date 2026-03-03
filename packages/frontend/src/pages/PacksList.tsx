@@ -274,44 +274,48 @@ export default function PacksList() {
         </div>
       </div>
 
-      {/* AI Methodology Note */}
-      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 p-6 mb-8">
-        <div className="flex items-start gap-4">
-          <div className="flex-shrink-0">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-            </div>
-          </div>
+      {/* MATRIX ASSESSMENT - QUICK START */}
+      <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg p-8 mb-8 text-white">
+        <div className="flex items-start justify-between gap-6">
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-900 mb-2">Our Proprietary Assessment Engine</h3>
-            <p className="text-sm text-slate-600 mb-3">
-              This tool uses our <strong>proprietary Regulatory Success Matrix</strong> with 55+ deterministic checks
-              and LLM-powered analysis. Documents are cross-referenced against BSR guidance, Building Regulations,
-              and Gateway 2 requirements.
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold">Matrix Assessment</h2>
+                <p className="text-blue-100 text-sm">AI-Powered BSR Compliance Check (55+ Criteria)</p>
+              </div>
+            </div>
+            <p className="text-blue-50 mb-4 text-lg">
+              Upload client documents and run our proprietary Regulatory Success Matrix assessment in 3 simple steps.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span>Deterministic rule checks</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                <div className="font-bold text-lg mb-1">Step 1</div>
+                <div className="text-sm text-blue-50">Create a client pack below</div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span>Evidence-anchored citations</span>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                <div className="font-bold text-lg mb-1">Step 2</div>
+                <div className="text-sm text-blue-50">Upload Gateway 2 documents</div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                <span>No hallucinations</span>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                <div className="font-bold text-lg mb-1">Step 3</div>
+                <div className="text-sm text-blue-50">Run Matrix Assessment</div>
               </div>
             </div>
           </div>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex-shrink-0 bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-50 font-bold text-lg shadow-xl transition-all hover:scale-105 flex items-center gap-3"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Start Assessment
+          </button>
         </div>
       </div>
 
