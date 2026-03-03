@@ -16,7 +16,13 @@ npx prisma generate
 
 # Initialize database with schema
 echo "📊 Initializing database..."
-npx prisma db push --force-reset --accept-data-loss
+echo "Running: npx prisma db push --force-reset --accept-data-loss"
+npx prisma db push --force-reset --accept-data-loss || {
+  echo "❌ Database push failed with error code $?"
+  echo "Trying alternative: prisma migrate deploy"
+  npx prisma migrate deploy || echo "❌ Migrate also failed"
+}
+echo "Database push completed"
 
 # Verify database was created
 if [ -f "/app/data/production.db" ]; then
