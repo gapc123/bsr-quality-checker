@@ -16,9 +16,9 @@ cmds = [
     "npm run build --workspace=packages/frontend",
     "npm run build --workspace=packages/backend",
     "ls -la packages/frontend/dist/assets/",
-    "echo '📊 Initializing database schema...'",
-    "cd packages/backend && npx prisma db push --accept-data-loss --skip-generate",
-    "echo '✅ Database schema initialized'"
+    "echo '📊 Running database migrations...'",
+    "cd packages/backend && npx prisma migrate deploy",
+    "echo '✅ Database migrations complete'"
 ]
 
 [start]
