@@ -92,10 +92,12 @@ export default function PacksList() {
     try {
       const url = filterClientId ? `/api/packs?clientId=${filterClientId}` : '/api/packs';
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setPacks(data);
+      setPacks(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching packs:', error);
+      setPacks([]);
     } finally {
       setLoading(false);
     }
@@ -104,20 +106,24 @@ export default function PacksList() {
   const fetchClients = async () => {
     try {
       const res = await fetch('/api/clients');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setClients(data);
+      setClients(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching clients:', error);
+      setClients([]);
     }
   };
 
   const fetchTemplates = async () => {
     try {
       const res = await fetch('/api/templates');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setTemplates(data);
+      setTemplates(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching templates:', error);
+      setTemplates([]);
     }
   };
 
