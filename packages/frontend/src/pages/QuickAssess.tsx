@@ -13,7 +13,11 @@ interface AssessmentResult {
       evidence: string;
       reasoning?: string;
       proposedChanges?: string;
-      regulatoryReference?: string;
+      regulatoryReference?: string | {
+        source: string;
+        section: string;
+        requirement: string;
+      };
       phase: 'deterministic' | 'llm';
     }>;
     summary: {
@@ -264,7 +268,11 @@ export default function QuickAssess() {
                     <div className="flex-1">
                       <h4 className="font-semibold text-slate-900">{criterion.name}</h4>
                       {criterion.regulatoryReference && (
-                        <p className="text-xs text-slate-500 mt-1">📘 {criterion.regulatoryReference}</p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          📘 {typeof criterion.regulatoryReference === 'string'
+                            ? criterion.regulatoryReference
+                            : `${criterion.regulatoryReference.source} - ${criterion.regulatoryReference.section}`}
+                        </p>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
