@@ -105,6 +105,8 @@ function formatResults(assessments: DeterministicAssessment[]) {
  *
  * Runs deterministic rules assessment (55 proprietary rules)
  * Returns results without saving to database
+ *
+ * Updated: 2026-03-03
  */
 router.post('/', upload.array('documents', 20), async (req: Request, res: Response) => {
   try {
