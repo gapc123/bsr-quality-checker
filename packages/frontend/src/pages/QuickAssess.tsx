@@ -13,8 +13,7 @@ interface FullAssessment {
     heightMeters: number | null;
     storeys: number | null;
   };
-  results: {
-    results: Array<{
+  results: Array<{
       matrix_id: string;
       matrix_title: string;
       category: string;
@@ -46,13 +45,12 @@ interface FullAssessment {
       proposed_change?: string | null;
       proposed_change_source?: string | null;
     }>;
-    summary: {
-      total: number;
-      meets: number;
-      partial: number;
-      does_not_meet: number;
-      not_assessed: number;
-    };
+  summary: {
+    total: number;
+    meets: number;
+    partial: number;
+    does_not_meet: number;
+    not_assessed: number;
   };
 }
 
@@ -274,7 +272,7 @@ export default function QuickAssess() {
               <div>
                 <h2 className="text-2xl font-bold text-slate-900">Assessment Complete!</h2>
                 <p className="text-slate-600 mt-1">
-                  {assessment.documentsProcessed} documents analyzed · {assessment.results.summary.total} criteria assessed
+                  {assessment.documentsProcessed} documents analyzed · {assessment.summary.total} criteria assessed
                 </p>
               </div>
               <div className="flex gap-3">
@@ -303,7 +301,7 @@ export default function QuickAssess() {
 
           {/* Carousel Component */}
           <CriterionCarousel
-            criteria={assessment.results.results}
+            criteria={assessment.results}
             onComplete={(decisions) => {
               console.log('Carousel decisions:', decisions);
               // Optionally update assessment with user decisions

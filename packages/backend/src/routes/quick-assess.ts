@@ -145,7 +145,16 @@ router.post('/', upload.array('documents', 20), async (req: Request, res: Respon
       assessmentId,
       documentsProcessed: files.length,
       context,
-      results: fullAssessment
+      results: fullAssessment.results,
+      summary: {
+        total: fullAssessment.criteria_summary.total_applicable,
+        meets: fullAssessment.criteria_summary.meets,
+        partial: fullAssessment.criteria_summary.partial,
+        does_not_meet: fullAssessment.criteria_summary.does_not_meet,
+        not_assessed: fullAssessment.criteria_summary.not_assessed
+      },
+      assessment_phases: fullAssessment.assessment_phases,
+      fullAssessment // Keep full object for internal use
     });
 
   } catch (error) {
