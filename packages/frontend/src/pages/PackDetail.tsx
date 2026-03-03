@@ -120,10 +120,12 @@ export default function PackDetail() {
   const fetchTemplates = async () => {
     try {
       const res = await fetch('/api/templates');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setTemplates(data);
+      setTemplates(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching templates:', error);
+      setTemplates([]);
     }
   };
 

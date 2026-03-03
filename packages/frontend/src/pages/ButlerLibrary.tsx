@@ -27,10 +27,12 @@ export default function ButlerLibrary() {
   const fetchDocs = async () => {
     try {
       const res = await fetch('/api/butler');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setDocs(data);
+      setDocs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching butler docs:', error);
+      setDocs([]);
     } finally {
       setLoading(false);
     }
