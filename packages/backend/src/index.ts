@@ -19,6 +19,16 @@ const isProduction = process.env.NODE_ENV === 'production';
 app.use(cors());
 app.use(express.json());
 
+// Increase timeout for long-running operations like matrix assessment
+// Default is 120000ms (2 min), increase to 10 min for AI analysis
+app.use((req, res, next) => {
+  if (req.path.includes('/matrix-assess') || req.path.includes('/analyze')) {
+    req.setTimeout(600000); // 10 minutes
+    res.setTimeout(600000);
+  }
+  next();
+});
+
 // Serve uploaded files statically (for debugging)
 const uploadsPath = isProduction
   ? path.join(process.cwd(), 'uploads')

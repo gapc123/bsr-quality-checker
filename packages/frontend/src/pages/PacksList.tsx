@@ -80,6 +80,7 @@ export default function PacksList() {
   const [applyTemplateNow, setApplyTemplateNow] = useState(true);
   const [filterClientId, setFilterClientId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPacks();
@@ -124,6 +125,7 @@ export default function PacksList() {
     if (!newPackName.trim()) return;
 
     setCreating(true);
+    setCreateError(null);
     try {
       // Create the pack
       const res = await fetch('/api/packs', {
@@ -137,38 +139,48 @@ export default function PacksList() {
         }),
       });
 
-      if (res.ok) {
-        const pack = await res.json();
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `Failed to create pack: ${res.statusText}`);
+      }
 
-        // Apply template if selected and checkbox is checked
-        if (selectedTemplate && applyTemplateNow) {
-          try {
-            await fetch('/api/templates/apply', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                packId: pack.id,
-                packageType: selectedTemplate,
-              }),
-            });
-          } catch (error) {
-            console.error('Error applying template:', error);
+      const pack = await res.json();
+
+      // Apply template if selected and checkbox is checked
+      if (selectedTemplate && applyTemplateNow) {
+        try {
+          const templateRes = await fetch('/api/templates/apply', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              packId: pack.id,
+              packageType: selectedTemplate,
+            }),
+          });
+
+          if (!templateRes.ok) {
+            console.error('Failed to apply template, but pack was created');
             // Don't fail the whole operation if template application fails
           }
+        } catch (error) {
+          console.error('Error applying template:', error);
+          // Don't fail the whole operation if template application fails
         }
-
-        // Reset form and close modal
-        setNewPackName('');
-        setSelectedClientId('');
-        setSelectedServicePackage('');
-        setRequirements('');
-        setSelectedTemplate('');
-        setApplyTemplateNow(true);
-        setShowCreateModal(false);
-        fetchPacks();
       }
+
+      // Reset form and close modal
+      setNewPackName('');
+      setSelectedClientId('');
+      setSelectedServicePackage('');
+      setRequirements('');
+      setSelectedTemplate('');
+      setApplyTemplateNow(true);
+      setCreateError(null);
+      setShowCreateModal(false);
+      fetchPacks();
     } catch (error) {
       console.error('Error creating pack:', error);
+      setCreateError(error instanceof Error ? error.message : 'Failed to create pack. Please try again.');
     } finally {
       setCreating(false);
     }
@@ -545,9 +557,19 @@ export default function PacksList() {
                 )}
               </div>
             </div>
+            {createError && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-800">
+                  <strong>Error:</strong> {createError}
+                </p>
+              </div>
+            )}
             <div className="flex justify-end gap-3 mt-6">
               <button
-                onClick={() => setShowCreateModal(false)}
+                onClick={() => {
+                  setShowCreateModal(false);
+                  setCreateError(null);
+                }}
                 className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium"
               >
                 Cancel

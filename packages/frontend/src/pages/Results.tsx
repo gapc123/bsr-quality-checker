@@ -181,28 +181,64 @@ export default function Results() {
   const startAnalysis = async () => {
     setStatus({ status: 'running' });
     try {
-      await fetch(`/api/packs/${packId}/versions/${versionId}/matrix-assess`, {
+      // Start the assessment with increased timeout
+      const response = await fetch(`/api/packs/${packId}/versions/${versionId}/matrix-assess`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
-      const pollInterval = setInterval(async () => {
-        const res = await fetch(
-          `/api/packs/${packId}/versions/${versionId}/analyze/status`
-        );
-        const data = await res.json();
-        setStatus(data);
+      if (!response.ok) {
+        throw new Error(`Failed to start assessment: ${response.statusText}`);
+      }
 
-        if (data.status === 'completed') {
-          clearInterval(pollInterval);
-          fetchMatrixReport(true); // Show carousel automatically
-          fetchActionableChanges();
-        } else if (data.status === 'failed') {
-          clearInterval(pollInterval);
+      // Poll for status with maximum duration of 10 minutes
+      const maxPollingTime = 600000; // 10 minutes
+      const pollInterval = 3000; // 3 seconds
+      const startTime = Date.now();
+
+      const pollId = setInterval(async () => {
+        try {
+          // Check if we've exceeded maximum polling time
+          if (Date.now() - startTime > maxPollingTime) {
+            clearInterval(pollId);
+            setStatus({
+              status: 'failed',
+              error: 'Assessment timed out after 10 minutes. Please try again or contact support.'
+            });
+            return;
+          }
+
+          const res = await fetch(
+            `/api/packs/${packId}/versions/${versionId}/analyze/status`
+          );
+
+          if (!res.ok) {
+            throw new Error(`Status check failed: ${res.statusText}`);
+          }
+
+          const data = await res.json();
+          setStatus(data);
+
+          if (data.status === 'completed') {
+            clearInterval(pollId);
+            fetchMatrixReport(true); // Show carousel automatically
+            fetchActionableChanges();
+          } else if (data.status === 'failed') {
+            clearInterval(pollId);
+          }
+        } catch (pollError) {
+          console.error('Error polling status:', pollError);
+          // Don't stop polling on transient errors, just log them
         }
-      }, 3000);
+      }, pollInterval);
     } catch (error) {
       console.error('Error starting analysis:', error);
-      setStatus({ status: 'failed', error: 'Failed to start analysis' });
+      setStatus({
+        status: 'failed',
+        error: error instanceof Error ? error.message : 'Failed to start analysis'
+      });
     }
   };
 
