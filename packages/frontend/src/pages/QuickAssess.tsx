@@ -18,12 +18,33 @@ interface FullAssessment {
       matrix_id: string;
       matrix_title: string;
       category: string;
-      status: string;
+      status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed';
       severity: string;
       reasoning: string;
-      evidence: any;
-      regulatory_ref: any;
-      proposed_changes?: string;
+      success_definition: string;
+      pack_evidence: {
+        found: boolean;
+        document: string | null;
+        page: number | null;
+        quote: string | null;
+      };
+      reference_evidence: {
+        found: boolean;
+        doc_id: string | null;
+        doc_title: string | null;
+        page: number | null;
+        quote: string | null;
+      };
+      gaps_identified: string[];
+      actions_required: Array<{
+        action: string;
+        owner: string;
+        effort: 'S' | 'M' | 'L';
+        expected_benefit: string;
+      }>;
+      confidence: 'high' | 'medium' | 'low';
+      proposed_change?: string | null;
+      proposed_change_source?: string | null;
     }>;
     summary: {
       total: number;
