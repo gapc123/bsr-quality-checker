@@ -4,7 +4,8 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import pdfParse from 'pdf-parse';
-import { runDeterministicChecks, DocumentEvidence, DeterministicAssessment } from '../services/deterministic-rules.js';
+import { assessPackAgainstMatrix } from '../services/matrix-assessment.js';
+import prisma from '../db/client.js';
 
 const router = express.Router();
 
@@ -22,12 +23,9 @@ const upload = multer({
       cb(null, `${uuidv4()}-${file.originalname}`);
     }
   }),
-  limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit
+  limits: { fileSize: 50 * 1024 * 1024 }
 });
 
-/**
- * Extract text from PDF file
- */
 async function extractPDFText(filepath: string): Promise<string> {
   try {
     const dataBuffer = fs.readFileSync(filepath);
@@ -39,9 +37,6 @@ async function extractPDFText(filepath: string): Promise<string> {
   }
 }
 
-/**
- * Classify document type based on filename
- */
 function classifyDocType(filename: string, text: string): string | null {
   const lowerFilename = filename.toLowerCase();
   const lowerText = text.toLowerCase().slice(0, 5000);
@@ -66,129 +61,95 @@ function classifyDocType(filename: string, text: string): string | null {
 }
 
 /**
- * Convert deterministic assessment to frontend format
- */
-function formatResults(assessments: DeterministicAssessment[]) {
-  return assessments.map(assessment => {
-    // Determine status from passed boolean and evidence
-    let status: 'pass' | 'fail' | 'n/a';
-    if (!assessment.result.evidence.found) {
-      status = 'n/a';
-    } else if (assessment.result.passed) {
-      status = 'pass';
-    } else {
-      status = 'fail';
-    }
-
-    // Format evidence text
-    const evidenceText = assessment.result.evidence.found
-      ? assessment.result.evidence.quote || `Found in ${assessment.result.evidence.document}`
-      : 'No evidence found in submitted documents';
-
-    return {
-      id: assessment.matrixId,
-      name: assessment.ruleName,
-      status,
-      evidence: evidenceText,
-      reasoning: assessment.result.reasoning || '',
-      proposedChanges: assessment.result.failureMode || '',
-      regulatoryReference: assessment.regulatoryRef,
-      phase: 'deterministic' as const,
-      category: assessment.category,
-      severity: assessment.severity
-    };
-  });
-}
-
-/**
- * Quick assessment endpoint - no database required
+ * Full two-phase matrix assessment - no database required to run
  *
- * Runs deterministic rules assessment (55 proprietary rules)
- * Returns results without saving to database
+ * Phase 1: 55 deterministic rules
+ * Phase 2: LLM enrichment with Claude
  *
- * Updated: 2026-03-03
+ * Returns complete assessment results for carousel display
  */
 router.post('/', upload.array('documents', 20), async (req: Request, res: Response) => {
   try {
     const files = req.files as Express.Multer.File[];
+    const { buildingType, heightMeters, storeys, isLondon, isHRB } = req.body;
 
     if (!files || files.length === 0) {
       return res.status(400).json({ error: 'No documents uploaded' });
     }
 
-    console.log(`📄 Quick assessment started with ${files.length} documents`);
+    console.log(`📄 Full matrix assessment started with ${files.length} documents`);
 
     // Extract text from all PDFs
-    const documents: DocumentEvidence[] = await Promise.all(
+    const packDocs = await Promise.all(
       files.map(async (file) => {
-        const text = await extractPDFText(file.path);
-        const docType = classifyDocType(file.originalname, text);
+        const extractedText = await extractPDFText(file.path);
+        const docType = classifyDocType(file.originalname, extractedText);
 
         return {
           filename: file.originalname,
           docType,
-          extractedText: text
+          extractedText,
+          filepath: file.path // Store for later saving
         };
       })
     );
 
-    // Run deterministic rules assessment
-    console.log('🔍 Running deterministic rules (55 checks)...');
-    const deterministicResults = runDeterministicChecks(documents);
+    // Create pack context (use provided values or defaults)
+    const context = {
+      isLondon: isLondon === 'true' || isLondon === true || false,
+      isHRB: isHRB === 'true' || isHRB === true || true, // Default to HRB
+      buildingType: buildingType || 'residential',
+      heightMeters: heightMeters ? parseFloat(heightMeters) : null,
+      storeys: storeys ? parseInt(storeys) : null
+    };
 
-    // Format results for frontend
-    const formattedResults = formatResults(deterministicResults);
+    console.log('Assessment context:', context);
 
-    // Calculate summary stats
-    const passCount = formattedResults.filter(r => r.status === 'pass').length;
-    const failCount = formattedResults.filter(r => r.status === 'fail').length;
-    const naCount = formattedResults.filter(r => r.status === 'n/a').length;
+    // Run full two-phase assessment (deterministic + LLM)
+    console.log('🚀 Starting two-phase assessment...');
+    const fullAssessment = await assessPackAgainstMatrix(packDocs, context);
 
-    console.log(`✅ Assessment complete: ${passCount} pass, ${failCount} fail, ${naCount} n/a`);
+    console.log(`✅ Assessment complete: ${fullAssessment.results.length} criteria assessed`);
 
-    // Clean up temp files after a delay
+    // Store file paths temporarily for later save
+    const assessmentId = uuidv4();
+    const tempData = {
+      assessmentId,
+      packDocs: packDocs.map(d => ({
+        filename: d.filename,
+        docType: d.docType,
+        filepath: d.filepath
+      })),
+      context,
+      results: fullAssessment
+    };
+
+    // Store in temp directory for potential save
+    const tempDataPath = path.join(process.cwd(), 'temp-uploads', `${assessmentId}.json`);
+    fs.writeFileSync(tempDataPath, JSON.stringify(tempData));
+
+    // Clean up temp files after 1 hour
     setTimeout(() => {
-      files.forEach(file => {
-        try {
-          if (fs.existsSync(file.path)) {
-            fs.unlinkSync(file.path);
-          }
-        } catch (err) {
-          console.error('Error cleaning up temp file:', err);
-        }
-      });
-    }, 300000); // 5 minutes
+      try {
+        if (fs.existsSync(tempDataPath)) fs.unlinkSync(tempDataPath);
+        files.forEach(file => {
+          if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
+        });
+      } catch (err) {
+        console.error('Error cleaning up temp files:', err);
+      }
+    }, 3600000); // 1 hour
 
     res.json({
       success: true,
-      assessmentId: uuidv4(),
+      assessmentId,
       documentsProcessed: files.length,
-      results: {
-        criteria: formattedResults,
-        summary: {
-          total: formattedResults.length,
-          pass: passCount,
-          fail: failCount,
-          na: naCount,
-          passRate: passCount + failCount > 0
-            ? Math.round((passCount / (passCount + failCount)) * 100)
-            : 0
-        },
-        phases: {
-          deterministic: {
-            description: '55 proprietary if-then rules with explicit pass/fail logic',
-            criteriaCount: formattedResults.length
-          },
-          llm: {
-            description: 'AI enrichment available in full workflow',
-            criteriaCount: 0
-          }
-        }
-      }
+      context,
+      results: fullAssessment
     });
 
   } catch (error) {
-    console.error('❌ Quick assessment error:', error);
+    console.error('❌ Matrix assessment error:', error);
     res.status(500).json({
       error: 'Assessment failed',
       details: error instanceof Error ? error.message : 'Unknown error'
@@ -198,27 +159,109 @@ router.post('/', upload.array('documents', 20), async (req: Request, res: Respon
 
 /**
  * Save assessment results to database (creates client + pack)
- * Called after user reviews results and wants to save
  */
 router.post('/save', async (req: Request, res: Response) => {
   try {
-    const { assessmentResults, clientName, projectName, documents } = req.body;
+    const { assessmentId, clientName, projectName, clientCompany } = req.body;
 
-    // TODO: Implement database save when DB is working
-    // 1. Create client
-    // 2. Create pack under client
-    // 3. Create pack version
-    // 4. Move temp documents to permanent storage
-    // 5. Save assessment results as matrixAssessment JSON
+    if (!assessmentId) {
+      return res.status(400).json({ error: 'Assessment ID required' });
+    }
+
+    if (!clientName || !projectName) {
+      return res.status(400).json({ error: 'Client name and project name required' });
+    }
+
+    // Load temp assessment data
+    const tempDataPath = path.join(process.cwd(), 'temp-uploads', `${assessmentId}.json`);
+
+    if (!fs.existsSync(tempDataPath)) {
+      return res.status(404).json({ error: 'Assessment data not found or expired' });
+    }
+
+    const tempData = JSON.parse(fs.readFileSync(tempDataPath, 'utf-8'));
+
+    console.log(`💾 Saving assessment to database: ${clientName} / ${projectName}`);
+
+    // Create client
+    const client = await prisma.client.create({
+      data: {
+        name: clientName,
+        company: clientCompany || null
+      }
+    });
+
+    console.log(`✓ Created client: ${client.id}`);
+
+    // Create pack
+    const pack = await prisma.pack.create({
+      data: {
+        name: projectName,
+        clientId: client.id
+      }
+    });
+
+    console.log(`✓ Created pack: ${pack.id}`);
+
+    // Create pack version
+    const version = await prisma.packVersion.create({
+      data: {
+        packId: pack.id,
+        versionNumber: 1,
+        matrixAssessment: JSON.stringify(tempData.results),
+        buildingType: tempData.context.buildingType,
+        height: tempData.context.heightMeters?.toString() || null,
+        storeys: tempData.context.storeys?.toString() || null
+      }
+    });
+
+    console.log(`✓ Created version: ${version.id}`);
+
+    // Move uploaded files to permanent storage
+    const uploadsDir = path.join(process.cwd(), 'uploads', pack.id);
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    // Create document records
+    for (const doc of tempData.packDocs) {
+      if (fs.existsSync(doc.filepath)) {
+        const newPath = path.join(uploadsDir, doc.filename);
+        fs.copyFileSync(doc.filepath, newPath);
+
+        await prisma.document.create({
+          data: {
+            packVersionId: version.id,
+            libraryType: 'pack',
+            filename: doc.filename,
+            filepath: newPath,
+            docType: doc.docType
+          }
+        });
+      }
+    }
+
+    console.log(`✓ Saved ${tempData.packDocs.length} documents`);
+
+    // Clean up temp files
+    fs.unlinkSync(tempDataPath);
+    tempData.packDocs.forEach((doc: any) => {
+      if (fs.existsSync(doc.filepath)) fs.unlinkSync(doc.filepath);
+    });
 
     res.json({
       success: true,
-      message: 'Save feature coming soon - database connection needed'
+      client: { id: client.id, name: client.name },
+      pack: { id: pack.id, name: pack.name },
+      version: { id: version.id, versionNumber: version.versionNumber }
     });
 
   } catch (error) {
     console.error('Error saving assessment:', error);
-    res.status(500).json({ error: 'Failed to save assessment' });
+    res.status(500).json({
+      error: 'Failed to save assessment',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 

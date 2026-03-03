@@ -1,35 +1,36 @@
 import { useState } from 'react';
 import FileUpload from '../components/FileUpload';
+import CriterionCarousel from '../components/CriterionCarousel';
 
-interface AssessmentResult {
+interface FullAssessment {
   success: boolean;
   assessmentId: string;
   documentsProcessed: number;
+  context: {
+    isLondon: boolean;
+    isHRB: boolean;
+    buildingType: string;
+    heightMeters: number | null;
+    storeys: number | null;
+  };
   results: {
-    criteria: Array<{
-      id: string;
-      name: string;
-      status: 'pass' | 'fail' | 'n/a';
-      evidence: string;
-      reasoning?: string;
-      proposedChanges?: string;
-      regulatoryReference?: string | {
-        source: string;
-        section: string;
-        requirement: string;
-      };
-      phase: 'deterministic' | 'llm';
+    results: Array<{
+      matrix_id: string;
+      matrix_title: string;
+      category: string;
+      status: string;
+      severity: string;
+      reasoning: string;
+      evidence: any;
+      regulatory_ref: any;
+      proposed_changes?: string;
     }>;
     summary: {
       total: number;
-      pass: number;
-      fail: number;
-      na: number;
-      passRate: number;
-    };
-    phases: {
-      deterministic: { description: string; criteriaCount: number };
-      llm: { description: string; criteriaCount: number };
+      meets: number;
+      partial: number;
+      does_not_meet: number;
+      not_assessed: number;
     };
   };
 }
@@ -37,9 +38,16 @@ interface AssessmentResult {
 export default function QuickAssess() {
   const [files, setFiles] = useState<File[]>([]);
   const [assessing, setAssessing] = useState(false);
-  const [results, setResults] = useState<AssessmentResult | null>(null);
+  const [assessment, setAssessment] = useState<FullAssessment | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState('');
+
+  // Save dialog state
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [clientName, setClientName] = useState('');
+  const [projectName, setProjectName] = useState('');
+  const [clientCompany, setClientCompany] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const handleRunAssessment = async () => {
     if (files.length === 0) {
@@ -55,7 +63,12 @@ export default function QuickAssess() {
       const formData = new FormData();
       files.forEach(file => formData.append('documents', file));
 
-      setProgress('Running two-phase assessment (2-5 minutes)...');
+      // Add default context (can be enhanced with form inputs)
+      formData.append('buildingType', 'residential');
+      formData.append('isHRB', 'true');
+      formData.append('isLondon', 'false');
+
+      setProgress('Running Phase 1: Deterministic Rules (55 checks)...');
 
       const res = await fetch('/api/assess', {
         method: 'POST',
@@ -67,9 +80,11 @@ export default function QuickAssess() {
         throw new Error(errorData.error || 'Assessment failed');
       }
 
+      setProgress('Running Phase 2: LLM Enrichment...');
+
       const data = await res.json();
       setAssessing(false);
-      setResults(data);
+      setAssessment(data);
       setProgress('');
 
     } catch (err) {
@@ -80,20 +95,54 @@ export default function QuickAssess() {
   };
 
   const handleSaveToClient = async () => {
-    // TODO: Implement save functionality when database is working
-    alert('Save to Client feature coming soon - requires database connection');
+    if (!clientName.trim() || !projectName.trim()) {
+      alert('Please provide both client name and project name');
+      return;
+    }
+
+    setSaving(true);
+
+    try {
+      const res = await fetch('/api/assess/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          assessmentId: assessment!.assessmentId,
+          clientName: clientName.trim(),
+          projectName: projectName.trim(),
+          clientCompany: clientCompany.trim() || null
+        })
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to save');
+      }
+
+      const data = await res.json();
+      alert(`✅ Saved! Client: ${data.client.name}, Pack: ${data.pack.name}`);
+      setShowSaveDialog(false);
+
+      // Optionally redirect to the pack
+      window.location.href = `/packs/${data.pack.id}`;
+
+    } catch (err) {
+      alert(`Error: ${err instanceof Error ? err.message : 'Failed to save'}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-8 mb-8 text-white">
         <h1 className="text-3xl font-bold mb-2">BSR Compliance Assessment</h1>
         <p className="text-blue-100 text-lg">
-          Upload Gateway 2 documents → Get instant compliance assessment → Save to client (optional)
+          Upload documents → Run full two-phase assessment → Review in carousel → Save to client
         </p>
         <div className="mt-4 bg-blue-800/30 rounded-lg p-4">
-          <div className="flex items-center gap-3 text-sm">
+          <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
               <span>55 Deterministic Rules</span>
@@ -104,13 +153,13 @@ export default function QuickAssess() {
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <span>Evidence-Based</span>
+              <span>Carousel Review</span>
             </div>
           </div>
         </div>
       </div>
 
-      {!results ? (
+      {!assessment ? (
         <>
           {/* Upload Section */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-6">
@@ -141,7 +190,7 @@ export default function QuickAssess() {
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                 </svg>
-                Run Assessment (2-5 min)
+                Run Full Assessment (2-5 min)
               </>
             )}
           </button>
@@ -180,7 +229,7 @@ export default function QuickAssess() {
                 </div>
                 <div>
                   <p className="font-semibold text-slate-900">AI-Enhanced Analysis</p>
-                  <p>LLM enriches findings with reasoning, proposed changes, and regulatory context</p>
+                  <p>Claude enriches findings with reasoning, proposed changes, and regulatory context</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -188,153 +237,128 @@ export default function QuickAssess() {
                   <span className="text-amber-600 font-bold">✓</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-900">Human Verification Required</p>
-                  <p>AI assists, you verify. Every finding cites specific document evidence.</p>
+                  <p className="font-semibold text-slate-900">Carousel Review & Save</p>
+                  <p>Navigate criterion-by-criterion in the carousel, then save to a client for record-keeping</p>
                 </div>
               </div>
             </div>
           </div>
         </>
       ) : (
-        /* Results View */
+        /* Results View with Carousel */
         <div className="space-y-6">
-          {/* Summary Cards */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-slate-900">Assessment Complete!</h2>
+          {/* Action Bar */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">Assessment Complete!</h2>
+                <p className="text-slate-600 mt-1">
+                  {assessment.documentsProcessed} documents analyzed · {assessment.results.summary.total} criteria assessed
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setAssessment(null);
+                    setFiles([]);
+                    setError(null);
+                  }}
+                  className="bg-slate-200 text-slate-700 px-6 py-3 rounded-lg hover:bg-slate-300 font-medium"
+                >
+                  New Assessment
+                </button>
+                <button
+                  onClick={() => setShowSaveDialog(true)}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-medium flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                  </svg>
+                  Save to Client
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Carousel Component */}
+          <CriterionCarousel
+            results={assessment.results.results}
+            packContext={{
+              buildingType: assessment.context.buildingType,
+              heightMeters: assessment.context.heightMeters,
+              storeys: assessment.context.storeys,
+              isHRB: assessment.context.isHRB,
+              isLondon: assessment.context.isLondon
+            }}
+          />
+        </div>
+      )}
+
+      {/* Save Dialog */}
+      {showSaveDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Save to Client</h3>
+            <p className="text-slate-600 mb-6">Create a client and pack to save this assessment for future reference.</p>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Client Name *</label>
+                <input
+                  type="text"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="e.g., ABC Development Ltd"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Company (optional)</label>
+                <input
+                  type="text"
+                  value={clientCompany}
+                  onChange={(e) => setClientCompany(e.target.value)}
+                  placeholder="e.g., ABC Group"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Project Name *</label>
+                <input
+                  type="text"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  placeholder="e.g., Riverside Tower Gateway 2"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowSaveDialog(false)}
+                disabled={saving}
+                className="flex-1 bg-slate-200 text-slate-700 px-6 py-3 rounded-lg hover:bg-slate-300 font-medium disabled:opacity-50"
+              >
+                Cancel
+              </button>
               <button
                 onClick={handleSaveToClient}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium flex items-center gap-2"
+                disabled={saving || !clientName.trim() || !projectName.trim()}
+                className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-medium disabled:opacity-50 flex items-center justify-center gap-2"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
-                Save to Client
+                {saving ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Saving...
+                  </>
+                ) : (
+                  'Save'
+                )}
               </button>
             </div>
-
-            <div className="grid grid-cols-4 gap-4 mb-6">
-              <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                <div className="text-3xl font-bold text-green-600">{results.results.summary.pass}</div>
-                <div className="text-sm text-green-700">Passed</div>
-              </div>
-              <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-                <div className="text-3xl font-bold text-red-600">{results.results.summary.fail}</div>
-                <div className="text-sm text-red-700">Failed</div>
-              </div>
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-                <div className="text-3xl font-bold text-slate-600">{results.results.summary.na}</div>
-                <div className="text-sm text-slate-700">N/A</div>
-              </div>
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <div className="text-3xl font-bold text-blue-600">{results.results.summary.passRate}%</div>
-                <div className="text-sm text-blue-700">Pass Rate</div>
-              </div>
-            </div>
-
-            <div className="bg-slate-50 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-slate-900 mb-2">Assessment Breakdown</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="font-medium text-green-600">Phase 1: Deterministic Rules</span>
-                  <p className="text-slate-600">{results.results.phases.deterministic.description}</p>
-                  <p className="text-xs text-slate-500 mt-1">{results.results.phases.deterministic.criteriaCount} criteria</p>
-                </div>
-                <div>
-                  <span className="font-medium text-purple-600">Phase 2: AI Analysis</span>
-                  <p className="text-slate-600">{results.results.phases.llm.description}</p>
-                  <p className="text-xs text-slate-500 mt-1">{results.results.phases.llm.criteriaCount} criteria</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Detailed Results */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-            <h3 className="text-xl font-semibold text-slate-900 mb-4">Detailed Findings</h3>
-            <div className="space-y-3">
-              {results.results.criteria.map((criterion, idx) => (
-                <div
-                  key={idx}
-                  className={`p-4 rounded-lg border ${
-                    criterion.status === 'pass'
-                      ? 'bg-green-50 border-green-200'
-                      : criterion.status === 'fail'
-                      ? 'bg-red-50 border-red-200'
-                      : 'bg-slate-50 border-slate-200'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-slate-900">{criterion.name}</h4>
-                      {criterion.regulatoryReference && (
-                        <p className="text-xs text-slate-500 mt-1">
-                          📘 {typeof criterion.regulatoryReference === 'string'
-                            ? criterion.regulatoryReference
-                            : `${criterion.regulatoryReference.source} - ${criterion.regulatoryReference.section}`}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          criterion.status === 'pass'
-                            ? 'bg-green-100 text-green-800'
-                            : criterion.status === 'fail'
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-slate-100 text-slate-800'
-                        }`}
-                      >
-                        {criterion.status.toUpperCase()}
-                      </span>
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        criterion.phase === 'deterministic'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-purple-100 text-purple-700'
-                      }`}>
-                        {criterion.phase === 'deterministic' ? 'Rule-Based' : 'AI-Enhanced'}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-700 mb-2">
-                    <span className="font-medium">Evidence:</span> {criterion.evidence}
-                  </p>
-                  {criterion.reasoning && (
-                    <p className="text-sm text-slate-600 mb-2">
-                      <span className="font-medium">Reasoning:</span> {criterion.reasoning}
-                    </p>
-                  )}
-                  {criterion.proposedChanges && (
-                    <p className="text-sm text-blue-700">
-                      <span className="font-medium">Proposed Changes:</span> {criterion.proposedChanges}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-4">
-            <button
-              onClick={() => {
-                setFiles([]);
-                setResults(null);
-                setError(null);
-              }}
-              className="flex-1 bg-slate-200 text-slate-700 px-6 py-3 rounded-lg hover:bg-slate-300 font-medium"
-            >
-              Run Another Assessment
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium flex items-center justify-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
-              Print Report
-            </button>
           </div>
         </div>
       )}
