@@ -1,0 +1,201 @@
+/* Attlee Design System */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,300&family=Inter:wght@300;400&display=swap');
+
+:root {
+  /* Colors */
+  --navy:  #0F1923;
+  --cream: #F2F1EE;
+  --beige: #E8E4DC;
+  --gold:  #C4A882;
+  --muted: #8a8a82;
+  --white: #ffffff;
+
+  /* Success/Error states */
+  --success-bg: #e8f2e8;
+  --success-text: #2d6a2d;
+  --error-bg: #fdf0ee;
+  --error-text: #a04040;
+  --warning-bg: #fdf6ee;
+  --warning-text: #C4A882;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--cream);
+  color: var(--navy);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 200;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+h1 { font-size: clamp(42px, 6vw, 80px); letter-spacing: -0.03em; }
+h2 { font-size: clamp(28px, 4vw, 48px); }
+h3 { font-size: 22px; font-weight: 300; letter-spacing: -0.01em; }
+h4 { font-size: 18px; font-weight: 300; }
+
+/* Eyebrow text */
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+/* NO BOLD ANYWHERE */
+strong, b {
+  font-weight: 400 !important;
+}
+
+/* NO ROUNDED CORNERS */
+* {
+  border-radius: 0 !important;
+}
+
+/* Buttons */
+button, .btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  font-weight: 400;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+}
+
+.btn-secondary {
+  background: var(--beige);
+  color: var(--navy);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--navy);
+  opacity: 0.5;
+}
+
+.btn-ghost:hover {
+  opacity: 1;
+}
+
+.btn-success {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+.btn-error {
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+/* Pills/Badges */
+.pill {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  font-weight: 400;
+  display: inline-block;
+}
+
+.pill-pass { background: var(--success-bg); color: var(--success-text); }
+.pill-fail { background: var(--error-bg); color: var(--error-text); }
+.pill-partial { background: var(--warning-bg); color: var(--warning-text); }
+.pill-na { background: var(--beige); color: var(--muted); }
+
+/* Cards */
+.card {
+  background: var(--white);
+  padding: 40px;
+  border: 1px solid var(--beige);
+}
+
+.card-dark {
+  background: var(--navy);
+  color: var(--cream);
+  padding: 40px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Inputs */
+input, textarea, select {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 12px 16px;
+  border: 1px solid var(--beige);
+  background: var(--white);
+  color: var(--navy);
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+/* Labels */
+label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Sections */
+.section {
+  padding: 100px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-navy {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.section-beige {
+  background: var(--beige);
+}
+
+.section-cream {
+  background: var(--cream);
+}
+
+/* NO SHADOWS, NO GRADIENTS */
+* {
+  box-shadow: none !important;
+  background-image: none !important;
+}
