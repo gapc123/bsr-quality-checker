@@ -282,13 +282,13 @@ export default function QuickAssess() {
 
           {/* Carousel Component */}
           <CriterionCarousel
-            results={assessment.results.results}
-            packContext={{
-              buildingType: assessment.context.buildingType,
-              heightMeters: assessment.context.heightMeters,
-              storeys: assessment.context.storeys,
-              isHRB: assessment.context.isHRB,
-              isLondon: assessment.context.isLondon
+            criteria={assessment.results.results}
+            onComplete={(decisions) => {
+              console.log('Carousel decisions:', decisions);
+              // Optionally update assessment with user decisions
+            }}
+            onClose={() => {
+              // Carousel closed, could show summary or return to upload
             }}
           />
         </div>
