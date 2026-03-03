@@ -51,7 +51,14 @@ RUN npm run build --workspace=packages/frontend
 # Build backend
 RUN npm run build --workspace=packages/backend
 
+# Run database migrations
+WORKDIR /app/packages/backend
+RUN echo "📊 Running database migrations..." && \
+    npx prisma migrate deploy && \
+    echo "✅ Database migrations complete"
+
 # Set production mode for runtime
+WORKDIR /app
 ENV NODE_ENV=production
 
 # Expose the port Railway will use
