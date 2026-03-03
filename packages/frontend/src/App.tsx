@@ -7,6 +7,7 @@ import Results from './pages/Results';
 import ButlerLibrary from './pages/ButlerLibrary';
 import ClientsList from './pages/ClientsList';
 import ClientDetail from './pages/ClientDetail';
+import QuickAssess from './pages/QuickAssess';
 import SignInPage from './pages/SignIn';
 import Landing from './pages/Landing';
 import Problem from './pages/Problem';
@@ -50,7 +51,7 @@ function AppContent() {
               <Landing />
             </SignedOut>
             <SignedIn>
-              <Navigate to="/clients" replace />
+              <Navigate to="/assess" replace />
             </SignedIn>
           </>
         } />
@@ -89,6 +90,7 @@ function AppContent() {
             <div className="flex items-center gap-4">
               <SignedIn>
                 <nav className="flex items-center gap-2">
+                  <NavLink to="/assess">Assessment</NavLink>
                   <NavLink to="/clients">Clients</NavLink>
                   <NavLink to="/dashboard">Packs</NavLink>
                   <NavLink to="/butler">Reference Library</NavLink>
@@ -129,6 +131,14 @@ function AppContent() {
           <Routes>
 
             {/* Protected routes */}
+            <Route
+              path="/assess"
+              element={
+                <ProtectedRoute>
+                  <QuickAssess />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/clients"
               element={
