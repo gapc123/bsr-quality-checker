@@ -1,5 +1,6 @@
 # Attlee.ai
 ## AI-Powered BSR Compliance Assessment
+### Expert Agency Services with AI-Acceleration
 
 **Our mission: Help get more safe homes built in the UK, faster.**
 
@@ -97,31 +98,100 @@ You approve every AI change. We never introduce new facts without human oversigh
 
 ---
 
-## Engagement Options
+## Service Packages
 
-### Full Service: **Attlee Agency**
-**We handle end-to-end with professional sign-off.**
+### 1. Gap Analysis
+**Know what needs fixing before you submit.**
 
+**What you get:**
 - Full AI assessment (55+ criteria, two-phase analysis)
-- Expert human review & audit by qualified fire safety professionals
-- Remediation guidance call to walk through findings
-- Professional sign-off for BSR submission
+- Comprehensive compliance report with:
+  - Pass/fail status for each criterion
+  - Evidence extracts from your documents
+  - Regulatory citations (document, section, page)
+  - AI reasoning explaining each finding
+- Outstanding issues report (prioritized by severity)
+- AI-identified mechanical improvements list
 
-**Ideal for:** Developers who want assurance and don't have in-house expertise.
+**Deliverables:**
+- Compliance assessment report (PDF)
+- Outstanding issues report (PDF)
+- Evidence map showing where each requirement is addressed
+
+**Timeline:** 2-5 minutes for AI assessment, 1-2 business days for professional review
+
+**Ideal for:** Pre-submission checks, understanding compliance gaps, tender preparation
 
 ---
 
-### Self-Service: **Attlee SaaS**
-**Self-service AI. Your team owns the review.**
+### 2. Gap Analysis + Execute All Changes
+**Get a submission-ready document package.**
 
-- Full AI assessment (55+ criteria, two-phase analysis)
-- Unlimited re-assessments to iterate and improve
-- Agentic carousel: Accept/Reject AI changes
-- Editable output documents (DOCX, PDF)
-- Client management and project tracking
-- Full audit trail and version history
+**Everything in Gap Analysis, plus:**
+- Expert human review & audit by qualified fire safety professionals
+- AI executes all approved mechanical changes:
+  - Formatting improvements (headings, TOC, structure)
+  - Cross-reference insertion (link findings to documents/pages)
+  - Citation standardization
+  - Text clarification (using existing facts only)
+- Document amendment generation:
+  - Updated fire strategy (DOCX) with changes applied
+  - Track-changes version showing all edits
+  - Clean final version ready for submission
+- Remediation guidance call (30-60 min) to walk through findings
+- Professional sign-off letter for substantive compliance issues
 
-**Ideal for:** Fire safety consultancies, developers with in-house teams, architects.
+**Deliverables:**
+- Everything from Gap Analysis
+- Amended fire strategy document (DOCX + PDF)
+- Track-changes version (DOCX)
+- Professional review letter
+- Remediation action plan
+
+**Timeline:** 2-3 business days from document upload to delivery
+
+**Ideal for:** Developers ready to submit, teams without in-house fire safety expertise, tight deadlines
+
+---
+
+### 3. Retainer Partnership
+**Ongoing compliance support for active development pipelines.**
+
+**Monthly retainer includes:**
+- Up to **2 full assessments per month** (Gap Analysis + Execute All Changes)
+- Unlimited gap analysis previews (no professional review)
+- Priority support (24-hour turnaround on assessments)
+- Quarterly compliance review call
+- Access to regulatory updates affecting your projects
+
+**Additional assessments:** Available at **30% discount** off standard pricing
+
+**Minimum term:** 3 months
+
+**Ideal for:**
+- Developers with multiple projects in flight
+- Housing associations managing ongoing submissions
+- Consultancies needing white-label compliance support
+- Teams submitting 3+ Gateway packages per quarter
+
+**Example usage:**
+- Month 1: Full assessment for Project A, gap preview for Project B
+- Month 2: Full assessment for Project B, full assessment for Project C (2 included)
+- Month 3: Gap preview for Project D, additional full assessment for Project E (1 included + 1 at 30% off)
+
+---
+
+## Pricing
+
+**Contact us** for a quote tailored to your project scope and volume.
+
+All packages include:
+- Full transparency & auditability
+- Regulatory citations for every finding
+- AI-first approach with human verification
+- Professional indemnity insurance coverage
+
+**Volume discounts** available for 5+ assessments.
 
 ---
 
