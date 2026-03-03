@@ -33,7 +33,7 @@ export default function MatrixAssessment() {
 
       const data = await res.json();
       setAssessing(false);
-      setResults(data.results);
+      setResults(data);
 
     } catch (err) {
       setAssessing(false);
@@ -118,6 +118,30 @@ export default function MatrixAssessment() {
               <div className="text-sm text-blue-700">Total Criteria</div>
             </div>
           </div>
+
+          {/* Show criteria details */}
+          {results.results && results.results.criteria && (
+            <div className="mb-6">
+              <h3 className="font-semibold text-slate-900 mb-3">Assessment Details:</h3>
+              <div className="space-y-2">
+                {results.results.criteria.map((criterion: any) => (
+                  <div key={criterion.id} className={`p-3 rounded-lg border ${
+                    criterion.status === 'pass' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
+                  }`}>
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">{criterion.name}</span>
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                        criterion.status === 'pass' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {criterion.status.toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 mt-1">{criterion.evidence}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           <p className="text-slate-600 mb-4">
             View detailed results and recommendations in the Packs section.
           </p>
