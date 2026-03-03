@@ -7,7 +7,6 @@ import Results from './pages/Results';
 import ButlerLibrary from './pages/ButlerLibrary';
 import ClientsList from './pages/ClientsList';
 import ClientDetail from './pages/ClientDetail';
-import MatrixAssessment from './pages/MatrixAssessment';
 import SignInPage from './pages/SignIn';
 import Landing from './pages/Landing';
 import Problem from './pages/Problem';
@@ -90,7 +89,6 @@ function AppContent() {
             <div className="flex items-center gap-4">
               <SignedIn>
                 <nav className="flex items-center gap-2">
-                  <NavLink to="/assess">Matrix Assessment</NavLink>
                   <NavLink to="/clients">Clients</NavLink>
                   <NavLink to="/dashboard">Packs</NavLink>
                   <NavLink to="/butler">Reference Library</NavLink>
@@ -131,14 +129,6 @@ function AppContent() {
           <Routes>
 
             {/* Protected routes */}
-            <Route
-              path="/assess"
-              element={
-                <ProtectedRoute>
-                  <MatrixAssessment />
-                </ProtectedRoute>
-              }
-            />
             <Route
               path="/clients"
               element={
