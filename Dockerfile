@@ -51,18 +51,16 @@ RUN npm run build --workspace=packages/frontend
 # Build backend
 RUN npm run build --workspace=packages/backend
 
-# Run database migrations
-WORKDIR /app/packages/backend
-RUN echo "📊 Running database migrations..." && \
-    npx prisma migrate deploy && \
-    echo "✅ Database migrations complete"
-
 # Set production mode for runtime
-WORKDIR /app
 ENV NODE_ENV=production
+
+# Copy and set up entrypoint script
+WORKDIR /app
+COPY docker-entrypoint.sh .
+RUN chmod +x docker-entrypoint.sh
 
 # Expose the port Railway will use
 EXPOSE 3001
 
-# Start command
-CMD ["node", "packages/backend/dist/index.js"]
+# Start command - runs migrations then starts server
+CMD ["./docker-entrypoint.sh"]
