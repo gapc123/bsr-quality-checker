@@ -51,7 +51,7 @@ function AppContent() {
               <Landing />
             </SignedOut>
             <SignedIn>
-              <Navigate to="/assess" replace />
+              <Navigate to="/clients" replace />
             </SignedIn>
           </>
         } />
