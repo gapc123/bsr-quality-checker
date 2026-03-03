@@ -33,10 +33,20 @@ export default function ClientsList() {
   const fetchClients = async () => {
     try {
       const res = await fetch('/api/clients');
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
       const data = await res.json();
-      setClients(data);
+      // Ensure data is an array
+      if (Array.isArray(data)) {
+        setClients(data);
+      } else {
+        console.error('API returned non-array data:', data);
+        setClients([]);
+      }
     } catch (error) {
       console.error('Error fetching clients:', error);
+      setClients([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -147,13 +157,13 @@ export default function ClientsList() {
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
           <div className="text-2xl font-bold text-slate-900">
-            {clients.reduce((sum, c) => sum + c._count.packs, 0)}
+            {Array.isArray(clients) ? clients.reduce((sum, c) => sum + c._count.packs, 0) : 0}
           </div>
           <div className="text-sm text-slate-500">Total Packs</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
           <div className="text-2xl font-bold text-slate-900">
-            {clients.filter(c => c._count.packs > 0).length}
+            {Array.isArray(clients) ? clients.filter(c => c._count.packs > 0).length : 0}
           </div>
           <div className="text-sm text-slate-500">Active Clients</div>
         </div>
