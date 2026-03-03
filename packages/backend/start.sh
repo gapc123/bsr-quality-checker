@@ -3,9 +3,12 @@
 
 echo "🚀 Starting BSR Quality Checker..."
 
-# Run database migrations
-echo "📊 Running database migrations..."
-npx prisma migrate deploy
+# Create data directory if it doesn't exist
+mkdir -p /app/data
+
+# Initialize database
+echo "📊 Setting up database..."
+npx prisma db push --accept-data-loss
 
 # Start the server
 echo "✅ Starting server..."
