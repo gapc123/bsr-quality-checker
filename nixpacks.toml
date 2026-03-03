@@ -15,11 +15,14 @@ cmds = [
     "cd packages/backend && npx prisma generate",
     "npm run build --workspace=packages/frontend",
     "npm run build --workspace=packages/backend",
-    "ls -la packages/frontend/dist/assets/"
+    "ls -la packages/frontend/dist/assets/",
+    "echo '📊 Initializing database schema...'",
+    "cd packages/backend && npx prisma db push --accept-data-loss --skip-generate",
+    "echo '✅ Database schema initialized'"
 ]
 
 [start]
-cmd = "chmod +x packages/backend/start.sh && bash packages/backend/start.sh"
+cmd = "node packages/backend/dist/index.js"
 
 [variables]
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
