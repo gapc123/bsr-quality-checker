@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "bash start.sh",
     "db:setup": "prisma generate && prisma migrate dev --name init && npm run ingest:baseline",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
