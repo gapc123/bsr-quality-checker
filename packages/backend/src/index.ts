@@ -9,6 +9,7 @@ import changesRouter from './routes/changes.js';
 import clientsRouter from './routes/clients.js';
 import teamRouter from './routes/team.js';
 import templatesRouter from './routes/templates.js';
+import quickAssessRouter from './routes/quick-assess.js';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
@@ -36,6 +37,7 @@ const uploadsPath = isProduction
 app.use('/uploads', express.static(uploadsPath));
 
 // API Routes
+app.use('/api/quick-assess', quickAssessRouter);
 app.use('/api/packs', packsRouter);
 app.use('/api/packs', changesRouter);
 app.use('/api/clients', clientsRouter);

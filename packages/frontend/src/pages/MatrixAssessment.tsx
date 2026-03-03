@@ -3,7 +3,6 @@ import FileUpload from '../components/FileUpload';
 
 export default function MatrixAssessment() {
   const [files, setFiles] = useState<File[]>([]);
-  const [uploading, setUploading] = useState(false);
   const [assessing, setAssessing] = useState(false);
   const [results, setResults] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -14,48 +13,29 @@ export default function MatrixAssessment() {
       return;
     }
 
-    setUploading(true);
+    setAssessing(true);
     setError(null);
 
     try {
-      // Step 1: Create a temporary pack
-      const packRes = await fetch('/api/packs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: `Quick Assessment ${new Date().toISOString()}` }),
-      });
-
-      if (!packRes.ok) throw new Error('Failed to create assessment pack');
-      const pack = await packRes.json();
-
-      // Step 2: Upload documents
+      // Quick assessment - no database needed
       const formData = new FormData();
       files.forEach(file => formData.append('documents', file));
 
-      const uploadRes = await fetch(`/api/packs/${pack.id}/upload`, {
+      const res = await fetch('/api/quick-assess', {
         method: 'POST',
         body: formData,
       });
 
-      if (!uploadRes.ok) throw new Error('Failed to upload documents');
-      const uploadData = await uploadRes.json();
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Assessment failed');
+      }
 
-      setUploading(false);
-      setAssessing(true);
-
-      // Step 3: Run matrix assessment
-      const assessRes = await fetch(`/api/packs/${pack.id}/versions/${uploadData.versionId}/matrix-assess`, {
-        method: 'POST',
-      });
-
-      if (!assessRes.ok) throw new Error('Failed to run assessment');
-      const assessData = await assessRes.json();
-
+      const data = await res.json();
       setAssessing(false);
-      setResults(assessData);
+      setResults(data.results);
 
     } catch (err) {
-      setUploading(false);
       setAssessing(false);
       setError(err instanceof Error ? err.message : 'Assessment failed');
     }
@@ -87,22 +67,15 @@ export default function MatrixAssessment() {
       {/* Run Assessment Button */}
       <button
         onClick={handleRunAssessment}
-        disabled={files.length === 0 || uploading || assessing}
+        disabled={files.length === 0 || assessing}
         className="w-full bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-bold text-lg shadow-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-3 mb-6"
       >
-        {uploading && (
-          <>
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-            Uploading documents...
-          </>
-        )}
-        {assessing && (
+        {assessing ? (
           <>
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
             Running Matrix Assessment (2-5 min)...
           </>
-        )}
-        {!uploading && !assessing && (
+        ) : (
           <>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
