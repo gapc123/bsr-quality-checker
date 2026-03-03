@@ -3,9 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { extractTextFromPDF } from '../services/pdf-parser.js';
-import { assessDocumentsWithDeterministicRules } from '../services/deterministic-rules.js';
-import { enrichWithLLMAnalysis } from '../services/matrix-assessment.js';
+import pdfParse from 'pdf-parse';
+import { runDeterministicChecks, DocumentEvidence, DeterministicAssessment } from '../services/deterministic-rules.js';
 
 const router = express.Router();
 
@@ -27,12 +26,67 @@ const upload = multer({
 });
 
 /**
+ * Extract text from PDF file
+ */
+async function extractPDFText(filepath: string): Promise<string> {
+  try {
+    const dataBuffer = fs.readFileSync(filepath);
+    const pdfData = await pdfParse(dataBuffer);
+    return pdfData.text.trim();
+  } catch (error) {
+    console.error('Error extracting PDF text:', error);
+    return '';
+  }
+}
+
+/**
+ * Classify document type based on filename
+ */
+function classifyDocType(filename: string, text: string): string | null {
+  const lowerFilename = filename.toLowerCase();
+  const lowerText = text.toLowerCase().slice(0, 5000);
+
+  const typePatterns: { type: string; patterns: string[] }[] = [
+    { type: 'fire_strategy', patterns: ['fire strategy', 'fire safety strategy'] },
+    { type: 'drawings', patterns: ['drawing', 'plan', 'elevation', 'section'] },
+    { type: 'structural', patterns: ['structural', 'structure'] },
+    { type: 'mep', patterns: ['mechanical', 'electrical', 'plumbing', 'mep'] },
+    { type: 'specifications', patterns: ['specification', 'spec', 'schedule'] },
+  ];
+
+  for (const { type, patterns } of typePatterns) {
+    for (const pattern of patterns) {
+      if (lowerFilename.includes(pattern) || lowerText.includes(pattern)) {
+        return type;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Convert deterministic assessment to frontend format
+ */
+function formatResults(assessments: DeterministicAssessment[]) {
+  return assessments.map(assessment => ({
+    id: assessment.matrixId,
+    name: assessment.ruleName,
+    status: assessment.result.status,
+    evidence: assessment.result.evidence || 'No evidence found',
+    reasoning: assessment.result.reasoning || '',
+    proposedChanges: '', // Can be enriched with LLM later
+    regulatoryReference: assessment.regulatoryRef,
+    phase: 'deterministic' as const,
+    category: assessment.category,
+    severity: assessment.severity
+  }));
+}
+
+/**
  * Quick assessment endpoint - no database required
  *
- * Runs full two-phase assessment:
- * 1. Deterministic rules (55 proprietary rules)
- * 2. LLM enrichment (nuanced analysis)
- *
+ * Runs deterministic rules assessment (55 proprietary rules)
  * Returns results without saving to database
  */
 router.post('/', upload.array('documents', 20), async (req: Request, res: Response) => {
@@ -46,55 +100,34 @@ router.post('/', upload.array('documents', 20), async (req: Request, res: Respon
     console.log(`📄 Quick assessment started with ${files.length} documents`);
 
     // Extract text from all PDFs
-    const documents = await Promise.all(
+    const documents: DocumentEvidence[] = await Promise.all(
       files.map(async (file) => {
-        try {
-          const text = await extractTextFromPDF(file.path);
-          return {
-            id: uuidv4(),
-            filename: file.originalname,
-            filepath: file.path,
-            text,
-            docType: 'submission'
-          };
-        } catch (error) {
-          console.error(`Error extracting text from ${file.originalname}:`, error);
-          return {
-            id: uuidv4(),
-            filename: file.originalname,
-            filepath: file.path,
-            text: '',
-            docType: 'submission'
-          };
-        }
+        const text = await extractPDFText(file.path);
+        const docType = classifyDocType(file.originalname, text);
+
+        return {
+          filename: file.originalname,
+          docType,
+          extractedText: text
+        };
       })
     );
 
-    const combinedText = documents.map(d => d.text).join('\n\n');
+    // Run deterministic rules assessment
+    console.log('🔍 Running deterministic rules (55 checks)...');
+    const deterministicResults = runDeterministicChecks(documents);
 
-    // Phase 1: Deterministic Rules Assessment
-    console.log('🔍 Phase 1: Running deterministic rules...');
-    const deterministicResults = await assessDocumentsWithDeterministicRules(
-      combinedText,
-      documents
-    );
-
-    // Phase 2: LLM Enrichment
-    console.log('🤖 Phase 2: LLM enrichment...');
-    const enrichedResults = await enrichWithLLMAnalysis(
-      deterministicResults,
-      combinedText,
-      documents
-    );
+    // Format results for frontend
+    const formattedResults = formatResults(deterministicResults);
 
     // Calculate summary stats
-    const passCount = enrichedResults.filter(r => r.status === 'pass').length;
-    const failCount = enrichedResults.filter(r => r.status === 'fail').length;
-    const naCount = enrichedResults.filter(r => r.status === 'n/a').length;
+    const passCount = formattedResults.filter(r => r.status === 'pass').length;
+    const failCount = formattedResults.filter(r => r.status === 'fail').length;
+    const naCount = formattedResults.filter(r => r.status === 'n/a').length;
 
     console.log(`✅ Assessment complete: ${passCount} pass, ${failCount} fail, ${naCount} n/a`);
 
-    // Clean up temp files after a delay (give time for potential saves)
+    // Clean up temp files after a delay
     setTimeout(() => {
       files.forEach(file => {
         try {
@@ -109,30 +142,27 @@ router.post('/', upload.array('documents', 20), async (req: Request, res: Respon
 
     res.json({
       success: true,
-      assessmentId: uuidv4(), // For potential later save
+      assessmentId: uuidv4(),
       documentsProcessed: files.length,
-      documentDetails: documents.map(d => ({
-        id: d.id,
-        filename: d.filename,
-        filepath: d.filepath
-      })),
       results: {
-        criteria: enrichedResults,
+        criteria: formattedResults,
         summary: {
-          total: enrichedResults.length,
+          total: formattedResults.length,
           pass: passCount,
           fail: failCount,
           na: naCount,
-          passRate: Math.round((passCount / (passCount + failCount)) * 100)
+          passRate: passCount + failCount > 0
+            ? Math.round((passCount / (passCount + failCount)) * 100)
+            : 0
         },
         phases: {
           deterministic: {
-            description: '55 proprietary if-then rules',
-            criteriaCount: deterministicResults.length
+            description: '55 proprietary if-then rules with explicit pass/fail logic',
+            criteriaCount: formattedResults.length
           },
           llm: {
-            description: 'AI-enriched analysis for nuanced criteria',
-            criteriaCount: enrichedResults.length - deterministicResults.length
+            description: 'AI enrichment available in full workflow',
+            criteriaCount: 0
           }
         }
       }
@@ -155,7 +185,7 @@ router.post('/save', async (req: Request, res: Response) => {
   try {
     const { assessmentResults, clientName, projectName, documents } = req.body;
 
-    // TODO: Implement database save
+    // TODO: Implement database save when DB is working
     // 1. Create client
     // 2. Create pack under client
     // 3. Create pack version
