@@ -156,7 +156,7 @@ function AppContent() {
 
       {/* Main Content */}
       <main style={{ flex: 1, background: 'var(--cream)' }}>
-        <div style={{ maxWidth: '1800px', width: '100%', margin: '0 auto', padding: '48px 5%' }}>
+        <div style={{ maxWidth: '1800px', width: '100%', margin: '0 auto', padding: '24px 5% 48px' }}>
           <Routes>
 
             {/* Protected routes */}
