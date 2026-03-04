@@ -285,18 +285,18 @@ export default function CriterionCarousel({ criteria, onComplete, onClose }: Cri
 
   if (allActionableCriteria.length === 0) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl max-w-lg w-full p-8 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '1rem' }}>
+        <div style={{ background: 'var(--white)', maxWidth: '32rem', width: '100%', padding: '2rem', textAlign: 'center' }}>
+          <div style={{ width: '4rem', height: '4rem', margin: '0 auto 1rem', background: '#d1f4d1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg style={{ width: '2rem', height: '2rem', color: '#2d6a2d' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">All Criteria Pass</h2>
-          <p className="text-slate-600 mb-6">No changes are needed for your submission.</p>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--navy)', marginBottom: '0.5rem' }}>All Criteria Pass</h2>
+          <p style={{ color: 'var(--muted)', marginBottom: '1.5rem' }}>No changes are needed for your submission.</p>
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800"
+            style={{ padding: '0.5rem 1.5rem', background: 'var(--navy)', color: 'var(--cream)', fontWeight: '500', cursor: 'pointer', border: 'none' }}
           >
             Close
           </button>
@@ -327,53 +327,56 @@ export default function CriterionCarousel({ criteria, onComplete, onClose }: Cri
   const sectionInfo = getSectionInfo();
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '1rem' }}>
+      <div style={{ background: 'var(--white)', maxWidth: '56rem', width: '100%', maxHeight: '90vh', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', display: 'flex', flexDirection: 'column' }}>
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
-          <div className="flex items-center justify-between">
+        <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--beige)', background: 'var(--cream)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">Review Assessment Results</h2>
-              <p className="text-sm text-slate-500">Review findings and decide which changes to apply</p>
+              <h2 style={{ fontSize: '1.125rem', fontWeight: '600', color: 'var(--navy)' }}>Review Assessment Results</h2>
+              <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>Review findings and decide which changes to apply</p>
             </div>
-            <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onClick={onClose} style={{ color: 'var(--muted)', cursor: 'pointer', background: 'none', border: 'none' }}>
+              <svg style={{ width: '1.5rem', height: '1.5rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
           {/* Progress bar */}
-          <div className="mt-4">
-            <div className="flex items-center justify-between text-sm mb-1">
-              <span className={`font-medium ${
-                sectionInfo.section === 'ai' ? 'text-green-600' :
-                sectionInfo.section === 'human' ? 'text-amber-600' :
-                'text-slate-600'
-              }`}>
+          <div style={{ marginTop: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.875rem', marginBottom: '0.25rem' }}>
+              <span style={{
+                fontWeight: '500',
+                color: sectionInfo.section === 'ai' ? '#2d6a2d' :
+                       sectionInfo.section === 'human' ? '#d97706' :
+                       'var(--muted)'
+              }}>
                 {sectionInfo.label}
               </span>
-              <div className="flex items-center gap-3">
-                <span className="text-green-600">{acceptedCount} accepted</span>
-                <span className="text-amber-600">{humanInterventionCriteria.length} for report</span>
-                {pendingAICount > 0 && <span className="text-blue-600">{pendingAICount} AI items remaining</span>}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <span style={{ color: '#2d6a2d' }}>{acceptedCount} accepted</span>
+                <span style={{ color: '#d97706' }}>{humanInterventionCriteria.length} for report</span>
+                {pendingAICount > 0 && <span style={{ color: 'var(--navy)' }}>{pendingAICount} AI items remaining</span>}
               </div>
             </div>
-            <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div style={{ height: '0.5rem', background: 'var(--beige)', overflow: 'hidden' }}>
               <div
-                className={`h-full transition-all duration-300 ${
-                  sectionInfo.section === 'ai' ? 'bg-gradient-to-r from-green-500 to-green-400' :
-                  sectionInfo.section === 'human' ? 'bg-gradient-to-r from-amber-500 to-amber-400' :
-                  'bg-gradient-to-r from-blue-500 to-blue-400'
-                }`}
-                style={{ width: `${((currentIndex + 1) / carouselTiles.length) * 100}%` }}
+                style={{
+                  height: '100%',
+                  transition: 'all 0.3s',
+                  background: sectionInfo.section === 'ai' ? '#2d6a2d' :
+                             sectionInfo.section === 'human' ? '#d97706' :
+                             'var(--navy)',
+                  width: `${((currentIndex + 1) / carouselTiles.length) * 100}%`
+                }}
               />
             </div>
           </div>
         </div>
 
         {/* Tile Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem' }}>
           {currentTile.type === 'summary' && (
             <SummaryTile
               aiCount={aiActionableCriteria.length}
@@ -408,29 +411,41 @@ export default function CriterionCarousel({ criteria, onComplete, onClose }: Cri
         </div>
 
         {/* Footer with navigation */}
-        <div className="px-6 py-4 border-t border-slate-200 bg-slate-50">
-          <div className="flex items-center justify-between">
+        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--beige)', background: 'var(--cream)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             {/* Navigation arrows */}
-            <div className="flex items-center gap-2">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <button
                 onClick={handlePrev}
                 disabled={currentIndex === 0}
-                className="p-2 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  padding: '0.5rem',
+                  border: '1px solid var(--beige)',
+                  cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
+                  opacity: currentIndex === 0 ? 0.5 : 1,
+                  background: 'var(--white)'
+                }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button
                 onClick={handleNext}
                 disabled={currentIndex === carouselTiles.length - 1}
-                className="p-2 rounded-lg border border-slate-200 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  padding: '0.5rem',
+                  border: '1px solid var(--beige)',
+                  cursor: currentIndex === carouselTiles.length - 1 ? 'not-allowed' : 'pointer',
+                  opacity: currentIndex === carouselTiles.length - 1 ? 0.5 : 1,
+                  background: 'var(--white)'
+                }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
-              <span className="text-sm text-slate-500 ml-2">
+              <span style={{ fontSize: '0.875rem', color: 'var(--muted)', marginLeft: '0.5rem' }}>
                 {currentIndex + 1} of {carouselTiles.length} • Use arrow keys to navigate
               </span>
             </div>
@@ -439,15 +454,23 @@ export default function CriterionCarousel({ criteria, onComplete, onClose }: Cri
             <button
               onClick={handleSubmit}
               disabled={!allAIReviewed}
-              className={`px-6 py-2.5 rounded-lg font-semibold transition-all flex items-center gap-2 ${
-                allAIReviewed
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-md'
-                  : 'bg-slate-200 text-slate-500 cursor-not-allowed'
-              }`}
+              style={{
+                padding: '0.625rem 1.5rem',
+                fontWeight: '600',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                background: allAIReviewed ? 'var(--navy)' : 'var(--beige)',
+                color: allAIReviewed ? 'var(--cream)' : 'var(--muted)',
+                cursor: allAIReviewed ? 'pointer' : 'not-allowed',
+                border: 'none',
+                boxShadow: allAIReviewed ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
+              }}
             >
               {allAIReviewed ? (
                 <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   Generate Documents
@@ -472,54 +495,54 @@ interface SummaryTileProps {
 
 function SummaryTile({ aiCount, humanCount, onContinue }: SummaryTileProps) {
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="text-center mb-8">
-        <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-          <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div style={{ maxWidth: '42rem', margin: '0 auto' }}>
+      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <div style={{ width: '4rem', height: '4rem', margin: '0 auto 1rem', background: '#d6e5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg style={{ width: '2rem', height: '2rem', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Review Your Assessment Results</h2>
-        <p className="text-slate-600">
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--navy)', marginBottom: '0.5rem' }}>Review Your Assessment Results</h2>
+        <p style={{ color: 'var(--muted)' }}>
           We've analysed your submission and identified items that need attention.
         </p>
       </div>
 
       {/* Two types of findings */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
         {/* AI Actionable */}
-        <div className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ background: '#f0f9f0', border: '2px solid #d1f4d1', padding: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{ width: '2.5rem', height: '2.5rem', background: '#d1f4d1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg style={{ width: '1.25rem', height: '1.25rem', color: '#2d6a2d' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-green-700">{aiCount}</p>
-              <p className="text-sm font-medium text-green-600">AI Can Fix</p>
+              <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2d6a2d' }}>{aiCount}</p>
+              <p style={{ fontSize: '0.875rem', fontWeight: '500', color: '#2d6a2d' }}>AI Can Fix</p>
             </div>
           </div>
-          <p className="text-sm text-green-700">
+          <p style={{ fontSize: '0.875rem', color: '#2d6a2d' }}>
             These issues can be resolved by adding or modifying text in your existing documents.
             Review each proposed change and accept or skip.
           </p>
         </div>
 
         {/* Human Intervention */}
-        <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ background: '#fef3e0', border: '2px solid #f5d699', padding: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{ width: '2.5rem', height: '2.5rem', background: '#f5d699', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg style={{ width: '1.25rem', height: '1.25rem', color: '#d97706' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-amber-700">{humanCount}</p>
-              <p className="text-sm font-medium text-amber-600">Requires Human Action</p>
+              <p style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d97706' }}>{humanCount}</p>
+              <p style={{ fontSize: '0.875rem', fontWeight: '500', color: '#d97706' }}>Requires Human Action</p>
             </div>
           </div>
-          <p className="text-sm text-amber-700">
+          <p style={{ fontSize: '0.875rem', color: '#d97706' }}>
             These issues require new documents, expert judgement, or physical evidence.
             They will be added to your Outstanding Issues Report.
           </p>
@@ -527,43 +550,43 @@ function SummaryTile({ aiCount, humanCount, onContinue }: SummaryTileProps) {
       </div>
 
       {/* How it works */}
-      <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 mb-6">
-        <h3 className="font-semibold text-slate-900 mb-3">How This Works</h3>
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-xs font-bold text-green-600">1</span>
+      <div style={{ background: 'var(--cream)', padding: '1.25rem', border: '1px solid var(--beige)', marginBottom: '1.5rem' }}>
+        <h3 style={{ fontWeight: '600', color: 'var(--navy)', marginBottom: '0.75rem' }}>How This Works</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+            <div style={{ width: '1.5rem', height: '1.5rem', background: '#d1f4d1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '0.125rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#2d6a2d' }}>1</span>
             </div>
-            <p className="text-sm text-slate-600">
-              <strong className="text-slate-900">AI-fixable items shown first</strong> — Review each proposed text change and click Accept or Skip
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>
+              <strong style={{ color: 'var(--navy)' }}>AI-fixable items shown first</strong> — Review each proposed text change and click Accept or Skip
             </p>
           </div>
-          <div className="flex items-start gap-3">
-            <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-xs font-bold text-amber-600">2</span>
+          <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+            <div style={{ width: '1.5rem', height: '1.5rem', background: '#f5d699', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '0.125rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#d97706' }}>2</span>
             </div>
-            <p className="text-sm text-slate-600">
-              <strong className="text-slate-900">Human intervention items shown after</strong> — These are automatically added to your Outstanding Issues Report
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>
+              <strong style={{ color: 'var(--navy)' }}>Human intervention items shown after</strong> — These are automatically added to your Outstanding Issues Report
             </p>
           </div>
-          <div className="flex items-start gap-3">
-            <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-xs font-bold text-blue-600">3</span>
+          <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+            <div style={{ width: '1.5rem', height: '1.5rem', background: '#d6e5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '0.125rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--navy)' }}>3</span>
             </div>
-            <p className="text-sm text-slate-600">
-              <strong className="text-slate-900">Generate your documents</strong> — Amended submission + Outstanding Issues Report for your team
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>
+              <strong style={{ color: 'var(--navy)' }}>Generate your documents</strong> — Amended submission + Outstanding Issues Report for your team
             </p>
           </div>
         </div>
       </div>
 
       {/* Important notice */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <div className="flex items-start gap-3">
-          <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+      <div style={{ background: '#d6e5f5', border: '1px solid #b3d4f0', padding: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem' }}>
+          <svg style={{ width: '1.25rem', height: '1.25rem', color: 'var(--navy)', marginTop: '0.125rem', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
           </svg>
-          <div className="text-sm text-blue-800">
+          <div style={{ fontSize: '0.875rem', color: 'var(--navy)' }}>
             <strong>Important:</strong> AI can only modify text in existing documents. It cannot create new documents,
             make professional judgements, or generate certifications. Items requiring these actions are clearly marked
             for human intervention.
@@ -573,10 +596,23 @@ function SummaryTile({ aiCount, humanCount, onContinue }: SummaryTileProps) {
 
       <button
         onClick={onContinue}
-        className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-colors flex items-center justify-center gap-2"
+        style={{
+          width: '100%',
+          padding: '0.75rem',
+          background: 'var(--navy)',
+          color: 'var(--cream)',
+          fontWeight: '600',
+          transition: 'colors 0.2s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          border: 'none',
+          cursor: 'pointer'
+        }}
       >
         {aiCount > 0 ? 'Start Reviewing AI Changes' : 'View Human Intervention Items'}
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
       </button>
@@ -592,35 +628,35 @@ interface DividerTileProps {
 
 function DividerTile({ humanCount, onContinue }: DividerTileProps) {
   return (
-    <div className="max-w-2xl mx-auto text-center">
-      <div className="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-full flex items-center justify-center">
-        <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div style={{ maxWidth: '42rem', margin: '0 auto', textAlign: 'center' }}>
+      <div style={{ width: '4rem', height: '4rem', margin: '0 auto 1rem', background: '#f5d699', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <svg style={{ width: '2rem', height: '2rem', color: '#d97706' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
       </div>
 
-      <h2 className="text-2xl font-bold text-slate-900 mb-2">Human Intervention Required</h2>
-      <p className="text-slate-600 mb-6">
+      <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--navy)', marginBottom: '0.5rem' }}>Human Intervention Required</h2>
+      <p style={{ color: 'var(--muted)', marginBottom: '1.5rem' }}>
         The following {humanCount} item{humanCount !== 1 ? 's' : ''} cannot be fixed by AI and must be addressed manually before submission.
       </p>
 
-      <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-6 mb-6 text-left">
-        <h3 className="font-semibold text-amber-800 mb-3">These items may require:</h3>
-        <ul className="space-y-2">
-          <li className="flex items-start gap-3 text-sm text-amber-700">
-            <svg className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+      <div style={{ background: '#fef3e0', border: '2px solid #f5d699', padding: '1.5rem', marginBottom: '1.5rem', textAlign: 'left' }}>
+        <h3 style={{ fontWeight: '600', color: '#d97706', marginBottom: '0.75rem' }}>These items may require:</h3>
+        <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <li style={{ display: 'flex', alignItems: 'start', gap: '0.75rem', fontSize: '0.875rem', color: '#d97706' }}>
+            <svg style={{ width: '1.25rem', height: '1.25rem', color: '#d97706', flexShrink: 0, marginTop: '0.125rem' }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
             <span><strong>New documents</strong> — Fire strategies, structural reports, or technical drawings</span>
           </li>
-          <li className="flex items-start gap-3 text-sm text-amber-700">
-            <svg className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <li style={{ display: 'flex', alignItems: 'start', gap: '0.75rem', fontSize: '0.875rem', color: '#d97706' }}>
+            <svg style={{ width: '1.25rem', height: '1.25rem', color: '#d97706', flexShrink: 0, marginTop: '0.125rem' }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
             <span><strong>Expert analysis</strong> — Professional engineering assessment or specialist review</span>
           </li>
-          <li className="flex items-start gap-3 text-sm text-amber-700">
-            <svg className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <li style={{ display: 'flex', alignItems: 'start', gap: '0.75rem', fontSize: '0.875rem', color: '#d97706' }}>
+            <svg style={{ width: '1.25rem', height: '1.25rem', color: '#d97706', flexShrink: 0, marginTop: '0.125rem' }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
             <span><strong>Physical evidence</strong> — Testing results, certifications, or site inspections</span>
@@ -628,9 +664,9 @@ function DividerTile({ humanCount, onContinue }: DividerTileProps) {
         </ul>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-6">
-        <p className="text-sm text-slate-600">
-          <svg className="w-4 h-4 inline mr-1 -mt-0.5 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
+      <div style={{ background: 'var(--cream)', border: '1px solid var(--beige)', padding: '1rem', marginBottom: '1.5rem' }}>
+        <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>
+          <svg style={{ width: '1rem', height: '1rem', display: 'inline', marginRight: '0.25rem', marginTop: '-0.125rem', color: 'var(--muted)' }} fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
           </svg>
           All human intervention items will be included in your <strong>Outstanding Issues Report</strong> with
@@ -640,10 +676,23 @@ function DividerTile({ humanCount, onContinue }: DividerTileProps) {
 
       <button
         onClick={onContinue}
-        className="w-full py-3 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600 transition-colors flex items-center justify-center gap-2"
+        style={{
+          width: '100%',
+          padding: '0.75rem',
+          background: '#d97706',
+          color: 'var(--white)',
+          fontWeight: '600',
+          transition: 'colors 0.2s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          border: 'none',
+          cursor: 'pointer'
+        }}
       >
         View Human Intervention Items
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
       </button>
@@ -661,10 +710,10 @@ interface AIActionableTileProps {
 
 function AIActionableTile({ criterion, decision, onAccept, onSkip }: AIActionableTileProps) {
   const statusStyles = {
-    meets: 'bg-green-100 text-green-700',
-    partial: 'bg-amber-100 text-amber-700',
-    does_not_meet: 'bg-red-100 text-red-700',
-    not_assessed: 'bg-slate-100 text-slate-700'
+    meets: { background: '#d1f4d1', color: '#2d6a2d' },
+    partial: { background: '#f5d699', color: '#d97706' },
+    does_not_meet: { background: '#f8d7da', color: '#dc3545' },
+    not_assessed: { background: 'var(--beige)', color: 'var(--muted)' }
   };
 
   const statusLabels = {
@@ -678,69 +727,87 @@ function AIActionableTile({ criterion, decision, onAccept, onSkip }: AIActionabl
   const isSkipped = decision.accepted === false;
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between' }}>
         <div>
-          <div className="flex items-center gap-3 mb-1">
-            <span className="text-sm font-mono text-slate-500">{criterion.matrix_id}</span>
-            <span className={`px-2 py-0.5 rounded text-xs font-bold ${statusStyles[criterion.status]}`}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+            <span style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--muted)' }}>{criterion.matrix_id}</span>
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: 'bold',
+              ...statusStyles[criterion.status]
+            }}>
               {statusLabels[criterion.status]}
             </span>
-            <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-              criterion.severity === 'high' ? 'bg-red-50 text-red-600' :
-              criterion.severity === 'medium' ? 'bg-amber-50 text-amber-600' :
-              'bg-blue-50 text-blue-600'
-            }`}>
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              background: criterion.severity === 'high' ? '#f8d7da' :
+                         criterion.severity === 'medium' ? '#fef3e0' :
+                         '#d6e5f5',
+              color: criterion.severity === 'high' ? '#dc3545' :
+                     criterion.severity === 'medium' ? '#d97706' :
+                     'var(--navy)'
+            }}>
               {criterion.severity.toUpperCase()}
             </span>
-            <span className="px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-600 border border-green-200">
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              background: '#f0f9f0',
+              color: '#2d6a2d',
+              border: '1px solid #d1f4d1'
+            }}>
               AI ACTIONABLE
             </span>
           </div>
-          <h3 className="text-xl font-semibold text-slate-900">{criterion.matrix_title}</h3>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--navy)' }}>{criterion.matrix_title}</h3>
         </div>
       </div>
 
       {/* Two-column evidence */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         {/* Submission quote */}
-        <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-          <h4 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">
+        <div style={{ background: 'var(--cream)', padding: '1rem', border: '1px solid var(--beige)' }}>
+          <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
             Your Submission
           </h4>
           {criterion.pack_evidence.found && criterion.pack_evidence.quote ? (
             <>
-              <blockquote className="text-sm text-slate-600 italic border-l-2 border-slate-300 pl-3">
+              <blockquote style={{ fontSize: '0.875rem', color: 'var(--muted)', fontStyle: 'italic', borderLeft: '2px solid var(--beige)', paddingLeft: '0.75rem' }}>
                 "{criterion.pack_evidence.quote}"
               </blockquote>
-              <p className="text-xs text-slate-500 mt-2">
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: '0.5rem' }}>
                 {criterion.pack_evidence.document}
                 {criterion.pack_evidence.page && `, Page ${criterion.pack_evidence.page}`}
               </p>
             </>
           ) : (
-            <p className="text-sm text-slate-500 italic">No relevant evidence found in submission</p>
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted)', fontStyle: 'italic' }}>No relevant evidence found in submission</p>
           )}
         </div>
 
         {/* Regulation quote */}
-        <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-          <h4 className="text-sm font-semibold text-blue-700 uppercase tracking-wide mb-2">
+        <div style={{ background: '#d6e5f5', padding: '1rem', border: '1px solid #b3d4f0' }}>
+          <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--navy)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
             Regulation Requirement
           </h4>
           {criterion.reference_evidence.found && criterion.reference_evidence.quote ? (
             <>
-              <blockquote className="text-sm text-blue-800 italic border-l-2 border-blue-300 pl-3">
+              <blockquote style={{ fontSize: '0.875rem', color: 'var(--navy)', fontStyle: 'italic', borderLeft: '2px solid var(--navy)', paddingLeft: '0.75rem' }}>
                 "{criterion.reference_evidence.quote}"
               </blockquote>
-              <p className="text-xs text-blue-600 mt-2">
+              <p style={{ fontSize: '0.75rem', color: 'var(--navy)', marginTop: '0.5rem' }}>
                 {criterion.reference_evidence.doc_title}
                 {criterion.reference_evidence.page && `, Page ${criterion.reference_evidence.page}`}
               </p>
             </>
           ) : (
-            <p className="text-sm text-blue-600 italic">
+            <p style={{ fontSize: '0.875rem', color: 'var(--navy)', fontStyle: 'italic' }}>
               {criterion.success_definition}
             </p>
           )}
@@ -749,14 +816,14 @@ function AIActionableTile({ criterion, decision, onAccept, onSkip }: AIActionabl
 
       {/* Gaps identified */}
       {criterion.gaps_identified.length > 0 && (
-        <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-          <h4 className="text-sm font-semibold text-red-700 uppercase tracking-wide mb-2">
+        <div style={{ background: '#f8d7da', padding: '1rem', border: '1px solid #f5c2c7' }}>
+          <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#dc3545', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
             Gaps Identified
           </h4>
-          <ul className="space-y-1">
+          <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             {criterion.gaps_identified.map((gap, i) => (
-              <li key={i} className="text-sm text-red-700 flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <li key={i} style={{ fontSize: '0.875rem', color: '#dc3545', display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
+                <svg style={{ width: '1rem', height: '1rem', marginTop: '0.125rem', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
                 {gap}
@@ -768,64 +835,114 @@ function AIActionableTile({ criterion, decision, onAccept, onSkip }: AIActionabl
 
       {/* Proposed change */}
       {criterion.proposed_change && (
-        <div className={`rounded-lg p-4 border-2 ${
-          isAccepted ? 'bg-green-50 border-green-300' :
-          isSkipped ? 'bg-slate-50 border-slate-200 opacity-60' :
-          'bg-green-50 border-green-300'
-        }`}>
-          <h4 className={`text-sm font-semibold uppercase tracking-wide mb-2 ${
-            isAccepted ? 'text-green-700' : isSkipped ? 'text-slate-500' : 'text-green-700'
-          }`}>
+        <div style={{
+          padding: '1rem',
+          border: isAccepted ? '2px solid #d1f4d1' :
+                 isSkipped ? '2px solid var(--beige)' :
+                 '2px solid #d1f4d1',
+          background: isAccepted ? '#f0f9f0' :
+                     isSkipped ? 'var(--cream)' :
+                     '#f0f9f0',
+          opacity: isSkipped ? 0.6 : 1
+        }}>
+          <h4 style={{
+            fontSize: '0.875rem',
+            fontWeight: '600',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            marginBottom: '0.5rem',
+            color: isAccepted ? '#2d6a2d' : isSkipped ? 'var(--muted)' : '#2d6a2d'
+          }}>
             Proposed Text Change
           </h4>
-          <div className={`text-sm p-3 rounded border ${
-            isAccepted ? 'bg-white border-green-200 text-green-800' :
-            isSkipped ? 'bg-white border-slate-200 text-slate-500' :
-            'bg-white border-green-200 text-slate-700'
-          }`}>
+          <div style={{
+            fontSize: '0.875rem',
+            padding: '0.75rem',
+            border: isAccepted ? '1px solid #d1f4d1' :
+                   isSkipped ? '1px solid var(--beige)' :
+                   '1px solid #d1f4d1',
+            background: 'var(--white)',
+            color: isAccepted ? '#2d6a2d' :
+                  isSkipped ? 'var(--muted)' :
+                  'var(--navy)'
+          }}>
             {criterion.proposed_change}
           </div>
 
           {criterion.proposed_change_source && (
-            <p className="text-xs text-blue-600 mt-2 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <p style={{
+              fontSize: '0.75rem',
+              color: 'var(--navy)',
+              marginTop: '0.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+              background: '#d6e5f5',
+              padding: '0.25rem 0.5rem'
+            }}>
+              <svg style={{ width: '1rem', height: '1rem' }} fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
               </svg>
-              <span className="font-medium">Source:</span> {criterion.proposed_change_source}
+              <span style={{ fontWeight: '500' }}>Source:</span> {criterion.proposed_change_source}
             </p>
           )}
 
-          <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <p style={{
+            fontSize: '0.75rem',
+            color: '#2d6a2d',
+            marginTop: '0.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.25rem'
+          }}>
+            <svg style={{ width: '1rem', height: '1rem' }} fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
             This text will be added to your amended document if accepted
           </p>
 
           {/* Accept/Skip buttons */}
-          <div className="flex items-center gap-3 mt-4">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1rem' }}>
             <button
               onClick={onAccept}
-              className={`flex-1 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
-                isAccepted
-                  ? 'bg-green-600 text-white'
-                  : 'bg-green-100 text-green-700 hover:bg-green-200'
-              }`}
+              style={{
+                flex: 1,
+                padding: '0.75rem',
+                fontWeight: '600',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                background: isAccepted ? '#2d6a2d' : '#d1f4d1',
+                color: isAccepted ? 'var(--white)' : '#2d6a2d',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
               {isAccepted ? 'Accepted' : 'Accept Change'}
             </button>
             <button
               onClick={onSkip}
-              className={`flex-1 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 ${
-                isSkipped
-                  ? 'bg-slate-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+              style={{
+                flex: 1,
+                padding: '0.75rem',
+                fontWeight: '600',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                background: isSkipped ? 'var(--muted)' : 'var(--beige)',
+                color: isSkipped ? 'var(--white)' : 'var(--muted)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
               </svg>
               {isSkipped ? 'Skipped — Added to Report' : 'Skip (Add to Report)'}
@@ -846,10 +963,10 @@ interface HumanInterventionTileProps {
 
 function HumanInterventionTile({ criterion, onContinue, isLast }: HumanInterventionTileProps) {
   const statusStyles = {
-    meets: 'bg-green-100 text-green-700',
-    partial: 'bg-amber-100 text-amber-700',
-    does_not_meet: 'bg-red-100 text-red-700',
-    not_assessed: 'bg-slate-100 text-slate-700'
+    meets: { background: '#d1f4d1', color: '#2d6a2d' },
+    partial: { background: '#f5d699', color: '#d97706' },
+    does_not_meet: { background: '#f8d7da', color: '#dc3545' },
+    not_assessed: { background: 'var(--beige)', color: 'var(--muted)' }
   };
 
   const statusLabels = {
@@ -860,69 +977,87 @@ function HumanInterventionTile({ criterion, onContinue, isLast }: HumanIntervent
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between' }}>
         <div>
-          <div className="flex items-center gap-3 mb-1">
-            <span className="text-sm font-mono text-slate-500">{criterion.matrix_id}</span>
-            <span className={`px-2 py-0.5 rounded text-xs font-bold ${statusStyles[criterion.status]}`}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+            <span style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--muted)' }}>{criterion.matrix_id}</span>
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: 'bold',
+              ...statusStyles[criterion.status]
+            }}>
               {statusLabels[criterion.status]}
             </span>
-            <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-              criterion.severity === 'high' ? 'bg-red-50 text-red-600' :
-              criterion.severity === 'medium' ? 'bg-amber-50 text-amber-600' :
-              'bg-blue-50 text-blue-600'
-            }`}>
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              background: criterion.severity === 'high' ? '#f8d7da' :
+                         criterion.severity === 'medium' ? '#fef3e0' :
+                         '#d6e5f5',
+              color: criterion.severity === 'high' ? '#dc3545' :
+                     criterion.severity === 'medium' ? '#d97706' :
+                     'var(--navy)'
+            }}>
               {criterion.severity.toUpperCase()}
             </span>
-            <span className="px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-600 border border-amber-200">
+            <span style={{
+              padding: '0.125rem 0.5rem',
+              fontSize: '0.75rem',
+              fontWeight: '500',
+              background: '#fef3e0',
+              color: '#d97706',
+              border: '1px solid #f5d699'
+            }}>
               HUMAN INTERVENTION
             </span>
           </div>
-          <h3 className="text-xl font-semibold text-slate-900">{criterion.matrix_title}</h3>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--navy)' }}>{criterion.matrix_title}</h3>
         </div>
       </div>
 
       {/* Two-column evidence */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         {/* Submission quote */}
-        <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-          <h4 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">
+        <div style={{ background: 'var(--cream)', padding: '1rem', border: '1px solid var(--beige)' }}>
+          <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
             Your Submission
           </h4>
           {criterion.pack_evidence.found && criterion.pack_evidence.quote ? (
             <>
-              <blockquote className="text-sm text-slate-600 italic border-l-2 border-slate-300 pl-3">
+              <blockquote style={{ fontSize: '0.875rem', color: 'var(--muted)', fontStyle: 'italic', borderLeft: '2px solid var(--beige)', paddingLeft: '0.75rem' }}>
                 "{criterion.pack_evidence.quote}"
               </blockquote>
-              <p className="text-xs text-slate-500 mt-2">
+              <p style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: '0.5rem' }}>
                 {criterion.pack_evidence.document}
                 {criterion.pack_evidence.page && `, Page ${criterion.pack_evidence.page}`}
               </p>
             </>
           ) : (
-            <p className="text-sm text-slate-500 italic">No relevant evidence found in submission</p>
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted)', fontStyle: 'italic' }}>No relevant evidence found in submission</p>
           )}
         </div>
 
         {/* Regulation quote */}
-        <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-          <h4 className="text-sm font-semibold text-blue-700 uppercase tracking-wide mb-2">
+        <div style={{ background: '#d6e5f5', padding: '1rem', border: '1px solid #b3d4f0' }}>
+          <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--navy)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
             Regulation Requirement
           </h4>
           {criterion.reference_evidence.found && criterion.reference_evidence.quote ? (
             <>
-              <blockquote className="text-sm text-blue-800 italic border-l-2 border-blue-300 pl-3">
+              <blockquote style={{ fontSize: '0.875rem', color: 'var(--navy)', fontStyle: 'italic', borderLeft: '2px solid var(--navy)', paddingLeft: '0.75rem' }}>
                 "{criterion.reference_evidence.quote}"
               </blockquote>
-              <p className="text-xs text-blue-600 mt-2">
+              <p style={{ fontSize: '0.75rem', color: 'var(--navy)', marginTop: '0.5rem' }}>
                 {criterion.reference_evidence.doc_title}
                 {criterion.reference_evidence.page && `, Page ${criterion.reference_evidence.page}`}
               </p>
             </>
           ) : (
-            <p className="text-sm text-blue-600 italic">
+            <p style={{ fontSize: '0.875rem', color: 'var(--navy)', fontStyle: 'italic' }}>
               {criterion.success_definition}
             </p>
           )}
@@ -931,14 +1066,14 @@ function HumanInterventionTile({ criterion, onContinue, isLast }: HumanIntervent
 
       {/* Gaps identified */}
       {criterion.gaps_identified.length > 0 && (
-        <div className="bg-red-50 rounded-lg p-4 border border-red-200">
-          <h4 className="text-sm font-semibold text-red-700 uppercase tracking-wide mb-2">
+        <div style={{ background: '#f8d7da', padding: '1rem', border: '1px solid #f5c2c7' }}>
+          <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#dc3545', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
             Gaps Identified
           </h4>
-          <ul className="space-y-1">
+          <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             {criterion.gaps_identified.map((gap, i) => (
-              <li key={i} className="text-sm text-red-700 flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <li key={i} style={{ fontSize: '0.875rem', color: '#dc3545', display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
+                <svg style={{ width: '1rem', height: '1rem', marginTop: '0.125rem', flexShrink: 0 }} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
                 {gap}
@@ -949,39 +1084,39 @@ function HumanInterventionTile({ criterion, onContinue, isLast }: HumanIntervent
       )}
 
       {/* Human Intervention Required Banner - NO Accept button */}
-      <div className="bg-amber-50 rounded-lg p-5 border-2 border-amber-400">
-        <div className="flex items-start gap-3 mb-4">
-          <div className="w-10 h-10 bg-amber-200 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg className="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div style={{ background: '#fef3e0', padding: '1.25rem', border: '2px solid #d97706' }}>
+        <div style={{ display: 'flex', alignItems: 'start', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div style={{ width: '2.5rem', height: '2.5rem', background: '#f5d699', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg style={{ width: '1.25rem', height: '1.25rem', color: '#d97706' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-1">
-              <h4 className="font-bold text-amber-800">Why This Requires Human Action</h4>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+              <h4 style={{ fontWeight: 'bold', color: '#d97706' }}>Why This Requires Human Action</h4>
             </div>
-            <p className="text-sm text-amber-700">
+            <p style={{ fontSize: '0.875rem', color: '#d97706' }}>
               This issue cannot be resolved by adding or modifying text alone. It requires one or more of the following:
             </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-4 border border-amber-200 mb-4">
-          <ul className="text-sm text-amber-700 space-y-2">
-            <li className="flex items-start gap-2">
-              <svg className="w-4 h-4 mt-0.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+        <div style={{ background: 'var(--white)', padding: '1rem', border: '1px solid #f5d699', marginBottom: '1rem' }}>
+          <ul style={{ fontSize: '0.875rem', color: '#d97706', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <li style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
+              <svg style={{ width: '1rem', height: '1rem', marginTop: '0.125rem', color: '#d97706' }} fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               <span>Creating a new document, drawing, or technical report</span>
             </li>
-            <li className="flex items-start gap-2">
-              <svg className="w-4 h-4 mt-0.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+            <li style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
+              <svg style={{ width: '1rem', height: '1rem', marginTop: '0.125rem', color: '#d97706' }} fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               <span>Expert analysis, engineering assessment, or professional judgement</span>
             </li>
-            <li className="flex items-start gap-2">
-              <svg className="w-4 h-4 mt-0.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+            <li style={{ display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
+              <svg style={{ width: '1rem', height: '1rem', marginTop: '0.125rem', color: '#d97706' }} fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               <span>Physical evidence, testing results, or certifications</span>
@@ -991,17 +1126,17 @@ function HumanInterventionTile({ criterion, onContinue, isLast }: HumanIntervent
 
         {/* Recommended actions if available */}
         {criterion.actions_required.length > 0 && (
-          <div className="bg-white rounded-lg p-4 border border-amber-200 mb-4">
-            <h5 className="text-sm font-semibold text-amber-800 mb-2">Recommended Actions:</h5>
-            <ul className="space-y-2">
+          <div style={{ background: 'var(--white)', padding: '1rem', border: '1px solid #f5d699', marginBottom: '1rem' }}>
+            <h5 style={{ fontSize: '0.875rem', fontWeight: '600', color: '#d97706', marginBottom: '0.5rem' }}>Recommended Actions:</h5>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {criterion.actions_required.slice(0, 3).map((action, i) => (
-                <li key={i} className="text-sm text-amber-700 flex items-start gap-2">
-                  <span className="flex-shrink-0 w-5 h-5 bg-amber-100 rounded-full flex items-center justify-center text-xs font-bold text-amber-600">
+                <li key={i} style={{ fontSize: '0.875rem', color: '#d97706', display: 'flex', alignItems: 'start', gap: '0.5rem' }}>
+                  <span style={{ flexShrink: 0, width: '1.25rem', height: '1.25rem', background: '#fef3e0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 'bold', color: '#d97706' }}>
                     {i + 1}
                   </span>
                   <div>
                     <span>{action.action}</span>
-                    <span className="text-xs text-amber-500 ml-2">({action.owner} • {action.effort})</span>
+                    <span style={{ fontSize: '0.75rem', color: '#d97706', marginLeft: '0.5rem' }}>({action.owner} • {action.effort})</span>
                   </div>
                 </li>
               ))}
@@ -1010,11 +1145,11 @@ function HumanInterventionTile({ criterion, onContinue, isLast }: HumanIntervent
         )}
 
         {/* Status indicator - NO accept/skip buttons */}
-        <div className="flex items-center gap-2 p-3 bg-amber-100 rounded-lg">
-          <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', background: '#f5d699' }}>
+          <svg style={{ width: '1.25rem', height: '1.25rem', color: '#d97706' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-sm font-medium text-amber-800">
+          <span style={{ fontSize: '0.875rem', fontWeight: '500', color: '#d97706' }}>
             This item will be included in your Outstanding Issues Report
           </span>
         </div>
@@ -1024,10 +1159,23 @@ function HumanInterventionTile({ criterion, onContinue, isLast }: HumanIntervent
       {!isLast && (
         <button
           onClick={onContinue}
-          className="w-full py-3 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors flex items-center justify-center gap-2"
+          style={{
+            width: '100%',
+            padding: '0.75rem',
+            background: 'var(--beige)',
+            color: 'var(--navy)',
+            fontWeight: '500',
+            transition: 'colors 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            border: 'none',
+            cursor: 'pointer'
+          }}
         >
           Continue to Next Item
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </button>
