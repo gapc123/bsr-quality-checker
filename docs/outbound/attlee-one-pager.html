@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attlee — Gateway 2 AI Compliance</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,300&family=Inter:wght@300;400;500&display=swap');
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  :root {
+    --navy:  #0F1923;
+    --cream: #F2F1EE;
+    --beige: #E8E4DC;
+    --gold:  #C4A882;
+    --muted: #8a8a82;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+    color: var(--navy);
+    background: white;
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 40mm 30mm 30mm 30mm;
+    position: relative;
+    background: white;
+  }
+
+  /* Header */
+  .header {
+    position: absolute;
+    top: 20mm;
+    left: 30mm;
+    right: 30mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8mm;
+    border-bottom: 1px solid var(--beige);
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+  }
+
+  .logo-area svg {
+    width: 12mm;
+    height: 12mm;
+  }
+
+  .wordmark {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16pt;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+  }
+
+  .tagline {
+    font-size: 8pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  /* Hero */
+  .hero {
+    margin-top: 20mm;
+    margin-bottom: 12mm;
+  }
+
+  .eyebrow {
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4mm;
+    font-weight: 400;
+  }
+
+  h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 200;
+    font-size: 28pt;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--navy);
+    margin-bottom: 5mm;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold);
+  }
+
+  .subtitle {
+    font-size: 11pt;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 85%;
+  }
+
+  /* Problem Section */
+  .problem-box {
+    background: var(--navy);
+    padding: 8mm;
+    margin-bottom: 10mm;
+  }
+
+  .problem-box h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 14pt;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 4mm;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6mm;
+    margin-top: 4mm;
+  }
+
+  .stat {
+    border-left: 2px solid var(--gold);
+    padding-left: 4mm;
+  }
+
+  .stat-num {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 200;
+    font-size: 24pt;
+    color: var(--cream);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 1mm;
+  }
+
+  .stat-num span {
+    color: var(--gold);
+    font-size: 12pt;
+  }
+
+  .stat-label {
+    font-size: 8pt;
+    color: rgba(242, 241, 238, 0.5);
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  /* Comparison Grid */
+  .comparison {
+    margin-bottom: 10mm;
+  }
+
+  .comparison h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 12pt;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin-bottom: 5mm;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+  }
+
+  .approach-card {
+    background: var(--cream);
+    padding: 5mm;
+    border: 1px solid var(--beige);
+    position: relative;
+  }
+
+  .approach-card.highlight {
+    background: var(--navy);
+    border-color: var(--gold);
+  }
+
+  .approach-label {
+    font-size: 7pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2mm;
+    font-weight: 500;
+  }
+
+  .approach-card.highlight .approach-label {
+    color: var(--gold);
+  }
+
+  .approach-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 11pt;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    margin-bottom: 3mm;
+  }
+
+  .approach-card.highlight .approach-title {
+    color: var(--cream);
+  }
+
+  .approach-items {
+    list-style: none;
+  }
+
+  .approach-items li {
+    font-size: 8pt;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 2mm;
+    padding-left: 4mm;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .approach-items li:before {
+    content: "×";
+    position: absolute;
+    left: 0;
+    color: #a04040;
+    font-weight: 500;
+  }
+
+  .approach-items li.check:before {
+    content: "✓";
+    color: #2d6a2d;
+  }
+
+  .approach-card.highlight .approach-items li {
+    color: rgba(242, 241, 238, 0.6);
+  }
+
+  .approach-card.highlight .approach-items li.check {
+    color: rgba(242, 241, 238, 0.9);
+  }
+
+  /* How It Works */
+  .how-it-works {
+    margin-bottom: 8mm;
+  }
+
+  .how-it-works h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 12pt;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin-bottom: 4mm;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2mm;
+  }
+
+  .step {
+    background: var(--beige);
+    padding: 4mm;
+  }
+
+  .step-num {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 200;
+    font-size: 9pt;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 2mm;
+  }
+
+  .step-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    margin-bottom: 2mm;
+  }
+
+  .step-desc {
+    font-size: 8pt;
+    color: var(--muted);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* CTA Box */
+  .cta-box {
+    background: var(--beige);
+    padding: 6mm;
+    text-align: center;
+    border: 1px solid var(--gold);
+  }
+
+  .cta-box h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 13pt;
+    letter-spacing: -0.02em;
+    color: var(--navy);
+    margin-bottom: 2mm;
+  }
+
+  .cta-box p {
+    font-size: 9pt;
+    color: var(--muted);
+    margin-bottom: 3mm;
+    font-weight: 300;
+  }
+
+  .cta-contact {
+    font-size: 10pt;
+    color: var(--gold);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 15mm;
+    left: 30mm;
+    right: 30mm;
+    text-align: center;
+    font-size: 7pt;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-area">
+      <svg viewBox="0 0 72 72" fill="none">
+        <polyline points="4,48 36,6 68,48" stroke="#0F1923" stroke-width="6.5" fill="none" stroke-linejoin="miter" stroke-linecap="square"/>
+        <line x1="0" y1="59" x2="72" y2="59" stroke="#C4A882" stroke-width="5" stroke-linecap="square"/>
+        <line x1="0" y1="69" x2="72" y2="69" stroke="#C4A882" stroke-width="5" stroke-linecap="square"/>
+      </svg>
+      <span class="wordmark">attlee</span>
+    </div>
+    <div class="tagline">AI-Accelerated Expert Consultancy</div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <p class="eyebrow">AI-Accelerated Expert Review for Gateway 2</p>
+    <h1>Expert certainty in <em>1 week,</em> not 4 weeks.</h1>
+    <p class="subtitle">
+      Three out of four Gateway 2 applications are rejected first time. Traditional consultant reviews take 2–4 weeks and miss cross-document gaps.
+      Attlee's AI reviews your full pack in 5 minutes, then our experts verify every finding — expert-signed reports in 1 week.
+    </p>
+  </div>
+
+  <!-- Problem Box -->
+  <div class="problem-box">
+    <h2>The stakes are too high for guesswork — or insecure AI.</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">75<span>%</span></div>
+        <div class="stat-label">of first-time submissions rejected by BSR</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2–4<span>wk</span></div>
+        <div class="stat-label">traditional consultant review time (Attlee: 1 week with expert sign-off)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">£50<span>k+</span></div>
+        <div class="stat-label">typical cost per rejection cycle (consultancy fees, programme delay)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison">
+    <h2>Why existing approaches don't work — and why Attlee does.</h2>
+    <div class="comparison-grid">
+
+      <!-- Traditional Consultants -->
+      <div class="approach-card">
+        <div class="approach-label">Traditional Approach</div>
+        <div class="approach-title">Manual Consultant Review</div>
+        <ul class="approach-items">
+          <li>2–4 week turnaround minimum</li>
+          <li>£15k–£30k per review cycle</li>
+          <li>Subjective, varies by reviewer</li>
+          <li>No traceability to BSR rules</li>
+          <li>Cross-doc inconsistencies missed</li>
+          <li class="check">Expert human judgment</li>
+        </ul>
+      </div>
+
+      <!-- Simple AI -->
+      <div class="approach-card">
+        <div class="approach-label">Uploading to ChatGPT/Claude</div>
+        <div class="approach-title">Consumer AI Tools</div>
+        <ul class="approach-items">
+          <li>Your docs stored on OpenAI/Anthropic servers</li>
+          <li>No data security guarantees</li>
+          <li>Hallucinates BSR requirements</li>
+          <li>Can't handle 500+ page packs reliably</li>
+          <li>No expert verification</li>
+          <li>Legally indefensible output</li>
+        </ul>
+      </div>
+
+      <!-- Attlee -->
+      <div class="approach-card highlight">
+        <div class="approach-label">Attlee Service</div>
+        <div class="approach-title">Secure AI + Expert Review</div>
+        <ul class="approach-items">
+          <li class="check">1 week expert-verified turnaround</li>
+          <li class="check">AI reviews full pack in 5 minutes</li>
+          <li class="check">Experts verify every AI finding</li>
+          <li class="check">Every gap traced to BSR source</li>
+          <li class="check">SOC 2 compliant, UK data residency</li>
+          <li class="check">Defensible, expert-signed report</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="how-it-works">
+    <h2>From upload to expert-verified report in 1 week.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01 — UPLOAD</div>
+        <div class="step-title">Secure submission</div>
+        <div class="step-desc">Fire strategy, structural reports, MEP specs, drawings. SOC 2 compliant platform. UK-hosted.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02 — AI ANALYSIS</div>
+        <div class="step-title">5-minute pack review</div>
+        <div class="step-desc">Our AI runs 55+ BSR checks. Cross-doc consistency verified. Every gap flagged with source references.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03 — EXPERT REVIEW</div>
+        <div class="step-title">Human verification</div>
+        <div class="step-desc">Expert consultants review all AI findings. Validate gaps. Draft amendments. Sign off final report.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04 — DELIVERY</div>
+        <div class="step-title">1-week turnaround</div>
+        <div class="step-desc">Expert-signed readiness report. Actionable amendments. Full BSR traceability. Legally defensible.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>Limited capacity — working with select clients while we scale expert review.</h3>
+    <p>We're currently onboarding 2–3 projects per month. Book a consultation to discuss your next submission.</p>
+    <div class="cta-contact">george@attlee.ai</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    attlee.ai — Getting Britain Building — © 2026 Attlee AI Ltd
+  </div>
+
+</div>
+
+</body>
+</html>

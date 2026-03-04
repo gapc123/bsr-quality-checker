@@ -43,7 +43,7 @@ export default function Landing() {
       {/* Hero */}
       <div style={{
         padding: '160px 48px 100px',
-        maxWidth: '1100px',
+        maxWidth: '1600px',
         margin: '0 auto'
       }}>
         <p className="eyebrow" style={{ marginBottom: '28px' }}>
@@ -124,7 +124,7 @@ export default function Landing() {
       {/* Score Visual */}
       <div style={{ background: 'var(--beige)', padding: '100px 48px' }}>
         <div style={{
-          maxWidth: '1100px',
+          maxWidth: '1600px',
           margin: '0 auto',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
@@ -153,7 +153,7 @@ export default function Landing() {
 
       {/* Who It's For */}
       <div id="who" style={{ background: 'var(--navy)', padding: '100px 48px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
           <p className="section-eyebrow">Who it's for</p>
           <h2 className="section-title" style={{ color: 'var(--cream)', marginBottom: '56px' }}>
             Built for everyone with skin in the game.
@@ -186,7 +186,7 @@ export default function Landing() {
       <div style={{
         padding: '120px 48px',
         textAlign: 'center',
-        maxWidth: '700px',
+        maxWidth: '900px',
         margin: '0 auto'
       }}>
         <h2 style={{
