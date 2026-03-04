@@ -108,8 +108,15 @@ export default function Upload() {
 
   if (!pack) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '256px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          border: '2px solid var(--navy)',
+          borderTop: '2px solid transparent',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
       </div>
     );
   }
@@ -117,112 +124,112 @@ export default function Upload() {
   return (
     <div>
       {/* Breadcrumb Header */}
-      <div className="mb-6">
-        <nav className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-          <Link to="/" className="hover:text-slate-700">Submission Packs</Link>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <div style={{ marginBottom: '24px' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--muted)', marginBottom: '8px' }}>
+          <Link to="/" style={{ color: 'var(--muted)' }}>Submission Packs</Link>
+          <svg style={{ width: '16px', height: '16px' }} fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
-          <Link to={`/packs/${packId}`} className="hover:text-slate-700">{pack.name}</Link>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <Link to={`/packs/${packId}`} style={{ color: 'var(--muted)' }}>{pack.name}</Link>
+          <svg style={{ width: '16px', height: '16px' }} fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
-          <span className="text-slate-900 font-medium">Upload Documents</span>
+          <span style={{ color: 'var(--navy)', fontWeight: 500 }}>Upload Documents</span>
         </nav>
-        <h1 className="text-2xl font-bold text-slate-900">Upload Submission Documents</h1>
-        <p className="text-slate-600 mt-1">Add your Gateway 2 documents for quality review</p>
+        <h1 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '28px', color: 'var(--navy)' }}>Upload Submission Documents</h1>
+        <p style={{ color: 'var(--muted)', marginTop: '4px' }}>Add your Gateway 2 documents for quality review</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
         {/* Upload Section */}
-        <div className="lg:col-span-2 space-y-6">
+        <div style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Document Upload */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ width: '40px', height: '40px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg style={{ width: '20px', height: '20px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-slate-900">Documents</h2>
-                <p className="text-sm text-slate-500">Upload PDF documents from your submission pack</p>
+                <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)' }}>Documents</h2>
+                <p style={{ fontSize: '14px', color: 'var(--muted)' }}>Upload PDF documents from your submission pack</p>
               </div>
             </div>
             <FileUpload files={files} onFilesSelected={setFiles} />
           </div>
 
           {/* Project Information */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ width: '40px', height: '40px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg style={{ width: '20px', height: '20px', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-slate-900">Project Information</h2>
-                <p className="text-sm text-slate-500">Optional — helps provide context for the analysis</p>
+                <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)' }}>Project Information</h2>
+                <p style={{ fontSize: '14px', color: 'var(--muted)' }}>Optional — helps provide context for the analysis</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '6px' }}>
                   Project Name
                 </label>
                 <input
                   type="text"
                   value={metadata.projectName}
                   onChange={(e) => setMetadata({ ...metadata, projectName: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none' }}
                   placeholder="e.g., Riverside Tower"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '6px' }}>
                   Borough / Local Authority
                 </label>
                 <input
                   type="text"
                   value={metadata.borough}
                   onChange={(e) => setMetadata({ ...metadata, borough: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none' }}
                   placeholder="e.g., Tower Hamlets"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '6px' }}>
                   Building Type
                 </label>
                 <input
                   type="text"
                   value={metadata.buildingType}
                   onChange={(e) => setMetadata({ ...metadata, buildingType: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none' }}
                   placeholder="e.g., Residential"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '6px' }}>
                   Building Height
                 </label>
                 <input
                   type="text"
                   value={metadata.height}
                   onChange={(e) => setMetadata({ ...metadata, height: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none' }}
                   placeholder="e.g., 45m"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '6px' }}>
                   Number of Storeys
                 </label>
                 <input
                   type="text"
                   value={metadata.storeys}
                   onChange={(e) => setMetadata({ ...metadata, storeys: e.target.value })}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none' }}
                   placeholder="e.g., 14"
                 />
               </div>
@@ -230,26 +237,41 @@ export default function Upload() {
           </div>
 
           {/* Upload Button */}
-          <div className="flex items-center justify-between">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Link
               to={`/packs/${packId}`}
-              className="text-slate-600 hover:text-slate-800 font-medium text-sm"
+              style={{ color: 'var(--muted)', fontWeight: 500, fontSize: '14px', textDecoration: 'none' }}
             >
               Cancel
             </Link>
             <button
               onClick={handleUpload}
               disabled={files.length === 0 || uploading}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+              className="btn-primary"
+              style={{
+                padding: '10px 24px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontWeight: 500,
+                opacity: (files.length === 0 || uploading) ? 0.5 : 1
+              }}
             >
               {uploading ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  <div style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid var(--white)',
+                    borderTop: '2px solid transparent',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }}></div>
                   Uploading...
                 </>
               ) : (
                 <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
                   Upload {files.length > 0 ? `${files.length} Document${files.length !== 1 ? 's' : ''}` : 'Documents'}
@@ -260,53 +282,53 @@ export default function Upload() {
         </div>
 
         {/* Sidebar */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-8">
-            <div className="flex items-center gap-2 mb-4">
-              <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ gridColumn: 'span 1' }}>
+          <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '24px', position: 'sticky', top: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+              <svg style={{ width: '20px', height: '20px', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              <h2 className="text-lg font-semibold text-slate-900">Recommended Documents</h2>
+              <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)' }}>Recommended Documents</h2>
             </div>
-            <p className="text-sm text-slate-500 mb-4">
+            <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '16px' }}>
               Include these for the most comprehensive quality review:
             </p>
-            <ul className="space-y-3">
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px', listStyle: 'none', padding: 0, margin: 0 }}>
               {RECOMMENDED_DOCS.map((doc, index) => (
-                <li key={index} className="flex gap-3">
-                  <div className="flex-shrink-0 mt-0.5">
+                <li key={index} style={{ display: 'flex', gap: '12px' }}>
+                  <div style={{ flexShrink: 0, marginTop: '2px' }}>
                     {doc.required ? (
-                      <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                        <svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                      <div style={{ width: '20px', height: '20px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <svg style={{ width: '12px', height: '12px', color: 'var(--navy)' }} fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                       </div>
                     ) : (
-                      <div className="w-5 h-5 bg-slate-100 rounded-full flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 bg-slate-400 rounded-full"></div>
+                      <div style={{ width: '20px', height: '20px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ width: '6px', height: '6px', background: 'var(--muted)' }}></div>
                       </div>
                     )}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-900">
+                    <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--navy)' }}>
                       {doc.name}
-                      {doc.required && <span className="text-blue-600 text-xs ml-1.5">Key</span>}
+                      {doc.required && <span style={{ color: 'var(--navy)', fontSize: '12px', marginLeft: '6px' }}>Key</span>}
                     </p>
-                    <p className="text-xs text-slate-500">{doc.benefit}</p>
+                    <p style={{ fontSize: '12px', color: 'var(--muted)' }}>{doc.benefit}</p>
                   </div>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
-              <h3 className="text-sm font-medium text-slate-900 mb-1">Supported formats</h3>
-              <p className="text-xs text-slate-500">
+            <div style={{ marginTop: '24px', padding: '16px', background: 'var(--beige)', border: '1px solid var(--beige)' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '4px' }}>Supported formats</h3>
+              <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
                 PDF documents only. Maximum 50MB per file.
               </p>
             </div>
 
             {/* Security info */}
-            <div className="mt-4">
+            <div style={{ marginTop: '16px' }}>
               <SecurityPanel variant="compact" />
             </div>
           </div>

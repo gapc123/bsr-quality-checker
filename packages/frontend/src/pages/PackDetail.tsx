@@ -155,22 +155,29 @@ export default function PackDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '256px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          border: '2px solid var(--navy)',
+          borderTop: '2px solid transparent',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
       </div>
     );
   }
 
   if (!pack) {
     return (
-      <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-slate-200">
-        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div style={{ textAlign: 'center', padding: '48px', background: 'var(--white)', border: '1px solid var(--beige)' }}>
+        <div style={{ width: '64px', height: '64px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+          <svg style={{ width: '32px', height: '32px', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <p className="text-slate-500 mb-4">Submission pack not found</p>
-        <Link to="/" className="text-blue-600 hover:text-blue-700 font-medium">
+        <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>Submission pack not found</p>
+        <Link to="/" style={{ color: 'var(--navy)', fontWeight: 500, textDecoration: 'none' }}>
           Back to Submission Packs
         </Link>
       </div>
@@ -180,55 +187,57 @@ export default function PackDetail() {
   return (
     <div>
       {/* Breadcrumb Header */}
-      <div className="mb-6">
-        <nav className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-          <Link to="/" className="hover:text-slate-700">Submission Packs</Link>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <div style={{ marginBottom: '24px' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--muted)', marginBottom: '8px' }}>
+          <Link to="/" style={{ color: 'var(--muted)', textDecoration: 'none' }}>Submission Packs</Link>
+          <svg style={{ width: '16px', height: '16px' }} fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
-          <span className="text-slate-900 font-medium">{pack.name}</span>
+          <span style={{ color: 'var(--navy)', fontWeight: 500 }}>{pack.name}</span>
         </nav>
-        <div className="flex items-start justify-between">
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <div>
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-slate-900">{pack.name}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+              <h1 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '28px', color: 'var(--navy)' }}>{pack.name}</h1>
               <PackStatusBadge status={pack.status} size="md" />
             </div>
-            <div className="flex items-center gap-3 mt-1 text-slate-600">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px', color: 'var(--muted)' }}>
               {pack.client && (
-                <Link to={`/clients/${pack.client.id}`} className="hover:text-blue-600 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Link to={`/clients/${pack.client.id}`} style={{ color: 'var(--navy)', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                  <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                   {pack.client.name}
                 </Link>
               )}
               {pack.servicePackage && (
-                <span className="inline-block bg-purple-100 text-purple-700 text-xs font-medium px-2 py-0.5 rounded">
+                <span style={{ display: 'inline-block', background: 'var(--beige)', color: 'var(--navy)', fontSize: '12px', fontWeight: 500, padding: '2px 8px' }}>
                   {SERVICE_PACKAGE_LABELS[pack.servicePackage] || pack.servicePackage}
                 </span>
               )}
-              <span className="text-slate-400">|</span>
+              <span style={{ color: 'var(--beige)' }}>|</span>
               <span>
                 Created {new Date(pack.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
               onClick={() => setShowStatusModal(true)}
-              className="inline-flex items-center gap-2 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors"
+              className="btn-ghost"
+              style={{ padding: '8px 16px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Change Status
             </button>
             <Link
               to={`/packs/${packId}/upload`}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+              className="btn-primary"
+              style={{ padding: '8px 16px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
               </svg>
               Upload New Version
@@ -238,12 +247,12 @@ export default function PackDetail() {
       </div>
 
       {/* AI Summary */}
-      <div className="mb-6">
+      <div style={{ marginBottom: '24px' }}>
         <AISummary entityType="pack" entityId={pack.id} entityName={pack.name} />
       </div>
 
       {/* Timeline */}
-      <div className="mb-6">
+      <div style={{ marginBottom: '24px' }}>
         <PackTimeline
           packId={pack.id}
           packCreatedAt={pack.createdAt}
@@ -254,36 +263,37 @@ export default function PackDetail() {
       </div>
 
       {/* Requirements & Task Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginBottom: '24px' }}>
         {/* Requirements */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '24px' }}>
+          <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '16px', color: 'var(--navy)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <svg style={{ width: '20px', height: '20px', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             Initial Requirements
           </h3>
           {pack.requirements ? (
-            <p className="text-slate-600 whitespace-pre-wrap">{pack.requirements}</p>
+            <p style={{ color: 'var(--muted)', whiteSpace: 'pre-wrap' }}>{pack.requirements}</p>
           ) : (
-            <p className="text-slate-400 italic">No requirements captured yet</p>
+            <p style={{ color: 'var(--muted)', fontStyle: 'italic' }}>No requirements captured yet</p>
           )}
         </div>
 
         {/* Task Checklist */}
         {pack.tasks && pack.tasks.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h3 className="font-semibold text-slate-900 mb-3">Task Checklist</h3>
-            <div className="text-center py-6">
-              <svg className="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '24px' }}>
+            <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '16px', color: 'var(--navy)', marginBottom: '12px' }}>Task Checklist</h3>
+            <div style={{ textAlign: 'center', padding: '24px' }}>
+              <svg style={{ width: '48px', height: '48px', color: 'var(--beige)', margin: '0 auto 12px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
-              <p className="text-slate-500 mb-4">No tasks yet. Create tasks manually or apply a template.</p>
+              <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>No tasks yet. Create tasks manually or apply a template.</p>
               <button
                 onClick={() => setShowApplyTemplateModal(true)}
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+                className="btn-primary"
+                style={{ padding: '8px 16px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Apply Task Template
@@ -297,75 +307,76 @@ export default function PackDetail() {
 
       {/* Versions List */}
       {pack.versions.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 text-center py-12 px-6">
-          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', textAlign: 'center', padding: '48px 24px' }}>
+          <div style={{ width: '64px', height: '64px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+            <svg style={{ width: '32px', height: '32px', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-slate-900 mb-2">No documents uploaded yet</h3>
-          <p className="text-slate-500 mb-6 max-w-sm mx-auto">
+          <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)', marginBottom: '8px' }}>No documents uploaded yet</h3>
+          <p style={{ color: 'var(--muted)', marginBottom: '24px', maxWidth: '384px', margin: '0 auto 24px' }}>
             Upload your Gateway 2 submission documents to begin quality analysis.
           </p>
           <Link
             to={`/packs/${packId}/upload`}
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm"
+            className="btn-primary"
+            style={{ padding: '8px 16px', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
             Upload Documents
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {pack.versions.map((version) => (
             <div
               key={version.id}
-              className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+              style={{ background: 'var(--white)', border: '1px solid var(--beige)', overflow: 'hidden' }}
             >
-              <div className="p-6">
-                <div className="flex items-start justify-between">
+              <div style={{ padding: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                   <div>
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-semibold text-slate-900">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)' }}>
                         Version {version.versionNumber}
                       </h3>
                       {version._count.issues > 0 && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full">
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '2px 8px', background: 'var(--beige)', color: 'var(--navy)', fontSize: '12px', fontWeight: 500 }}>
+                          <svg style={{ width: '12px', height: '12px' }} fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                           Analysed
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
-                      <span className="flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px', fontSize: '14px', color: 'var(--muted)' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         {version.documents.length} document{version.documents.length !== 1 ? 's' : ''}
                       </span>
-                      <span className="text-slate-300">|</span>
+                      <span style={{ color: 'var(--beige)' }}>|</span>
                       <span>
                         Uploaded {new Date(version.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                       {version.projectName && (
                         <>
-                          <span className="text-slate-300">|</span>
+                          <span style={{ color: 'var(--beige)' }}>|</span>
                           <span>{version.projectName}</span>
                         </>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {version._count.issues > 0 ? (
                       <Link
                         to={`/packs/${packId}/versions/${version.id}/results`}
-                        className="inline-flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-900 text-sm font-medium transition-colors"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--navy)', color: 'var(--white)', padding: '8px 16px', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         View Report
@@ -373,9 +384,10 @@ export default function PackDetail() {
                     ) : (
                       <Link
                         to={`/packs/${packId}/versions/${version.id}/results`}
-                        className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors"
+                        className="btn-primary"
+                        style={{ padding: '8px 16px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                         </svg>
                         Run Quality Check
@@ -385,30 +397,30 @@ export default function PackDetail() {
                 </div>
 
                 {/* Documents list */}
-                <div className="mt-5 pt-5 border-t border-slate-200">
-                  <h4 className="text-sm font-medium text-slate-700 mb-3">
+                <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--beige)' }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '12px' }}>
                     Uploaded Documents
                   </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
                     {version.documents.map((doc) => (
                       <div
                         key={doc.id}
-                        className="flex items-center gap-3 text-sm bg-slate-50 rounded-lg px-3 py-2.5"
+                        style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px', background: 'var(--beige)', padding: '10px 12px' }}
                       >
-                        <div className="w-8 h-8 bg-red-100 rounded flex items-center justify-center flex-shrink-0">
-                          <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                        <div style={{ width: '32px', height: '32px', background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <svg style={{ width: '16px', height: '16px', color: 'var(--navy)' }} fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
                           </svg>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-slate-900 truncate">{doc.filename}</p>
-                          <div className="flex items-center gap-2 mt-0.5">
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ fontWeight: 500, color: 'var(--navy)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.filename}</p>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
                             {doc.docType && (
-                              <span className="text-xs text-slate-500">{doc.docType}</span>
+                              <span style={{ fontSize: '12px', color: 'var(--muted)' }}>{doc.docType}</span>
                             )}
                             {doc._count.chunks === 0 && (
-                              <span className="inline-flex items-center gap-1 text-xs text-amber-700">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: 'var(--muted)' }}>
+                                <svg style={{ width: '12px', height: '12px' }} fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                                 </svg>
                                 Scanned only
@@ -438,41 +450,45 @@ export default function PackDetail() {
 
       {/* Apply Template Modal */}
       {showApplyTemplateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full">
-            <div className="border-b border-slate-200 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-slate-900">Apply Task Template</h2>
+        <div style={{ position: 'fixed', inset: '0', background: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50, padding: '16px' }}>
+          <div style={{ background: 'var(--white)', maxWidth: '512px', width: '100%' }}>
+            <div style={{ borderBottom: '1px solid var(--beige)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '20px', color: 'var(--navy)' }}>Apply Task Template</h2>
               <button
                 onClick={() => setShowApplyTemplateModal(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                style={{ color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '24px', height: '24px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div className="p-6">
-              <p className="text-sm text-slate-600 mb-4">
+            <div style={{ padding: '24px' }}>
+              <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '16px' }}>
                 Choose a template to automatically create tasks with due dates and dependencies.
               </p>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Select Template <span className="text-red-500">*</span>
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--navy)', marginBottom: '8px' }}>
+                  Select Template <span style={{ color: 'var(--navy)' }}>*</span>
                 </label>
                 {templates.length === 0 ? (
-                  <p className="text-sm text-slate-500">Loading templates...</p>
+                  <p style={{ fontSize: '14px', color: 'var(--muted)' }}>Loading templates...</p>
                 ) : (
-                  <div className="space-y-2">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {templates.map((template) => (
                       <label
                         key={template.id}
-                        className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
-                          selectedTemplate === template.packageType
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-slate-200 hover:border-slate-300'
-                        }`}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '12px',
+                          padding: '16px',
+                          border: selectedTemplate === template.packageType ? '2px solid var(--navy)' : '2px solid var(--beige)',
+                          background: selectedTemplate === template.packageType ? 'var(--cream)' : 'var(--white)',
+                          cursor: 'pointer'
+                        }}
                       >
                         <input
                           type="radio"
@@ -480,12 +496,12 @@ export default function PackDetail() {
                           value={template.packageType}
                           checked={selectedTemplate === template.packageType}
                           onChange={(e) => setSelectedTemplate(e.target.value)}
-                          className="mt-1"
+                          style={{ marginTop: '4px' }}
                         />
-                        <div className="flex-1">
-                          <div className="font-medium text-slate-900">{template.displayName}</div>
-                          <div className="text-sm text-slate-600 mt-1">{template.description}</div>
-                          <div className="text-xs text-slate-500 mt-2">
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontWeight: 500, color: 'var(--navy)' }}>{template.displayName}</div>
+                          <div style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>{template.description}</div>
+                          <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px' }}>
                             {template.taskTemplates.length} tasks • ~{template.estimatedDuration} days
                           </div>
                         </div>
@@ -496,8 +512,8 @@ export default function PackDetail() {
               </div>
 
               {selectedTemplate && (
-                <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <p className="text-sm text-blue-800">
+                <div style={{ marginTop: '16px', background: 'var(--cream)', border: '1px solid var(--beige)', padding: '12px' }}>
+                  <p style={{ fontSize: '14px', color: 'var(--navy)' }}>
                     <strong>Note:</strong> Tasks will be created with due dates calculated from today,
                     and dependencies will be automatically set up.
                   </p>
@@ -505,17 +521,19 @@ export default function PackDetail() {
               )}
             </div>
 
-            <div className="bg-slate-50 border-t border-slate-200 px-6 py-4 flex items-center justify-end gap-3">
+            <div style={{ background: 'var(--beige)', borderTop: '1px solid var(--beige)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px' }}>
               <button
                 onClick={() => setShowApplyTemplateModal(false)}
-                className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium"
+                className="btn-ghost"
+                style={{ padding: '8px 16px', fontWeight: 500 }}
               >
                 Cancel
               </button>
               <button
                 onClick={applyTemplate}
                 disabled={!selectedTemplate || applyingTemplate}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary"
+                style={{ padding: '8px 16px', fontWeight: 500, opacity: (!selectedTemplate || applyingTemplate) ? 0.5 : 1 }}
               >
                 {applyingTemplate ? 'Applying...' : 'Apply Template'}
               </button>

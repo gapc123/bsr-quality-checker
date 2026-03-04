@@ -109,17 +109,24 @@ export default function ClientDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '256px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          border: '2px solid var(--navy)',
+          borderTop: '2px solid transparent',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
       </div>
     );
   }
 
   if (!client) {
     return (
-      <div className="text-center py-12">
-        <h2 className="text-xl font-semibold text-slate-900">Client not found</h2>
-        <Link to="/clients" className="text-blue-600 hover:text-blue-700 mt-2 inline-block">
+      <div style={{ textAlign: 'center', padding: '48px' }}>
+        <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '20px', color: 'var(--navy)' }}>Client not found</h2>
+        <Link to="/clients" style={{ color: 'var(--navy)', marginTop: '8px', display: 'inline-block', textDecoration: 'none' }}>
           Back to clients
         </Link>
       </div>
@@ -129,9 +136,9 @@ export default function ClientDetail() {
   return (
     <div>
       {/* Breadcrumb */}
-      <div className="mb-4">
-        <Link to="/clients" className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div style={{ marginBottom: '16px' }}>
+        <Link to="/clients" style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+          <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           Back to Clients
@@ -139,21 +146,21 @@ export default function ClientDetail() {
       </div>
 
       {/* Client Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-2xl">
+      <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '24px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+            <div style={{ width: '64px', height: '64px', background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--white)', fontWeight: 600, fontSize: '24px' }}>
               {client.name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">{client.name}</h1>
+              <h1 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '28px', color: 'var(--navy)' }}>{client.name}</h1>
               {client.company && (
-                <p className="text-slate-600">{client.company}</p>
+                <p style={{ color: 'var(--muted)' }}>{client.company}</p>
               )}
-              <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px', fontSize: '14px', color: 'var(--muted)' }}>
                 {client.contactEmail && (
-                  <a href={`mailto:${client.contactEmail}`} className="hover:text-blue-600 flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <a href={`mailto:${client.contactEmail}`} style={{ color: 'var(--navy)', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                    <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     {client.contactEmail}
@@ -163,37 +170,38 @@ export default function ClientDetail() {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm font-medium">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ background: 'var(--beige)', color: 'var(--navy)', padding: '4px 12px', fontSize: '14px', fontWeight: 500 }}>
               {client._count.packs} pack{client._count.packs !== 1 ? 's' : ''}
             </span>
           </div>
         </div>
         {client.notes && (
-          <div className="mt-4 p-3 bg-slate-50 rounded-lg">
-            <p className="text-sm text-slate-600">{client.notes}</p>
+          <div style={{ marginTop: '16px', padding: '12px', background: 'var(--beige)' }}>
+            <p style={{ fontSize: '14px', color: 'var(--muted)' }}>{client.notes}</p>
           </div>
         )}
       </div>
 
       {/* AI Summary */}
-      <div className="mb-6">
+      <div style={{ marginBottom: '24px' }}>
         <AISummary entityType="client" entityId={client.id} entityName={client.name} />
       </div>
 
       {/* Client Packs */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-        <div className="px-6 py-4 border-b border-slate-200">
-          <div className="flex items-center justify-between">
+      <div style={{ background: 'var(--white)', border: '1px solid var(--beige)' }}>
+        <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--beige)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">Submission Packs</h2>
-              <p className="text-sm text-slate-500">All packs for this client</p>
+              <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)' }}>Submission Packs</h2>
+              <p style={{ fontSize: '14px', color: 'var(--muted)' }}>All packs for this client</p>
             </div>
             <button
               onClick={() => setShowCreatePackModal(true)}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+              className="btn-primary"
+              style={{ padding: '8px 16px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               New Pack
@@ -201,76 +209,78 @@ export default function ClientDetail() {
           </div>
         </div>
 
-        <div className="p-6">
+        <div style={{ padding: '24px' }}>
           {client.packs.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div style={{ textAlign: 'center', padding: '48px' }}>
+              <div style={{ width: '64px', height: '64px', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                <svg style={{ width: '32px', height: '32px', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No packs yet</h3>
-              <p className="text-slate-500 mb-6 max-w-sm mx-auto">
+              <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)', marginBottom: '8px' }}>No packs yet</h3>
+              <p style={{ color: 'var(--muted)', marginBottom: '24px', maxWidth: '384px', margin: '0 auto 24px' }}>
                 Create the first submission pack for {client.name}.
               </p>
               <button
                 onClick={() => setShowCreatePackModal(true)}
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm"
+                className="btn-primary"
+                style={{ padding: '8px 16px', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
                 Create First Pack
               </button>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {client.packs.map((pack) => (
                 <div
                   key={pack.id}
-                  className="flex items-center justify-between p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--beige)' }}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 group-hover:border-blue-200 group-hover:text-blue-500 transition-colors">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{ width: '40px', height: '40px', background: 'var(--white)', border: '1px solid var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
+                      <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                       </svg>
                     </div>
                     <div>
                       <Link
                         to={`/packs/${pack.id}`}
-                        className="font-medium text-slate-900 hover:text-blue-600 transition-colors"
+                        style={{ fontWeight: 500, color: 'var(--navy)', textDecoration: 'none' }}
                       >
                         {pack.name}
                       </Link>
-                      <div className="flex items-center gap-3 text-sm text-slate-500">
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '14px', color: 'var(--muted)' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                           {pack._count.versions} version{pack._count.versions !== 1 ? 's' : ''}
                         </span>
-                        <span className="text-slate-300">|</span>
+                        <span style={{ color: 'var(--beige)' }}>|</span>
                         <span>Created {new Date(pack.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Link
                       to={`/packs/${pack.id}/upload`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-blue-300 hover:text-blue-600 transition-colors"
+                      className="btn-ghost"
+                      style={{ padding: '6px 12px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                       </svg>
                       Upload
                     </Link>
                     <button
                       onClick={() => deletePack(pack.id)}
-                      className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                      style={{ padding: '6px', color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer' }}
                       title="Delete pack"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     </button>
@@ -284,20 +294,20 @@ export default function ClientDetail() {
 
       {/* Create Pack Modal */}
       {showCreatePackModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">Create Pack for {client.name}</h2>
+        <div style={{ position: 'fixed', inset: '0', background: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
+          <div style={{ background: 'var(--white)', padding: '24px', width: '100%', maxWidth: '448px', margin: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)' }}>Create Pack for {client.name}</h2>
               <button
                 onClick={() => setShowCreatePackModal(false)}
-                className="text-slate-400 hover:text-slate-600"
+                style={{ color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <p className="text-sm text-slate-500 mb-4">
+            <p style={{ fontSize: '14px', color: 'var(--muted)', marginBottom: '16px' }}>
               Enter the project name and submission type for this pack.
             </p>
             <input
@@ -305,21 +315,23 @@ export default function ClientDetail() {
               value={newPackName}
               onChange={(e) => setNewPackName(e.target.value)}
               placeholder="e.g., Riverside Tower - Gateway 2"
-              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none' }}
               autoFocus
               onKeyDown={(e) => e.key === 'Enter' && createPack()}
             />
-            <div className="flex justify-end gap-3 mt-6">
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
               <button
                 onClick={() => setShowCreatePackModal(false)}
-                className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium"
+                className="btn-ghost"
+                style={{ padding: '8px 16px', fontWeight: 500 }}
               >
                 Cancel
               </button>
               <button
                 onClick={createPack}
                 disabled={creatingPack || !newPackName.trim()}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+                className="btn-primary"
+                style={{ padding: '8px 16px', fontWeight: 500, opacity: (creatingPack || !newPackName.trim()) ? 0.5 : 1 }}
               >
                 {creatingPack ? 'Creating...' : 'Create Pack'}
               </button>

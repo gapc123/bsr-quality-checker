@@ -118,8 +118,15 @@ export default function ClientsList() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '16rem' }}>
+        <div style={{
+          width: '2rem',
+          height: '2rem',
+          border: '2px solid var(--navy)',
+          borderTopColor: 'transparent',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
       </div>
     );
   }
@@ -127,22 +134,22 @@ export default function ClientsList() {
   return (
     <div>
       {/* Header */}
-      <div className="relative rounded-xl overflow-hidden shadow-lg mb-6">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900" />
-        <div className="relative p-8">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="inline-block bg-amber-500 text-amber-950 text-xs font-bold px-3 py-1 rounded-full tracking-wider">
+      <div style={{ position: 'relative', overflow: 'hidden', marginBottom: '2rem' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--navy)' }} />
+        <div style={{ position: 'relative', padding: '3rem 2rem' }}>
+          <div style={{ maxWidth: '1100px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+              <span className="eyebrow" style={{ color: 'var(--gold)' }}>
                 INTERNAL TOOL
               </span>
-              <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full tracking-wider border border-emerald-500/30">
+              <span className="eyebrow" style={{ color: 'var(--cream)', opacity: 0.8 }}>
                 CLIENT MANAGEMENT
               </span>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 style={{ fontFamily: '"DM Sans", sans-serif', fontSize: 'clamp(2rem, 4vw, 2.5rem)', fontWeight: 200, color: 'var(--cream)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
               Client Directory
             </h1>
-            <p className="text-lg text-slate-300">
+            <p style={{ fontSize: '1.125rem', color: 'var(--cream)', opacity: 0.9 }}>
               Manage your clients and their associated submission packs. Track projects by client for better organization.
             </p>
           </div>
@@ -150,38 +157,39 @@ export default function ClientsList() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-          <div className="text-2xl font-bold text-slate-900">{clients.length}</div>
-          <div className="text-sm text-slate-500">Total Clients</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+        <div style={{ background: 'var(--white)', padding: '1.5rem', border: '1px solid var(--beige)' }}>
+          <div style={{ fontSize: '2rem', fontWeight: 300, fontFamily: '"DM Sans", sans-serif', color: 'var(--navy)' }}>{clients.length}</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>Total Clients</div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-          <div className="text-2xl font-bold text-slate-900">
+        <div style={{ background: 'var(--white)', padding: '1.5rem', border: '1px solid var(--beige)' }}>
+          <div style={{ fontSize: '2rem', fontWeight: 300, fontFamily: '"DM Sans", sans-serif', color: 'var(--navy)' }}>
             {Array.isArray(clients) ? clients.reduce((sum, c) => sum + c._count.packs, 0) : 0}
           </div>
-          <div className="text-sm text-slate-500">Total Packs</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>Total Packs</div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-          <div className="text-2xl font-bold text-slate-900">
+        <div style={{ background: 'var(--white)', padding: '1.5rem', border: '1px solid var(--beige)' }}>
+          <div style={{ fontSize: '2rem', fontWeight: 300, fontFamily: '"DM Sans", sans-serif', color: 'var(--navy)' }}>
             {Array.isArray(clients) ? clients.filter(c => c._count.packs > 0).length : 0}
           </div>
-          <div className="text-sm text-slate-500">Active Clients</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>Active Clients</div>
         </div>
       </div>
 
       {/* Client List */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-        <div className="px-6 py-4 border-b border-slate-200">
-          <div className="flex items-center justify-between">
+      <div style={{ background: 'var(--white)', border: '1px solid var(--beige)' }}>
+        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--beige)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">All Clients</h2>
-              <p className="text-sm text-slate-500">Click a client to view their packs</p>
+              <h2 style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '1.25rem', fontWeight: 300, color: 'var(--navy)', marginBottom: '0.25rem' }}>All Clients</h2>
+              <p style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>Click a client to view their packs</p>
             </div>
             <button
               onClick={openCreateModal}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+              className="btn-primary"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '1rem', height: '1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               Add Client
@@ -189,55 +197,56 @@ export default function ClientsList() {
           </div>
         </div>
 
-        <div className="p-6">
+        <div style={{ padding: '2rem' }}>
           {clients.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+              <div style={{ width: '4rem', height: '4rem', background: 'var(--beige)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <svg style={{ width: '2rem', height: '2rem', color: 'var(--muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No clients yet</h3>
-              <p className="text-slate-500 mb-6 max-w-sm mx-auto">
+              <h3 style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '1.25rem', fontWeight: 300, color: 'var(--navy)', marginBottom: '0.5rem' }}>No clients yet</h3>
+              <p style={{ color: 'var(--muted)', marginBottom: '2rem', maxWidth: '28rem', marginLeft: 'auto', marginRight: 'auto' }}>
                 Add your first client to organize submission packs by customer.
               </p>
               <button
                 onClick={openCreateModal}
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-sm"
+                className="btn-primary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '1rem', height: '1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
                 Add First Client
               </button>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {clients.map((client) => (
                 <div
                   key={client.id}
-                  className="flex items-center justify-between p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', background: 'var(--cream)', border: '1px solid var(--beige)', transition: 'all 0.2s' }}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    <div style={{ width: '3rem', height: '3rem', background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--cream)', fontWeight: 'bold', fontSize: '1.125rem', fontFamily: '"DM Sans", sans-serif' }}>
                       {client.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <Link
                         to={`/clients/${client.id}`}
-                        className="font-medium text-slate-900 hover:text-blue-600 transition-colors"
+                        style={{ fontWeight: 400, color: 'var(--navy)', textDecoration: 'none', transition: 'color 0.2s' }}
                       >
                         {client.name}
                       </Link>
-                      <div className="flex items-center gap-3 text-sm text-slate-500">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.875rem', color: 'var(--muted)', marginTop: '0.25rem' }}>
                         {client.company && (
                           <>
                             <span>{client.company}</span>
-                            <span className="text-slate-300">|</span>
+                            <span style={{ color: 'var(--beige)' }}>|</span>
                           </>
                         )}
-                        <span className="flex items-center gap-1">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <svg style={{ width: '1rem', height: '1rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                           </svg>
                           {client._count.packs} pack{client._count.packs !== 1 ? 's' : ''}
@@ -245,28 +254,28 @@ export default function ClientsList() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Link
                       to={`/clients/${client.id}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-blue-300 hover:text-blue-600 transition-colors"
+                      className="btn-ghost"
                     >
                       View Packs
                     </Link>
                     <button
                       onClick={() => openEditModal(client)}
-                      className="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded transition-colors"
+                      style={{ padding: '0.5rem', color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'color 0.2s' }}
                       title="Edit client"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </button>
                     <button
                       onClick={() => deleteClient(client.id)}
-                      className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                      style={{ padding: '0.5rem', color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'color 0.2s' }}
                       title="Delete client"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     </button>
@@ -280,39 +289,39 @@ export default function ClientsList() {
 
       {/* Create/Edit Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-slate-900">
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 25, 35, 0.7)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
+          <div style={{ background: 'var(--white)', padding: '2rem', width: '100%', maxWidth: '28rem', margin: '0 1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+              <h2 style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '1.25rem', fontWeight: 300, color: 'var(--navy)' }}>
                 {editingClient ? 'Edit Client' : 'Add New Client'}
               </h2>
               <button
                 onClick={closeModal}
-                className="text-slate-400 hover:text-slate-600"
+                style={{ color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer', transition: 'color 0.2s' }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg style={{ width: '1.25rem', height: '1.25rem' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Client Name <span className="text-red-500">*</span>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 400, color: 'var(--navy)', marginBottom: '0.5rem' }}>
+                  Client Name <span style={{ color: '#a04040' }}>*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g., Acme Development Ltd"
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '0.75rem 1rem', fontFamily: 'Inter, sans-serif', fontSize: '1rem' }}
                   autoFocus
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 400, color: 'var(--navy)', marginBottom: '0.5rem' }}>
                   Company
                 </label>
                 <input
@@ -320,12 +329,12 @@ export default function ClientsList() {
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   placeholder="e.g., Acme Holdings"
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '0.75rem 1rem', fontFamily: 'Inter, sans-serif', fontSize: '1rem' }}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 400, color: 'var(--navy)', marginBottom: '0.5rem' }}>
                   Contact Email
                 </label>
                 <input
@@ -333,12 +342,12 @@ export default function ClientsList() {
                   value={formData.contactEmail}
                   onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                   placeholder="e.g., contact@acme.com"
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '0.75rem 1rem', fontFamily: 'Inter, sans-serif', fontSize: '1rem' }}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 400, color: 'var(--navy)', marginBottom: '0.5rem' }}>
                   Notes
                 </label>
                 <textarea
@@ -346,22 +355,23 @@ export default function ClientsList() {
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="Any relevant notes about this client..."
                   rows={3}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '0.75rem 1rem', fontFamily: 'Inter, sans-serif', fontSize: '1rem', resize: 'none' }}
                 />
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '2rem' }}>
               <button
                 onClick={closeModal}
-                className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium"
+                className="btn-ghost"
               >
                 Cancel
               </button>
               <button
                 onClick={saveClient}
                 disabled={saving || !formData.name.trim()}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+                className="btn-primary"
+                style={{ opacity: (saving || !formData.name.trim()) ? 0.5 : 1, cursor: (saving || !formData.name.trim()) ? 'not-allowed' : 'pointer' }}
               >
                 {saving ? 'Saving...' : editingClient ? 'Save Changes' : 'Add Client'}
               </button>
