@@ -2,14 +2,46 @@ import { SignIn } from '@clerk/clerk-react';
 
 export default function SignInPage() {
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center">
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'var(--cream)',
+      padding: '48px 24px'
+    }}>
       {/* Team portal badge */}
-      <div className="mb-6 text-center">
-        <span className="inline-block bg-slate-900 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-3 tracking-wider">
+      <div style={{
+        marginBottom: '32px',
+        textAlign: 'center'
+      }}>
+        <span className="eyebrow" style={{
+          display: 'inline-block',
+          background: 'var(--navy)',
+          color: 'var(--cream)',
+          padding: '6px 16px',
+          marginBottom: '16px'
+        }}>
           TEAM PORTAL
         </span>
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">attlee.ai Internal Tools</h1>
-        <p className="text-slate-500 text-sm">Sign in to access client assessment tools</p>
+        <h1 style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontSize: '32px',
+          fontWeight: 200,
+          color: 'var(--navy)',
+          marginBottom: '8px',
+          letterSpacing: '-0.02em'
+        }}>
+          attlee.ai Internal Tools
+        </h1>
+        <p style={{
+          color: 'var(--muted)',
+          fontSize: '15px',
+          fontWeight: 300
+        }}>
+          Sign in to access client assessment tools
+        </p>
       </div>
 
       <SignIn
@@ -30,10 +62,22 @@ export default function SignInPage() {
         }}
       />
 
-      <p className="mt-6 text-xs text-slate-400 max-w-sm text-center">
+      <p style={{
+        marginTop: '32px',
+        fontSize: '13px',
+        color: 'var(--muted)',
+        maxWidth: '500px',
+        textAlign: 'center',
+        lineHeight: 1.6
+      }}>
         This portal is for attlee.ai team members only.
         If you're a client looking to engage our services, please visit our{' '}
-        <a href="/" className="text-blue-600 hover:underline">homepage</a>.
+        <a href="/" style={{
+          color: 'var(--gold)',
+          textDecoration: 'underline'
+        }}>
+          homepage
+        </a>.
       </p>
     </div>
   );
