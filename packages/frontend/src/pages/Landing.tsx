@@ -99,9 +99,29 @@ export default function Landing() {
       <div style={{ padding: '100px 5%', background: 'var(--white)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <p className="section-eyebrow" style={{ textAlign: 'center' }}>Why Deterministic Rules Matter</p>
-          <h2 className="section-title" style={{ textAlign: 'center', margin: '0 auto 48px', maxWidth: '900px' }}>
-            AI is probabilistic. Building regulations are not.
+          <p style={{
+            textAlign: 'center',
+            fontSize: '17px',
+            color: 'var(--muted)',
+            marginBottom: '20px',
+            fontWeight: 300
+          }}>
+            Speed of AI, certainty of deterministic rules
+          </p>
+          <h2 className="section-title" style={{ textAlign: 'center', margin: '0 auto 16px', maxWidth: '900px' }}>
+            You can't be <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>probably</em> compliant.
           </h2>
+          <p style={{
+            textAlign: 'center',
+            fontSize: '20px',
+            color: 'var(--navy)',
+            marginBottom: '48px',
+            fontWeight: 300,
+            maxWidth: '800px',
+            margin: '0 auto 48px'
+          }}>
+            AI is probabilistic. Building regulations are not.
+          </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '48px', marginBottom: '64px' }}>
             <div style={{ padding: '40px', background: '#FDF0EE', border: '2px solid #a04040' }}>
