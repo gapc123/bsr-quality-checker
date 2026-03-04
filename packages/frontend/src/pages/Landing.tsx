@@ -700,6 +700,242 @@ export default function Landing() {
         </div>
       </div>
 
+      {/* Service Options */}
+      <div style={{ padding: '100px 5%', background: 'var(--beige)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <p className="section-eyebrow" style={{ textAlign: 'center' }}>How to work with us</p>
+          <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '64px' }}>
+            Flexible service options to fit your needs
+          </h2>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '32px'
+          }}>
+            {/* Gap Analysis Only */}
+            <div style={{
+              background: 'var(--white)',
+              padding: '40px',
+              border: '1px solid var(--beige)',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <div style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '14px',
+                letterSpacing: '0.15em',
+                color: 'var(--gold)',
+                marginBottom: '16px',
+                fontWeight: 400,
+                textTransform: 'uppercase'
+              }}>
+                One-time
+              </div>
+              <h3 style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '28px',
+                fontWeight: 200,
+                color: 'var(--navy)',
+                marginBottom: '16px',
+                letterSpacing: '-0.02em'
+              }}>
+                Gap Analysis
+              </h3>
+              <p style={{
+                fontSize: '15px',
+                color: 'var(--muted)',
+                lineHeight: 1.7,
+                marginBottom: '24px',
+                flex: 1
+              }}>
+                Just need to know where you stand? Get a comprehensive gap analysis identifying all BSR compliance issues without the full amendment service.
+              </p>
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '0 0 32px 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>55+ BSR checks</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Expert-verified findings</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Gap report only</span>
+                </li>
+              </ul>
+              <a href="mailto:george@attlee.ai?subject=Gap Analysis Enquiry" className="btn-primary" style={{ width: '100%', textAlign: 'center' }}>
+                Request quote
+              </a>
+            </div>
+
+            {/* Full Service */}
+            <div style={{
+              background: 'var(--navy)',
+              padding: '40px',
+              border: '2px solid var(--gold)',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-12px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: 'var(--gold)',
+                color: 'var(--navy)',
+                padding: '4px 16px',
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase'
+              }}>
+                Most Popular
+              </div>
+              <div style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '14px',
+                letterSpacing: '0.15em',
+                color: 'var(--gold)',
+                marginBottom: '16px',
+                fontWeight: 400,
+                textTransform: 'uppercase'
+              }}>
+                One-time
+              </div>
+              <h3 style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '28px',
+                fontWeight: 200,
+                color: 'var(--cream)',
+                marginBottom: '16px',
+                letterSpacing: '-0.02em'
+              }}>
+                Full Service
+              </h3>
+              <p style={{
+                fontSize: '15px',
+                color: 'rgba(242,241,238,0.7)',
+                lineHeight: 1.7,
+                marginBottom: '24px',
+                flex: 1
+              }}>
+                Complete end-to-end service: gap analysis, expert-drafted amendments, and signed report. Everything you need for a confident BSR submission.
+              </p>
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '0 0 32px 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>55+ BSR checks</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Expert-verified findings</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Drafted amendments</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Expert-signed report</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>1-week turnaround</span>
+                </li>
+              </ul>
+              <a href="mailto:george@attlee.ai?subject=Full Service Enquiry" className="btn-primary" style={{ width: '100%', textAlign: 'center', background: 'var(--gold)', color: 'var(--navy)' }}>
+                Request quote
+              </a>
+            </div>
+
+            {/* Monthly Retainer */}
+            <div style={{
+              background: 'var(--white)',
+              padding: '40px',
+              border: '1px solid var(--beige)',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <div style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '14px',
+                letterSpacing: '0.15em',
+                color: 'var(--gold)',
+                marginBottom: '16px',
+                fontWeight: 400,
+                textTransform: 'uppercase'
+              }}>
+                Ongoing
+              </div>
+              <h3 style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontSize: '28px',
+                fontWeight: 200,
+                color: 'var(--navy)',
+                marginBottom: '16px',
+                letterSpacing: '-0.02em'
+              }}>
+                Monthly Retainer
+              </h3>
+              <p style={{
+                fontSize: '15px',
+                color: 'var(--muted)',
+                lineHeight: 1.7,
+                marginBottom: '24px',
+                flex: 1
+              }}>
+                Fixed monthly fee includes up to 2 reports per month. Perfect for consultancies and developers with ongoing pipeline. Pay-per-report for additional reviews.
+              </p>
+              <ul style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '0 0 32px 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Up to 2 reports/month</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Full service per report</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Pay for extras on top</span>
+                </li>
+                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                  <span>Priority turnaround</span>
+                </li>
+              </ul>
+              <a href="mailto:george@attlee.ai?subject=Retainer Enquiry" className="btn-primary" style={{ width: '100%', textAlign: 'center' }}>
+                Request quote
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* CTA */}
       <div style={{
         padding: '120px 5%',
