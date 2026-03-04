@@ -42,12 +42,12 @@ export default function Landing() {
 
       {/* Hero */}
       <div style={{
-        padding: '160px 48px 100px',
-        maxWidth: '1600px',
+        padding: '160px 5% 100px',
+        maxWidth: '100%',
         margin: '0 auto'
       }}>
         <p className="eyebrow" style={{ marginBottom: '28px' }}>
-          BSR Gateway 2 · AI Compliance Checker
+          Expert Gateway 2 Review · AI-Accelerated
         </p>
         <h1 style={{
           fontFamily: 'DM Sans, sans-serif',
@@ -56,20 +56,20 @@ export default function Landing() {
           lineHeight: 1.05,
           letterSpacing: '-0.03em',
           color: 'var(--navy)',
-          maxWidth: '820px',
+          maxWidth: '1100px',
           marginBottom: '32px'
         }}>
-          Know if your submission<br />will pass <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--gold)' }}>before</em> you submit.
+          Expert consultants review your pack<br />in <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--gold)' }}>1 week,</em> not 4 weeks.
         </h1>
         <p style={{
           fontSize: '17px',
           fontWeight: 300,
           color: 'var(--muted)',
-          maxWidth: '480px',
+          maxWidth: '650px',
           lineHeight: 1.7,
           marginBottom: '48px'
         }}>
-          75% of Gateway 2 applications are rejected first time. Attlee checks your full pack against every BSR requirement in 5 minutes — and tells you exactly what to fix.
+          75% of Gateway 2 applications are rejected first time. Our expert consultants use AI to review your full pack in 5 minutes, then verify every finding by hand. You get an expert-signed report in 1 week — not generic AI output, but professional consultancy with AI acceleration.
         </p>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           <a href="mailto:george@attlee.ai" className="btn-primary">Request early access</a>
@@ -92,9 +92,9 @@ export default function Landing() {
       </div>
 
       {/* How It Works */}
-      <div id="how" className="section">
+      <div id="how" style={{ padding: '100px 5%' }}>
         <p className="section-eyebrow">How it works</p>
-        <h2 className="section-title">From document pack to submission-ready in minutes.</h2>
+        <h2 className="section-title">Expert review in 1 week — AI does the heavy lifting in 5 minutes, our consultants verify everything.</h2>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -102,30 +102,28 @@ export default function Landing() {
         }}>
           <StepCard
             num="01"
-            title="Upload your pack"
-            description="Drop in your full Gateway 2 submission — fire strategy, structural reports, MEP specs, drawings. Any format."
+            title="You submit your pack"
+            description="Secure upload of your full Gateway 2 submission — fire strategy, structural reports, MEP specs, drawings. We handle it from here."
             variant="white"
           />
           <StepCard
             num="02"
-            title="Get your readiness score"
-            description="Attlee runs 55+ proprietary checks across every document in under 5 minutes. Gaps, inconsistencies, missing requirements — all flagged."
+            title="AI + human review"
+            description="Our AI reviews all 55+ BSR checks in 5 minutes. Then our expert consultants verify every finding, draft amendments, and sign off the report."
             variant="navy"
           />
           <StepCard
             num="03"
-            title="Fix and submit"
-            description="Review AI-drafted amendments for each gap. Accept the ones that work, brief your consultants on the rest. Download a submission-ready pack."
+            title="1-week delivery"
+            description="You receive an expert-signed report with actionable amendments. Not AI output — professional consultancy accelerated by AI."
             variant="white"
           />
         </div>
       </div>
 
       {/* Score Visual */}
-      <div style={{ background: 'var(--beige)', padding: '100px 48px' }}>
+      <div style={{ background: 'var(--beige)', padding: '100px 5%' }}>
         <div style={{
-          maxWidth: '1600px',
-          margin: '0 auto',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '80px',
@@ -133,8 +131,8 @@ export default function Landing() {
         }}>
           <ScoreCard />
           <div>
-            <p className="section-eyebrow">The output</p>
-            <h2 className="section-title">A clear picture of exactly where you stand.</h2>
+            <p className="section-eyebrow">Expert-verified output</p>
+            <h2 className="section-title">Professional consultant reports — delivered in 1 week, not 4.</h2>
             <p style={{
               fontSize: '15px',
               color: 'var(--muted)',
@@ -142,52 +140,46 @@ export default function Landing() {
               fontWeight: 300,
               marginBottom: '32px'
             }}>
-              Every check mapped to a specific BSR requirement. Every gap with a proposed fix. Every decision traceable to source — so you can submit with confidence, not crossed fingers.
+              AI identifies every BSR requirement gap in 5 minutes. Our expert consultants verify each finding by hand, draft professional amendments, and sign off the final report. Every gap traced to BSR source. Every decision validated by an expert. This isn't ChatGPT output — it's professional consultancy, accelerated by AI.
             </p>
-            <SignedIn>
-              <Link to="/assess" className="btn-primary">Try it now</Link>
-            </SignedIn>
+            <a href="mailto:george@attlee.ai" className="btn-primary">Request consultation</a>
           </div>
         </div>
       </div>
 
       {/* Who It's For */}
-      <div id="who" style={{ background: 'var(--navy)', padding: '100px 48px' }}>
-        <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
-          <p className="section-eyebrow">Who it's for</p>
-          <h2 className="section-title" style={{ color: 'var(--cream)', marginBottom: '56px' }}>
-            Built for everyone with skin in the game.
-          </h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '2px'
-          }}>
-            <WhoCard
-              icon={<DesignerIcon />}
-              title="Principal Designers"
-              description="Validate your submission before it goes in. Protect your professional reputation and your client's programme."
-            />
-            <WhoCard
-              icon={<HousingIcon />}
-              title="Housing Associations"
-              description="Know your submission is strong before weeks of BSR review. Protect your programme, your funding, your pipeline."
-            />
-            <WhoCard
-              icon={<ConsultantIcon />}
-              title="Fire Consultants"
-              description="Run a cross-document sense check before your strategy goes into the pack. Catch the inconsistencies before the BSR does."
-            />
-          </div>
+      <div id="who" style={{ background: 'var(--navy)', padding: '100px 5%' }}>
+        <p className="section-eyebrow">Who it's for</p>
+        <h2 className="section-title" style={{ color: 'var(--cream)', marginBottom: '56px' }}>
+          Built for everyone with skin in the game.
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '2px'
+        }}>
+          <WhoCard
+            icon={<DesignerIcon />}
+            title="Principal Designers"
+            description="Validate your submission before it goes in. Protect your professional reputation and your client's programme."
+          />
+          <WhoCard
+            icon={<HousingIcon />}
+            title="Housing Associations"
+            description="Know your submission is strong before weeks of BSR review. Protect your programme, your funding, your pipeline."
+          />
+          <WhoCard
+            icon={<ConsultantIcon />}
+            title="Fire Consultants"
+            description="Run a cross-document sense check before your strategy goes into the pack. Catch the inconsistencies before the BSR does."
+          />
         </div>
       </div>
 
       {/* CTA */}
       <div style={{
-        padding: '120px 48px',
-        textAlign: 'center',
-        maxWidth: '900px',
-        margin: '0 auto'
+        padding: '120px 5%',
+        textAlign: 'center'
       }}>
         <h2 style={{
           fontFamily: 'DM Sans, sans-serif',

@@ -88,8 +88,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Sections */
 .section {
-  padding: 100px 48px;
-  max-width: 1600px;
+  padding: 100px 5%;
   margin: 0 auto;
 }
 
@@ -108,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(28px, 4vw, 48px);
   letter-spacing: -0.02em;
   line-height: 1.1;
-  max-width: 700px;
+  max-width: 1100px;
   margin-bottom: 24px;
 }
 

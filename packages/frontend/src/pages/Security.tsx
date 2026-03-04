@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import AttleeLogo from '../components/AttleeLogo';
 
 type AccordionSection = 'claude' | 'soc2' | 'data-retention' | 'infrastructure' | 'access' | null;
 
@@ -11,155 +12,143 @@ export default function Security() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Minimal Header */}
-      <header className="sticky top-0 z-50 border-b border-slate-800/50 bg-slate-950/95 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                attlee.ai
-              </span>
+    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+      {/* Header */}
+      <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        borderBottom: '1px solid var(--beige)',
+        background: 'var(--cream)'
+      }}>
+        <div style={{ padding: '16px 5%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <AttleeLogo size={32} showWordmark={true} color="#0F1923" />
             </Link>
 
-            <nav className="hidden md:flex items-center gap-6 text-sm">
-              <Link to="/problem" className="text-slate-400 hover:text-white transition-colors">
-                Problem
-              </Link>
-              <Link to="/system" className="text-slate-400 hover:text-white transition-colors">
-                System
-              </Link>
-              <Link to="/approach" className="text-slate-400 hover:text-white transition-colors">
-                Approach
-              </Link>
-              <Link to="/security" className="text-white font-medium">
-                Security
-              </Link>
+            <nav style={{ display: 'flex', alignItems: 'center', gap: '36px' }}>
+              <Link to="/" style={navLinkStyle}>Home</Link>
+              <Link to="/security" style={{...navLinkStyle, opacity: 1, fontWeight: 400}}>Security</Link>
+              <a href="mailto:george@attlee.ai" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '10px 20px', fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Contact us</a>
             </nav>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative py-20 bg-gradient-to-b from-slate-950 to-slate-900">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
-          <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight">
-            Enterprise-Grade Security.
-            <br />
-            <span className="text-slate-400">Your documents never train AI models.</span>
-          </h1>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-            Your sensitive building safety documents are protected.
-          </p>
-        </div>
+      <section style={{
+        padding: '120px 5% 80px',
+        background: 'var(--cream)',
+        textAlign: 'center'
+      }}>
+        <p className="eyebrow" style={{ marginBottom: '28px' }}>Data Security & Compliance</p>
+        <h1 style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontWeight: 200,
+          fontSize: 'clamp(38px, 5vw, 68px)',
+          lineHeight: 1.1,
+          letterSpacing: '-0.03em',
+          color: 'var(--navy)',
+          margin: '0 auto 32px',
+          maxWidth: '1000px'
+        }}>
+          Enterprise-grade security.<br />
+          Your documents <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--gold)' }}>never</em> train AI models.
+        </h1>
+        <p style={{
+          fontSize: '17px',
+          fontWeight: 300,
+          color: 'var(--muted)',
+          maxWidth: '700px',
+          lineHeight: 1.7,
+          margin: '0 auto'
+        }}>
+          Your sensitive building safety documents are protected by SOC 2 Type II certified infrastructure. We use Claude API from Anthropic — your data is never used for model training.
+        </p>
       </section>
 
       {/* Trust Badges */}
-      <section className="relative py-12 bg-slate-800/50 border-y border-slate-700">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-white font-semibold">SOC 2 Type II</p>
-                <p className="text-xs text-slate-400">Independently audited</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-white font-semibold">ISO 27001</p>
-                <p className="text-xs text-slate-400">Certified security</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-white font-semibold">HTTPS / TLS 1.3</p>
-                <p className="text-xs text-slate-400">Encrypted transit</p>
-              </div>
-            </div>
-          </div>
+      <section style={{
+        padding: '60px 5%',
+        background: 'var(--navy)',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+        borderBottom: '1px solid rgba(255,255,255,0.1)'
+      }}>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '60px'
+        }}>
+          <TrustBadge
+            title="SOC 2 Type II"
+            subtitle="Independently audited"
+            icon="🛡️"
+          />
+          <TrustBadge
+            title="ISO 27001"
+            subtitle="Certified security"
+            icon="🔒"
+          />
+          <TrustBadge
+            title="UK Data Residency"
+            subtitle="GDPR compliant"
+            icon="📍"
+          />
+          <TrustBadge
+            title="Zero Training"
+            subtitle="Never used for AI models"
+            icon="🚫"
+          />
         </div>
       </section>
 
-      {/* Main Security Content */}
-      <section className="relative py-20 bg-slate-900">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              How We Protect Your Data
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full" />
-          </div>
+      {/* Main Content */}
+      <section style={{ padding: '100px 5%', background: 'var(--beige)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'DM Sans, sans-serif',
+            fontWeight: 200,
+            fontSize: 'clamp(28px, 4vw, 42px)',
+            letterSpacing: '-0.02em',
+            color: 'var(--navy)',
+            marginBottom: '64px',
+            textAlign: 'center'
+          }}>
+            How we protect your data
+          </h2>
 
-          <div className="space-y-3">
-            {/* Claude API Security */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <Accordion
-              id="claude"
-              title="We Use Claude API (Anthropic) for AI Processing"
-              icon="🔒"
+              title="We use Claude API (Anthropic) — not ChatGPT"
               isExpanded={expandedSection === 'claude'}
               onToggle={() => toggleSection('claude')}
             >
-              <div className="space-y-4">
-                <p className="font-medium text-slate-200">
+              <div style={{ padding: '32px', background: 'var(--white)' }}>
+                <p style={{ fontSize: '15px', color: 'var(--navy)', fontWeight: 400, marginBottom: '24px' }}>
                   Why Claude API specifically protects your data:
                 </p>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">✓</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">SOC 2 Type II and ISO 27001 certified</strong> – independently audited security controls
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">✓</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">Your data is NEVER used to train AI models</strong> – API/commercial customers are excluded from training
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">✓</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">30-day data retention</strong> – processed data is automatically deleted
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">✓</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">No third-party data sharing</strong> – Anthropic never sells customer data
-                    </span>
-                  </li>
-                </ul>
-
-                <div className="mt-6 bg-blue-600/10 border border-blue-600/30 rounded-lg p-4">
-                  <p className="text-sm text-blue-300">
-                    <strong>Learn more:</strong>{' '}
+                <div style={{ display: 'grid', gap: '16px' }}>
+                  <SecurityPoint text="SOC 2 Type II and ISO 27001 certified — independently audited security controls" />
+                  <SecurityPoint text="Your data is NEVER used to train AI models — API customers are excluded from training" />
+                  <SecurityPoint text="30-day data retention — processed data is automatically deleted" />
+                  <SecurityPoint text="No third-party data sharing — Anthropic never sells customer data" />
+                  <SecurityPoint text="Enterprise-grade infrastructure — same security as Fortune 500 companies" />
+                </div>
+                <div style={{
+                  marginTop: '24px',
+                  padding: '16px',
+                  background: 'var(--beige)',
+                  border: '1px solid var(--gold)'
+                }}>
+                  <p style={{ fontSize: '13px', color: 'var(--muted)' }}>
+                    <strong style={{ color: 'var(--gold)' }}>Learn more:</strong>{' '}
                     <a
                       href="https://www.anthropic.com/security"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline hover:text-blue-200"
+                      style={{ color: 'var(--navy)', textDecoration: 'underline' }}
                     >
                       Anthropic Security Documentation
                     </a>
@@ -168,184 +157,112 @@ export default function Security() {
               </div>
             </Accordion>
 
-            {/* SOC 2 & ISO 27001 */}
             <Accordion
-              id="soc2"
               title="SOC 2 Type II & ISO 27001 Certification"
-              icon="🛡️"
               isExpanded={expandedSection === 'soc2'}
               onToggle={() => toggleSection('soc2')}
             >
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-white mb-2">SOC 2 Type II Compliance</h4>
-                  <p className="text-slate-300 text-sm">
-                    SOC 2 is an independent audit framework focused on security, availability, processing integrity, confidentiality, and privacy.
-                    Type II certification means our controls are tested over time, not just at a point in time.
+              <div style={{ padding: '32px', background: 'var(--white)' }}>
+                <div style={{ marginBottom: '24px' }}>
+                  <h4 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '16px', color: 'var(--navy)', marginBottom: '8px' }}>
+                    SOC 2 Type II Compliance
+                  </h4>
+                  <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.7 }}>
+                    SOC 2 is an independent audit framework focused on security, availability, processing integrity, confidentiality, and privacy. Type II certification means our controls are tested over time, not just at a point in time.
                   </p>
                 </div>
-
                 <div>
-                  <h4 className="font-semibold text-white mb-2">ISO 27001 Certification</h4>
-                  <p className="text-slate-300 text-sm">
-                    ISO 27001 is the international standard for information security management systems. Certification requires implementing
-                    comprehensive security controls and regular third-party audits.
-                  </p>
-                </div>
-
-                <div className="bg-green-600/10 border border-green-600/30 rounded-lg p-4">
-                  <p className="text-sm text-green-300">
-                    <strong>What this means:</strong> Our security practices are independently verified by accredited auditors.
-                    We don't just claim to be secure—we prove it.
+                  <h4 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '16px', color: 'var(--navy)', marginBottom: '8px' }}>
+                    ISO 27001 Certification
+                  </h4>
+                  <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.7 }}>
+                    ISO 27001 is the international standard for information security management systems. Certification requires implementing comprehensive security controls and regular third-party audits.
                   </p>
                 </div>
               </div>
             </Accordion>
 
-            {/* Data Retention */}
             <Accordion
-              id="data-retention"
-              title="Data Retention and Deletion"
-              icon="⏱️"
+              title="Data Retention & Deletion"
               isExpanded={expandedSection === 'data-retention'}
               onToggle={() => toggleSection('data-retention')}
             >
-              <div className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-slate-800/50 rounded-lg p-4">
-                    <h5 className="text-cyan-400 font-semibold mb-2">Anthropic Claude API</h5>
-                    <p className="text-sm text-slate-300">
-                      Documents sent to Claude API are retained for 30 days for abuse monitoring, then automatically deleted.
-                      They are never used for model training.
+              <div style={{ padding: '32px', background: 'var(--white)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                  <div style={{ padding: '20px', background: 'var(--beige)' }}>
+                    <h5 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '15px', color: 'var(--navy)', marginBottom: '12px' }}>
+                      Anthropic Claude API
+                    </h5>
+                    <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                      Documents sent to Claude API are retained for 30 days for abuse monitoring, then automatically deleted. They are never used for model training.
                     </p>
                   </div>
-
-                  <div className="bg-slate-800/50 rounded-lg p-4">
-                    <h5 className="text-cyan-400 font-semibold mb-2">Our Database</h5>
-                    <p className="text-sm text-slate-300">
-                      Your submission data is retained for the duration of your project. You can request deletion at any time,
-                      and we will permanently remove all associated data within 7 days.
+                  <div style={{ padding: '20px', background: 'var(--beige)' }}>
+                    <h5 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '15px', color: 'var(--navy)', marginBottom: '12px' }}>
+                      Our Database
+                    </h5>
+                    <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                      Your submission data is retained for the duration of your project. Request deletion anytime — we will permanently remove all data within 7 days.
                     </p>
                   </div>
-                </div>
-
-                <div className="bg-amber-600/10 border border-amber-600/30 rounded-lg p-4">
-                  <p className="text-sm text-amber-300">
-                    <strong>Your Control:</strong> You own your data. Request a data export or complete deletion at any time via{' '}
-                    <a href="mailto:george@attlee.ai" className="underline hover:text-amber-200">george@attlee.ai</a>
-                  </p>
                 </div>
               </div>
             </Accordion>
 
-            {/* Infrastructure Security */}
             <Accordion
-              id="infrastructure"
-              title="Infrastructure and Application Security"
-              icon="🔐"
+              title="Infrastructure & Application Security"
               isExpanded={expandedSection === 'infrastructure'}
               onToggle={() => toggleSection('infrastructure')}
             >
-              <div className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Secure Authentication</div>
-                    <div className="text-sm text-slate-400">
-                      Team access protected by Clerk (enterprise authentication provider) with MFA support
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">HTTPS Encryption</div>
-                    <div className="text-sm text-slate-400">
-                      All data transmitted over TLS 1.3 encrypted connections
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Secure Database</div>
-                    <div className="text-sm text-slate-400">
-                      PostgreSQL database with role-based access controls and encrypted at rest
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Environment Isolation</div>
-                    <div className="text-sm text-slate-400">
-                      API keys and credentials stored securely as environment variables, never in code
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Regular Updates</div>
-                    <div className="text-sm text-slate-400">
-                      Automated dependency updates and security patch management
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="text-cyan-400 font-semibold">Infrastructure Monitoring</div>
-                    <div className="text-sm text-slate-400">
-                      24/7 uptime monitoring and automated alerts for anomalies
-                    </div>
-                  </div>
+              <div style={{ padding: '32px', background: 'var(--white)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px' }}>
+                  <SecurityFeature title="Secure Authentication" description="Clerk enterprise authentication with MFA support" />
+                  <SecurityFeature title="HTTPS / TLS 1.3" description="All data encrypted in transit" />
+                  <SecurityFeature title="Encrypted Database" description="PostgreSQL with encryption at rest" />
+                  <SecurityFeature title="Environment Isolation" description="API keys secured as environment variables" />
+                  <SecurityFeature title="Regular Updates" description="Automated security patch management" />
+                  <SecurityFeature title="24/7 Monitoring" description="Uptime and anomaly detection" />
                 </div>
               </div>
             </Accordion>
 
-            {/* Access Controls */}
             <Accordion
-              id="access"
-              title="Access Controls and Permissions"
-              icon="👥"
+              title="Access Controls & Permissions"
               isExpanded={expandedSection === 'access'}
               onToggle={() => toggleSection('access')}
             >
-              <div className="space-y-4">
-                <p className="text-slate-300">
-                  We implement strict access controls to ensure only authorized personnel can access your data:
-                </p>
-
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">→</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">Role-based access control (RBAC)</strong> – Users only see data for their assigned clients
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">→</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">Multi-factor authentication (MFA)</strong> – Available for all team accounts
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">→</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">Audit logging</strong> – All document access and modifications are logged
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-cyan-400 mt-1 flex-shrink-0">→</span>
-                    <span className="text-slate-300">
-                      <strong className="text-white">Principle of least privilege</strong> – Engineering team access is limited and time-boxed
-                    </span>
-                  </li>
-                </ul>
-
-                <div className="bg-purple-600/10 border border-purple-600/30 rounded-lg p-4">
-                  <p className="text-sm text-purple-300">
-                    <strong>Client Isolation:</strong> Your submission data is logically separated from other clients.
-                    No cross-client data access is possible.
-                  </p>
+              <div style={{ padding: '32px', background: 'var(--white)' }}>
+                <div style={{ display: 'grid', gap: '16px' }}>
+                  <SecurityPoint text="Role-based access control (RBAC) — users only see their assigned clients" />
+                  <SecurityPoint text="Multi-factor authentication (MFA) — available for all accounts" />
+                  <SecurityPoint text="Audit logging — all document access and modifications logged" />
+                  <SecurityPoint text="Principle of least privilege — engineering access is limited and time-boxed" />
+                  <SecurityPoint text="Client isolation — your data is logically separated from other clients" />
                 </div>
               </div>
             </Accordion>
           </div>
 
           {/* Summary */}
-          <div className="mt-12 text-center bg-slate-800/30 rounded-xl p-8 border border-slate-700">
-            <p className="text-lg font-semibold text-cyan-400 mb-2">
+          <div style={{
+            marginTop: '80px',
+            padding: '48px',
+            background: 'var(--navy)',
+            textAlign: 'center',
+            border: '1px solid var(--gold)'
+          }}>
+            <p style={{
+              fontSize: '18px',
+              fontFamily: 'DM Sans, sans-serif',
+              fontWeight: 300,
+              color: 'var(--cream)',
+              marginBottom: '16px'
+            }}>
               Enterprise-grade AI security from Anthropic, combined with professional data handling practices.
             </p>
-            <p className="text-sm text-slate-400">
-              Questions about our security practices? Contact us at{' '}
-              <a href="mailto:george@attlee.ai" className="text-blue-400 hover:text-blue-300 underline">
+            <p style={{ fontSize: '14px', color: 'rgba(242,241,238,0.5)' }}>
+              Questions about our security? Contact us at{' '}
+              <a href="mailto:george@attlee.ai" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>
                 george@attlee.ai
               </a>
             </p>
@@ -353,89 +270,123 @@ export default function Security() {
         </div>
       </section>
 
-      {/* Next Section */}
-      <section className="relative py-16 bg-slate-950 border-t border-slate-800/50">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
-          <p className="text-slate-400">Ready to get started?</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="mailto:george@attlee.ai"
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white text-lg font-semibold rounded-lg transition-all shadow-lg shadow-blue-600/20"
-            >
-              Book a Demo
-            </a>
-            <Link
-              to="/"
-              className="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-600"
-            >
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="relative bg-slate-950 border-t border-slate-800/50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <p className="text-sm text-slate-500">
-                <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">
-                  george@attlee.ai
-                </a>
-              </p>
-            </div>
-            <div className="text-center md:text-right">
-              <p className="text-xs text-slate-600">© 2026 attlee.ai</p>
-            </div>
-          </div>
+      <footer style={{
+        background: 'var(--navy)',
+        padding: '40px 5%',
+        borderTop: '1px solid rgba(255,255,255,0.08)'
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <AttleeLogo size={20} showWordmark={true} color="rgba(255,255,255,0.3)" />
+          <p style={{
+            fontSize: '11px',
+            color: 'rgba(255,255,255,0.2)',
+            letterSpacing: '0.06em'
+          }}>
+            © 2026 Attlee AI Ltd · Getting Britain Building
+          </p>
         </div>
       </footer>
     </div>
   );
 }
 
-// Accordion Component
+// Styles
+const navLinkStyle: React.CSSProperties = {
+  fontSize: '13px',
+  letterSpacing: '0.04em',
+  color: 'var(--navy)',
+  textDecoration: 'none',
+  opacity: 0.6,
+  transition: 'opacity 0.2s'
+};
+
+// Components
+function TrustBadge({ title, subtitle, icon }: { title: string; subtitle: string; icon: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div style={{ fontSize: '36px' }}>{icon}</div>
+      <div>
+        <p style={{ color: 'var(--cream)', fontSize: '15px', fontWeight: 400, marginBottom: '4px' }}>{title}</p>
+        <p style={{ color: 'rgba(242,241,238,0.4)', fontSize: '12px' }}>{subtitle}</p>
+      </div>
+    </div>
+  );
+}
+
+function SecurityPoint({ text }: { text: string }) {
+  return (
+    <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+      <span style={{ color: 'var(--gold)', fontSize: '18px', flexShrink: 0 }}>✓</span>
+      <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.6 }}>{text}</p>
+    </div>
+  );
+}
+
+function SecurityFeature({ title, description }: { title: string; description: string }) {
+  return (
+    <div>
+      <h5 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '14px', color: 'var(--navy)', marginBottom: '8px' }}>
+        {title}
+      </h5>
+      <p style={{ fontSize: '13px', color: 'var(--muted)', lineHeight: 1.6 }}>
+        {description}
+      </p>
+    </div>
+  );
+}
+
 interface AccordionProps {
-  id: string;
   title: string;
-  icon: string;
   isExpanded: boolean;
   onToggle: () => void;
   children: React.ReactNode;
 }
 
-function Accordion({ title, icon, isExpanded, onToggle, children }: AccordionProps) {
+function Accordion({ title, isExpanded, onToggle, children }: AccordionProps) {
   return (
-    <div className={`
-      border rounded-xl overflow-hidden transition-all
-      ${isExpanded
-        ? 'border-cyan-600/50 bg-cyan-600/5 shadow-lg shadow-cyan-600/10'
-        : 'border-slate-700 bg-slate-800/50 hover:border-slate-600'
-      }
-    `}>
+    <div style={{
+      background: isExpanded ? 'var(--white)' : 'var(--cream)',
+      border: isExpanded ? '2px solid var(--gold)' : '1px solid var(--beige)',
+      transition: 'all 0.2s'
+    }}>
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-6 hover:bg-slate-700/30 transition-colors"
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '24px 32px',
+          background: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'background 0.2s'
+        }}
       >
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">{icon}</span>
-          <h3 className="text-xl font-semibold text-white text-left">{title}</h3>
-        </div>
-        <svg
-          className={`w-6 h-6 text-slate-400 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <h3 style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontWeight: 300,
+          fontSize: '18px',
+          color: 'var(--navy)',
+          textAlign: 'left'
+        }}>
+          {title}
+        </h3>
+        <span style={{
+          fontSize: '24px',
+          color: 'var(--gold)',
+          transition: 'transform 0.2s',
+          transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+        }}>
+          ↓
+        </span>
       </button>
-      {isExpanded && (
-        <div className="px-6 pb-6 pt-2">
-          {children}
-        </div>
-      )}
+      {isExpanded && children}
     </div>
   );
 }
