@@ -194,6 +194,18 @@ interface PackDocument {
   extractedText: string;
 }
 
+// Owner type taxonomy for clear responsibility assignment
+export type OwnerType =
+  | 'AI_AMENDABLE'           // Can be automatically inserted by AI
+  | 'FIRE_ENGINEER'          // Requires fire engineering expertise
+  | 'STRUCTURAL_ENGINEER'    // Requires structural engineering expertise
+  | 'ARCHITECT'              // Requires architectural expertise
+  | 'MEP_CONSULTANT'         // Requires M&E/services expertise
+  | 'PRINCIPAL_DESIGNER'     // Principal Designer responsibility
+  | 'PRINCIPAL_CONTRACTOR'   // Principal Contractor responsibility
+  | 'CLIENT_INFO'            // Client must provide information
+  | 'PROJECT_TEAM';          // Generic project team (fallback)
+
 export interface AssessmentResult {
   matrix_id: string;
   matrix_title: string;
@@ -225,6 +237,43 @@ export interface AssessmentResult {
   confidence: 'high' | 'medium' | 'low';
   proposed_change?: string | null;  // Suggested text to add/modify in the submission
   proposed_change_source?: string | null;  // Source document if info came from cross-document search
+
+  // NEW: Cost, timeline, and risk data (Phase 1 enhancement)
+  cost_estimate?: {
+    min: number;
+    max: number;
+    currency: 'GBP';
+  };
+  timeline_estimate?: {
+    days: number;
+    description: string;
+  };
+  rejection_risk?: {
+    probability: number; // 0-1
+    description: string;
+  };
+  priority_score?: number; // 1-100, higher = more urgent
+
+  // NEW: Document location for precise markup
+  insertion_location?: {
+    document: string;           // Target document filename
+    section: string;            // Section heading (e.g., "3.2 Compartmentation")
+    paragraph_number: number;   // Paragraph number within section (1-indexed)
+    anchor_text: string;        // Unique text snippet to find insertion point
+    context_before: string;     // Text appearing before insertion point
+    context_after: string;      // Text appearing after insertion point
+  };
+
+  // NEW: Structured owner taxonomy (replaces generic "Project Team")
+  owner_type?: OwnerType;
+
+  // NEW: Cost estimation for budgeting
+  estimated_cost?: {
+    hours: number;              // Estimated hours of work
+    rate_per_hour: number;      // Rate in GBP per hour
+    total: number;              // Total cost (hours × rate)
+    currency: 'GBP';
+  };
 }
 
 export interface FullAssessment {
@@ -378,6 +427,148 @@ function buildReferenceStandardsSummary(
   return standards;
 }
 
+// ============================================
+// OWNER TYPE AND COST ESTIMATION HELPERS
+// ============================================
+
+/**
+ * Map owner string from actions_required to structured OwnerType
+ */
+function determineOwnerType(
+  ownerString: string | undefined,
+  hasProposedChange: boolean,
+  reasoning: string,
+  gaps: string[]
+): OwnerType {
+  // If valid proposed_change exists, it's AI-amendable
+  if (hasProposedChange) {
+    return 'AI_AMENDABLE';
+  }
+
+  const ownerLower = (ownerString || '').toLowerCase();
+  const textToCheck = `${ownerLower} ${reasoning.toLowerCase()} ${gaps.join(' ').toLowerCase()}`;
+
+  // Fire Engineer
+  if (
+    textToCheck.includes('fire engineer') ||
+    textToCheck.includes('fire safety') ||
+    textToCheck.includes('compartment') ||
+    textToCheck.includes('sprinkler') ||
+    textToCheck.includes('means of escape') ||
+    textToCheck.includes('evacuation')
+  ) {
+    return 'FIRE_ENGINEER';
+  }
+
+  // Structural Engineer
+  if (
+    textToCheck.includes('structural engineer') ||
+    textToCheck.includes('structural design') ||
+    textToCheck.includes('load') ||
+    textToCheck.includes('disproportionate collapse') ||
+    textToCheck.includes('structural fire')
+  ) {
+    return 'STRUCTURAL_ENGINEER';
+  }
+
+  // MEP Consultant
+  if (
+    textToCheck.includes('mep') ||
+    textToCheck.includes('m&e') ||
+    textToCheck.includes('mechanical') ||
+    textToCheck.includes('electrical') ||
+    textToCheck.includes('ventilation') ||
+    textToCheck.includes('services')
+  ) {
+    return 'MEP_CONSULTANT';
+  }
+
+  // Principal Designer
+  if (
+    textToCheck.includes('principal designer') ||
+    textToCheck.includes('pd competence') ||
+    textToCheck.includes('design coordination') ||
+    textToCheck.includes('golden thread')
+  ) {
+    return 'PRINCIPAL_DESIGNER';
+  }
+
+  // Principal Contractor
+  if (
+    textToCheck.includes('principal contractor') ||
+    textToCheck.includes('construction phase')
+  ) {
+    return 'PRINCIPAL_CONTRACTOR';
+  }
+
+  // Client Info
+  if (
+    textToCheck.includes('client must provide') ||
+    textToCheck.includes('missing document') ||
+    textToCheck.includes('not provided') ||
+    textToCheck.includes('obtain from client') ||
+    textToCheck.includes('competence evidence') ||
+    textToCheck.includes('appointment letter')
+  ) {
+    return 'CLIENT_INFO';
+  }
+
+  // Architect (less specific patterns)
+  if (
+    textToCheck.includes('architect') ||
+    textToCheck.includes('drawing') ||
+    textToCheck.includes('layout')
+  ) {
+    return 'ARCHITECT';
+  }
+
+  // Default fallback
+  return 'PROJECT_TEAM';
+}
+
+/**
+ * Estimate cost based on owner type and effort
+ * Returns null for AI_AMENDABLE and CLIENT_INFO (no cost)
+ */
+function estimateCost(
+  ownerType: OwnerType,
+  effort: 'S' | 'M' | 'L'
+): AssessmentResult['estimated_cost'] {
+  // No cost for AI or client-provided info
+  if (ownerType === 'AI_AMENDABLE' || ownerType === 'CLIENT_INFO') {
+    return undefined;
+  }
+
+  // Hourly rates by consultant type (typical UK market rates 2025)
+  const rates: Record<Exclude<OwnerType, 'AI_AMENDABLE' | 'CLIENT_INFO'>, number> = {
+    FIRE_ENGINEER: 150,
+    STRUCTURAL_ENGINEER: 140,
+    ARCHITECT: 120,
+    MEP_CONSULTANT: 130,
+    PRINCIPAL_DESIGNER: 150,
+    PRINCIPAL_CONTRACTOR: 130,
+    PROJECT_TEAM: 100, // Generic rate
+  };
+
+  // Effort to hours mapping
+  const hoursMap: Record<'S' | 'M' | 'L', number> = {
+    S: 0.5,  // 30 minutes
+    M: 2,    // 2 hours
+    L: 8,    // 1 day
+  };
+
+  const hours = hoursMap[effort];
+  const ratePerHour = rates[ownerType as Exclude<OwnerType, 'AI_AMENDABLE' | 'CLIENT_INFO'>] || 100;
+  const total = hours * ratePerHour;
+
+  return {
+    hours,
+    rate_per_hour: ratePerHour,
+    total,
+    currency: 'GBP',
+  };
+}
+
 // Use LLM to assess a single criterion
 async function assessCriterion(
   row: MatrixRow,
@@ -464,6 +655,15 @@ Respond in JSON format:
   ],
   "confidence": "high" | "medium" | "low",
   "proposed_change_source": "If proposed_change uses info from another document, state that document's filename here. Otherwise null.",
+  "owner_type": "MUST provide one of: AI_AMENDABLE, FIRE_ENGINEER, STRUCTURAL_ENGINEER, ARCHITECT, MEP_CONSULTANT, PRINCIPAL_DESIGNER, PRINCIPAL_CONTRACTOR, CLIENT_INFO, PROJECT_TEAM",
+  "insertion_location": {
+    "document": "Target document filename where text should be inserted",
+    "section": "Section heading (e.g., '3.2 Compartmentation')",
+    "paragraph_number": "Paragraph number within section (1, 2, 3...)",
+    "anchor_text": "20-50 character text snippet that uniquely identifies insertion point",
+    "context_before": "1-2 sentences that appear immediately before insertion point",
+    "context_after": "1-2 sentences that appear immediately after insertion point"
+  },
   "proposed_change": "CRITICAL INSTRUCTIONS FOR PROPOSED_CHANGE:
 
 ONLY provide a proposed_change if ALL of these conditions are true:
@@ -502,7 +702,57 @@ CROSS-DOCUMENT proposed_change examples (pulling info from other documents):
 When using cross-document information:
 1. Always cite the SOURCE DOCUMENT by name
 2. Quote or paraphrase the specific information found
-3. Explain how it addresses the gap in the target document"
+3. Explain how it addresses the gap in the target document",
+
+  "owner_type": "CRITICAL - OWNER TYPE CLASSIFICATION:
+
+Choose the MOST SPECIFIC owner type that applies:
+
+- AI_AMENDABLE: Use ONLY when proposed_change is provided AND text can be inserted automatically without human review
+- FIRE_ENGINEER: Fire safety, means of escape, compartmentation, fire resistance, sprinklers, external walls
+- STRUCTURAL_ENGINEER: Structural design, load calculations, fire resistance of structure, disproportionate collapse
+- ARCHITECT: Building layout, space planning, accessibility, general coordination
+- MEP_CONSULTANT: M&E systems, ventilation, electrical, plumbing, fire alarms
+- PRINCIPAL_DESIGNER: Competence evidence, design coordination, CDM duties, golden thread strategy
+- PRINCIPAL_CONTRACTOR: Construction phase duties, competence evidence, site safety
+- CLIENT_INFO: Missing information that only the client can provide (building details, certifications, appointments)
+- PROJECT_TEAM: Generic fallback (use sparingly - prefer specific owner)
+
+Rules:
+- If proposed_change exists AND is valid → AI_AMENDABLE
+- If issue requires professional engineering judgment → specific engineer type
+- If issue is missing document or client-side info → CLIENT_INFO
+- If competence/appointment related → PRINCIPAL_DESIGNER or PRINCIPAL_CONTRACTOR",
+
+  "insertion_location": "CRITICAL - INSERTION LOCATION (required if proposed_change is provided):
+
+You MUST provide insertion_location if proposed_change is not null. This allows precise markup in the document.
+
+Steps to determine insertion_location:
+1. Identify which document the proposed_change should be added to
+2. Find the section heading where it belongs (scan the document for section numbers/titles)
+3. Count paragraphs in that section to determine paragraph_number
+4. Extract 20-50 chars of unique text at the insertion point as anchor_text
+5. Capture 1-2 sentences before and after the insertion point
+
+Example:
+If Fire Strategy Section 3.2 has text:
+'Compartmentation is achieved through concrete floors and masonry walls. All service penetrations are fire-stopped using intumescent seals. The building is divided into residential compartments on each floor.'
+
+And you want to insert after the second sentence, provide:
+{
+  'document': 'Fire_Strategy_Report.pdf',
+  'section': '3.2 Compartmentation',
+  'paragraph_number': 1,
+  'anchor_text': 'fire-stopped using intumescent seals.',
+  'context_before': 'Compartmentation is achieved through concrete floors and masonry walls. All service penetrations are fire-stopped using intumescent seals.',
+  'context_after': 'The building is divided into residential compartments on each floor.'
+}
+
+Set to null if:
+- proposed_change is null
+- Status is 'meets' (no change needed)
+- Issue requires creating a NEW document (not insertion into existing doc)"
 }`;
 
   try {
@@ -526,6 +776,31 @@ When using cross-document information:
     }
 
     const parsed = JSON.parse(jsonMatch[0]);
+
+    // Filter and validate proposed_change
+    const filteredProposedChange = filterProposedChange(parsed.proposed_change || null);
+
+    // Determine owner type (use LLM suggestion or fallback to heuristic)
+    const ownerType = parsed.owner_type as OwnerType || determineOwnerType(
+      parsed.actions?.[0]?.owner,
+      !!filteredProposedChange,
+      parsed.reasoning || '',
+      parsed.gaps || []
+    );
+
+    // Parse insertion_location if provided
+    const insertionLocation = parsed.insertion_location && filteredProposedChange ? {
+      document: parsed.insertion_location.document || '',
+      section: parsed.insertion_location.section || '',
+      paragraph_number: parseInt(parsed.insertion_location.paragraph_number) || 1,
+      anchor_text: parsed.insertion_location.anchor_text || '',
+      context_before: parsed.insertion_location.context_before || '',
+      context_after: parsed.insertion_location.context_after || '',
+    } : undefined;
+
+    // Estimate cost based on owner type and effort
+    const effort = parsed.actions?.[0]?.effort || 'M';
+    const estimatedCost = estimateCost(ownerType, effort);
 
     return {
       matrix_id: row.matrix_id,
@@ -551,9 +826,12 @@ When using cross-document information:
       gaps_identified: parsed.gaps || [],
       actions_required: parsed.actions || [],
       confidence: parsed.confidence || 'medium',
-      // Apply validation filter to LLM-generated proposed_change
-      proposed_change: filterProposedChange(parsed.proposed_change || null),
-      proposed_change_source: parsed.proposed_change_source || null
+      proposed_change: filteredProposedChange,
+      proposed_change_source: parsed.proposed_change_source || null,
+      // NEW: Enhanced fields
+      insertion_location: insertionLocation,
+      owner_type: ownerType,
+      estimated_cost: estimatedCost,
     };
   } catch (error) {
     console.error(`Error assessing ${row.matrix_id}:`, error);
@@ -578,9 +856,151 @@ When using cross-document information:
       actions_required: [],
       confidence: 'low',
       proposed_change: null,
-      proposed_change_source: null
+      proposed_change_source: null,
+      // NEW: Enhanced fields with safe defaults
+      insertion_location: undefined,
+      owner_type: 'PROJECT_TEAM',
+      estimated_cost: undefined,
     };
   }
+}
+
+// ============================================
+// PHASE 1 ENHANCEMENT: COST/RISK/TIMELINE ENRICHMENT
+// ============================================
+
+import {
+  estimateIssueCost,
+  SEVERITY_REJECTION_RISK,
+  EFFORT_TIME_ESTIMATES
+} from '../constants/cost-estimation.js';
+
+/**
+ * Determine owner type from criterion (adapter for enrichment)
+ */
+function determineOwnerTypeForEnrichment(criterion: AssessmentResult): string {
+  // Use the existing determineOwnerType function
+  const hasProposedChange = !!(criterion.proposed_change && criterion.proposed_change.length > 100);
+  const ownerString = criterion.actions_required?.[0]?.owner || '';
+  const reasoning = criterion.reasoning || '';
+  const gaps = criterion.gaps_identified || [];
+
+  const ownerType = determineOwnerType(ownerString, hasProposedChange, reasoning, gaps);
+
+  // Map OwnerType to cost estimation keys
+  if (ownerType === 'AI_AMENDABLE') return 'AI_AMENDABLE';
+  if (ownerType === 'FIRE_ENGINEER') return 'FIRE_ENGINEER';
+  if (ownerType === 'STRUCTURAL_ENGINEER') return 'STRUCTURAL_ENGINEER';
+  if (ownerType === 'MEP_CONSULTANT') return 'MEP_ENGINEER';
+  if (ownerType === 'ARCHITECT') return 'ARCHITECT';
+  if (ownerType === 'PRINCIPAL_DESIGNER') return 'PRINCIPAL_DESIGNER';
+  if (ownerType === 'PRINCIPAL_CONTRACTOR') return 'PROJECT_MANAGER';
+  if (ownerType === 'CLIENT_INFO') return 'PROJECT_MANAGER';
+  if (ownerType === 'PROJECT_TEAM') return 'PROJECT_MANAGER';
+
+  return 'UNCLEAR_OWNER';
+}
+
+/**
+ * Estimate effort level based on criterion complexity
+ */
+function estimateEffortLevel(criterion: AssessmentResult): string {
+  // AI amendable = instant
+  if (criterion.proposed_change && criterion.proposed_change.length > 100) {
+    return 'AI_instant';
+  }
+
+  const gaps = criterion.gaps_identified || [];
+  const actions = criterion.actions_required || [];
+
+  // Check for keywords indicating large effort
+  const combinedText = [...gaps, ...actions.map(a => a.action)].join(' ').toLowerCase();
+
+  if (combinedText.includes('new document') || combinedText.includes('new report')) {
+    return 'XL';
+  }
+  if (combinedText.includes('commission') || combinedText.includes('engage')) {
+    return 'L+';
+  }
+  if (combinedText.includes('test') || combinedText.includes('certification')) {
+    return 'L';
+  }
+  if (combinedText.includes('specify') || combinedText.includes('calculate')) {
+    return 'M+';
+  }
+  if (combinedText.includes('add') || combinedText.includes('clarify')) {
+    return 'M';
+  }
+
+  // Default based on severity
+  if (criterion.severity === 'high') return 'M+';
+  if (criterion.severity === 'medium') return 'M';
+  return 'S';
+}
+
+/**
+ * Calculate priority score for sorting (0-100, higher = more urgent)
+ */
+function calculatePriorityScore(criterion: AssessmentResult): number {
+  let score = 0;
+
+  // Severity weight (50 points max)
+  if (criterion.severity === 'high') score += 50;
+  else if (criterion.severity === 'medium') score += 30;
+  else score += 10;
+
+  // Status weight (30 points max)
+  if (criterion.status === 'does_not_meet') score += 30;
+  else if (criterion.status === 'partial') score += 20;
+  else score += 5;
+
+  // Rejection risk weight (20 points max)
+  const rejectionRisk = criterion.rejection_risk?.probability || 0;
+  score += rejectionRisk * 20;
+
+  return Math.min(100, Math.round(score));
+}
+
+/**
+ * Enrich criterion results with cost, timeline, and risk data
+ */
+function enrichCriterionWithMetadata(criterion: AssessmentResult): AssessmentResult {
+  const enriched = { ...criterion };
+
+  // Add rejection risk based on severity
+  if (criterion.status === 'does_not_meet' || criterion.status === 'partial') {
+    const riskData = SEVERITY_REJECTION_RISK[criterion.severity as keyof typeof SEVERITY_REJECTION_RISK];
+    if (riskData) {
+      enriched.rejection_risk = {
+        probability: riskData.rejection_probability,
+        description: riskData.description,
+      };
+    }
+  }
+
+  // Estimate cost and timeline
+  const ownerType = determineOwnerTypeForEnrichment(criterion);
+  const effort = estimateEffortLevel(criterion);
+
+  const costEstimate = estimateIssueCost(ownerType, effort);
+  enriched.cost_estimate = {
+    min: costEstimate.min,
+    max: costEstimate.max,
+    currency: 'GBP',
+  };
+
+  const timeEstimate = EFFORT_TIME_ESTIMATES[effort as keyof typeof EFFORT_TIME_ESTIMATES];
+  if (timeEstimate) {
+    enriched.timeline_estimate = {
+      days: timeEstimate.days,
+      description: timeEstimate.description,
+    };
+  }
+
+  // Calculate priority score (for sorting)
+  enriched.priority_score = calculatePriorityScore(enriched);
+
+  return enriched;
 }
 
 /**
@@ -717,7 +1137,25 @@ export async function assessPackAgainstMatrix(
   console.log(`${'─'.repeat(40)}`);
 
   // Combine both result sets
-  const allResults = [...deterministicAssessmentResults, ...llmResults];
+  const combinedResults = [...deterministicAssessmentResults, ...llmResults];
+
+  // ============================================
+  // ENRICHMENT: Add cost/timeline/risk metadata
+  // ============================================
+  console.log(`\n${'─'.repeat(40)}`);
+  console.log(`ENRICHING RESULTS WITH COST/RISK DATA`);
+  console.log(`${'─'.repeat(40)}`);
+
+  const allResults = combinedResults.map(criterion => {
+    try {
+      return enrichCriterionWithMetadata(criterion);
+    } catch (err) {
+      console.error(`Failed to enrich criterion ${criterion.matrix_id}:`, err);
+      return criterion; // Return original if enrichment fails
+    }
+  });
+
+  console.log(`  ✓ Enriched ${allResults.length} results with cost/timeline/risk data`);
 
   // Calculate summary statistics
   const assessed = allResults.filter(r => r.status !== 'not_assessed').length;
