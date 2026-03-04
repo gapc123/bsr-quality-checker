@@ -95,6 +95,89 @@ export default function Landing() {
         <StatItem num="55" unit="+" label="proprietary BSR checks" />
       </div>
 
+      {/* Why Deterministic Rules */}
+      <div style={{ padding: '100px 5%', background: 'var(--white)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <p className="section-eyebrow" style={{ textAlign: 'center' }}>Why Deterministic Rules Matter</p>
+          <h2 className="section-title" style={{ textAlign: 'center', margin: '0 auto 48px', maxWidth: '900px' }}>
+            AI is probabilistic. Building regulations are not.
+          </h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '48px', marginBottom: '64px' }}>
+            <div style={{ padding: '40px', background: '#FDF0EE', border: '2px solid #a04040' }}>
+              <h3 style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontWeight: 300,
+                fontSize: '24px',
+                color: '#a04040',
+                marginBottom: '16px'
+              }}>
+                ❌ Pure AI Approach (ChatGPT/Claude)
+              </h3>
+              <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>Probabilistic outputs:</strong> Same input can produce different answers each time
+                </li>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>Hallucinations:</strong> Invents BSR requirements that don't exist
+                </li>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>No traceability:</strong> Can't cite specific regulation clauses
+                </li>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>Legally indefensible:</strong> BSR won't accept "AI said so"
+                </li>
+              </ul>
+            </div>
+
+            <div style={{ padding: '40px', background: '#e8f2e8', border: '2px solid #2d6a2d' }}>
+              <h3 style={{
+                fontFamily: 'DM Sans, sans-serif',
+                fontWeight: 300,
+                fontSize: '24px',
+                color: '#2d6a2d',
+                marginBottom: '16px'
+              }}>
+                ✓ Attlee's Deterministic + AI Approach
+              </h3>
+              <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>Deterministic rules:</strong> 55 fixed checks that always work the same way
+                </li>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>AI for extraction:</strong> Uses AI only to find data in documents (fast)
+                </li>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>Expert verification:</strong> Every finding reviewed by qualified consultants
+                </li>
+                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong>Traceable & defensible:</strong> Every gap linked to specific BSR regulation
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div style={{
+            background: 'var(--navy)',
+            padding: '40px',
+            textAlign: 'center',
+            border: '2px solid var(--gold)'
+          }}>
+            <p style={{
+              fontSize: '20px',
+              fontFamily: 'DM Sans, sans-serif',
+              fontWeight: 300,
+              color: 'var(--cream)',
+              lineHeight: 1.6,
+              maxWidth: '900px',
+              margin: '0 auto'
+            }}>
+              <strong style={{ color: 'var(--gold)' }}>What this means:</strong> AI models are inherently probabilistic — they generate responses based on statistical patterns, not fixed logic. For BSR compliance, you need deterministic outcomes: the same submission checked twice must produce the same result. We use deterministic rules to check compliance (reliable, traceable), and AI only to extract data from documents (where speed matters, not legal certainty).
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* How It Works */}
       <div id="how" style={{ padding: '100px 5%' }}>
         <p className="section-eyebrow">How it works</p>
