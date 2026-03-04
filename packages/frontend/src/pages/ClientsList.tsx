@@ -137,7 +137,7 @@ export default function ClientsList() {
       <div style={{ position: 'relative', overflow: 'hidden', marginBottom: '2rem' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'var(--navy)' }} />
         <div style={{ position: 'relative', padding: '3rem 2rem' }}>
-          <div style={{ maxWidth: '1100px' }}>
+          <div style={{ maxWidth: '1600px', width: '100%', margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
               <span className="eyebrow" style={{ color: 'var(--gold)' }}>
                 INTERNAL TOOL

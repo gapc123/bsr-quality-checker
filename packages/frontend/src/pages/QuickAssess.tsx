@@ -153,7 +153,7 @@ export default function QuickAssess() {
   };
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1600px', width: '100%', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ background: 'var(--navy)', padding: '32px', marginBottom: '32px', color: 'var(--white)' }}>
         <h1 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '30px', marginBottom: '8px' }}>BSR Compliance Assessment</h1>
