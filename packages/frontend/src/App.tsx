@@ -16,6 +16,7 @@ import Approach from './pages/Approach';
 import Security from './pages/Security';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
+import AttleeLogo from './components/AttleeLogo';
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -25,11 +26,27 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
     <Link
       to={to}
-      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-        isActive
-          ? 'bg-slate-800 text-white'
-          : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-      }`}
+      style={{
+        padding: '8px 16px',
+        fontSize: '13px',
+        fontWeight: 400,
+        letterSpacing: '0.04em',
+        textDecoration: 'none',
+        color: isActive ? 'var(--cream)' : 'rgba(242,241,238,0.6)',
+        background: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
+        transition: 'all 0.2s',
+        opacity: isActive ? 1 : 0.6
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.opacity = '1';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.opacity = '0.6';
+        }
+      }}
     >
       {children}
     </Link>
@@ -66,36 +83,38 @@ function AppContent() {
 
   // Internal tool layout (with header and navigation)
   return (
-    <div className="min-h-screen flex flex-col">
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--cream)' }}>
       {/* Header */}
-      <header className="bg-slate-900 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+      <header style={{
+        background: 'var(--navy)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)'
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 48px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '64px'
+          }}>
             {/* Logo and Brand */}
-            <Link to="/clients" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-lg font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">attlee.ai</span>
-                <p className="hidden sm:block text-xs text-slate-400 italic">
-                  Our mission is to help get more safe homes built in the UK, faster
-                </p>
-              </div>
+            <Link to="/clients" style={{ textDecoration: 'none' }}>
+              <AttleeLogo size={28} showWordmark={true} color="var(--cream)" />
             </Link>
 
             {/* Navigation and Auth */}
-            <div className="flex items-center gap-4">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
               <SignedIn>
-                <nav className="flex items-center gap-2">
+                <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <NavLink to="/assess">Assessment</NavLink>
                   <NavLink to="/clients">Clients</NavLink>
                   <NavLink to="/dashboard">Packs</NavLink>
                   <NavLink to="/butler">Reference Library</NavLink>
                 </nav>
-                <div className="ml-4 pl-4 border-l border-slate-700">
+                <div style={{
+                  marginLeft: '16px',
+                  paddingLeft: '16px',
+                  borderLeft: '1px solid rgba(255,255,255,0.1)'
+                }}>
                   <UserButton
                     afterSignOutUrl="/"
                     appearance={{
@@ -110,7 +129,17 @@ function AppContent() {
               <SignedOut>
                 <Link
                   to="/sign-in"
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--navy)',
+                    background: 'var(--cream)',
+                    textDecoration: 'none',
+                    transition: 'opacity 0.2s'
+                  }}
                 >
                   Sign In
                 </Link>
@@ -126,8 +155,8 @@ function AppContent() {
       </SignedIn>
 
       {/* Main Content */}
-      <main className="flex-1 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+      <main style={{ flex: 1, background: 'var(--cream)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '48px' }}>
           <Routes>
 
             {/* Protected routes */}
@@ -200,33 +229,40 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex flex-col gap-6">
-            {/* Mission Statement */}
-            <div className="text-center border-b border-slate-800 pb-6">
-              <p className="text-sm text-slate-400 mb-2">
-                The UK needs more safe, quality homes. The path to building them is too slow, too complex.
-              </p>
-              <p className="text-base font-semibold bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-                Our mission is to help get more safe homes built in the UK, faster.
-              </p>
-            </div>
-
-            {/* Footer Info */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div>
-                <p className="text-sm text-slate-400">
-                  <span className="font-semibold text-blue-400">attlee.ai</span> — AI-Powered Building Safety Consultancy
-                </p>
-                <p className="text-xs text-amber-400 font-medium mt-1">
-                  AI-First. Human-Verified. Always.
-                </p>
-              </div>
-              <p className="text-xs text-slate-500">
-                <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">george@attlee.ai</a>
-              </p>
-            </div>
+      <footer style={{
+        background: 'var(--navy)',
+        borderTop: '1px solid rgba(255,255,255,0.08)',
+        padding: '40px 48px'
+      }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <AttleeLogo size={20} showWordmark={true} color="rgba(255,255,255,0.3)" />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+            <p style={{
+              fontSize: '11px',
+              color: 'rgba(255,255,255,0.2)',
+              letterSpacing: '0.06em'
+            }}>
+              © 2026 Attlee AI Ltd · Getting Britain Building
+            </p>
+            <a
+              href="mailto:george@attlee.ai"
+              style={{
+                fontSize: '11px',
+                color: 'var(--gold)',
+                letterSpacing: '0.06em',
+                textDecoration: 'none',
+                opacity: 0.6,
+                transition: 'opacity 0.2s'
+              }}
+            >
+              george@attlee.ai
+            </a>
           </div>
         </div>
       </footer>

@@ -1,311 +1,460 @@
 import { Link } from 'react-router-dom';
 import { SignedIn } from '@clerk/clerk-react';
-import { HeadlinesSection } from '../components/ContextSection';
+import AttleeLogo from '../components/AttleeLogo';
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Minimal Header */}
-      <header className="relative border-b border-slate-800/50">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                attlee.ai
-              </span>
-            </div>
+    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+      {/* Fixed Nav */}
+      <nav style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        background: 'var(--cream)',
+        borderBottom: '1px solid var(--beige)',
+        padding: '0 48px',
+        height: '64px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <AttleeLogo size={32} showWordmark={true} color="#0F1923" />
+        </Link>
 
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center gap-6 text-sm">
-              <a href="#problem" className="text-slate-400 hover:text-white transition-colors">
-                Problem
-              </a>
-              <a href="#system" className="text-slate-400 hover:text-white transition-colors">
-                System
-              </a>
-              <a href="#approach" className="text-slate-400 hover:text-white transition-colors">
-                Approach
-              </a>
-            </nav>
+        <ul style={{
+          display: 'flex',
+          gap: '36px',
+          listStyle: 'none',
+          alignItems: 'center'
+        }}>
+          <li><a href="#how" style={navLinkStyle}>How it works</a></li>
+          <li><a href="#who" style={navLinkStyle}>For consultants</a></li>
+          <li><Link to="/security" style={navLinkStyle}>Security</Link></li>
+          <SignedIn>
+            <li><Link to="/clients" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '10px 20px', fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Dashboard</Link></li>
+          </SignedIn>
+          <li><a href="mailto:george@attlee.ai" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '10px 20px', fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Request access</a></li>
+        </ul>
+      </nav>
 
-            {/* CTA - Sign-in hidden from public, accessible via /sign-in URL */}
+      {/* Hero */}
+      <div style={{
+        padding: '160px 48px 100px',
+        maxWidth: '1100px',
+        margin: '0 auto'
+      }}>
+        <p className="eyebrow" style={{ marginBottom: '28px' }}>
+          BSR Gateway 2 · AI Compliance Checker
+        </p>
+        <h1 style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontWeight: 200,
+          fontSize: 'clamp(42px, 6vw, 80px)',
+          lineHeight: 1.05,
+          letterSpacing: '-0.03em',
+          color: 'var(--navy)',
+          maxWidth: '820px',
+          marginBottom: '32px'
+        }}>
+          Know if your submission<br />will pass <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--gold)' }}>before</em> you submit.
+        </h1>
+        <p style={{
+          fontSize: '17px',
+          fontWeight: 300,
+          color: 'var(--muted)',
+          maxWidth: '480px',
+          lineHeight: 1.7,
+          marginBottom: '48px'
+        }}>
+          75% of Gateway 2 applications are rejected first time. Attlee checks your full pack against every BSR requirement in 5 minutes — and tells you exactly what to fix.
+        </p>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <a href="mailto:george@attlee.ai" className="btn-primary">Request early access</a>
+          <a href="#how" className="btn-ghost">See how it works →</a>
+        </div>
+      </div>
+
+      {/* Stat Bar */}
+      <div style={{
+        background: 'var(--navy)',
+        padding: '40px 48px',
+        display: 'flex',
+        gap: 0,
+        justifyContent: 'center'
+      }}>
+        <StatItem num="75" unit="%" label="of submissions rejected first time" />
+        <StatItem num="22" unit="wk" label="average BSR review time" />
+        <StatItem num="5" unit="min" label="Attlee full pack analysis" />
+        <StatItem num="55" unit="+" label="proprietary BSR checks" />
+      </div>
+
+      {/* How It Works */}
+      <div id="how" className="section">
+        <p className="section-eyebrow">How it works</p>
+        <h2 className="section-title">From document pack to submission-ready in minutes.</h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '2px'
+        }}>
+          <StepCard
+            num="01"
+            title="Upload your pack"
+            description="Drop in your full Gateway 2 submission — fire strategy, structural reports, MEP specs, drawings. Any format."
+            variant="white"
+          />
+          <StepCard
+            num="02"
+            title="Get your readiness score"
+            description="Attlee runs 55+ proprietary checks across every document in under 5 minutes. Gaps, inconsistencies, missing requirements — all flagged."
+            variant="navy"
+          />
+          <StepCard
+            num="03"
+            title="Fix and submit"
+            description="Review AI-drafted amendments for each gap. Accept the ones that work, brief your consultants on the rest. Download a submission-ready pack."
+            variant="white"
+          />
+        </div>
+      </div>
+
+      {/* Score Visual */}
+      <div style={{ background: 'var(--beige)', padding: '100px 48px' }}>
+        <div style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '80px',
+          alignItems: 'center'
+        }}>
+          <ScoreCard />
+          <div>
+            <p className="section-eyebrow">The output</p>
+            <h2 className="section-title">A clear picture of exactly where you stand.</h2>
+            <p style={{
+              fontSize: '15px',
+              color: 'var(--muted)',
+              lineHeight: 1.8,
+              fontWeight: 300,
+              marginBottom: '32px'
+            }}>
+              Every check mapped to a specific BSR requirement. Every gap with a proposed fix. Every decision traceable to source — so you can submit with confidence, not crossed fingers.
+            </p>
             <SignedIn>
-              <Link
-                to="/clients"
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
-              >
-                Dashboard
-              </Link>
+              <Link to="/assess" className="btn-primary">Try it now</Link>
             </SignedIn>
           </div>
         </div>
-      </header>
+      </div>
 
-      {/* Hero Section - Maximum Impact, Minimum Words */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/5 via-transparent to-transparent" />
-
-        <div className="relative max-w-5xl mx-auto px-4 py-32 sm:py-40">
-          <div className="text-center space-y-12">
-            {/* BSR Focus Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/10 border border-blue-500/30 rounded-full text-sm font-medium text-blue-300">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              Building Safety Regulator · Gateway 2
-            </div>
-
-            {/* Provocative Statement */}
-            <div className="space-y-6">
-              <h1 className="text-5xl sm:text-7xl font-bold text-white leading-tight tracking-tight">
-                AI doesn't work for
-                <br />
-                regulatory compliance.
-              </h1>
-
-              <div className="h-px w-24 bg-gradient-to-r from-transparent via-slate-600 to-transparent mx-auto" />
-
-              <h2 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
-                We built a system that does.
-              </h2>
-            </div>
-
-            {/* Mission Statement */}
-            <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto">
-              Starting with BSR Gateway 2. Making high-risk building approvals faster and more certain.
-            </p>
-
-            {/* System Approach */}
-            <p className="text-base text-slate-500">
-              Deterministic rules. AI extraction. Expert oversight.
-            </p>
-
-            {/* Scroll Indicator */}
-            <div className="pt-8">
-              <div className="inline-flex flex-col items-center gap-2 text-slate-500 animate-bounce">
-                <span className="text-xs uppercase tracking-wider">Explore</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Navigation Cards - Primary Click-Through Mechanism */}
-      <section className="relative py-20 bg-gradient-to-b from-slate-950 to-slate-900">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-
-            {/* Card 1: The Problem */}
-            <NavigationCard
-              id="problem"
-              title="The Problem"
-              description="Why the UK needs this now"
-              detail="Housing delivery is too slow. Gateway approvals take months. The process is too complex."
-              href="/problem"
-              gradient="from-red-600/20 to-orange-600/20"
-              borderGradient="from-red-500 to-orange-500"
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              }
+      {/* Who It's For */}
+      <div id="who" style={{ background: 'var(--navy)', padding: '100px 48px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <p className="section-eyebrow">Who it's for</p>
+          <h2 className="section-title" style={{ color: 'var(--cream)', marginBottom: '56px' }}>
+            Built for everyone with skin in the game.
+          </h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '2px'
+          }}>
+            <WhoCard
+              icon={<DesignerIcon />}
+              title="Principal Designers"
+              description="Validate your submission before it goes in. Protect your professional reputation and your client's programme."
             />
-
-            {/* Card 2: The System */}
-            <NavigationCard
-              id="system"
-              title="The System"
-              description="How it actually works"
-              detail="55 deterministic rules mapped to Gateway 2. AI extracts evidence. Experts verify."
-              href="/system"
-              gradient="from-blue-600/20 to-cyan-600/20"
-              borderGradient="from-blue-500 to-cyan-500"
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-              }
-              featured
+            <WhoCard
+              icon={<HousingIcon />}
+              title="Housing Associations"
+              description="Know your submission is strong before weeks of BSR review. Protect your programme, your funding, your pipeline."
             />
-
-            {/* Card 3: Why Different */}
-            <NavigationCard
-              id="approach"
-              title="Why Different"
-              description="Our competitive advantage"
-              detail="AI for speed. Deterministic rules for certainty. Human experts for assurance."
-              href="/approach"
-              gradient="from-purple-600/20 to-pink-600/20"
-              borderGradient="from-purple-500 to-pink-500"
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              }
+            <WhoCard
+              icon={<ConsultantIcon />}
+              title="Fire Consultants"
+              description="Run a cross-document sense check before your strategy goes into the pack. Catch the inconsistencies before the BSR does."
             />
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Headlines Context - Preserved Carousel */}
-      <HeadlinesSection />
+      {/* CTA */}
+      <div style={{
+        padding: '120px 48px',
+        textAlign: 'center',
+        maxWidth: '700px',
+        margin: '0 auto'
+      }}>
+        <h2 style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontWeight: 200,
+          fontSize: 'clamp(32px, 5vw, 58px)',
+          letterSpacing: '-0.03em',
+          lineHeight: 1.1,
+          marginBottom: '24px',
+          color: 'var(--navy)'
+        }}>
+          Ready to stop guessing<br />and start <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>knowing?</em>
+        </h2>
+        <p style={{
+          color: 'var(--muted)',
+          fontSize: '16px',
+          fontWeight: 300,
+          marginBottom: '40px',
+          lineHeight: 1.7
+        }}>
+          Attlee is in private beta. We're working with a small number of housing associations and consultancies ahead of full launch.
+        </p>
+        <a href="mailto:george@attlee.ai" className="btn-primary">Request early access</a>
+      </div>
 
-      {/* Quick Links Section */}
-      <section className="relative py-16 bg-slate-950 border-t border-slate-800/50">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center space-y-8">
-            <p className="text-slate-500 text-sm uppercase tracking-wider">
-              Or jump straight to
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="mailto:george@attlee.ai"
-                className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg transition-all border border-slate-700 hover:border-slate-600"
-              >
-                Book a Demo
-              </a>
-              <Link
-                to="/security"
-                className="px-6 py-3 text-slate-400 hover:text-white font-medium transition-colors"
-              >
-                View Security Details →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Minimal Footer */}
-      <footer className="relative bg-slate-950 border-t border-slate-800/50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <div className="flex items-center gap-3 justify-center md:justify-start mb-2">
-                <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  attlee.ai
-                </span>
-              </div>
-              <p className="text-sm text-slate-500">
-                AI-powered building safety consultancy
-              </p>
-            </div>
-
-            <div className="text-center md:text-right space-y-2">
-              <p className="text-sm text-slate-500">
-                <a href="mailto:george@attlee.ai" className="hover:text-blue-400 transition-colors">
-                  george@attlee.ai
-                </a>
-              </p>
-              <p className="text-xs text-slate-600">
-                © 2026 attlee.ai
-              </p>
-            </div>
-          </div>
-        </div>
+      {/* Footer */}
+      <footer style={{
+        background: 'var(--navy)',
+        padding: '40px 48px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <AttleeLogo size={20} showWordmark={true} color="rgba(255,255,255,0.3)" />
+        <p style={{
+          fontSize: '11px',
+          color: 'rgba(255,255,255,0.2)',
+          letterSpacing: '0.06em'
+        }}>
+          © 2026 Attlee AI Ltd · Getting Britain Building
+        </p>
       </footer>
     </div>
   );
 }
 
-// Navigation Card Component
-interface NavigationCardProps {
-  id: string;
-  title: string;
-  description: string;
-  detail: string;
-  href: string;
-  gradient: string;
-  borderGradient: string;
-  icon: React.ReactNode;
-  featured?: boolean;
+// Styles
+const navLinkStyle: React.CSSProperties = {
+  fontSize: '13px',
+  letterSpacing: '0.04em',
+  color: 'var(--navy)',
+  textDecoration: 'none',
+  opacity: 0.6,
+  transition: 'opacity 0.2s'
+};
+
+// Components
+function StatItem({ num, unit, label }: { num: string; unit: string; label: string }) {
+  return (
+    <div style={{
+      flex: 1,
+      maxWidth: '260px',
+      padding: '0 40px',
+      borderRight: '1px solid rgba(255,255,255,0.08)'
+    }}>
+      <div style={{
+        fontFamily: 'DM Sans, sans-serif',
+        fontWeight: 200,
+        fontSize: '44px',
+        color: 'var(--cream)',
+        letterSpacing: '-0.03em',
+        lineHeight: 1,
+        marginBottom: '6px'
+      }}>
+        {num}<span style={{ color: 'var(--gold)' }}>{unit}</span>
+      </div>
+      <div style={{
+        fontSize: '11px',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color: 'rgba(255,255,255,0.35)',
+        fontWeight: 400
+      }}>
+        {label}
+      </div>
+    </div>
+  );
 }
 
-function NavigationCard({
-  id,
-  title,
-  description,
-  detail,
-  href,
-  gradient,
-  borderGradient,
-  icon,
-  featured = false
-}: NavigationCardProps) {
+function StepCard({ num, title, description, variant }: {
+  num: string;
+  title: string;
+  description: string;
+  variant: 'white' | 'navy';
+}) {
   return (
-    <a
-      id={id}
-      href={href}
-      className={`
-        group relative block bg-slate-900 rounded-2xl overflow-hidden
-        transition-all duration-300 hover:scale-105
-        ${featured ? 'md:scale-105 shadow-2xl' : 'shadow-xl'}
-        border border-slate-800 hover:border-slate-700
-      `}
-    >
-      {/* Background Gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-50 group-hover:opacity-70 transition-opacity`} />
-
-      {/* Border Gradient Glow */}
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br ${borderGradient} blur-xl -z-10`} />
-
-      {/* Content */}
-      <div className="relative p-8 space-y-6">
-        {/* Icon */}
-        <div className={`
-          w-12 h-12 rounded-xl bg-gradient-to-br ${borderGradient}
-          flex items-center justify-center text-white
-          group-hover:scale-110 transition-transform
-        `}>
-          {icon}
-        </div>
-
-        {/* Title & Description */}
-        <div className="space-y-2">
-          <h3 className="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
-            {title}
-          </h3>
-          <p className="text-sm text-slate-400 font-medium">
-            {description}
-          </p>
-        </div>
-
-        {/* Detail Text */}
-        <p className="text-slate-300 text-sm leading-relaxed">
-          {detail}
-        </p>
-
-        {/* Arrow CTA */}
-        <div className="flex items-center gap-2 text-slate-400 group-hover:text-white transition-colors">
-          <span className="text-sm font-medium">Learn more</span>
-          <svg
-            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </div>
+    <div style={{
+      background: variant === 'navy' ? 'var(--navy)' : 'var(--white)',
+      padding: '40px 36px'
+    }}>
+      <div style={{
+        fontFamily: 'DM Sans, sans-serif',
+        fontWeight: 200,
+        fontSize: '13px',
+        letterSpacing: '0.1em',
+        color: 'var(--gold)',
+        marginBottom: '32px'
+      }}>
+        {num}
       </div>
+      <h3 style={{
+        fontFamily: 'DM Sans, sans-serif',
+        fontWeight: 300,
+        fontSize: '22px',
+        letterSpacing: '-0.01em',
+        marginBottom: '14px',
+        color: variant === 'navy' ? 'var(--cream)' : 'var(--navy)'
+      }}>
+        {title}
+      </h3>
+      <p style={{
+        fontSize: '14px',
+        color: variant === 'navy' ? 'rgba(242,241,238,0.5)' : 'var(--muted)',
+        lineHeight: 1.7,
+        fontWeight: 300
+      }}>
+        {description}
+      </p>
+    </div>
+  );
+}
 
-      {/* Featured Badge */}
-      {featured && (
-        <div className="absolute top-4 right-4">
-          <div className="px-3 py-1 bg-cyan-600 text-white text-xs font-bold rounded-full shadow-lg">
-            Core
+function ScoreCard() {
+  return (
+    <div style={{
+      background: 'var(--white)',
+      padding: '48px'
+    }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: '40px'
+      }}>
+        <div>
+          <div style={{
+            fontSize: '11px',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'var(--muted)'
+          }}>
+            Readiness Score
+          </div>
+          <div style={{ fontSize: '11px', color: '#bbb', marginTop: '4px' }}>
+            Riverside Tower — GW2 Pack v3
           </div>
         </div>
-      )}
-    </a>
+        <div style={{
+          fontFamily: 'DM Sans, sans-serif',
+          fontWeight: 200,
+          fontSize: '52px',
+          color: 'var(--navy)',
+          letterSpacing: '-0.04em',
+          lineHeight: 1
+        }}>
+          75<span style={{ color: 'var(--gold)', fontSize: '24px' }}>%</span>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <CheckRow name="Fire Strategy presence" status="pass" />
+        <CheckRow name="Sprinkler system — 18m+" status="pass" />
+        <CheckRow name="Evacuation strategy detail" status="warn" />
+        <CheckRow name="Height consistency across docs" status="fail" muted />
+        <CheckRow name="External wall fire rating" status="fail" muted />
+        <CheckRow name="Structural report present" status="pass" />
+      </div>
+    </div>
+  );
+}
+
+function CheckRow({ name, status, muted }: {
+  name: string;
+  status: 'pass' | 'fail' | 'warn';
+  muted?: boolean;
+}) {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '12px 0',
+      borderBottom: '1px solid var(--beige)',
+      fontSize: '13px'
+    }}>
+      <span style={{
+        color: muted ? 'var(--muted)' : 'var(--navy)',
+        fontWeight: muted ? 300 : 400
+      }}>
+        {name}
+      </span>
+      <span className={`pill ${status}`}>
+        {status === 'warn' ? 'Partial' : status === 'pass' ? 'Pass' : 'Fail'}
+      </span>
+    </div>
+  );
+}
+
+function WhoCard({ icon, title, description }: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div style={{
+      background: 'rgba(255,255,255,0.04)',
+      padding: '36px 32px',
+      border: '1px solid rgba(255,255,255,0.06)'
+    }}>
+      <div style={{ width: '36px', height: '36px', marginBottom: '24px' }}>
+        {icon}
+      </div>
+      <h4 style={{
+        fontFamily: 'DM Sans, sans-serif',
+        fontWeight: 300,
+        fontSize: '18px',
+        color: 'var(--cream)',
+        marginBottom: '10px',
+        letterSpacing: '-0.01em'
+      }}>
+        {title}
+      </h4>
+      <p style={{
+        fontSize: '13px',
+        color: 'rgba(242,241,238,0.4)',
+        lineHeight: 1.7,
+        fontWeight: 300
+      }}>
+        {description}
+      </p>
+    </div>
+  );
+}
+
+// Icons
+function DesignerIcon() {
+  return (
+    <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+      <rect x="4" y="10" width="28" height="22" stroke="#C4A882" strokeWidth="2" fill="none"/>
+      <polyline points="4,10 18,2 32,10" stroke="#C4A882" strokeWidth="2" fill="none"/>
+    </svg>
+  );
+}
+
+function HousingIcon() {
+  return (
+    <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+      <circle cx="18" cy="18" r="14" stroke="#C4A882" strokeWidth="2" fill="none"/>
+      <polyline points="11,18 16,23 25,13" stroke="#C4A882" strokeWidth="2" fill="none" strokeLinecap="square"/>
+    </svg>
+  );
+}
+
+function ConsultantIcon() {
+  return (
+    <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
+      <rect x="2" y="8" width="32" height="24" stroke="#C4A882" strokeWidth="2" fill="none"/>
+      <line x1="9" y1="16" x2="27" y2="16" stroke="#C4A882" strokeWidth="2"/>
+      <line x1="9" y1="22" x2="20" y2="22" stroke="#C4A882" strokeWidth="2"/>
+    </svg>
   );
 }
