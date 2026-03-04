@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignedIn } from '@clerk/clerk-react';
 import AttleeLogo from '../components/AttleeLogo';
 
+type HowTab = 'overview' | 'upload' | 'analysis' | 'delivery';
+
 export default function Landing() {
+  const [activeHowTab, setActiveHowTab] = useState<HowTab>('overview');
   return (
     <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
       {/* Fixed Nav */}
@@ -198,33 +202,447 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* How It Works */}
-      <div id="how" style={{ padding: '100px 5%' }}>
-        <p className="section-eyebrow">How it works</p>
-        <h2 className="section-title">Expert review in 1 week — AI does the heavy lifting in 5 minutes, our consultants verify everything.</h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '2px'
-        }}>
-          <StepCard
-            num="01"
-            title="You submit your pack"
-            description="Secure upload of your full Gateway 2 submission — fire strategy, structural reports, MEP specs, drawings. We handle it from here."
-            variant="white"
-          />
-          <StepCard
-            num="02"
-            title="AI + human review"
-            description="Our AI reviews all 55+ BSR checks in 5 minutes. Then our expert consultants verify every finding, draft amendments, and sign off the report."
-            variant="navy"
-          />
-          <StepCard
-            num="03"
-            title="1-week delivery"
-            description="You receive an expert-signed report with actionable amendments. Not AI output — professional consultancy accelerated by AI."
-            variant="white"
-          />
+      {/* How It Works - Interactive Tabbed Section */}
+      <div id="how" style={{ padding: '100px 5%', background: 'var(--white)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <p className="section-eyebrow" style={{ textAlign: 'center' }}>How it works</p>
+          <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '48px' }}>
+            Expert review in 1 week — AI does the heavy lifting in 5 minutes, our consultants verify everything.
+          </h2>
+
+          {/* Tab Navigation */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '8px',
+            marginBottom: '48px',
+            flexWrap: 'wrap'
+          }}>
+            <HowTabButton
+              active={activeHowTab === 'overview'}
+              onClick={() => setActiveHowTab('overview')}
+            >
+              Overview
+            </HowTabButton>
+            <HowTabButton
+              active={activeHowTab === 'upload'}
+              onClick={() => setActiveHowTab('upload')}
+              number="01"
+            >
+              Secure Upload
+            </HowTabButton>
+            <HowTabButton
+              active={activeHowTab === 'analysis'}
+              onClick={() => setActiveHowTab('analysis')}
+              number="02"
+            >
+              AI + Expert Analysis
+            </HowTabButton>
+            <HowTabButton
+              active={activeHowTab === 'delivery'}
+              onClick={() => setActiveHowTab('delivery')}
+              number="03"
+            >
+              1-Week Delivery
+            </HowTabButton>
+          </div>
+
+          {/* Tab Content */}
+          <div style={{
+            background: 'var(--cream)',
+            border: '2px solid var(--beige)',
+            padding: '48px',
+            minHeight: '400px'
+          }}>
+            {activeHowTab === 'overview' && (
+              <div>
+                <h3 style={{
+                  fontFamily: 'DM Sans, sans-serif',
+                  fontSize: '28px',
+                  fontWeight: 200,
+                  color: 'var(--navy)',
+                  marginBottom: '24px',
+                  letterSpacing: '-0.02em'
+                }}>
+                  Three steps from submission to expert-verified report
+                </h3>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '32px',
+                  marginTop: '40px'
+                }}>
+                  <div style={{ padding: '32px', background: 'var(--white)', border: '1px solid var(--beige)' }}>
+                    <div style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '14px',
+                      letterSpacing: '0.15em',
+                      color: 'var(--gold)',
+                      marginBottom: '16px',
+                      fontWeight: 400
+                    }}>
+                      01 — UPLOAD
+                    </div>
+                    <h4 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '20px',
+                      fontWeight: 300,
+                      color: 'var(--navy)',
+                      marginBottom: '12px'
+                    }}>
+                      You submit your pack
+                    </h4>
+                    <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7 }}>
+                      Secure upload of your full Gateway 2 submission — fire strategy, structural reports, MEP specs, drawings.
+                    </p>
+                  </div>
+                  <div style={{ padding: '32px', background: 'var(--navy)', border: '1px solid var(--navy)' }}>
+                    <div style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '14px',
+                      letterSpacing: '0.15em',
+                      color: 'var(--gold)',
+                      marginBottom: '16px',
+                      fontWeight: 400
+                    }}>
+                      02 — ANALYSIS
+                    </div>
+                    <h4 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '20px',
+                      fontWeight: 300,
+                      color: 'var(--cream)',
+                      marginBottom: '12px'
+                    }}>
+                      AI + expert review
+                    </h4>
+                    <p style={{ fontSize: '15px', color: 'rgba(242,241,238,0.7)', lineHeight: 1.7 }}>
+                      Our AI reviews 55+ BSR checks in 5 minutes. Then our expert consultants verify every finding.
+                    </p>
+                  </div>
+                  <div style={{ padding: '32px', background: 'var(--white)', border: '1px solid var(--beige)' }}>
+                    <div style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '14px',
+                      letterSpacing: '0.15em',
+                      color: 'var(--gold)',
+                      marginBottom: '16px',
+                      fontWeight: 400
+                    }}>
+                      03 — DELIVERY
+                    </div>
+                    <h4 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '20px',
+                      fontWeight: 300,
+                      color: 'var(--navy)',
+                      marginBottom: '12px'
+                    }}>
+                      1-week turnaround
+                    </h4>
+                    <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7 }}>
+                      Expert-signed report with actionable amendments. Professional consultancy accelerated by AI.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeHowTab === 'upload' && (
+              <div>
+                <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '14px',
+                      letterSpacing: '0.15em',
+                      color: 'var(--gold)',
+                      marginBottom: '16px',
+                      fontWeight: 400
+                    }}>
+                      STEP 01 — SECURE UPLOAD
+                    </div>
+                    <h3 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '32px',
+                      fontWeight: 200,
+                      color: 'var(--navy)',
+                      marginBottom: '24px',
+                      letterSpacing: '-0.02em'
+                    }}>
+                      Submit your Gateway 2 pack securely
+                    </h3>
+                    <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
+                      Upload your complete submission pack through our SOC 2 compliant platform. We accept all standard Gateway 2 documents including fire strategies, structural reports, MEP specifications, and architectural drawings.
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                        <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                        <div>
+                          <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>SOC 2 Type II certified</strong>
+                          <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                            Your documents are protected by enterprise-grade security with independent audits
+                          </p>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                        <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                        <div>
+                          <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>UK data residency</strong>
+                          <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                            All data processed and stored within the UK, fully GDPR compliant
+                          </p>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                        <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                        <div>
+                          <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>Encrypted transmission</strong>
+                          <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                            TLS 1.3 encryption for all file transfers, encrypted storage at rest
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    flex: 1,
+                    background: 'var(--navy)',
+                    padding: '40px',
+                    border: '1px solid var(--gold)'
+                  }}>
+                    <h4 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '18px',
+                      fontWeight: 300,
+                      color: 'var(--cream)',
+                      marginBottom: '20px'
+                    }}>
+                      Typical submission includes:
+                    </h4>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                      {[
+                        'Fire strategy report',
+                        'Structural engineer report',
+                        'MEP specifications',
+                        'Architectural drawings',
+                        'Construction details',
+                        'Material specifications',
+                        'Compliance statements'
+                      ].map((item, i) => (
+                        <li key={i} style={{
+                          fontSize: '15px',
+                          color: 'rgba(242,241,238,0.8)',
+                          marginBottom: '12px',
+                          paddingLeft: '24px',
+                          position: 'relative'
+                        }}>
+                          <span style={{
+                            position: 'absolute',
+                            left: 0,
+                            color: 'var(--gold)'
+                          }}>→</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeHowTab === 'analysis' && (
+              <div>
+                <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '14px',
+                      letterSpacing: '0.15em',
+                      color: 'var(--gold)',
+                      marginBottom: '16px',
+                      fontWeight: 400
+                    }}>
+                      STEP 02 — AI + EXPERT ANALYSIS
+                    </div>
+                    <h3 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '32px',
+                      fontWeight: 200,
+                      color: 'var(--navy)',
+                      marginBottom: '24px',
+                      letterSpacing: '-0.02em'
+                    }}>
+                      Deterministic rules + AI extraction + expert verification
+                    </h3>
+                    <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
+                      Our proprietary system combines three layers: 55+ deterministic rules check explicit BSR requirements, AI rapidly extracts and cross-references data across your 500+ page pack, then expert consultants verify every finding by hand.
+                    </p>
+
+                    <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '24px', border: '1px solid var(--gold)' }}>
+                      <h4 style={{
+                        fontFamily: 'DM Sans, sans-serif',
+                        fontSize: '16px',
+                        fontWeight: 400,
+                        color: 'var(--navy)',
+                        marginBottom: '16px'
+                      }}>
+                        Why this three-layer approach?
+                      </h4>
+                      <div style={{ display: 'grid', gap: '16px' }}>
+                        <div>
+                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 1: Deterministic Rules</strong>
+                          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
+                            Fixed if-then rules ensure consistent, traceable checking. No probabilistic guessing.
+                          </p>
+                        </div>
+                        <div>
+                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 2: AI Extraction</strong>
+                          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
+                            AI rapidly finds and cross-references data across hundreds of pages. Speed where it matters.
+                          </p>
+                        </div>
+                        <div>
+                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 3: Expert Verification</strong>
+                          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
+                            Qualified consultants review every AI finding, draft amendments, and sign off the report.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '16px' }}>
+                      <div style={{ flex: 1, background: 'var(--white)', padding: '20px', border: '1px solid var(--beige)' }}>
+                        <div style={{ fontSize: '32px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--navy)', marginBottom: '8px' }}>
+                          55+
+                        </div>
+                        <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
+                          Proprietary BSR checks
+                        </div>
+                      </div>
+                      <div style={{ flex: 1, background: 'var(--white)', padding: '20px', border: '1px solid var(--beige)' }}>
+                        <div style={{ fontSize: '32px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--navy)', marginBottom: '8px' }}>
+                          5min
+                        </div>
+                        <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
+                          AI analysis time
+                        </div>
+                      </div>
+                      <div style={{ flex: 1, background: 'var(--white)', padding: '20px', border: '1px solid var(--beige)' }}>
+                        <div style={{ fontSize: '32px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--navy)', marginBottom: '8px' }}>
+                          100%
+                        </div>
+                        <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
+                          Expert verified
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeHowTab === 'delivery' && (
+              <div>
+                <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '14px',
+                      letterSpacing: '0.15em',
+                      color: 'var(--gold)',
+                      marginBottom: '16px',
+                      fontWeight: 400
+                    }}>
+                      STEP 03 — 1-WEEK DELIVERY
+                    </div>
+                    <h3 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '32px',
+                      fontWeight: 200,
+                      color: 'var(--navy)',
+                      marginBottom: '24px',
+                      letterSpacing: '-0.02em'
+                    }}>
+                      Expert-signed readiness report in 1 week
+                    </h3>
+                    <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
+                      You receive a comprehensive, expert-signed report that identifies every gap, provides actionable amendments, and traces every finding to the specific BSR regulation. This isn't ChatGPT output — it's professional consultancy, accelerated by AI.
+                    </p>
+
+                    <div style={{ marginBottom: '32px' }}>
+                      <h4 style={{
+                        fontFamily: 'DM Sans, sans-serif',
+                        fontSize: '18px',
+                        fontWeight: 300,
+                        color: 'var(--navy)',
+                        marginBottom: '20px'
+                      }}>
+                        Your report includes:
+                      </h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        {[
+                          { title: 'Executive summary', desc: 'Overall readiness score and critical issues requiring immediate attention' },
+                          { title: 'Detailed gap analysis', desc: '55+ criteria assessed with pass/fail status and specific evidence citations' },
+                          { title: 'Actionable amendments', desc: 'Precise changes needed for each gap, drafted by expert consultants' },
+                          { title: 'BSR traceability', desc: 'Every finding linked to specific regulation clause with page references' },
+                          { title: 'Expert sign-off', desc: 'Report signed by qualified consultant — legally defensible documentation' }
+                        ].map((item, i) => (
+                          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                            <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                            <div>
+                              <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>{item.title}</strong>
+                              <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                                {item.desc}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    flex: 1,
+                    background: 'var(--navy)',
+                    padding: '40px',
+                    border: '1px solid var(--gold)'
+                  }}>
+                    <h4 style={{
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '18px',
+                      fontWeight: 300,
+                      color: 'var(--cream)',
+                      marginBottom: '20px'
+                    }}>
+                      Timeline comparison
+                    </h4>
+                    <div style={{ marginBottom: '32px' }}>
+                      <div style={{ fontSize: '13px', color: 'rgba(242,241,238,0.5)', marginBottom: '8px', letterSpacing: '0.08em' }}>
+                        TRADITIONAL CONSULTANTS
+                      </div>
+                      <div style={{ fontSize: '36px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'rgba(242,241,238,0.4)', marginBottom: '8px' }}>
+                        2–4 weeks
+                      </div>
+                      <div style={{ fontSize: '14px', color: 'rgba(242,241,238,0.5)' }}>
+                        Manual review, subjective, no traceability
+                      </div>
+                    </div>
+                    <div style={{ borderTop: '1px solid rgba(242,241,238,0.2)', paddingTop: '32px' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--gold)', marginBottom: '8px', letterSpacing: '0.08em' }}>
+                        ATTLEE
+                      </div>
+                      <div style={{ fontSize: '48px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--cream)', marginBottom: '8px' }}>
+                        1 week
+                      </div>
+                      <div style={{ fontSize: '14px', color: 'rgba(242,241,238,0.8)' }}>
+                        Expert-signed, deterministic rules, full BSR traceability
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -343,6 +761,53 @@ const navLinkStyle: React.CSSProperties = {
 };
 
 // Components
+function HowTabButton({ active, onClick, number, children }: {
+  active: boolean;
+  onClick: () => void;
+  number?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '16px 32px',
+        background: active ? 'var(--navy)' : 'var(--white)',
+        color: active ? 'var(--cream)' : 'var(--navy)',
+        border: active ? '2px solid var(--gold)' : '1px solid var(--beige)',
+        fontSize: '14px',
+        fontWeight: active ? 500 : 400,
+        letterSpacing: '0.04em',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+        fontFamily: 'Inter, sans-serif'
+      }}
+      onMouseEnter={(e) => {
+        if (!active) {
+          e.currentTarget.style.background = 'var(--beige)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!active) {
+          e.currentTarget.style.background = 'var(--white)';
+        }
+      }}
+    >
+      {number && (
+        <span style={{
+          color: 'var(--gold)',
+          marginRight: '8px',
+          fontSize: '12px',
+          letterSpacing: '0.1em'
+        }}>
+          {number}
+        </span>
+      )}
+      {children}
+    </button>
+  );
+}
+
 function StatItem({ num, unit, label }: { num: string; unit: string; label: string }) {
   return (
     <div style={{
@@ -371,49 +836,6 @@ function StatItem({ num, unit, label }: { num: string; unit: string; label: stri
       }}>
         {label}
       </div>
-    </div>
-  );
-}
-
-function StepCard({ num, title, description, variant }: {
-  num: string;
-  title: string;
-  description: string;
-  variant: 'white' | 'navy';
-}) {
-  return (
-    <div style={{
-      background: variant === 'navy' ? 'var(--navy)' : 'var(--white)',
-      padding: '40px 36px'
-    }}>
-      <div style={{
-        fontFamily: 'DM Sans, sans-serif',
-        fontWeight: 200,
-        fontSize: '16px',
-        letterSpacing: '0.1em',
-        color: 'var(--gold)',
-        marginBottom: '32px'
-      }}>
-        {num}
-      </div>
-      <h3 style={{
-        fontFamily: 'DM Sans, sans-serif',
-        fontWeight: 300,
-        fontSize: '28px',
-        letterSpacing: '-0.01em',
-        marginBottom: '14px',
-        color: variant === 'navy' ? 'var(--cream)' : 'var(--navy)'
-      }}>
-        {title}
-      </h3>
-      <p style={{
-        fontSize: '17px',
-        color: variant === 'navy' ? 'rgba(242,241,238,0.5)' : 'var(--muted)',
-        lineHeight: 1.7,
-        fontWeight: 300
-      }}>
-        {description}
-      </p>
     </div>
   );
 }
