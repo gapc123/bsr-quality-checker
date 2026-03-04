@@ -248,7 +248,7 @@ function AppContent() {
               color: 'rgba(255,255,255,0.2)',
               letterSpacing: '0.06em'
             }}>
-              © 2026 Attlee AI Ltd · Getting Britain Building
+              © 2026 Attlee AI Ltd · Get Britain Building
             </p>
             <a
               href="mailto:george@attlee.ai"
