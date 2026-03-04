@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enquiries by Caller Type</title>
+<style>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    padding: 40px;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    background: white;
+    padding: 60px;
+    border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #0F1923;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 16px;
+  }
+
+  th {
+    background: #0F1923;
+    color: white;
+    padding: 16px 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid #ddd;
+  }
+
+  td {
+    padding: 14px 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 15px;
+  }
+
+  td:first-child {
+    text-align: left;
+    font-weight: 500;
+    padding-left: 16px;
+  }
+
+  .category-header {
+    background: #E8E4DC;
+    font-weight: 600;
+    text-align: left !important;
+    padding-left: 16px !important;
+    font-size: 16px;
+    color: #0F1923;
+  }
+
+  .directly-affected {
+    background: #E3F2FD;
+  }
+
+  .professionals {
+    background: #FFF9E6;
+  }
+
+  .totals-row {
+    background: #C4A882;
+    font-weight: 700;
+    font-size: 17px;
+    color: #0F1923;
+  }
+
+  .subtotal-row {
+    background: #F2F1EE;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  tbody tr:hover {
+    background: #f8f8f8;
+  }
+
+  .code-col {
+    font-size: 13px;
+    color: #666;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Enquiries by Caller Type</h1>
+  <p class="subtitle">Jul-05 | Directly affected highlighted in blue</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Caller Type</th>
+        <th>January</th>
+        <th>February</th>
+        <th>March</th>
+        <th>April</th>
+        <th>May</th>
+        <th>June</th>
+        <th>July</th>
+        <th>August</th>
+        <th>September</th>
+        <th>October</th>
+        <th>November</th>
+        <th>December</th>
+        <th>Totals</th>
+        <th>Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Directly Affected -->
+      <tr class="category-header">
+        <td colspan="15">DIRECTLY AFFECTED</td>
+      </tr>
+      <tr class="directly-affected">
+        <td>Brain Injured</td>
+        <td>434</td>
+        <td>398</td>
+        <td>411</td>
+        <td>376</td>
+        <td>373</td>
+        <td>374</td>
+        <td>433</td>
+        <td>408</td>
+        <td>404</td>
+        <td>435</td>
+        <td>334</td>
+        <td>261</td>
+        <td><strong>4,641</strong></td>
+        <td class="code-col">BI</td>
+      </tr>
+      <tr class="directly-affected">
+        <td>Friend</td>
+        <td>24</td>
+        <td>14</td>
+        <td>16</td>
+        <td>12</td>
+        <td>13</td>
+        <td>20</td>
+        <td>13</td>
+        <td>16</td>
+        <td>19</td>
+        <td>16</td>
+        <td>6</td>
+        <td>10</td>
+        <td><strong>179</strong></td>
+        <td class="code-col">Friend</td>
+      </tr>
+      <tr class="directly-affected">
+        <td>Parent</td>
+        <td>70</td>
+        <td>62</td>
+        <td>63</td>
+        <td>64</td>
+        <td>73</td>
+        <td>64</td>
+        <td>50</td>
+        <td>51</td>
+        <td>49</td>
+        <td>42</td>
+        <td>46</td>
+        <td>29</td>
+        <td><strong>663</strong></td>
+        <td class="code-col">Parent</td>
+      </tr>
+      <tr class="directly-affected">
+        <td>Partner</td>
+        <td>70</td>
+        <td>64</td>
+        <td>78</td>
+        <td>57</td>
+        <td>73</td>
+        <td>43</td>
+        <td>72</td>
+        <td>65</td>
+        <td>71</td>
+        <td>59</td>
+        <td>48</td>
+        <td>48</td>
+        <td><strong>748</strong></td>
+        <td class="code-col">Partner</td>
+      </tr>
+      <tr class="directly-affected">
+        <td>Relative</td>
+        <td>118</td>
+        <td>110</td>
+        <td>91</td>
+        <td>69</td>
+        <td>56</td>
+        <td>58</td>
+        <td>77</td>
+        <td>61</td>
+        <td>75</td>
+        <td>69</td>
+        <td>51</td>
+        <td>40</td>
+        <td><strong>875</strong></td>
+        <td class="code-col">Relative</td>
+      </tr>
+
+      <!-- Professionals -->
+      <tr class="category-header">
+        <td colspan="15">PROFESSIONALS</td>
+      </tr>
+      <tr class="professionals">
+        <td>Doctor</td>
+        <td>3</td>
+        <td>1</td>
+        <td>2</td>
+        <td>1</td>
+        <td>4</td>
+        <td>1</td>
+        <td>4</td>
+        <td>1</td>
+        <td>4</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td><strong>24</strong></td>
+        <td class="code-col">DR</td>
+      </tr>
+      <tr class="professionals">
+        <td>MP</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td><strong>2</strong></td>
+        <td class="code-col">MP</td>
+      </tr>
+      <tr class="professionals">
+        <td>Nurse</td>
+        <td>5</td>
+        <td>3</td>
+        <td>7</td>
+        <td>5</td>
+        <td>18</td>
+        <td>7</td>
+        <td>4</td>
+        <td>6</td>
+        <td>5</td>
+        <td>3</td>
+        <td>4</td>
+        <td>3</td>
+        <td><strong>70</strong></td>
+        <td class="code-col">Nurse</td>
+      </tr>
+      <tr class="professionals">
+        <td>Occupational Therapist</td>
+        <td>6</td>
+        <td>9</td>
+        <td>6</td>
+        <td>5</td>
+        <td>10</td>
+        <td>6</td>
+        <td>7</td>
+        <td>6</td>
+        <td>5</td>
+        <td>4</td>
+        <td>2</td>
+        <td>2</td>
+        <td><strong>68</strong></td>
+        <td class="code-col">OT</td>
+      </tr>
+      <tr class="professionals">
+        <td>Other Professional</td>
+        <td>47</td>
+        <td>48</td>
+        <td>43</td>
+        <td>47</td>
+        <td>40</td>
+        <td>48</td>
+        <td>58</td>
+        <td>32</td>
+        <td>30</td>
+        <td>42</td>
+        <td>44</td>
+        <td>23</td>
+        <td><strong>502</strong></td>
+        <td class="code-col">Other pro</td>
+      </tr>
+      <tr class="professionals">
+        <td>Physiotherapist</td>
+        <td>0</td>
+        <td>2</td>
+        <td>4</td>
+        <td>2</td>
+        <td>3</td>
+        <td>2</td>
+        <td>6</td>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+        <td>0</td>
+        <td><strong>25</strong></td>
+        <td class="code-col">Physio</td>
+      </tr>
+      <tr class="professionals">
+        <td>Police</td>
+        <td>3</td>
+        <td>1</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+        <td><strong>10</strong></td>
+        <td class="code-col">Police</td>
+      </tr>
+      <tr class="professionals">
+        <td>Prison Officer</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>2</td>
+        <td>2</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td><strong>6</strong></td>
+        <td class="code-col">Prison</td>
+      </tr>
+      <tr class="professionals">
+        <td>Probation Officer</td>
+        <td>2</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>4</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>3</td>
+        <td>4</td>
+        <td>2</td>
+        <td>2</td>
+        <td><strong>21</strong></td>
+        <td class="code-col">Probation</td>
+      </tr>
+      <tr class="professionals">
+        <td>Psychologist</td>
+        <td>3</td>
+        <td>3</td>
+        <td>3</td>
+        <td>0</td>
+        <td>2</td>
+        <td>1</td>
+        <td>5</td>
+        <td>3</td>
+        <td>2</td>
+        <td>3</td>
+        <td>2</td>
+        <td>0</td>
+        <td><strong>27</strong></td>
+        <td class="code-col">Psycholo</td>
+      </tr>
+      <tr class="professionals">
+        <td>Social Services</td>
+        <td>21</td>
+        <td>14</td>
+        <td>17</td>
+        <td>16</td>
+        <td>9</td>
+        <td>25</td>
+        <td>13</td>
+        <td>14</td>
+        <td>20</td>
+        <td>10</td>
+        <td>14</td>
+        <td>16</td>
+        <td><strong>189</strong></td>
+        <td class="code-col">SS</td>
+      </tr>
+      <tr class="professionals">
+        <td>Solicitor</td>
+        <td>4</td>
+        <td>4</td>
+        <td>3</td>
+        <td>4</td>
+        <td>4</td>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>1</td>
+        <td>5</td>
+        <td>4</td>
+        <td>1</td>
+        <td><strong>34</strong></td>
+        <td class="code-col">Solicitor</td>
+      </tr>
+      <tr class="professionals">
+        <td>Speech & Language Therapist</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>3</td>
+        <td>0</td>
+        <td>0</td>
+        <td><strong>9</strong></td>
+        <td class="code-col">SALT</td>
+      </tr>
+
+      <!-- Other & Unknown -->
+      <tr class="category-header">
+        <td colspan="15">HEADWAY G & B AND SERVICES</td>
+      </tr>
+      <tr>
+        <td>Headway Employee</td>
+        <td>5</td>
+        <td>8</td>
+        <td>3</td>
+        <td>4</td>
+        <td>6</td>
+        <td>4</td>
+        <td>3</td>
+        <td>5</td>
+        <td>5</td>
+        <td>10</td>
+        <td>1</td>
+        <td>3</td>
+        <td><strong>57</strong></td>
+        <td class="code-col">HW Emp</td>
+      </tr>
+
+      <tr class="category-header">
+        <td colspan="15">OTHER AND UNKNOWN</td>
+      </tr>
+      <tr>
+        <td>Student</td>
+        <td>1</td>
+        <td>1</td>
+        <td>4</td>
+        <td>5</td>
+        <td>3</td>
+        <td>2</td>
+        <td>1</td>
+        <td>0</td>
+        <td>2</td>
+        <td>5</td>
+        <td>4</td>
+        <td>1</td>
+        <td><strong>29</strong></td>
+        <td class="code-col">Student</td>
+      </tr>
+      <tr>
+        <td>Other</td>
+        <td>20</td>
+        <td>16</td>
+        <td>19</td>
+        <td>11</td>
+        <td>9</td>
+        <td>15</td>
+        <td>16</td>
+        <td>16</td>
+        <td>13</td>
+        <td>15</td>
+        <td>11</td>
+        <td>6</td>
+        <td><strong>167</strong></td>
+        <td class="code-col">Other</td>
+      </tr>
+      <tr>
+        <td>Unknown</td>
+        <td>257</td>
+        <td>210</td>
+        <td>206</td>
+        <td>115</td>
+        <td>145</td>
+        <td>162</td>
+        <td>166</td>
+        <td>129</td>
+        <td>179</td>
+        <td>174</td>
+        <td>99</td>
+        <td>106</td>
+        <td><strong>1,948</strong></td>
+        <td class="code-col">Unknown</td>
+      </tr>
+
+      <!-- Totals -->
+      <tr class="totals-row">
+        <td>TOTAL</td>
+        <td>1,095</td>
+        <td>970</td>
+        <td>978</td>
+        <td>795</td>
+        <td>845</td>
+        <td>837</td>
+        <td>933</td>
+        <td>819</td>
+        <td>891</td>
+        <td>904</td>
+        <td>675</td>
+        <td>552</td>
+        <td><strong>10,294</strong></td>
+        <td></td>
+      </tr>
+
+      <!-- Subtotals -->
+      <tr class="subtotal-row">
+        <td>Directly Affected Total</td>
+        <td>716</td>
+        <td>648</td>
+        <td>659</td>
+        <td>578</td>
+        <td>588</td>
+        <td>559</td>
+        <td>645</td>
+        <td>601</td>
+        <td>618</td>
+        <td>621</td>
+        <td>485</td>
+        <td>388</td>
+        <td><strong>7,106</strong></td>
+        <td></td>
+      </tr>
+      <tr class="subtotal-row">
+        <td>Professionals Total</td>
+        <td>96</td>
+        <td>87</td>
+        <td>87</td>
+        <td>82</td>
+        <td>94</td>
+        <td>95</td>
+        <td>102</td>
+        <td>68</td>
+        <td>74</td>
+        <td>79</td>
+        <td>75</td>
+        <td>48</td>
+        <td><strong>1,087</strong></td>
+        <td></td>
+      </tr>
+      <tr class="subtotal-row">
+        <td>Headway G & B Total</td>
+        <td>5</td>
+        <td>8</td>
+        <td>3</td>
+        <td>4</td>
+        <td>6</td>
+        <td>4</td>
+        <td>3</td>
+        <td>5</td>
+        <td>5</td>
+        <td>10</td>
+        <td>1</td>
+        <td>3</td>
+        <td><strong>57</strong></td>
+        <td></td>
+      </tr>
+      <tr class="subtotal-row">
+        <td>Other & Unknown Total</td>
+        <td>278</td>
+        <td>227</td>
+        <td>229</td>
+        <td>131</td>
+        <td>157</td>
+        <td>179</td>
+        <td>183</td>
+        <td>145</td>
+        <td>194</td>
+        <td>194</td>
+        <td>114</td>
+        <td>113</td>
+        <td><strong>2,144</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

@@ -34,9 +34,9 @@ export default function Landing() {
           <li><a href="#who" style={navLinkStyle}>For consultants</a></li>
           <li><Link to="/security" style={navLinkStyle}>Security</Link></li>
           <SignedIn>
-            <li><Link to="/clients" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '10px 20px', fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Dashboard</Link></li>
+            <li><Link to="/clients" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '12px 24px', fontSize: '15px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Dashboard</Link></li>
           </SignedIn>
-          <li><a href="mailto:george@attlee.ai" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '10px 20px', fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Request access</a></li>
+          <li><a href="mailto:george@attlee.ai" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '12px 24px', fontSize: '15px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Request access</a></li>
         </ul>
       </nav>
 
@@ -44,7 +44,11 @@ export default function Landing() {
       <div style={{
         padding: '160px 5% 100px',
         maxWidth: '100%',
-        margin: '0 auto'
+        margin: '0 auto',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}>
         <p className="eyebrow" style={{ marginBottom: '28px' }}>
           Expert Gateway 2 Review · AI-Accelerated
@@ -52,26 +56,26 @@ export default function Landing() {
         <h1 style={{
           fontFamily: 'DM Sans, sans-serif',
           fontWeight: 200,
-          fontSize: 'clamp(42px, 6vw, 80px)',
+          fontSize: 'clamp(52px, 7vw, 96px)',
           lineHeight: 1.05,
           letterSpacing: '-0.03em',
           color: 'var(--navy)',
-          maxWidth: '1100px',
+          maxWidth: '1200px',
           marginBottom: '32px'
         }}>
           Expert consultants review your pack<br />in <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--gold)' }}>1 week,</em> not 4 weeks.
         </h1>
         <p style={{
-          fontSize: '17px',
+          fontSize: '22px',
           fontWeight: 300,
           color: 'var(--muted)',
-          maxWidth: '650px',
+          maxWidth: '900px',
           lineHeight: 1.7,
           marginBottom: '48px'
         }}>
           75% of Gateway 2 applications are rejected first time. Our expert consultants use AI to review your full pack in 5 minutes, then verify every finding by hand. You get an expert-signed report in 1 week — not generic AI output, but professional consultancy with AI acceleration.
         </p>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'center' }}>
           <a href="mailto:george@attlee.ai" className="btn-primary">Request early access</a>
           <a href="#how" className="btn-ghost">See how it works →</a>
         </div>
@@ -227,7 +231,7 @@ export default function Landing() {
 
 // Styles
 const navLinkStyle: React.CSSProperties = {
-  fontSize: '13px',
+  fontSize: '16px',
   letterSpacing: '0.04em',
   color: 'var(--navy)',
   textDecoration: 'none',
@@ -247,7 +251,7 @@ function StatItem({ num, unit, label }: { num: string; unit: string; label: stri
       <div style={{
         fontFamily: 'DM Sans, sans-serif',
         fontWeight: 200,
-        fontSize: '44px',
+        fontSize: '54px',
         color: 'var(--cream)',
         letterSpacing: '-0.03em',
         lineHeight: 1,
@@ -256,7 +260,7 @@ function StatItem({ num, unit, label }: { num: string; unit: string; label: stri
         {num}<span style={{ color: 'var(--gold)' }}>{unit}</span>
       </div>
       <div style={{
-        fontSize: '11px',
+        fontSize: '14px',
         letterSpacing: '0.1em',
         textTransform: 'uppercase',
         color: 'rgba(255,255,255,0.35)',
@@ -282,7 +286,7 @@ function StepCard({ num, title, description, variant }: {
       <div style={{
         fontFamily: 'DM Sans, sans-serif',
         fontWeight: 200,
-        fontSize: '13px',
+        fontSize: '16px',
         letterSpacing: '0.1em',
         color: 'var(--gold)',
         marginBottom: '32px'
@@ -292,7 +296,7 @@ function StepCard({ num, title, description, variant }: {
       <h3 style={{
         fontFamily: 'DM Sans, sans-serif',
         fontWeight: 300,
-        fontSize: '22px',
+        fontSize: '28px',
         letterSpacing: '-0.01em',
         marginBottom: '14px',
         color: variant === 'navy' ? 'var(--cream)' : 'var(--navy)'
@@ -300,7 +304,7 @@ function StepCard({ num, title, description, variant }: {
         {title}
       </h3>
       <p style={{
-        fontSize: '14px',
+        fontSize: '17px',
         color: variant === 'navy' ? 'rgba(242,241,238,0.5)' : 'var(--muted)',
         lineHeight: 1.7,
         fontWeight: 300
