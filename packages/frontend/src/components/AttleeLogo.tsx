@@ -52,7 +52,7 @@ export default function AttleeLogo({
           letterSpacing: '-0.01em',
           color: color
         }}>
-          attlee
+          attlee ai
         </span>
       )}
     </div>

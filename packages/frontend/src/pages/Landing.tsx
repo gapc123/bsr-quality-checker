@@ -35,7 +35,6 @@ export default function Landing() {
           alignItems: 'center'
         }}>
           <li><a href="#how" style={navLinkStyle}>How it works</a></li>
-          <li><a href="#who" style={navLinkStyle}>For consultants</a></li>
           <li><Link to="/security" style={navLinkStyle}>Security</Link></li>
           <SignedIn>
             <li><Link to="/clients" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '12px 24px', fontSize: '15px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Dashboard</Link></li>
