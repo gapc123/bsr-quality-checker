@@ -54,7 +54,7 @@ export default function Landing() {
         alignItems: 'center'
       }}>
         <p className="eyebrow" style={{ marginBottom: '28px' }}>
-          Expert Gateway 2 Review · AI-Accelerated
+          Expert Gateway 2 Review · AI + Proprietary Deterministic Rules
         </p>
         <h1 style={{
           fontFamily: 'DM Sans, sans-serif',
@@ -76,7 +76,7 @@ export default function Landing() {
           lineHeight: 1.7,
           marginBottom: '48px'
         }}>
-          75% of Gateway 2 applications are rejected first time. Our expert consultants use AI to review your full pack in 5 minutes, then verify every finding by hand. You get an expert-signed report in 1 week — not generic AI output, but professional consultancy with AI acceleration.
+          75% of Gateway 2 applications are rejected first time. AI drafts findings in 5 minutes within our closed-tenancy system, proprietary deterministic rules validate consistency, then expert consultants verify every finding by hand. You get an expert-signed report in 1 week — not raw AI output, but AI validated by deterministic rules and professional experts.
         </p>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'center' }}>
           <a href="mailto:george@attlee.ai" className="btn-primary">Request early access</a>
@@ -161,14 +161,14 @@ export default function Landing() {
                 color: '#2d6a2d',
                 marginBottom: '16px'
               }}>
-                ✓ Attlee's Deterministic + AI Approach
+                ✓ Attlee's Approach: Deterministic Rules + AI
               </h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
-                  <strong>Deterministic rules:</strong> 55 fixed checks that always work the same way
+                  <strong>AI drafts findings:</strong> Rapid analysis across documents in closed-tenancy architecture
                 </li>
                 <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
-                  <strong>AI for extraction:</strong> Uses AI only to find data in documents (fast)
+                  <strong>Proprietary rules validate:</strong> 55 deterministic checks layered over AI ensure consistency
                 </li>
                 <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
                   <strong>Expert verification:</strong> Every finding reviewed by qualified consultants
@@ -195,7 +195,7 @@ export default function Landing() {
               maxWidth: '900px',
               margin: '0 auto'
             }}>
-              <strong style={{ color: 'var(--gold)' }}>What this means:</strong> AI models are inherently probabilistic — they generate responses based on statistical patterns, not fixed logic. For BSR compliance, you need deterministic outcomes: the same submission checked twice must produce the same result. We use deterministic rules to check compliance (reliable, traceable), and AI only to extract data from documents (where speed matters, not legal certainty).
+              <strong style={{ color: 'var(--gold)' }}>What this means:</strong> AI models are inherently probabilistic — they generate responses based on statistical patterns, not fixed logic. For BSR compliance, you need deterministic outcomes. AI drafts findings across your documents at speed within our closed-tenancy system, then our proprietary deterministic rules validate every output for consistency and accuracy. We've built an architecture where AI does the first draft and deterministic logic ensures reliability.
             </p>
           </div>
         </div>
@@ -206,7 +206,7 @@ export default function Landing() {
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <p className="section-eyebrow" style={{ textAlign: 'center' }}>How it works</p>
           <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '48px' }}>
-            Expert review in 1 week — AI does the heavy lifting in 5 minutes, our consultants verify everything.
+            Expert review in 1 week — AI drafts in 5 minutes, proprietary deterministic rules validate, consultants verify everything.
           </h2>
 
           {/* Tab Navigation */}
@@ -316,7 +316,7 @@ export default function Landing() {
                       AI + expert review
                     </h4>
                     <p style={{ fontSize: '15px', color: 'rgba(242,241,238,0.7)', lineHeight: 1.7 }}>
-                      Our AI reviews 55+ BSR checks in 5 minutes. Then our expert consultants verify every finding.
+                      AI drafts findings in 5 minutes within our closed-tenancy system. 55+ proprietary deterministic rules validate outputs. Expert consultants verify every finding.
                     </p>
                   </div>
                   <div style={{ padding: '32px', background: 'var(--white)', border: '1px solid var(--beige)' }}>
@@ -472,10 +472,10 @@ export default function Landing() {
                       marginBottom: '24px',
                       letterSpacing: '-0.02em'
                     }}>
-                      Deterministic rules + AI extraction + expert verification
+                      AI drafts → Proprietary rules validate → Expert verification
                     </h3>
                     <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
-                      Our proprietary system combines three layers: 55+ deterministic rules check explicit BSR requirements, AI rapidly extracts and cross-references data across your 500+ page pack, then expert consultants verify every finding by hand.
+                      Our closed-tenancy system combines three layers: AI drafts findings across your 500+ page pack in minutes, 55+ proprietary deterministic rules validate every output for consistency, then expert consultants verify each finding by hand. Not raw AI output — AI validated by deterministic rules and expert review.
                     </p>
 
                     <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '24px', border: '1px solid var(--gold)' }}>
@@ -490,21 +490,21 @@ export default function Landing() {
                       </h4>
                       <div style={{ display: 'grid', gap: '16px' }}>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 1: Deterministic Rules</strong>
+                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 1: AI Drafting (Closed Tenancy)</strong>
                           <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
-                            Fixed if-then rules ensure consistent, traceable checking. No probabilistic guessing.
+                            AI analyzes your documents and drafts findings at speed within our secure closed-tenancy architecture.
                           </p>
                         </div>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 2: AI Extraction</strong>
+                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 2: Proprietary Deterministic Validation</strong>
                           <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
-                            AI rapidly finds and cross-references data across hundreds of pages. Speed where it matters.
+                            55+ proprietary fixed rules validate AI outputs for consistency. Same input = same result, every time.
                           </p>
                         </div>
                         <div>
                           <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 3: Expert Verification</strong>
                           <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
-                            Qualified consultants review every AI finding, draft amendments, and sign off the report.
+                            Qualified consultants review every finding, draft amendments, and sign off the report.
                           </p>
                         </div>
                       </div>
@@ -664,7 +664,7 @@ export default function Landing() {
               fontWeight: 300,
               marginBottom: '32px'
             }}>
-              AI identifies every BSR requirement gap in 5 minutes. Our expert consultants verify each finding by hand, draft professional amendments, and sign off the final report. Every gap traced to BSR source. Every decision validated by an expert. This isn't ChatGPT output — it's professional consultancy, accelerated by AI.
+              AI drafts findings in 5 minutes within our closed-tenancy system. Proprietary deterministic rules validate consistency. Expert consultants verify each finding by hand, draft amendments, and sign off the final report. Every gap traced to BSR source. Not raw AI output — AI validated by deterministic rules and expert review.
             </p>
             <a href="mailto:george@attlee.ai" className="btn-primary">Request consultation</a>
           </div>
