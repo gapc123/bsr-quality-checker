@@ -23,6 +23,16 @@ import {
   DeterministicAssessment,
   DocumentEvidence
 } from './deterministic-rules.js';
+import type { ConfidenceTag } from '../types/confidence.js';
+import { determineConfidence } from './confidence-analyzer.js';
+import type {
+  EffortAssessment,
+  CostImpactAssessment,
+  RejectionAssessment,
+} from '../types/impact.js';
+import { analyzeImpacts } from './impact-analyzer.js';
+import type { TriageAssessment } from '../types/triage.js';
+import { analyzeTriageForIssue } from './triage-analyzer.js';
 
 // ============================================
 // PROPOSED CHANGE VALIDATION
@@ -234,20 +244,35 @@ export interface AssessmentResult {
     effort: 'S' | 'M' | 'L';
     expected_benefit: string;
   }>;
-  confidence: 'high' | 'medium' | 'low';
+  confidence_old?: 'high' | 'medium' | 'low'; // Legacy field, deprecated
   proposed_change?: string | null;  // Suggested text to add/modify in the submission
   proposed_change_source?: string | null;  // Source document if info came from cross-document search
 
-  // NEW: Cost, timeline, and risk data (Phase 1 enhancement)
+  // NEW: Confidence framework (Stage 1)
+  confidence?: ConfidenceTag;  // Structured confidence with reasoning
+
+  // NEW: Impact assessments (Stage 2) - honest qualitative categories
+  effort_assessment?: EffortAssessment;           // How long to fix (QUICK_FIX, DAYS, WEEKS, MONTHS)
+  cost_impact_assessment?: CostImpactAssessment;  // Cost impact category (NEGLIGIBLE, LOW, MEDIUM, HIGH, VERY_HIGH)
+  rejection_assessment?: RejectionAssessment;     // Rejection likelihood (UNLIKELY, POSSIBLE, LIKELY, VERY_LIKELY, ALMOST_CERTAIN)
+
+  // NEW: Triage assessment (Stage 3) - action prioritization for decision-making
+  triage?: TriageAssessment;  // Urgency, action type, engagement type, dependencies, quick wins
+
+  // DEPRECATED: Old numerical estimates (fake precision - being phased out in Stage 2)
+  // These presented guesses as facts. Use impact assessments above instead.
+  /** @deprecated Use effort_assessment instead */
   cost_estimate?: {
     min: number;
     max: number;
     currency: 'GBP';
   };
+  /** @deprecated Use effort_assessment instead */
   timeline_estimate?: {
     days: number;
     description: string;
   };
+  /** @deprecated Use rejection_assessment instead */
   rejection_risk?: {
     probability: number; // 0-1
     description: string;
@@ -854,7 +879,7 @@ Set to null if:
       },
       gaps_identified: [],
       actions_required: [],
-      confidence: 'low',
+      confidence_old: 'low', // Will be replaced with proper ConfidenceTag
       proposed_change: null,
       proposed_change_source: null,
       // NEW: Enhanced fields with safe defaults
@@ -962,12 +987,26 @@ function calculatePriorityScore(criterion: AssessmentResult): number {
 }
 
 /**
- * Enrich criterion results with cost, timeline, and risk data
+ * Enrich criterion results with impact assessments
+ * Stage 2: Uses qualitative categories instead of fake numerical estimates
  */
-function enrichCriterionWithMetadata(criterion: AssessmentResult): AssessmentResult {
+export function enrichCriterionWithMetadata(criterion: AssessmentResult): AssessmentResult {
   const enriched = { ...criterion };
 
-  // Add rejection risk based on severity
+  // Stage 2: Add honest qualitative impact assessments
+  if (criterion.status === 'does_not_meet' || criterion.status === 'partial') {
+    const impacts = analyzeImpacts(criterion);
+
+    enriched.effort_assessment = impacts.effort;
+    enriched.cost_impact_assessment = impacts.cost;
+    enriched.rejection_assessment = impacts.rejection;
+
+    // Stage 3: Add triage assessment for action prioritization
+    enriched.triage = analyzeTriageForIssue(enriched);
+  }
+
+  // DEPRECATED: Keep old fake numbers for backward compatibility (will be removed)
+  // These are guesses presented as facts and should not be relied upon
   if (criterion.status === 'does_not_meet' || criterion.status === 'partial') {
     const riskData = SEVERITY_REJECTION_RISK[criterion.severity as keyof typeof SEVERITY_REJECTION_RISK];
     if (riskData) {
@@ -976,25 +1015,24 @@ function enrichCriterionWithMetadata(criterion: AssessmentResult): AssessmentRes
         description: riskData.description,
       };
     }
-  }
 
-  // Estimate cost and timeline
-  const ownerType = determineOwnerTypeForEnrichment(criterion);
-  const effort = estimateEffortLevel(criterion);
+    const ownerType = determineOwnerTypeForEnrichment(criterion);
+    const effort = estimateEffortLevel(criterion);
 
-  const costEstimate = estimateIssueCost(ownerType, effort);
-  enriched.cost_estimate = {
-    min: costEstimate.min,
-    max: costEstimate.max,
-    currency: 'GBP',
-  };
-
-  const timeEstimate = EFFORT_TIME_ESTIMATES[effort as keyof typeof EFFORT_TIME_ESTIMATES];
-  if (timeEstimate) {
-    enriched.timeline_estimate = {
-      days: timeEstimate.days,
-      description: timeEstimate.description,
+    const costEstimate = estimateIssueCost(ownerType, effort);
+    enriched.cost_estimate = {
+      min: costEstimate.min,
+      max: costEstimate.max,
+      currency: 'GBP',
     };
+
+    const timeEstimate = EFFORT_TIME_ESTIMATES[effort as keyof typeof EFFORT_TIME_ESTIMATES];
+    if (timeEstimate) {
+      enriched.timeline_estimate = {
+        days: timeEstimate.days,
+        description: timeEstimate.description,
+      };
+    }
   }
 
   // Calculate priority score (for sorting)
@@ -1081,7 +1119,7 @@ export async function assessPackAgainstMatrix(
       effort: dr.severity === 'high' ? 'L' : (dr.severity === 'medium' ? 'M' : 'S'),
       expected_benefit: `Resolve ${dr.category} compliance gap`
     }] : [],
-    confidence: dr.result.confidence === 'definitive' ? 'high' : (dr.result.confidence === 'high' ? 'high' : 'medium'),
+    confidence_old: dr.result.confidence === 'definitive' ? 'high' : (dr.result.confidence === 'high' ? 'high' : 'medium'),
     // Deterministic rules don't generate proposed_change - they identify gaps
     // Only LLM can generate specific, insertable text. Deterministic failures
     // are either: (a) missing documents (human required), or (b) gaps that need
@@ -1140,20 +1178,31 @@ export async function assessPackAgainstMatrix(
   const combinedResults = [...deterministicAssessmentResults, ...llmResults];
 
   // ============================================
-  // ENRICHMENT: Add cost/timeline/risk metadata
+  // ENRICHMENT: Add confidence tags + cost/timeline/risk metadata
   // ============================================
   console.log(`\n${'─'.repeat(40)}`);
-  console.log(`ENRICHING RESULTS WITH COST/RISK DATA`);
+  console.log(`ENRICHING RESULTS WITH CONFIDENCE & COST/RISK DATA`);
   console.log(`${'─'.repeat(40)}`);
 
   const allResults = combinedResults.map(criterion => {
     try {
-      return enrichCriterionWithMetadata(criterion);
+      // First enrich with cost/timeline metadata (will be removed in Stage 2)
+      const enriched = enrichCriterionWithMetadata(criterion);
+
+      // Then add confidence tag
+      const confidence = determineConfidence(enriched);
+
+      return {
+        ...enriched,
+        confidence
+      };
     } catch (err) {
       console.error(`Failed to enrich criterion ${criterion.matrix_id}:`, err);
       return criterion; // Return original if enrichment fails
     }
   });
+
+  console.log(`  ✓ Enriched ${allResults.length} results with confidence levels`);
 
   console.log(`  ✓ Enriched ${allResults.length} results with cost/timeline/risk data`);
 

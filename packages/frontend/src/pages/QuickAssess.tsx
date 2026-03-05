@@ -102,6 +102,11 @@ export default function QuickAssess() {
       setProgress('Running Phase 2: LLM Enrichment...');
 
       const data = await res.json();
+      console.log('=== ASSESSMENT DATA RECEIVED ===');
+      console.log('Full data:', data);
+      console.log('Results count:', data.results?.length);
+      console.log('Results statuses:', data.results?.map((r: any) => ({ id: r.matrix_id, status: r.status })));
+      console.log('Summary:', data.summary);
       setAssessing(false);
       setAssessment(data);
       setProgress('');

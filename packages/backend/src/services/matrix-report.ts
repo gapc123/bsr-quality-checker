@@ -9,6 +9,22 @@
  */
 
 import { FullAssessment, AssessmentResult } from './matrix-assessment.js';
+import type { ConfidenceLevel } from '../types/confidence.js';
+import type {
+  EffortLevel,
+  CostImpact,
+  RejectionLikelihood,
+} from '../types/impact.js';
+import {
+  describeEffortLevel,
+  describeCostImpact,
+  describeRejectionLikelihood,
+  getEffortEmoji,
+  getCostImpactEmoji,
+  getRejectionEmoji,
+} from '../types/impact.js';
+import type { SubmissionGate } from '../types/triage.js';
+import { analyzeSubmissionGate } from './triage-analyzer.js';
 
 interface ReportData {
   assessment: FullAssessment;
@@ -16,6 +32,92 @@ interface ReportData {
   versionNumber: number;
   projectName: string | null;
   documentCount: number;
+}
+
+/**
+ * Format confidence level as a badge for display
+ */
+function formatConfidenceBadge(level: ConfidenceLevel | undefined): string {
+  if (!level) {
+    return '[CONFIDENCE: NOT DETERMINED]';
+  }
+
+  const badges = {
+    'HIGH': '🟢 HIGH CONFIDENCE',
+    'MEDIUM': '🟡 MEDIUM CONFIDENCE',
+    'REQUIRES_HUMAN_JUDGEMENT': '🔴 REQUIRES HUMAN JUDGEMENT'
+  };
+
+  return `[${badges[level]}]`;
+}
+
+/**
+ * Get short explanation of confidence level
+ */
+function getConfidenceDescription(level: ConfidenceLevel | undefined): string {
+  if (!level) return '';
+
+  const descriptions = {
+    'HIGH': 'System determined definitively through document analysis',
+    'MEDIUM': 'AI interpretation with reasonable confidence',
+    'REQUIRES_HUMAN_JUDGEMENT': 'Requires professional expert judgement'
+  };
+
+  return descriptions[level];
+}
+
+/**
+ * Stage 2: Format effort assessment (prefers new format, falls back to old)
+ */
+function formatEffort(result: AssessmentResult): string {
+  // Prefer new impact assessment
+  if (result.effort_assessment) {
+    const emoji = getEffortEmoji(result.effort_assessment.level);
+    return `${emoji} ${result.effort_assessment.description}`;
+  }
+
+  // Fallback to old format
+  if (result.timeline_estimate) {
+    return result.timeline_estimate.description;
+  }
+
+  return 'Unknown';
+}
+
+/**
+ * Stage 2: Format cost impact (prefers new format, falls back to old)
+ */
+function formatCostImpact(result: AssessmentResult): string {
+  // Prefer new impact assessment
+  if (result.cost_impact_assessment) {
+    const emoji = getCostImpactEmoji(result.cost_impact_assessment.impact);
+    return `${emoji} ${result.cost_impact_assessment.description}`;
+  }
+
+  // Fallback to old format
+  if (result.cost_estimate) {
+    return `£${result.cost_estimate.min.toLocaleString()}-£${result.cost_estimate.max.toLocaleString()}`;
+  }
+
+  return 'Unknown';
+}
+
+/**
+ * Stage 2: Format rejection likelihood (prefers new format, falls back to old)
+ */
+function formatRejectionLikelihood(result: AssessmentResult): string {
+  // Prefer new impact assessment
+  if (result.rejection_assessment) {
+    const emoji = getRejectionEmoji(result.rejection_assessment.likelihood);
+    return `${emoji} ${describeRejectionLikelihood(result.rejection_assessment.likelihood)}`;
+  }
+
+  // Fallback to old format
+  if (result.rejection_risk) {
+    return `${Math.round(result.rejection_risk.probability * 100)}% risk`;
+  }
+
+  return 'Unknown';
 }
 
 /**
@@ -36,7 +138,7 @@ export function generateMatrixReport(data: ReportData): string {
   // ============================================
   // PAGE 1: EXECUTIVE SUMMARY
   // ============================================
-  sections.push(formatExecutiveSummaryMarkdown(execSummary, projectName || packName));
+  sections.push(formatExecutiveSummaryMarkdown(execSummary, projectName || packName, assessment));
   sections.push('\n\n' + '═'.repeat(105) + '\n\n');
 
   // ============================================
@@ -357,6 +459,7 @@ function formatFindingCompact(result: AssessmentResult): string {
 <span class="finding-id">${result.matrix_id}</span>
 <span class="finding-title">${result.matrix_title}</span>
 ${statusBadge(result.status)}
+${formatConfidenceBadge(result.confidence?.level)}
 </div>
 
 <div class="requirement-box">
@@ -372,6 +475,11 @@ ${result.reference_evidence.quote ? `<blockquote>"${truncateText(result.referenc
 <strong>Assessment:</strong> ${result.reasoning}
 </div>
 
+${result.confidence ? `<div class="confidence-box">
+<strong>Confidence:</strong> ${getConfidenceDescription(result.confidence.level)}
+${result.confidence.reasoning ? `<br><em>${result.confidence.reasoning}</em>` : ''}
+</div>` : ''}
+
 ${result.pack_evidence.found ? `<div class="evidence-box ${result.status === 'meets' ? 'pass' : 'partial'}">
 <strong>Your Submission:</strong> Found in ${result.pack_evidence.document || 'documents'}
 ${result.pack_evidence.quote ? `<blockquote>"${truncateText(result.pack_evidence.quote, 150)}"</blockquote>` : ''}
@@ -384,6 +492,13 @@ ${gaps.length > 0 ? `<div class="gaps-box">
 
 ${topAction ? `<div class="action-box">
 <strong>Required Action:</strong> ${topAction.action} <em>(Owner: ${topAction.owner}, Effort: ${topAction.effort})</em>
+</div>` : ''}
+
+${(result.effort_assessment || result.cost_impact_assessment || result.rejection_assessment) ? `<div class="impact-box">
+<strong>Impact Assessment (Stage 2: Honest Categories):</strong>
+${result.effort_assessment ? `<br>⏱️  <strong>Effort:</strong> ${result.effort_assessment.description}` : ''}
+${result.cost_impact_assessment ? `<br>💰 <strong>Cost Impact:</strong> ${result.cost_impact_assessment.description}${result.cost_impact_assessment.typical_range ? ` (${result.cost_impact_assessment.typical_range})` : ''}` : ''}
+${result.rejection_assessment ? `<br>🚨 <strong>BSR Rejection Risk:</strong> ${result.rejection_assessment.reasoning}` : ''}
 </div>` : ''}
 </div>
 
@@ -758,7 +873,19 @@ interface ExecutiveSummary {
     specialist_required_count: number;
     criteria_passed: number;
     criteria_total: number;
+    // Stage 1: Confidence breakdown
+    high_confidence: number;
+    medium_confidence: number;
+    requires_judgement: number;
   };
+  // Stage 2: Impact profile (categorical distribution)
+  impact_profile?: {
+    effort_distribution: Record<string, number>;  // e.g., { WEEKS: 3, MONTHS: 1 }
+    cost_distribution: Record<string, number>;    // e.g., { HIGH: 2, MEDIUM: 1 }
+    rejection_distribution: Record<string, number>; // e.g., { VERY_LIKELY: 2, LIKELY: 1 }
+  };
+  // Stage 3: Submission decision gate
+  submission_gate?: SubmissionGate;
   bsr_review_fee_estimate?: {
     hours: number;
     cost: number;
@@ -931,6 +1058,45 @@ export function generateExecutiveSummary(
     cost: estimatedBSRHours * 151, // £151/hour BSR rate
   };
 
+  // Stage 1: Calculate confidence breakdown across all assessed criteria
+  const highConfidence = assessment.results.filter(
+    r => r.confidence?.level === 'HIGH'
+  ).length;
+  const mediumConfidence = assessment.results.filter(
+    r => r.confidence?.level === 'MEDIUM'
+  ).length;
+  const requiresJudgement = assessment.results.filter(
+    r => r.confidence?.level === 'REQUIRES_HUMAN_JUDGEMENT'
+  ).length;
+
+  // Stage 2: Calculate impact profile distributions (only for failed criteria)
+  const effortDistribution: Record<string, number> = {};
+  const costDistribution: Record<string, number> = {};
+  const rejectionDistribution: Record<string, number> = {};
+
+  failedCriteria.forEach(criterion => {
+    // Count effort levels
+    if (criterion.effort_assessment) {
+      const level = criterion.effort_assessment.level;
+      effortDistribution[level] = (effortDistribution[level] || 0) + 1;
+    }
+
+    // Count cost impacts
+    if (criterion.cost_impact_assessment) {
+      const impact = criterion.cost_impact_assessment.impact;
+      costDistribution[impact] = (costDistribution[impact] || 0) + 1;
+    }
+
+    // Count rejection likelihoods
+    if (criterion.rejection_assessment) {
+      const likelihood = criterion.rejection_assessment.likelihood;
+      rejectionDistribution[likelihood] = (rejectionDistribution[likelihood] || 0) + 1;
+    }
+  });
+
+  // Stage 3: Analyze submission gate (clear yes/no decision)
+  const submissionGate = analyzeSubmissionGate(assessment.results);
+
   return {
     verdict,
     verdict_text: verdictText,
@@ -957,7 +1123,19 @@ export function generateExecutiveSummary(
       specialist_required_count: failedCriteria.length - aiAmendableCount,
       criteria_passed: assessment.results.filter(c => c.status === 'meets').length,
       criteria_total: assessment.results.length,
+      // Stage 1: Confidence breakdown
+      high_confidence: highConfidence,
+      medium_confidence: mediumConfidence,
+      requires_judgement: requiresJudgement,
     },
+    // Stage 2: Impact profile (only if we have impact assessments)
+    impact_profile: Object.keys(effortDistribution).length > 0 ? {
+      effort_distribution: effortDistribution,
+      cost_distribution: costDistribution,
+      rejection_distribution: rejectionDistribution,
+    } : undefined,
+    // Stage 3: Submission decision gate
+    submission_gate: submissionGate,
     bsr_review_fee_estimate: bsrReviewFee,
   };
 }
@@ -967,7 +1145,8 @@ export function generateExecutiveSummary(
  */
 export function formatExecutiveSummaryMarkdown(
   summary: ExecutiveSummary,
-  projectName: string
+  projectName: string,
+  assessment: FullAssessment
 ): string {
   const emoji = getVerdictEmoji(summary.verdict);
 
@@ -976,6 +1155,33 @@ export function formatExecutiveSummaryMarkdown(
   md += `║  Project: ${projectName.padEnd(47)} ║\n`;
   md += `║  Assessment Date: ${new Date().toISOString().split('T')[0].padEnd(39)} ║\n`;
   md += `╚══════════════════════════════════════════════════════════════╝\n\n`;
+
+  // Stage 3: Submission Gate - The Most Important Decision
+  if (summary.submission_gate) {
+    const gate = summary.submission_gate;
+    const gateEmoji = gate.gate_status === 'GREEN' ? '✅' :
+                      gate.gate_status === 'AMBER' ? '⚠️' : '🚨';
+
+    md += `╔══════════════════════════════════════════════════════════════╗\n`;
+    md += `║  SUBMISSION DECISION GATE                                    ║\n`;
+    md += `╚══════════════════════════════════════════════════════════════╝\n\n`;
+    md += `${gateEmoji} ${gate.gate_status}: ${gate.can_submit ? 'READY TO SUBMIT' : 'DO NOT SUBMIT YET'}\n\n`;
+    md += `${gate.recommendation}\n\n`;
+
+    if (gate.blockers_count > 0) {
+      md += `⛔ ${gate.blockers_count} CRITICAL BLOCKER${gate.blockers_count > 1 ? 'S' : ''} must be fixed first:\n`;
+      gate.blocking_issues.forEach(id => {
+        md += `   • ${id}\n`;
+      });
+      md += `\n`;
+    }
+
+    if (gate.high_priority_count > 0 && gate.blockers_count === 0) {
+      md += `⚠️  ${gate.high_priority_count} HIGH PRIORITY issue${gate.high_priority_count > 1 ? 's' : ''} remain - consider fixing to avoid BSR queries\n\n`;
+    }
+
+    md += `${'═'.repeat(65)}\n\n`;
+  }
 
   md += `VERDICT: ${emoji} ${summary.verdict_text}\n`;
   md += `${'─'.repeat(65)}\n\n`;
@@ -996,10 +1202,12 @@ export function formatExecutiveSummaryMarkdown(
 
   md += `REMEDIATION PLAN:\n`;
   md += `${'─'.repeat(65)}\n`;
+  md += `⚠️  NOTE: Cost and timeline figures below are ROUGH ESTIMATES only.\n`;
+  md += `    Actual costs depend on your specific consultants and project context.\n\n`;
   md += `  Estimated cost to fix:     ${formatCurrencyRange(
     summary.cost_estimate.min,
     summary.cost_estimate.max
-  )}\n`;
+  )} (indicative)\n`;
   md += `  Estimated timeline:        ${formatDaysAsWeeks(summary.timeline_estimate.total_days)}`;
   if (summary.timeline_estimate.can_parallelize) {
     md += ` (if parallel workstreams)\n`;
@@ -1037,6 +1245,62 @@ export function formatExecutiveSummaryMarkdown(
   md += `  • ${summary.summary_stats.specialist_required_count} issues require specialist input\n`;
   md += `  • ${summary.summary_stats.criteria_passed}/${summary.summary_stats.criteria_total} criteria already passed\n\n`;
 
+  md += `CONFIDENCE BREAKDOWN:\n`;
+  md += `  🟢 High Confidence:       ${summary.summary_stats.high_confidence} checks (deterministic)\n`;
+  md += `  🟡 Medium Confidence:     ${summary.summary_stats.medium_confidence} checks (AI interpretation)\n`;
+  md += `  🔴 Requires Judgement:    ${summary.summary_stats.requires_judgement} checks (expert needed)\n\n`;
+
+  // Stage 3: Quick wins section
+  const quickWins = assessment.results.filter(r =>
+    (r.status === 'does_not_meet' || r.status === 'partial') &&
+    r.triage?.quick_win
+  );
+
+  if (quickWins.length > 0) {
+    md += `⚡ QUICK WINS (< 2 days each):\n`;
+    md += `  ${quickWins.length} issue${quickWins.length > 1 ? 's' : ''} can be fixed quickly:\n`;
+    quickWins.slice(0, 5).forEach(qw => {
+      md += `  • ${qw.matrix_id}: ${qw.matrix_title}\n`;
+    });
+    md += `\n`;
+  }
+
+  // Stage 2: Show impact profile if available
+  if (summary.impact_profile) {
+    md += `IMPACT PROFILE (Honest Categories - Not Fake Precision):\n`;
+
+    if (Object.keys(summary.impact_profile.effort_distribution).length > 0) {
+      md += `  Effort Required:\n`;
+      Object.entries(summary.impact_profile.effort_distribution)
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([level, count]) => {
+          const emoji = getEffortEmoji(level as any);
+          md += `    ${emoji} ${level}: ${count} issue${count > 1 ? 's' : ''}\n`;
+        });
+    }
+
+    if (Object.keys(summary.impact_profile.cost_distribution).length > 0) {
+      md += `  Cost Impact:\n`;
+      Object.entries(summary.impact_profile.cost_distribution)
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([impact, count]) => {
+          const emoji = getCostImpactEmoji(impact as any);
+          md += `    ${emoji} ${impact}: ${count} issue${count > 1 ? 's' : ''}\n`;
+        });
+    }
+
+    if (Object.keys(summary.impact_profile.rejection_distribution).length > 0) {
+      md += `  BSR Rejection Risk:\n`;
+      Object.entries(summary.impact_profile.rejection_distribution)
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([likelihood, count]) => {
+          const emoji = getRejectionEmoji(likelihood as any);
+          md += `    ${emoji} ${likelihood}: ${count} issue${count > 1 ? 's' : ''}\n`;
+        });
+    }
+    md += `\n`;
+  }
+
   md += `Assessed by: Attlee AI Assessment Engine v2.1\n`;
   md += `Report generated: ${new Date().toISOString()}\n`;
 
@@ -1073,6 +1337,41 @@ export function generateIssuesRegister(assessment: FullAssessment): IssueRegiste
       severity = 'low';
     }
 
+    // Stage 2: Use new impact categories (with fallback to old format)
+    let effortDisplay = 'Unknown';
+    if (criterion.effort_assessment) {
+      const emoji = getEffortEmoji(criterion.effort_assessment.level);
+      effortDisplay = `${emoji} ${criterion.effort_assessment.level}`;
+    } else if (criterion.timeline_estimate) {
+      effortDisplay = criterion.timeline_estimate.description;
+    }
+
+    let costDisplay = '£0';
+    if (criterion.cost_impact_assessment) {
+      const emoji = getCostImpactEmoji(criterion.cost_impact_assessment.impact);
+      costDisplay = `${emoji} ${criterion.cost_impact_assessment.impact}`;
+    } else if (criterion.cost_estimate) {
+      costDisplay = formatCurrencyRange(
+        criterion.cost_estimate.min,
+        criterion.cost_estimate.max
+      );
+    }
+
+    let rejectionRisk = 50;
+    if (criterion.rejection_assessment) {
+      // Convert likelihood to numeric score for sorting
+      const likelihoodScores = {
+        'UNLIKELY': 15,
+        'POSSIBLE': 40,
+        'LIKELY': 65,
+        'VERY_LIKELY': 85,
+        'ALMOST_CERTAIN': 95
+      };
+      rejectionRisk = likelihoodScores[criterion.rejection_assessment.likelihood];
+    } else if (criterion.rejection_risk) {
+      rejectionRisk = Math.round(criterion.rejection_risk.probability * 100);
+    }
+
     return {
       id: String(idx + 1).padStart(2, '0'),
       matrix_id: criterion.matrix_id,
@@ -1080,13 +1379,10 @@ export function generateIssuesRegister(assessment: FullAssessment): IssueRegiste
       severity,
       regulatory_reference: formatRegulatoryRef(criterion),
       owner: cleanOwnerName(owner),
-      effort: criterion.timeline_estimate?.description || 'Unknown',
-      cost_range: formatCurrencyRange(
-        criterion.cost_estimate?.min || 0,
-        criterion.cost_estimate?.max || 0
-      ),
+      effort: effortDisplay,
+      cost_range: costDisplay,
       status: isAIAmendable ? 'READY' : 'OPEN',
-      rejection_risk: Math.round((criterion.rejection_risk?.probability || 0.5) * 100),
+      rejection_risk: rejectionRisk,
       priority_score: criterion.priority_score || 50,
       criterion_result: criterion,
     };
@@ -1155,7 +1451,7 @@ export function formatIssuesRegisterMarkdown(items: IssueRegisterItem[]): string
     }
     byOwner[owner].count++;
 
-    // Parse cost range
+    // Stage 2: Parse cost range (handle both old numerical and new categorical formats)
     const costMatch = item.cost_range.match(/£([\d.]+)K?-?([\d.]+)?K?/);
     if (costMatch) {
       const min = parseFloat(costMatch[1]) * (item.cost_range.includes('K') ? 1000 : 1);
@@ -1165,6 +1461,8 @@ export function formatIssuesRegisterMarkdown(items: IssueRegisterItem[]): string
       byOwner[owner].costMin += min;
       byOwner[owner].costMax += max;
     }
+    // For new format (e.g., "💛 LOW"), we can't sum but that's okay -
+    // the display will show categories instead of totals
   });
 
   md += `SUMMARY:\n`;
@@ -1195,6 +1493,17 @@ export function formatIssuesRegisterMarkdown(items: IssueRegisterItem[]): string
     });
 
   md += `\n${'─'.repeat(105)}\n`;
+
+  // Add confidence breakdown
+  const highConfidence = items.filter(i => i.criterion_result?.confidence?.level === 'HIGH').length;
+  const mediumConfidence = items.filter(i => i.criterion_result?.confidence?.level === 'MEDIUM').length;
+  const requiresJudgement = items.filter(i => i.criterion_result?.confidence?.level === 'REQUIRES_HUMAN_JUDGEMENT').length;
+
+  md += `CONFIDENCE BREAKDOWN:\n`;
+  md += `  🟢 High Confidence:       ${highConfidence} issues (deterministic checks)\n`;
+  md += `  🟡 Medium Confidence:     ${mediumConfidence} issues (AI interpretation)\n`;
+  md += `  🔴 Requires Judgement:    ${requiresJudgement} issues (expert needed)\n\n`;
+
   md += `💡 TIP: Fix issues #01-03 first (highest BSR rejection risk)\n`;
 
   return md;
