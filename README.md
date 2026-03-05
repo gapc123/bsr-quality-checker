@@ -190,3 +190,5 @@ All findings are AI-generated and should be verified by qualified professionals.
 ## License
 
 MIT
+
+<!-- Deployment trigger: Thu  5 Mar 2026 23:26:24 GMT -->
