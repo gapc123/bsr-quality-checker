@@ -17,6 +17,8 @@ import Security from './pages/Security';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AttleeLogo from './components/AttleeLogo';
+import { ResponsiveContainer } from './components/ResponsiveContainer';
+import { A11yProvider, SkipLinks } from './components/AccessibilityEnhancements';
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -273,7 +275,12 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <A11yProvider>
+        <ResponsiveContainer>
+          <SkipLinks />
+          <AppContent />
+        </ResponsiveContainer>
+      </A11yProvider>
     </BrowserRouter>
   );
 }

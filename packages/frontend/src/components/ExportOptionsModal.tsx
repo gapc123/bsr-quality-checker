@@ -303,7 +303,7 @@ export const ExportOptionsModal: React.FC<ExportOptionsModalProps> = ({
                         </p>
                       )}
                       <p>
-                        <strong>Assessment Date:</strong> {new Date(assessment.assessment_date).toLocaleDateString()}
+                        <strong>Assessment Date:</strong> {assessment.assessment_date ? new Date(assessment.assessment_date).toLocaleDateString() : 'N/A'}
                       </p>
                     </div>
                   </div>

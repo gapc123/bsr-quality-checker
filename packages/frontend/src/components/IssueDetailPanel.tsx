@@ -173,7 +173,7 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
                 <div>
                   <span className="text-slate-600 font-medium">Action Type:</span>
                   <div className="text-indigo-900 font-semibold mt-1">
-                    {issue.triage.action_type.replace(/_/g, ' ')}
+                    {issue.triage.action_type ? issue.triage.action_type.replace(/_/g, ' ') : 'Not specified'}
                   </div>
                 </div>
                 <div>
@@ -185,7 +185,7 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
                 <div>
                   <span className="text-slate-600 font-medium">Dependency:</span>
                   <div className="text-indigo-900 font-semibold mt-1">
-                    {issue.triage.dependency_status.replace(/_/g, ' ')}
+                    {issue.triage.dependency_status ? issue.triage.dependency_status.replace(/_/g, ' ') : 'Independent'}
                   </div>
                 </div>
                 <div>

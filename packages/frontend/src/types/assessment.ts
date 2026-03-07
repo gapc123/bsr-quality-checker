@@ -42,10 +42,10 @@ export type DependencyStatus = 'BLOCKS_OTHERS' | 'BLOCKED_BY' | 'INDEPENDENT';
 
 export interface TriageAssessment {
   urgency: UrgencyLevel;
-  urgency_reasoning: string;
-  action_type: ActionType;
+  urgency_reasoning?: string;
+  action_type?: ActionType;
   engagement_type: EngagementType;
-  dependency_status: DependencyStatus;
+  dependency_status?: DependencyStatus;
   blocks_submission: boolean;
   quick_win: boolean;
 }
@@ -82,15 +82,22 @@ export interface AssessmentResult {
     found: boolean;
     document: string | null;
     page: number | null;
+    page_number?: number | null;
+    section?: string | null;
     quote: string | null;
+    text_evidence?: string | null;
   };
+  matrix_references?: string[];
 
   reference_evidence: {
     found: boolean;
     doc_id: string | null;
     doc_title: string | null;
+    source_doc?: string | null;
     page: number | null;
+    page_number?: number | null;
     quote: string | null;
+    text_evidence?: string | null;
   };
 
   gaps_identified: string[];
@@ -138,6 +145,8 @@ export interface EngagementBrief {
 
 // Full Assessment
 export interface FullAssessment {
+  pack_id: string;
+  version_id: string;
   pack_context: {
     isLondon: boolean;
     isHRB: boolean;
@@ -145,13 +154,15 @@ export interface FullAssessment {
     heightMeters: number | null;
     storeys: number | null;
   };
-  reference_standards_applied: Array<{
+  readiness_score: number;
+  reference_standards_applied?: Array<{
     doc_id: string;
     title: string;
     why_applicable: string;
   }>;
   results: AssessmentResult[];
-  criteria_summary: {
+  generated_at: string;
+  criteria_summary?: {
     total_applicable: number;
     assessed: number;
     not_assessed: number;
@@ -159,12 +170,12 @@ export interface FullAssessment {
     partial: number;
     does_not_meet: number;
   };
-  flagged_by_severity: {
+  flagged_by_severity?: {
     high: number;
     medium: number;
     low: number;
   };
-  assessment_phases: {
+  assessment_phases?: {
     deterministic: {
       total_rules: number;
       passed: number;
@@ -178,9 +189,8 @@ export interface FullAssessment {
       results_count: number;
     };
   };
-  readiness_score: number;
-  assessment_date: string;
-  guardrail_stats: {
+  assessment_date?: string;
+  guardrail_stats?: {
     corpus_backed_criteria: number;
     criteria_with_reference_anchors: number;
     reference_anchor_rate: number;

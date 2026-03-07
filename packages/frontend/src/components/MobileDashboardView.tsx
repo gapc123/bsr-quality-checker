@@ -355,7 +355,7 @@ export const MobileDashboardView: React.FC<MobileDashboardViewProps> = ({
       <div className="bg-white border-b-2 border-slate-300 p-4 sticky top-0 z-20">
         <h1 className="text-xl font-bold text-slate-900">Assessment Results</h1>
         <p className="text-sm text-slate-600">
-          {new Date(assessment.assessment_date).toLocaleDateString()}
+          {assessment.assessment_date ? new Date(assessment.assessment_date).toLocaleDateString() : 'Recent'}
         </p>
       </div>
 
