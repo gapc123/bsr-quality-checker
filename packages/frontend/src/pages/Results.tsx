@@ -12,6 +12,7 @@ import MobileDashboardView from '../components/MobileDashboardView';
 import { useResponsive } from '../components/ResponsiveContainer';
 import { useA11y } from '../components/AccessibilityEnhancements';
 import type { FullAssessment, SubmissionGate, AssessmentResult } from '../types/assessment';
+import * as exportService from '../services/exportService';
 
 export default function Results() {
   const { packId, versionId } = useParams<{ packId: string; versionId: string }>();
@@ -203,9 +204,23 @@ export default function Results() {
     // Brief generation handled by modal
   };
 
-  const handleExportReport = () => {
-    console.log('Export report');
-    // Export modal handles this
+  const handleExportReport = async () => {
+    if (!assessment) return;
+
+    try {
+      // Quick export for mobile - just export PDF directly
+      await exportService.exportAssessmentPDF(
+        packId || '',
+        versionId || '',
+        assessment,
+        submissionGate || undefined
+      );
+      announce('Assessment report exported', 'polite');
+    } catch (error) {
+      console.error('Export failed:', error);
+      announce('Failed to export report', 'assertive');
+      alert('Failed to export report. Please try again.');
+    }
   };
 
   const handleViewIssue = (issue: AssessmentResult) => {

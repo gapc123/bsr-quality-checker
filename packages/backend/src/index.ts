@@ -10,6 +10,7 @@ import clientsRouter from './routes/clients.js';
 import teamRouter from './routes/team.js';
 import templatesRouter from './routes/templates.js';
 import quickAssessRouter from './routes/quick-assess.js';
+import exportRouter from './routes/export.js';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
@@ -45,6 +46,7 @@ app.use('/api/butler', butlerRouter);
 app.use('/api/team', teamRouter);
 app.use('/api/templates', templatesRouter);
 app.use('/api', analysisRouter);
+app.use('/api', exportRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {

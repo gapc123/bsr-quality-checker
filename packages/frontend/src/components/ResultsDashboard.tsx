@@ -25,6 +25,7 @@ import DocumentRevisionDashboard from './DocumentRevisionDashboard';
 import TrackChangesViewer from './TrackChangesViewer';
 import HumanReviewTable from './HumanReviewTable';
 import type { AssessmentResult, SubmissionGate, FullAssessment, EngagementBrief } from '../types/assessment';
+import * as exportService from '../services/exportService';
 
 interface ResultsDashboardProps {
   assessment: FullAssessment;
@@ -239,17 +240,67 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
     alert(`Brief for ${brief.specialist_type} ready to send!\n\nIn production, this would open your email client with the brief pre-filled.`);
   };
 
-  const handleExportBrief = (brief: EngagementBrief) => {
-    // TODO: Implement PDF export
-    console.log('Exporting brief:', brief);
-    alert(`Exporting brief for ${brief.specialist_type} as PDF...`);
+  const handleExportBrief = async (brief: EngagementBrief) => {
+    try {
+      await exportService.exportEngagementBrief(
+        assessment.pack_id,
+        assessment.version_id,
+        brief
+      );
+    } catch (error) {
+      console.error('Failed to export brief:', error);
+      alert('Failed to export engagement brief. Please try again.');
+    }
   };
 
-  const handleExport = (format: string, options: any) => {
-    // TODO: Implement export functionality
-    console.log('Exporting:', format, options);
-    alert(`Exporting ${format} with options...`);
-    setShowExportModal(false);
+  const handleExport = async (format: string, options: any) => {
+    try {
+      switch (format) {
+        case 'full_report':
+          await exportService.exportAssessmentPDF(
+            assessment.pack_id,
+            assessment.version_id,
+            assessment,
+            submissionGate,
+            options
+          );
+          break;
+
+        case 'executive_summary':
+          await exportService.exportExecutiveSummary(
+            assessment.pack_id,
+            assessment.version_id,
+            assessment,
+            submissionGate
+          );
+          break;
+
+        case 'issues_list':
+          await exportService.exportIssuesCSV(assessment, options.filterLevel);
+          break;
+
+        case 'action_items':
+          await exportService.exportIssuesCSV(assessment, options.filterLevel);
+          break;
+
+        case 'specialist_briefs':
+          // Generate briefs for all specialists with issues
+          alert('Specialist Briefs Pack: Generate individual briefs from the Specialist Actions card, then export each one.');
+          break;
+
+        case 'client_presentation':
+          alert('PowerPoint export coming soon. For now, use Executive Summary PDF.');
+          break;
+
+        default:
+          await exportService.exportAssessmentJSON(assessment, submissionGate);
+      }
+
+      setShowExportModal(false);
+    } catch (error) {
+      console.error('Failed to export:', error);
+      alert('Failed to export document. Please try again.');
+    }
   };
 
   const handleOpenExportModal = () => {
