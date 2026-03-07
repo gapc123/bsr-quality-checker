@@ -1,5 +1,10 @@
 @import './styles/design-system.css';
 
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Additional app-specific styles */
 body {
   margin: 0;
