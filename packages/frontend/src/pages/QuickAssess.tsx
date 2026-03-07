@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import FileUpload from '../components/FileUpload';
-import CriterionCarousel from '../components/CriterionCarousel';
+import { GroupedReviewFlow } from '../components/GroupedReviewFlow';
+import type { AssessmentResult } from '../types/assessment';
 
-interface FullAssessment {
+interface QuickAssessment {
   success: boolean;
   assessmentId: string;
   documentsProcessed: number;
@@ -13,38 +14,7 @@ interface FullAssessment {
     heightMeters: number | null;
     storeys: number | null;
   };
-  results: Array<{
-      matrix_id: string;
-      matrix_title: string;
-      category: string;
-      status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed';
-      severity: string;
-      reasoning: string;
-      success_definition: string;
-      pack_evidence: {
-        found: boolean;
-        document: string | null;
-        page: number | null;
-        quote: string | null;
-      };
-      reference_evidence: {
-        found: boolean;
-        doc_id: string | null;
-        doc_title: string | null;
-        page: number | null;
-        quote: string | null;
-      };
-      gaps_identified: string[];
-      actions_required: Array<{
-        action: string;
-        owner: string;
-        effort: 'S' | 'M' | 'L';
-        expected_benefit: string;
-      }>;
-      confidence: 'high' | 'medium' | 'low';
-      proposed_change?: string | null;
-      proposed_change_source?: string | null;
-    }>;
+  results: AssessmentResult[];
   summary: {
     total: number;
     meets: number;
@@ -57,7 +27,7 @@ interface FullAssessment {
 export default function QuickAssess() {
   const [files, setFiles] = useState<File[]>([]);
   const [assessing, setAssessing] = useState(false);
-  const [assessment, setAssessment] = useState<FullAssessment | null>(null);
+  const [assessment, setAssessment] = useState<QuickAssessment | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState('');
 
@@ -326,15 +296,15 @@ export default function QuickAssess() {
             </div>
           </div>
 
-          {/* Carousel Component */}
-          <CriterionCarousel
-            criteria={assessment.results}
-            onComplete={(decisions) => {
-              console.log('Carousel decisions:', decisions);
+          {/* Grouped Review Flow */}
+          <GroupedReviewFlow
+            issues={assessment.results}
+            onComplete={(acceptedIds, rejectedIds) => {
+              console.log('Review complete - Accepted:', acceptedIds.length, 'Rejected:', rejectedIds.length);
               // Optionally update assessment with user decisions
             }}
             onClose={() => {
-              // Carousel closed, could show summary or return to upload
+              // Review closed, could show summary or return to upload
             }}
           />
         </div>
