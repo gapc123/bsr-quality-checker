@@ -181,6 +181,95 @@ router.post(
 );
 
 /**
+ * Transform reasoning into action-oriented plain English
+ */
+function transformRationale(issue: any): string {
+  const reasoning = issue.reasoning || '';
+  const gaps = issue.gaps_identified || [];
+  const action = issue.actions_required?.[0];
+
+  // Build plain English summary
+  let summary = '';
+
+  // What should be addressed (from success definition or title)
+  const requirement = issue.success_definition || issue.matrix_title;
+  summary += `This section should address: ${requirement}. `;
+
+  // Current status (transform from reasoning, removing quotes)
+  if (reasoning) {
+    // Remove quote markers and clean up
+    const cleanReasoning = reasoning
+      .replace(/["']([^"']+)["']/g, '$1')
+      .replace(/The document states?:?\s*/gi, 'Current submission: ')
+      .replace(/According to.+?,\s*/gi, '')
+      .trim();
+
+    summary += `${cleanReasoning} `;
+  }
+
+  // Regulatory context (if available)
+  if (issue.reference_evidence?.doc_title) {
+    summary += `Regulatory requirement: ${issue.reference_evidence.doc_title}. `;
+  }
+
+  // Recommended action
+  if (action) {
+    summary += `Recommended action: ${action.action} (Owner: ${action.owner}, Effort: ${action.effort}).`;
+  } else if (gaps.length > 0) {
+    summary += `Address the following gaps: ${gaps.join('; ')}.`;
+  }
+
+  return summary;
+}
+
+/**
+ * Group issues by responsible party
+ */
+function groupIssuesByResponsible(issues: any[]): Map<string, any[]> {
+  const groups = new Map<string, any[]>();
+
+  issues.forEach(issue => {
+    let responsible = 'General Issues';
+
+    // Determine responsible party from category or actions
+    const category = issue.category?.toLowerCase() || '';
+    const actionOwner = issue.actions_required?.[0]?.owner?.toLowerCase() || '';
+
+    if (category.includes('fire') || actionOwner.includes('fire engineer')) {
+      responsible = 'Fire Safety (Fire Engineer Review)';
+    } else if (category.includes('structural') || actionOwner.includes('structural')) {
+      responsible = 'Structural (Structural Engineer Review)';
+    } else if (category.includes('mep') || category.includes('mechanical') || category.includes('electrical')) {
+      responsible = 'MEP Systems (MEP Engineer Review)';
+    } else if (category.includes('architect') || actionOwner.includes('architect')) {
+      responsible = 'Architectural (Architect Review)';
+    } else if (issue.triage?.quick_win) {
+      responsible = 'Quick Wins (Internal Team)';
+    } else if (issue.triage?.engagement_type === 'SPECIALIST_REQUIRED') {
+      responsible = 'Specialist Review Required';
+    } else if (issue.triage?.engagement_type === 'INTERNAL_FIX') {
+      responsible = 'Internal Team';
+    }
+
+    if (!groups.has(responsible)) {
+      groups.set(responsible, []);
+    }
+    groups.get(responsible)!.push(issue);
+  });
+
+  // Sort groups: Quick Wins first, then by count descending
+  const sortedGroups = new Map(
+    Array.from(groups.entries()).sort((a, b) => {
+      if (a[0].includes('Quick Wins')) return -1;
+      if (b[0].includes('Quick Wins')) return 1;
+      return b[1].length - a[1].length;
+    })
+  );
+
+  return sortedGroups;
+}
+
+/**
  * Generate full assessment report HTML
  */
 function generateAssessmentHTML(assessment: any, submissionGate?: any, settings?: any): string {
@@ -195,6 +284,9 @@ function generateAssessmentHTML(assessment: any, submissionGate?: any, settings?
     (r: any) => r.triage?.urgency === 'HIGH_PRIORITY'
   );
   const quickWins = failedResults.filter((r: any) => r.triage?.quick_win);
+
+  // Group issues by responsible party
+  const groupedIssues = groupIssuesByResponsible(failedResults);
 
   return `
 <!DOCTYPE html>
@@ -415,23 +507,27 @@ function generateAssessmentHTML(assessment: any, submissionGate?: any, settings?
     </div>
   </div>
 
-  ${criticalIssues.length > 0 ? `
   <div class="page-break"></div>
-  <h2>🔴 Critical Blockers (${criticalIssues.length})</h2>
-  ${criticalIssues.map((issue: any) => generateIssueHTML(issue)).join('\n')}
-  ` : ''}
+  <h2>Issues by Responsible Party</h2>
+  <p style="color: #64748b; margin-bottom: 24px;">
+    Issues are grouped by the team or specialist responsible for resolution.
+    Each section includes recommended actions and regulatory context.
+  </p>
 
-  ${highPriorityIssues.length > 0 ? `
-  <div class="page-break"></div>
-  <h2>🟡 High Priority Issues (${highPriorityIssues.length})</h2>
-  ${highPriorityIssues.map((issue: any) => generateIssueHTML(issue)).join('\n')}
-  ` : ''}
-
-  ${quickWins.length > 0 ? `
-  <div class="page-break"></div>
-  <h2>⚡ Quick Wins (${quickWins.length})</h2>
-  ${quickWins.map((issue: any) => generateIssueHTML(issue)).join('\n')}
-  ` : ''}
+  ${Array.from(groupedIssues.entries()).map(([responsible, issues], idx) => `
+    ${idx > 0 ? '<div class="page-break"></div>' : ''}
+    <h2 style="color: #1e40af; border-left: 5px solid #3b82f6; padding-left: 16px; margin-top: 40px;">
+      ${responsible} (${issues.length} item${issues.length !== 1 ? 's' : ''})
+    </h2>
+    <div style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 12px; margin-bottom: 20px; border-radius: 4px;">
+      <p style="margin: 0; font-size: 14px; color: #1e40af;">
+        <strong>Responsible:</strong> ${responsible.split('(')[0].trim()}<br>
+        <strong>Items:</strong> ${issues.length}<br>
+        <strong>Critical:</strong> ${issues.filter((i: any) => i.triage?.urgency === 'CRITICAL_BLOCKER').length}
+      </p>
+    </div>
+    ${issues.map((issue: any) => generateIssueHTMLGrouped(issue)).join('\n')}
+  `).join('\n')}
 
   <div class="footer">
     <p><strong>BSR Quality Checker</strong> • Automated Building Safety Assessment</p>
@@ -443,7 +539,7 @@ function generateAssessmentHTML(assessment: any, submissionGate?: any, settings?
 }
 
 /**
- * Generate issue HTML block
+ * Generate issue HTML block (legacy - kept for compatibility)
  */
 function generateIssueHTML(issue: any): string {
   const urgencyBadge =
@@ -486,6 +582,58 @@ function generateIssueHTML(issue: any): string {
       <span class="action-owner">Owner:</span> ${action.owner} •
       <strong>Effort:</strong> ${action.effort}
       ${action.expected_benefit ? `<br><strong>Benefit:</strong> ${action.expected_benefit}` : ''}
+    </div>
+    ` : ''}
+  </div>
+  `;
+}
+
+/**
+ * Generate issue HTML block with improved rationale (grouped format)
+ */
+function generateIssueHTMLGrouped(issue: any): string {
+  const urgencyBadge =
+    issue.triage?.urgency === 'CRITICAL_BLOCKER'
+      ? '<span class="issue-badge badge-critical">🔴 Critical</span>'
+      : issue.triage?.urgency === 'HIGH_PRIORITY'
+      ? '<span class="issue-badge badge-high">🟡 High</span>'
+      : '';
+
+  const quickWinBadge = issue.triage?.quick_win
+    ? '<span class="issue-badge badge-quick-win">⚡ Quick Win</span>'
+    : '';
+
+  const blocksSubmission = issue.triage?.blocks_submission
+    ? '<span class="issue-badge" style="background: #fee2e2; color: #991b1b;">🚫 BLOCKS SUBMISSION</span>'
+    : '';
+
+  // Use transformed rationale
+  const rationale = transformRationale(issue);
+
+  return `
+  <div class="issue">
+    <div class="issue-header">
+      <span class="issue-id">${issue.matrix_id}</span>
+      <div style="display: flex; gap: 4px;">
+        ${blocksSubmission}
+        ${urgencyBadge}
+        ${quickWinBadge}
+      </div>
+    </div>
+    <div class="issue-title">${issue.matrix_title}</div>
+
+    <div style="background: #f8fafc; border-left: 3px solid #3b82f6; padding: 12px; margin: 12px 0; font-size: 14px; color: #334155;">
+      ${rationale}
+    </div>
+
+    ${issue.pack_evidence?.document ? `
+    <div style="margin-top: 12px; padding: 8px; background: #fef9c3; border-left: 3px solid #eab308;">
+      <div style="font-size: 12px; color: #92400e; font-weight: 600; margin-bottom: 4px;">
+        Current Submission Reference:
+      </div>
+      <div style="font-size: 13px; color: #78350f;">
+        ${issue.pack_evidence.document}${issue.pack_evidence.page ? `, Page ${issue.pack_evidence.page}` : ''}
+      </div>
     </div>
     ` : ''}
   </div>
