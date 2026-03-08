@@ -18,29 +18,22 @@ interface ExportSettings {
 }
 
 /**
- * Download assessment report as PDF
+ * Download simplified compliance report as PDF (PRIMARY EXPORT)
  */
-export async function exportAssessmentPDF(
+export async function exportComplianceReport(
   packId: string,
   versionId: string,
-  assessment: FullAssessment,
-  submissionGate?: SubmissionGate,
-  settings?: ExportSettings
+  assessment: FullAssessment
 ): Promise<void> {
   try {
-    // Use the matrix-report endpoint for new assessment format
     const response = await fetch(
-      `${API_BASE}/api/packs/${packId}/versions/${versionId}/matrix-report/download/pdf`,
+      `${API_BASE}/api/packs/${packId}/versions/${versionId}/compliance-report/download`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          assessment,
-          submissionGate,
-          settings
-        })
+        body: JSON.stringify({ assessment })
       }
     );
 
@@ -53,15 +46,30 @@ export async function exportAssessmentPDF(
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `assessment-report-${assessment.pack_context.buildingType}-${new Date().toISOString().split('T')[0]}.pdf`;
+    a.download = `bsr-compliance-report-${new Date().toISOString().split('T')[0]}.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    console.error('Failed to export PDF:', error);
+    console.error('Failed to export compliance report:', error);
     throw error;
   }
+}
+
+/**
+ * Download assessment report as PDF
+ * @deprecated Use exportComplianceReport instead
+ */
+export async function exportAssessmentPDF(
+  packId: string,
+  versionId: string,
+  assessment: FullAssessment,
+  _submissionGate?: SubmissionGate,
+  _settings?: ExportSettings
+): Promise<void> {
+  // Redirect to simplified compliance report
+  return exportComplianceReport(packId, versionId, assessment);
 }
 
 /**

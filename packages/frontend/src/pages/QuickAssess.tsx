@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FileUpload from '../components/FileUpload';
-import { GroupedReviewFlow } from '../components/GroupedReviewFlow';
+import SimpleResultsView from '../components/SimpleResultsView';
 import type { AssessmentResult, FullAssessment } from '../types/assessment';
 import * as exportService from '../services/exportService';
 
@@ -171,22 +171,15 @@ export default function QuickAssess() {
         },
       };
 
-      console.log('[QuickAssess] Calling export services...');
-      // Generate both documents
-      await Promise.all([
-        exportService.exportAssessmentPDF(
-          'quick-assess',
-          assessment.assessmentId,
-          fullAssessment
-        ).then(() => console.log('[QuickAssess] Full assessment PDF generated')),
-        exportService.exportOutstandingIssues(
-          'quick-assess',
-          assessment.assessmentId,
-          fullAssessment
-        ).then(() => console.log('[QuickAssess] Outstanding issues PDF generated')),
-      ]);
+      console.log('[QuickAssess] Calling export service...');
+      // Generate simplified compliance report
+      await exportService.exportComplianceReport(
+        'quick-assess',
+        assessment.assessmentId,
+        fullAssessment
+      );
 
-      console.log('[QuickAssess] Both documents generated successfully');
+      console.log('[QuickAssess] Compliance report generated successfully');
       setDocsGenerated(true);
     } catch (err) {
       console.error('[QuickAssess] Document generation failed:', err);
@@ -365,13 +358,17 @@ export default function QuickAssess() {
             </div>
           </div>
 
-          {/* Grouped Review Flow */}
+          {/* Simple Results View */}
           {!docsGenerated && (
-            <GroupedReviewFlow
-              issues={assessment.results}
-              onComplete={handleGenerateDocuments}
+            <SimpleResultsView
+              assessment={assessment}
+              onDownloadReport={async () => {
+                await handleGenerateDocuments([], []);
+              }}
+              onSaveToClient={() => setShowSaveDialog(true)}
               onClose={() => {
-                // Review closed, could show summary or return to upload
+                setAssessment(null);
+                setFiles([]);
               }}
             />
           )}
@@ -388,36 +385,20 @@ export default function QuickAssess() {
                 Documents Generated Successfully
               </h2>
               <p style={{ color: 'var(--muted)', marginBottom: '32px', fontSize: '16px' }}>
-                Your assessment reports have been downloaded to your computer
+                Your BSR compliance report has been downloaded
               </p>
               <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '32px', textAlign: 'left' }}>
-                <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)', marginBottom: '16px' }}>
-                  Downloaded Documents:
-                </h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                  <li style={{ padding: '12px 0', borderBottom: '1px solid var(--beige)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <svg style={{ width: '20px', height: '20px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 600, color: 'var(--navy)' }}>Full Assessment Report</div>
-                        <div style={{ fontSize: '14px', color: 'var(--muted)' }}>Complete analysis with all findings and recommendations</div>
-                      </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <svg style={{ width: '48px', height: '48px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>BSR Compliance Report</div>
+                    <div style={{ fontSize: '14px', color: 'var(--muted)' }}>
+                      Executive summary with verdict • Critical issues highlighted • Issues grouped by responsible party • Clear action items
                     </div>
-                  </li>
-                  <li style={{ padding: '12px 0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <svg style={{ width: '20px', height: '20px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 600, color: 'var(--navy)' }}>Outstanding Issues Report</div>
-                        <div style={{ fontSize: '14px', color: 'var(--muted)' }}>Human-required items grouped by responsible party</div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+                  </div>
+                </div>
               </div>
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                 <button

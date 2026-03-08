@@ -6,10 +6,11 @@
  */
 
 import express, { Request, Response } from 'express';
-import puppeteer from 'puppeteer';
+import { generatePDFFromHTML, streamPDFToResponse } from '../utils/pdf-generator';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
+import puppeteer from 'puppeteer';
 
 const router = express.Router();
 
@@ -19,9 +20,46 @@ const PUPPETEER_OPTIONS = {
 };
 
 /**
+ * POST /api/packs/:packId/versions/:versionId/compliance-report/download
+ *
+ * Generate simplified compliance report PDF (PRIMARY EXPORT)
+ * - Executive summary with verdict
+ * - Critical issues first
+ * - Issues grouped by responsible party
+ * - Clear action items
+ */
+router.post(
+  '/packs/:packId/versions/:versionId/compliance-report/download',
+  async (req: Request, res: Response) => {
+    try {
+      const { assessment } = req.body;
+
+      if (!assessment) {
+        res.status(400).json({ error: 'Assessment data required' });
+        return;
+      }
+
+      // Generate simplified compliance report HTML
+      const html = generateComplianceReportHTML(assessment);
+
+      // Generate PDF using utility
+      const tempFile = await generatePDFFromHTML(html, 'compliance-report');
+
+      // Stream to response and cleanup
+      const filename = `bsr-compliance-report-${new Date().toISOString().split('T')[0]}.pdf`;
+      streamPDFToResponse(tempFile, res, filename);
+    } catch (error) {
+      console.error('Error generating compliance report:', error);
+      res.status(500).json({ error: 'Failed to generate compliance report' });
+    }
+  }
+);
+
+/**
  * POST /api/packs/:packId/versions/:versionId/matrix-report/download/pdf
  *
  * Generate PDF from FullAssessment data
+ * @deprecated Use /compliance-report/download instead
  */
 router.post(
   '/packs/:packId/versions/:versionId/matrix-report/download/pdf',
@@ -1141,6 +1179,348 @@ function generateOutstandingIssuesHTML(assessment: any, humanRequired: any[]): s
   <div class="footer">
     <p><strong>BSR Quality Checker</strong> • Outstanding Issues Report</p>
     <p>This report contains items requiring human review and professional judgement.</p>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+/**
+ * Generate Simplified Compliance Report HTML
+ * Clean, consultant-friendly format focused on actionable insights
+ */
+function generateComplianceReportHTML(assessment: any): string {
+  // Filter to only issues (partial or does_not_meet)
+  const issues = assessment.results.filter((r: any) =>
+    r.status === 'does_not_meet' || r.status === 'partial'
+  );
+
+  // Count by severity
+  const critical = issues.filter((i: any) => i.triage?.urgency === 'CRITICAL_BLOCKER');
+  const high = issues.filter((i: any) => i.triage?.urgency === 'HIGH_PRIORITY');
+  const medium = issues.filter((i: any) => i.triage?.urgency === 'MEDIUM_PRIORITY');
+  const low = issues.filter((i: any) => !i.triage?.urgency || i.triage?.urgency === 'LOW_PRIORITY');
+  const blocksSubmission = issues.filter((i: any) => i.triage?.blocks_submission);
+
+  // Determine verdict
+  let verdict = 'GREEN';
+  let verdictText = 'Submission Nearly Ready';
+  let verdictColor = '#10b981';
+  if (critical.length > 10 || issues.length > 50) {
+    verdict = 'RED';
+    verdictText = 'Submission Not Ready';
+    verdictColor = '#ef4444';
+  } else if (critical.length > 0 || issues.length > 20) {
+    verdict = 'AMBER';
+    verdictText = 'Submission Requires Work';
+    verdictColor = '#f59e0b';
+  }
+
+  // Group by responsible party
+  const groupedIssues = groupIssuesByResponsible(issues);
+
+  // Sort groups: Quick Wins first, then by count descending
+  const sortedGroups = Array.from(groupedIssues.entries()).sort((a, b) => {
+    if (a[0].includes('Quick Win')) return -1;
+    if (b[0].includes('Quick Win')) return 1;
+    return b[1].length - a[1].length;
+  });
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSR Compliance Report</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #1e293b;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #ffffff;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 3px solid ${verdictColor};
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .header .subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .verdict-box {
+      background: ${verdictColor}15;
+      border-left: 4px solid ${verdictColor};
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+    .verdict-box h2 {
+      margin: 0 0 12px 0;
+      font-size: 24px;
+      color: ${verdictColor};
+      font-weight: 600;
+    }
+    .verdict-box p {
+      margin: 8px 0;
+      color: #475569;
+      font-size: 16px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 30px 0;
+    }
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 36px;
+      font-weight: 700;
+      display: block;
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+    .stat-card.critical { border-left: 4px solid #ef4444; }
+    .stat-card.critical .number { color: #dc2626; }
+    .stat-card.high { border-left: 4px solid #f59e0b; }
+    .stat-card.high .number { color: #d97706; }
+    .stat-card.medium { border-left: 4px solid #3b82f6; }
+    .stat-card.medium .number { color: #2563eb; }
+    .stat-card.low { border-left: 4px solid #94a3b8; }
+    .stat-card.low .number { color: #64748b; }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 40px 0 20px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .critical-issues {
+      background: #fef2f2;
+      border: 2px solid #fca5a5;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .group-header {
+      background: #f1f5f9;
+      padding: 16px;
+      margin: 20px 0 10px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .issue {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+    .issue-id {
+      font-family: 'Monaco', monospace;
+      font-size: 10px;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 3px 6px;
+      border-radius: 3px;
+    }
+    .issue-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 4px 0;
+    }
+    .issue-description {
+      color: #475569;
+      font-size: 13px;
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .badge-critical {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .badge-high {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+    .badge-medium {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+    .badge-low {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+    }
+    .action-box {
+      background: #eff6ff;
+      border-left: 3px solid #3b82f6;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+    .action-box strong {
+      color: #1e40af;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+    .footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #e2e8f0;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>BSR Compliance Report</h1>
+    <div class="subtitle">Gateway 2 Submission Assessment</div>
+    <div class="subtitle">Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+  </div>
+
+  <div class="verdict-box">
+    <h2>${verdictText}</h2>
+    <p><strong>${issues.length}</strong> ${issues.length === 1 ? 'issue' : 'issues'} identified that require attention before submission.</p>
+    ${blocksSubmission.length > 0 ? `<p><strong>⚠️ ${blocksSubmission.length} ${blocksSubmission.length === 1 ? 'issue blocks' : 'issues block'} submission</strong></p>` : ''}
+  </div>
+
+  <div class="stats">
+    <div class="stat-card critical">
+      <span class="number">${critical.length}</span>
+      <span class="label">Critical</span>
+    </div>
+    <div class="stat-card high">
+      <span class="number">${high.length}</span>
+      <span class="label">High Priority</span>
+    </div>
+    <div class="stat-card medium">
+      <span class="number">${medium.length}</span>
+      <span class="label">Medium</span>
+    </div>
+    <div class="stat-card low">
+      <span class="number">${low.length}</span>
+      <span class="label">Low</span>
+    </div>
+  </div>
+
+  ${critical.length > 0 ? `
+  <div class="section-title">Critical Issues (Immediate Action Required)</div>
+  <div class="critical-issues">
+    ${critical.map((issue: any, idx: number) => {
+      const action = issue.actions_required?.[0];
+      const rationale = transformRationale(issue);
+      return `
+        <div class="issue">
+          <div class="issue-header">
+            <div>
+              <div class="issue-id">${issue.matrix_id}</div>
+              <div class="issue-title">${idx + 1}. ${issue.matrix_title}</div>
+            </div>
+            ${issue.triage?.blocks_submission ? '<span class="badge badge-critical">BLOCKS SUBMISSION</span>' : '<span class="badge badge-critical">CRITICAL</span>'}
+          </div>
+          <div class="issue-description">${rationale}</div>
+          ${action ? `
+          <div class="action-box">
+            <strong>Required Action:</strong> ${action.action}<br>
+            <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
+          </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('\n')}
+  </div>
+  ` : ''}
+
+  <div class="page-break"></div>
+  <div class="section-title">Issues by Responsible Party</div>
+
+  ${sortedGroups.map(([responsible, groupIssues]) => `
+    <div class="group-header">
+      ${responsible} (${groupIssues.length} ${groupIssues.length === 1 ? 'issue' : 'issues'})
+    </div>
+    ${groupIssues.map((issue: any) => {
+      const urgency = issue.triage?.urgency || 'LOW_PRIORITY';
+      const badgeClass =
+        urgency === 'CRITICAL_BLOCKER' ? 'badge-critical' :
+        urgency === 'HIGH_PRIORITY' ? 'badge-high' :
+        urgency === 'MEDIUM_PRIORITY' ? 'badge-medium' : 'badge-low';
+      const badgeText =
+        urgency === 'CRITICAL_BLOCKER' ? 'Critical' :
+        urgency === 'HIGH_PRIORITY' ? 'High' :
+        urgency === 'MEDIUM_PRIORITY' ? 'Medium' : 'Low';
+
+      const action = issue.actions_required?.[0];
+      const rationale = transformRationale(issue);
+
+      return `
+        <div class="issue">
+          <div class="issue-header">
+            <div>
+              <div class="issue-id">${issue.matrix_id}</div>
+              <div class="issue-title">${issue.matrix_title}</div>
+            </div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <div class="issue-description">${rationale}</div>
+          ${action ? `
+          <div class="action-box">
+            <strong>Action:</strong> ${action.action}<br>
+            <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
+          </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('\n')}
+  `).join('\n')}
+
+  <div class="footer">
+    <p><strong>BSR Quality Checker</strong> • Compliance Report</p>
+    <p>This report identifies potential compliance gaps for Gateway 2 submission review.</p>
   </div>
 </body>
 </html>
