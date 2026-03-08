@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import FileUpload from '../components/FileUpload';
 import { GroupedReviewFlow } from '../components/GroupedReviewFlow';
-import type { AssessmentResult } from '../types/assessment';
+import type { AssessmentResult, FullAssessment } from '../types/assessment';
+import * as exportService from '../services/exportService';
 
 interface QuickAssessment {
   success: boolean;
@@ -37,6 +38,11 @@ export default function QuickAssess() {
   const [projectName, setProjectName] = useState('');
   const [clientCompany, setClientCompany] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // Document generation state
+  const [generatingDocs, setGeneratingDocs] = useState(false);
+  const [docsGenerated, setDocsGenerated] = useState(false);
+  const [genError, setGenError] = useState<string | null>(null);
 
   const handleRunAssessment = async () => {
     if (files.length === 0) {
@@ -124,6 +130,60 @@ export default function QuickAssess() {
       alert(`Error: ${err instanceof Error ? err.message : 'Failed to save'}`);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleGenerateDocuments = async (_acceptedIds: string[], _rejectedIds: string[]) => {
+    if (!assessment) return;
+
+    setGeneratingDocs(true);
+    setGenError(null);
+
+    try {
+      // Convert QuickAssessment to FullAssessment format for export
+      const fullAssessment: FullAssessment = {
+        pack_id: 'quick-assess',
+        version_id: assessment.assessmentId,
+        pack_context: {
+          isLondon: assessment.context.isLondon,
+          isHRB: assessment.context.isHRB,
+          buildingType: assessment.context.buildingType,
+          heightMeters: assessment.context.heightMeters,
+          storeys: assessment.context.storeys,
+        },
+        readiness_score: 0,
+        results: assessment.results,
+        generated_at: new Date().toISOString(),
+        criteria_summary: {
+          total_applicable: assessment.summary.total,
+          assessed: assessment.summary.total,
+          not_assessed: assessment.summary.not_assessed,
+          meets: assessment.summary.meets,
+          partial: assessment.summary.partial,
+          does_not_meet: assessment.summary.does_not_meet,
+        },
+      };
+
+      // Generate both documents
+      await Promise.all([
+        exportService.exportAssessmentPDF(
+          'quick-assess',
+          assessment.assessmentId,
+          fullAssessment
+        ),
+        exportService.exportOutstandingIssues(
+          'quick-assess',
+          assessment.assessmentId,
+          fullAssessment
+        ),
+      ]);
+
+      setDocsGenerated(true);
+    } catch (err) {
+      console.error('Document generation failed:', err);
+      setGenError(err instanceof Error ? err.message : 'Failed to generate documents');
+    } finally {
+      setGeneratingDocs(false);
     }
   };
 
@@ -297,16 +357,113 @@ export default function QuickAssess() {
           </div>
 
           {/* Grouped Review Flow */}
-          <GroupedReviewFlow
-            issues={assessment.results}
-            onComplete={(acceptedIds, rejectedIds) => {
-              console.log('Review complete - Accepted:', acceptedIds.length, 'Rejected:', rejectedIds.length);
-              // Optionally update assessment with user decisions
-            }}
-            onClose={() => {
-              // Review closed, could show summary or return to upload
-            }}
-          />
+          {!docsGenerated && (
+            <GroupedReviewFlow
+              issues={assessment.results}
+              onComplete={handleGenerateDocuments}
+              onClose={() => {
+                // Review closed, could show summary or return to upload
+              }}
+            />
+          )}
+
+          {/* Document Generation Success */}
+          {docsGenerated && (
+            <div style={{ background: 'var(--white)', border: '1px solid var(--beige)', padding: '48px', textAlign: 'center' }}>
+              <div style={{ marginBottom: '24px' }}>
+                <svg style={{ width: '64px', height: '64px', color: '#10b981', margin: '0 auto' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '28px', color: 'var(--navy)', marginBottom: '12px' }}>
+                Documents Generated Successfully
+              </h2>
+              <p style={{ color: 'var(--muted)', marginBottom: '32px', fontSize: '16px' }}>
+                Your assessment reports have been downloaded to your computer
+              </p>
+              <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '32px', textAlign: 'left' }}>
+                <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)', marginBottom: '16px' }}>
+                  Downloaded Documents:
+                </h3>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <li style={{ padding: '12px 0', borderBottom: '1px solid var(--beige)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <svg style={{ width: '20px', height: '20px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 600, color: 'var(--navy)' }}>Full Assessment Report</div>
+                        <div style={{ fontSize: '14px', color: 'var(--muted)' }}>Complete analysis with all findings and recommendations</div>
+                      </div>
+                    </div>
+                  </li>
+                  <li style={{ padding: '12px 0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <svg style={{ width: '20px', height: '20px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 600, color: 'var(--navy)' }}>Outstanding Issues Report</div>
+                        <div style={{ fontSize: '14px', color: 'var(--muted)' }}>Human-required items grouped by responsible party</div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                <button
+                  onClick={() => {
+                    setDocsGenerated(false);
+                    setAssessment(null);
+                    setFiles([]);
+                  }}
+                  className="btn-primary"
+                  style={{ padding: '12px 32px' }}
+                >
+                  New Assessment
+                </button>
+                <button
+                  onClick={() => setShowSaveDialog(true)}
+                  className="btn-ghost"
+                  style={{ padding: '12px 32px' }}
+                >
+                  Save to Client
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Document Generation Loading */}
+          {generatingDocs && (
+            <div style={{ position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}>
+              <div style={{ background: 'var(--white)', padding: '48px', maxWidth: '400px', textAlign: 'center', borderRadius: '8px' }}>
+                <div style={{ marginBottom: '24px' }}>
+                  <div style={{ width: '48px', height: '48px', margin: '0 auto', border: '4px solid var(--beige)', borderTop: '4px solid var(--navy)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                </div>
+                <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '20px', color: 'var(--navy)', marginBottom: '12px' }}>
+                  Generating Documents...
+                </h3>
+                <p style={{ color: 'var(--muted)', fontSize: '14px' }}>
+                  Creating your assessment reports (typically ~30 seconds)
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Document Generation Error */}
+          {genError && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', padding: '16px', marginTop: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <svg style={{ width: '20px', height: '20px', color: '#dc2626', marginTop: '2px' }} fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <div>
+                  <p style={{ fontWeight: 600, color: '#991b1b' }}>Document Generation Failed</p>
+                  <p style={{ fontSize: '14px', color: '#7f1d1d', marginTop: '4px' }}>{genError}</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

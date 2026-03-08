@@ -40,9 +40,21 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   // Classify issues
-  const { aiFixable, humanRequired } = useMemo(() => {
+  const { aiFixable, humanRequired, aiChangeTypes, humanReasons } = useMemo(() => {
     const aiFixable: AssessmentResult[] = [];
     const humanRequired: AssessmentResult[] = [];
+    const aiChangeTypes = {
+      formatting: 0,
+      wording: 0,
+      compliance: 0,
+      structural: 0
+    };
+    const humanReasons = {
+      missingInfo: 0,
+      specialistRequired: 0,
+      ambiguousInterpretation: 0,
+      physicalEvidence: 0
+    };
 
     issues.forEach(issue => {
       // AI can fix if there's a proposed change and confidence is not REQUIRES_HUMAN_JUDGEMENT
@@ -53,12 +65,43 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
 
       if (canAIFix) {
         aiFixable.push(issue);
+
+        // Categorize AI change type
+        const category = issue.category?.toLowerCase() || '';
+        const action = issue.actions_required?.[0]?.action?.toLowerCase() || '';
+
+        if (category.includes('format') || action.includes('format')) {
+          aiChangeTypes.formatting++;
+        } else if (category.includes('wording') || action.includes('wording') || action.includes('clarif')) {
+          aiChangeTypes.wording++;
+        } else if (category.includes('compliance') || category.includes('regulation')) {
+          aiChangeTypes.compliance++;
+        } else {
+          aiChangeTypes.structural++;
+        }
       } else {
         humanRequired.push(issue);
+
+        // Categorize human reason
+        const gaps = issue.gaps_identified?.join(' ').toLowerCase() || '';
+        const reasoning = issue.reasoning?.toLowerCase() || '';
+        const engagement = issue.triage?.engagement_type || '';
+
+        if (gaps.includes('missing') || reasoning.includes('not provided') || reasoning.includes('tbc')) {
+          humanReasons.missingInfo++;
+        } else if (engagement === 'SPECIALIST_REQUIRED') {
+          humanReasons.specialistRequired++;
+        } else if (reasoning.includes('ambiguous') || reasoning.includes('unclear')) {
+          humanReasons.ambiguousInterpretation++;
+        } else if (reasoning.includes('testing') || reasoning.includes('certification') || reasoning.includes('evidence')) {
+          humanReasons.physicalEvidence++;
+        } else {
+          humanReasons.specialistRequired++;
+        }
       }
     });
 
-    return { aiFixable, humanRequired };
+    return { aiFixable, humanRequired, aiChangeTypes, humanReasons };
   }, [issues]);
 
   // Group AI-fixable items by responsible party/document
@@ -236,96 +279,214 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          {/* SUMMARY SCREEN */}
+          {/* EXECUTIVE SUMMARY SCREEN */}
           {currentScreen === 'summary' && (
-            <div className="max-w-3xl mx-auto space-y-6">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Assessment Complete</h3>
-                <p className="text-slate-600">We've identified issues that need attention</p>
+            <div className="max-w-4xl mx-auto space-y-6">
+              {/* Header */}
+              <div className="text-center pb-4 border-b-2 border-slate-200">
+                <h3 className="text-3xl font-light text-slate-900 mb-2">Executive Summary</h3>
+                <p className="text-lg text-slate-600">Assessment analysis complete</p>
               </div>
 
-              {/* Two categories */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* AI Fixable */}
-                <div className="bg-emerald-50 border-2 border-emerald-500 rounded-lg p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Section 1: AI-Actionable Changes */}
+              <div className="bg-white border-2 border-emerald-500 rounded-lg overflow-hidden">
+                <div className="bg-emerald-600 px-6 py-3">
+                  <h4 className="text-lg font-semibold text-white">Section 1 — AI-Actionable Changes</h4>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <div>
-                      <div className="text-3xl font-bold text-emerald-900">{aiFixable.length}</div>
-                      <div className="text-sm font-semibold text-emerald-700">AI Can Fix</div>
+                    <div className="flex-1">
+                      <p className="text-base text-slate-700 leading-relaxed mb-3">
+                        {aiFixable.length === 0 ? (
+                          <span>No automatic changes identified. All issues require human review.</span>
+                        ) : (
+                          <span>
+                            AI has identified <strong className="text-emerald-700">{aiFixable.length} {aiFixable.length === 1 ? 'change' : 'changes'}</strong> it can apply automatically, primarily{' '}
+                            {aiChangeTypes.formatting > 0 && <span>formatting corrections</span>}
+                            {aiChangeTypes.formatting > 0 && (aiChangeTypes.compliance > 0 || aiChangeTypes.wording > 0) && <span>, </span>}
+                            {aiChangeTypes.compliance > 0 && <span>regulatory wording updates</span>}
+                            {aiChangeTypes.compliance > 0 && aiChangeTypes.wording > 0 && <span>, and </span>}
+                            {aiChangeTypes.wording > 0 && <span>clarity improvements</span>}
+                            {aiChangeTypes.structural > 0 && <span> and structural edits</span>}.
+                          </span>
+                        )}
+                      </p>
+                      {aiFixable.length > 0 && (
+                        <div className="grid grid-cols-2 gap-3 mt-4">
+                          {aiChangeTypes.formatting > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                              <span>{aiChangeTypes.formatting} formatting {aiChangeTypes.formatting === 1 ? 'correction' : 'corrections'}</span>
+                            </div>
+                          )}
+                          {aiChangeTypes.compliance > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                              <span>{aiChangeTypes.compliance} compliance {aiChangeTypes.compliance === 1 ? 'update' : 'updates'}</span>
+                            </div>
+                          )}
+                          {aiChangeTypes.wording > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                              <span>{aiChangeTypes.wording} wording {aiChangeTypes.wording === 1 ? 'improvement' : 'improvements'}</span>
+                            </div>
+                          )}
+                          {aiChangeTypes.structural > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                              <span>{aiChangeTypes.structural} structural {aiChangeTypes.structural === 1 ? 'edit' : 'edits'}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <p className="text-sm text-emerald-800 mb-3">
-                    These can be resolved by accepting proposed text changes to your documents.
-                  </p>
-                  <div className="text-xs text-emerald-700">
-                    Grouped into <strong>{aiGroups.length} sections</strong> for quick review
-                  </div>
+                  {aiFixable.length > 0 && (
+                    <div className="bg-emerald-50 border border-emerald-200 rounded p-3 text-sm text-emerald-800">
+                      <strong>Review approach:</strong> Changes are grouped into {aiGroups.length} {aiGroups.length === 1 ? 'section' : 'sections'} for efficient batch review.
+                    </div>
+                  )}
                 </div>
+              </div>
 
-                {/* Human Required */}
-                <div className="bg-amber-50 border-2 border-amber-500 rounded-lg p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Section 2: Human Attention Required */}
+              <div className="bg-white border-2 border-amber-500 rounded-lg overflow-hidden">
+                <div className="bg-amber-600 px-6 py-3">
+                  <h4 className="text-lg font-semibold text-white">Section 2 — Human Attention Required</h4>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                       </svg>
                     </div>
-                    <div>
-                      <div className="text-3xl font-bold text-amber-900">{humanRequired.length}</div>
-                      <div className="text-sm font-semibold text-amber-700">Specialist Review</div>
+                    <div className="flex-1">
+                      <p className="text-base text-slate-700 leading-relaxed mb-3">
+                        {humanRequired.length === 0 ? (
+                          <span>No specialist review required. All issues can be resolved automatically.</span>
+                        ) : (
+                          <span>
+                            <strong className="text-amber-700">{humanRequired.length} {humanRequired.length === 1 ? 'area requires' : 'areas require'}</strong> human input, primarily due to{' '}
+                            {humanReasons.missingInfo > 0 && <span>missing information</span>}
+                            {humanReasons.missingInfo > 0 && (humanReasons.specialistRequired > 0 || humanReasons.ambiguousInterpretation > 0) && <span>, </span>}
+                            {humanReasons.ambiguousInterpretation > 0 && <span>ambiguous regulatory interpretation</span>}
+                            {humanReasons.ambiguousInterpretation > 0 && humanReasons.specialistRequired > 0 && <span>, and </span>}
+                            {humanReasons.specialistRequired > 0 && <span>sections requiring professional judgement</span>}
+                            {humanReasons.physicalEvidence > 0 && <span> or physical evidence</span>}.
+                          </span>
+                        )}
+                      </p>
+                      {humanRequired.length > 0 && (
+                        <div className="grid grid-cols-2 gap-3 mt-4">
+                          {humanReasons.missingInfo > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                              <span>{humanReasons.missingInfo} missing information</span>
+                            </div>
+                          )}
+                          {humanReasons.specialistRequired > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                              <span>{humanReasons.specialistRequired} specialist {humanReasons.specialistRequired === 1 ? 'review' : 'reviews'}</span>
+                            </div>
+                          )}
+                          {humanReasons.ambiguousInterpretation > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                              <span>{humanReasons.ambiguousInterpretation} ambiguous {humanReasons.ambiguousInterpretation === 1 ? 'interpretation' : 'interpretations'}</span>
+                            </div>
+                          )}
+                          {humanReasons.physicalEvidence > 0 && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+                              <span>{humanReasons.physicalEvidence} physical evidence needed</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <p className="text-sm text-amber-800 mb-3">
-                    Require new documents, expert judgment, or physical evidence.
-                  </p>
-                  <div className="text-xs text-amber-700">
-                    Grouped by <strong>{humanGroups.length} specialist types</strong> in your report
+                  {humanRequired.length > 0 && (
+                    <div className="bg-amber-50 border border-amber-200 rounded p-3 text-sm text-amber-800">
+                      <strong>Deliverable:</strong> These items will be included in your Outstanding Issues Report, grouped by responsible party ({humanGroups.map(g => g.responsible).join(', ')}).
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Section 3: Next Steps */}
+              <div className="bg-white border-2 border-indigo-500 rounded-lg overflow-hidden">
+                <div className="bg-indigo-600 px-6 py-3">
+                  <h4 className="text-lg font-semibold text-white">Section 3 — Next Steps</h4>
+                </div>
+                <div className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-indigo-700 font-bold text-sm">1</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-slate-900 mb-1">
+                          {aiFixable.length > 0 ? 'Review AI-proposed changes' : 'Skip to document generation'}
+                        </p>
+                        <p className="text-sm text-slate-600">
+                          {aiFixable.length > 0
+                            ? `Quick batch review of ${aiGroups.length} grouped ${aiGroups.length === 1 ? 'section' : 'sections'} (accept/reject in bulk or individually)`
+                            : 'No AI changes to review—proceed directly to final documents'
+                          }
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-indigo-700 font-bold text-sm">2</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-slate-900 mb-1">Generate documentation</p>
+                        <p className="text-sm text-slate-600">
+                          System will produce:
+                        </p>
+                        <ul className="text-sm text-slate-600 mt-2 ml-4 space-y-1">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
+                            <span><strong>Full Assessment Report</strong> — Complete analysis with all findings</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
+                            <span><strong>Outstanding Issues Report</strong> — Human-required items grouped by responsible party</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-indigo-700 font-bold text-sm">3</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-slate-900 mb-1">Download and distribute</p>
+                        <p className="text-sm text-slate-600">
+                          Documents ready for client handoff or specialist review (typically completes in ~30 seconds)
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* How it works */}
-              <div className="bg-indigo-50 border-2 border-indigo-300 rounded-lg p-4">
-                <h4 className="text-sm font-bold text-indigo-900 mb-3 flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                  Fast Review Process
-                </h4>
-                <div className="space-y-2 text-sm text-indigo-800">
-                  <div className="flex items-start gap-2">
-                    <span className="text-indigo-600 font-bold">1.</span>
-                    <span>Review {aiGroups.length} grouped sections (accept/reject in bulk or individually)</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-indigo-600 font-bold">2.</span>
-                    <span>Human review items auto-added to your Outstanding Issues Report</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-indigo-600 font-bold">3.</span>
-                    <span>Generate documents (typically completes in ~30 seconds)</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action buttons */}
-              <div className="flex gap-3">
+              {/* Action button */}
+              <div className="pt-2">
                 <button
                   onClick={() => setCurrentScreen(aiFixable.length > 0 ? 'ai-groups' : 'human-summary')}
-                  className="flex-1 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2"
+                  className="w-full px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-semibold rounded-lg transition-colors shadow-lg flex items-center justify-center gap-3"
                 >
-                  Start Review
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {aiFixable.length > 0 ? 'Start Review Process' : 'Generate Documents'}
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </button>

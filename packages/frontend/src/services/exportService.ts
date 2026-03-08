@@ -264,3 +264,44 @@ export async function exportExecutiveSummary(
     throw error;
   }
 }
+
+/**
+ * Generate outstanding issues report (human-required items only)
+ */
+export async function exportOutstandingIssues(
+  packId: string,
+  versionId: string,
+  assessment: FullAssessment
+): Promise<void> {
+  try {
+    const response = await fetch(
+      `${API_BASE}/api/packs/${packId}/versions/${versionId}/outstanding-issues/download`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          assessment
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Outstanding issues export failed: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `outstanding-issues-${new Date().toISOString().split('T')[0]}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Failed to export outstanding issues:', error);
+    throw error;
+  }
+}

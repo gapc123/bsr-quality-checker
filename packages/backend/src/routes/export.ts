@@ -181,6 +181,69 @@ router.post(
 );
 
 /**
+ * POST /api/packs/:packId/versions/:versionId/outstanding-issues/download
+ *
+ * Generate Outstanding Issues Report PDF (human-required items only)
+ */
+router.post(
+  '/packs/:packId/versions/:versionId/outstanding-issues/download',
+  async (req: Request, res: Response) => {
+    try {
+      const { assessment } = req.body;
+
+      if (!assessment) {
+        res.status(400).json({ error: 'Assessment data required' });
+        return;
+      }
+
+      // Filter to human-required issues only
+      const humanRequired = assessment.results.filter((issue: any) => {
+        const canAIFix =
+          issue.proposed_change &&
+          issue.proposed_change.length > 100 &&
+          issue.confidence?.level !== 'REQUIRES_HUMAN_JUDGEMENT';
+        return !canAIFix;
+      });
+
+      // Generate HTML
+      const html = generateOutstandingIssuesHTML(assessment, humanRequired);
+
+      // Create temporary PDF
+      const tempFile = path.join(os.tmpdir(), `outstanding-issues-${Date.now()}.pdf`);
+
+      const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
+      const page = await browser.newPage();
+      await page.setContent(html, { waitUntil: 'networkidle0' });
+      await page.pdf({
+        path: tempFile,
+        format: 'A4',
+        margin: { top: '1in', bottom: '1in', left: '0.75in', right: '0.75in' },
+        printBackground: true,
+      });
+      await browser.close();
+
+      // Send file
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="outstanding-issues-${new Date().toISOString().split('T')[0]}.pdf"`
+      );
+
+      const fileStream = fs.createReadStream(tempFile);
+      fileStream.pipe(res);
+
+      // Cleanup after sending
+      fileStream.on('end', () => {
+        fs.unlinkSync(tempFile);
+      });
+    } catch (error) {
+      console.error('Error generating outstanding issues report:', error);
+      res.status(500).json({ error: 'Failed to generate outstanding issues report' });
+    }
+  }
+);
+
+/**
  * Transform reasoning into action-oriented plain English
  */
 function transformRationale(issue: any): string {
@@ -809,6 +872,275 @@ function generateEngagementBriefHTML(brief: any): string {
   <div style="margin-top:40px; padding-top:20px; border-top:2px solid #e2e8f0; text-align:center; color:#64748b; font-size:12px;">
     <p><strong>BSR Quality Checker</strong> • Specialist Engagement Brief</p>
     <p>Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+/**
+ * Generate Outstanding Issues Report HTML
+ * Shows only human-required items grouped by responsible party
+ */
+function generateOutstandingIssuesHTML(assessment: any, humanRequired: any[]): string {
+  // Group by responsible party
+  const groupedIssues = groupIssuesByResponsible(humanRequired);
+
+  // Count by urgency
+  const criticalCount = humanRequired.filter((i: any) => i.triage?.urgency === 'CRITICAL_BLOCKER').length;
+  const highCount = humanRequired.filter((i: any) => i.triage?.urgency === 'HIGH_PRIORITY').length;
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outstanding Issues Report</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #1e293b;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #ffffff;
+    }
+    .header {
+      border-bottom: 4px solid #f59e0b;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 300;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .header .subtitle {
+      color: #64748b;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .summary-box {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    .summary-box h2 {
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      color: #92400e;
+    }
+    .summary-box p {
+      margin: 8px 0;
+      color: #78350f;
+      font-size: 14px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 20px 0 30px 0;
+    }
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 32px;
+      font-weight: 600;
+      color: #0f172a;
+      display: block;
+    }
+    .stat-card .label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+    .section {
+      page-break-inside: avoid;
+      margin-bottom: 40px;
+    }
+    .section-header {
+      background: #f59e0b;
+      color: white;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .issue {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      margin-bottom: 20px;
+      page-break-inside: avoid;
+    }
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+    .issue-id {
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 11px;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 4px 8px;
+      border-radius: 3px;
+    }
+    .issue-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 8px 0;
+    }
+    .issue-description {
+      color: #475569;
+      font-size: 14px;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .badge-critical {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .badge-high {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+    .badge-medium {
+      background: #f0f9ff;
+      color: #075985;
+      border: 1px solid #bae6fd;
+    }
+    .action-box {
+      background: #f8fafc;
+      border-left: 3px solid #3b82f6;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+    .action-box strong {
+      color: #1e40af;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #e2e8f0;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Outstanding Issues Report</h1>
+    <div class="subtitle">Items Requiring Human Review &amp; Professional Judgement</div>
+    <div class="subtitle">Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+  </div>
+
+  <div class="summary-box">
+    <h2>Executive Summary</h2>
+    <p><strong>${humanRequired.length}</strong> items require human attention and cannot be resolved automatically.</p>
+    <p>These issues require professional judgement, missing information, or physical evidence that must be provided by the appropriate specialists.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <span class="number">${humanRequired.length}</span>
+      <span class="label">Total Issues</span>
+    </div>
+    <div class="stat-card">
+      <span class="number">${criticalCount}</span>
+      <span class="label">Critical</span>
+    </div>
+    <div class="stat-card">
+      <span class="number">${highCount}</span>
+      <span class="label">High Priority</span>
+    </div>
+  </div>
+
+  ${Array.from(groupedIssues.entries()).map(([responsible, issues], idx) => `
+    ${idx > 0 ? '<div class="page-break"></div>' : ''}
+    <div class="section">
+      <div class="section-header">
+        ${responsible} (${issues.length} ${issues.length === 1 ? 'item' : 'items'})
+      </div>
+      ${issues.map((issue: any, issueIdx: number) => {
+        const urgency = issue.triage?.urgency || 'MEDIUM_PRIORITY';
+        const badgeClass =
+          urgency === 'CRITICAL_BLOCKER' ? 'badge-critical' :
+          urgency === 'HIGH_PRIORITY' ? 'badge-high' : 'badge-medium';
+        const badgeText =
+          urgency === 'CRITICAL_BLOCKER' ? 'Critical' :
+          urgency === 'HIGH_PRIORITY' ? 'High' : 'Medium';
+
+        const action = issue.actions_required?.[0];
+        const transformedRationale = transformRationale(issue);
+
+        return `
+        <div class="issue">
+          <div class="issue-header">
+            <div>
+              <div class="issue-id">${issue.matrix_id}</div>
+              <div class="issue-title">${issue.matrix_title}</div>
+            </div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+
+          <div class="issue-description">
+            ${transformedRationale}
+          </div>
+
+          ${action ? `
+          <div class="action-box">
+            <strong>Required Action:</strong> ${action.action}<br>
+            <strong>Owner:</strong> ${action.owner} • <strong>Estimated Effort:</strong> ${action.effort}
+          </div>
+          ` : ''}
+
+          ${issue.gaps_identified && issue.gaps_identified.length > 0 ? `
+          <div style="margin-top: 12px; font-size: 13px; color: #64748b;">
+            <strong>Gaps Identified:</strong>
+            <ul style="margin: 4px 0 0 20px;">
+              ${issue.gaps_identified.map((gap: string) => `<li>${gap}</li>`).join('\n')}
+            </ul>
+          </div>
+          ` : ''}
+        </div>
+        `;
+      }).join('\n')}
+    </div>
+  `).join('\n')}
+
+  <div class="footer">
+    <p><strong>BSR Quality Checker</strong> • Outstanding Issues Report</p>
+    <p>This report contains items requiring human review and professional judgement.</p>
   </div>
 </body>
 </html>
