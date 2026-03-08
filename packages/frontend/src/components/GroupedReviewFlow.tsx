@@ -244,6 +244,9 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
   };
 
   const handleFinish = () => {
+    console.log('[GroupedReviewFlow] Generate Documents clicked');
+    console.log('[GroupedReviewFlow] Accepted IDs:', Array.from(acceptedIds));
+    console.log('[GroupedReviewFlow] Rejected IDs:', Array.from(rejectedIds));
     onComplete(Array.from(acceptedIds), Array.from(rejectedIds));
   };
 
@@ -285,145 +288,167 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
               {/* Header */}
               <div className="text-center pb-4 border-b-2 border-slate-200">
                 <h3 className="text-3xl font-light text-slate-900 mb-2">Executive Summary</h3>
-                <p className="text-lg text-slate-600">Assessment analysis complete</p>
+                <p className="text-lg text-slate-600">BSR Gateway 2 Compliance Assessment</p>
               </div>
 
-              {/* Section 1: AI-Actionable Changes */}
+              {/* Overall Verdict */}
+              <div className={`border-l-4 p-6 ${
+                humanRequired.length > 50 ? 'bg-red-50 border-red-500' :
+                humanRequired.length > 20 ? 'bg-amber-50 border-amber-500' :
+                'bg-emerald-50 border-emerald-500'
+              }`}>
+                <div className="flex items-start gap-4">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                    humanRequired.length > 50 ? 'bg-red-500' :
+                    humanRequired.length > 20 ? 'bg-amber-500' :
+                    'bg-emerald-500'
+                  }`}>
+                    <span className="text-white text-2xl font-bold">
+                      {humanRequired.length > 50 ? '🔴' : humanRequired.length > 20 ? '🟡' : '🟢'}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className={`text-xl font-semibold mb-2 ${
+                      humanRequired.length > 50 ? 'text-red-900' :
+                      humanRequired.length > 20 ? 'text-amber-900' :
+                      'text-emerald-900'
+                    }`}>
+                      {humanRequired.length > 50 ? 'Submission Not Ready' :
+                       humanRequired.length > 20 ? 'Submission Requires Significant Work' :
+                       'Submission Nearly Ready'}
+                    </h4>
+                    <p className={`text-base leading-relaxed ${
+                      humanRequired.length > 50 ? 'text-red-800' :
+                      humanRequired.length > 20 ? 'text-amber-800' :
+                      'text-emerald-800'
+                    }`}>
+                      {humanRequired.length > 50 ?
+                        `Your submission has ${humanRequired.length} items that require attention before it can proceed to Gateway 2. This will require significant additional work from specialists.` :
+                       humanRequired.length > 20 ?
+                        `Your submission has ${humanRequired.length} items that need to be addressed. Most can be resolved with focused effort from the appropriate specialists.` :
+                        `Your submission is in good shape with only ${humanRequired.length} items requiring attention. These can likely be resolved quickly.`
+                      }
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* What's Good */}
               <div className="bg-white border-2 border-emerald-500 rounded-lg overflow-hidden">
                 <div className="bg-emerald-600 px-6 py-3">
-                  <h4 className="text-lg font-semibold text-white">Section 1 — AI-Actionable Changes</h4>
+                  <h4 className="text-lg font-semibold text-white">✓ What's Working</h4>
                 </div>
                 <div className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-base text-slate-700 leading-relaxed mb-3">
-                        {aiFixable.length === 0 ? (
-                          <span>No automatic changes identified. All issues require human review.</span>
-                        ) : (
-                          <span>
-                            AI has identified <strong className="text-emerald-700">{aiFixable.length} {aiFixable.length === 1 ? 'change' : 'changes'}</strong> it can apply automatically, primarily{' '}
-                            {aiChangeTypes.formatting > 0 && <span>formatting corrections</span>}
-                            {aiChangeTypes.formatting > 0 && (aiChangeTypes.compliance > 0 || aiChangeTypes.wording > 0) && <span>, </span>}
-                            {aiChangeTypes.compliance > 0 && <span>regulatory wording updates</span>}
-                            {aiChangeTypes.compliance > 0 && aiChangeTypes.wording > 0 && <span>, and </span>}
-                            {aiChangeTypes.wording > 0 && <span>clarity improvements</span>}
-                            {aiChangeTypes.structural > 0 && <span> and structural edits</span>}.
-                          </span>
-                        )}
-                      </p>
-                      {aiFixable.length > 0 && (
-                        <div className="grid grid-cols-2 gap-3 mt-4">
-                          {aiChangeTypes.formatting > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                              <span>{aiChangeTypes.formatting} formatting {aiChangeTypes.formatting === 1 ? 'correction' : 'corrections'}</span>
-                            </div>
-                          )}
-                          {aiChangeTypes.compliance > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                              <span>{aiChangeTypes.compliance} compliance {aiChangeTypes.compliance === 1 ? 'update' : 'updates'}</span>
-                            </div>
-                          )}
-                          {aiChangeTypes.wording > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                              <span>{aiChangeTypes.wording} wording {aiChangeTypes.wording === 1 ? 'improvement' : 'improvements'}</span>
-                            </div>
-                          )}
-                          {aiChangeTypes.structural > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                              <span>{aiChangeTypes.structural} structural {aiChangeTypes.structural === 1 ? 'edit' : 'edits'}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <p className="text-base text-slate-700 leading-relaxed mb-4">
+                    {aiFixable.length === 0 ? (
+                      <span>
+                        Your submission has <strong className="text-emerald-700">no quick fixes available</strong>. While this means all issues require human attention, your core documentation structure appears solid.
+                      </span>
+                    ) : (
+                      <span>
+                        We found <strong className="text-emerald-700">{aiFixable.length} minor {aiFixable.length === 1 ? 'issue' : 'issues'}</strong> that can be fixed with simple text edits—mostly small improvements to meet BSR formatting and wording requirements. These don't require new work from specialists.
+                      </span>
+                    )}
+                  </p>
                   {aiFixable.length > 0 && (
-                    <div className="bg-emerald-50 border border-emerald-200 rounded p-3 text-sm text-emerald-800">
-                      <strong>Review approach:</strong> Changes are grouped into {aiGroups.length} {aiGroups.length === 1 ? 'section' : 'sections'} for efficient batch review.
-                    </div>
+                    <>
+                      <p className="text-base text-slate-700 leading-relaxed mb-4">
+                        <strong>What we can fix:</strong>
+                      </p>
+                      <ul className="space-y-2 text-sm text-slate-600 mb-4">
+                        {aiChangeTypes.formatting > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-emerald-600 mt-1">•</span>
+                            <span><strong>{aiChangeTypes.formatting}</strong> document formatting {aiChangeTypes.formatting === 1 ? 'issue' : 'issues'} (section numbering, headers, layouts)</span>
+                          </li>
+                        )}
+                        {aiChangeTypes.compliance > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-emerald-600 mt-1">•</span>
+                            <span><strong>{aiChangeTypes.compliance}</strong> regulatory wording {aiChangeTypes.compliance === 1 ? 'update' : 'updates'} (making language match BSR requirements)</span>
+                          </li>
+                        )}
+                        {aiChangeTypes.wording > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-emerald-600 mt-1">•</span>
+                            <span><strong>{aiChangeTypes.wording}</strong> clarity {aiChangeTypes.wording === 1 ? 'improvement' : 'improvements'} (making technical descriptions clearer)</span>
+                          </li>
+                        )}
+                        {aiChangeTypes.structural > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-emerald-600 mt-1">•</span>
+                            <span><strong>{aiChangeTypes.structural}</strong> structural {aiChangeTypes.structural === 1 ? 'edit' : 'edits'} (reorganizing content to match BSR structure)</span>
+                          </li>
+                        )}
+                      </ul>
+                      <div className="bg-emerald-50 border border-emerald-200 rounded p-3 text-sm text-emerald-800">
+                        <strong>Good news:</strong> These {aiFixable.length} {aiFixable.length === 1 ? 'issue requires' : 'issues require'} no new specialist work—just approval of our suggested edits.
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
 
-              {/* Section 2: Human Attention Required */}
-              <div className="bg-white border-2 border-amber-500 rounded-lg overflow-hidden">
-                <div className="bg-amber-600 px-6 py-3">
-                  <h4 className="text-lg font-semibold text-white">Section 2 — Human Attention Required</h4>
+              {/* What's Bad / Needs Work */}
+              <div className="bg-white border-2 border-red-500 rounded-lg overflow-hidden">
+                <div className="bg-red-600 px-6 py-3">
+                  <h4 className="text-lg font-semibold text-white">✗ What Needs Work</h4>
                 </div>
                 <div className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-base text-slate-700 leading-relaxed mb-3">
-                        {humanRequired.length === 0 ? (
-                          <span>No specialist review required. All issues can be resolved automatically.</span>
-                        ) : (
-                          <span>
-                            <strong className="text-amber-700">{humanRequired.length} {humanRequired.length === 1 ? 'area requires' : 'areas require'}</strong> human input, primarily due to{' '}
-                            {humanReasons.missingInfo > 0 && <span>missing information</span>}
-                            {humanReasons.missingInfo > 0 && (humanReasons.specialistRequired > 0 || humanReasons.ambiguousInterpretation > 0) && <span>, </span>}
-                            {humanReasons.ambiguousInterpretation > 0 && <span>ambiguous regulatory interpretation</span>}
-                            {humanReasons.ambiguousInterpretation > 0 && humanReasons.specialistRequired > 0 && <span>, and </span>}
-                            {humanReasons.specialistRequired > 0 && <span>sections requiring professional judgement</span>}
-                            {humanReasons.physicalEvidence > 0 && <span> or physical evidence</span>}.
-                          </span>
-                        )}
-                      </p>
-                      {humanRequired.length > 0 && (
-                        <div className="grid grid-cols-2 gap-3 mt-4">
-                          {humanReasons.missingInfo > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                              <span>{humanReasons.missingInfo} missing information</span>
-                            </div>
-                          )}
-                          {humanReasons.specialistRequired > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                              <span>{humanReasons.specialistRequired} specialist {humanReasons.specialistRequired === 1 ? 'review' : 'reviews'}</span>
-                            </div>
-                          )}
-                          {humanReasons.ambiguousInterpretation > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                              <span>{humanReasons.ambiguousInterpretation} ambiguous {humanReasons.ambiguousInterpretation === 1 ? 'interpretation' : 'interpretations'}</span>
-                            </div>
-                          )}
-                          {humanReasons.physicalEvidence > 0 && (
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
-                              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
-                              <span>{humanReasons.physicalEvidence} physical evidence needed</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <p className="text-base text-slate-700 leading-relaxed mb-4">
+                    {humanRequired.length === 0 ? (
+                      <span>
+                        <strong className="text-emerald-700">Excellent news:</strong> No significant issues found. Your submission appears ready for Gateway 2.
+                      </span>
+                    ) : (
+                      <span>
+                        Your submission has <strong className="text-red-700">{humanRequired.length} {humanRequired.length === 1 ? 'issue' : 'issues'}</strong> that cannot be fixed with simple text edits. {humanRequired.length === 1 ? 'This requires' : 'These require'} actual work from specialists to provide missing information, create new documents, or make professional judgements.
+                      </span>
+                    )}
+                  </p>
                   {humanRequired.length > 0 && (
-                    <div className="bg-amber-50 border border-amber-200 rounded p-3 text-sm text-amber-800">
-                      <strong>Deliverable:</strong> These items will be included in your Outstanding Issues Report, grouped by responsible party ({humanGroups.map(g => g.responsible).join(', ')}).
-                    </div>
+                    <>
+                      <p className="text-base text-slate-700 leading-relaxed mb-4">
+                        <strong>Why {humanRequired.length === 1 ? 'this needs' : 'these need'} human attention:</strong>
+                      </p>
+                      <ul className="space-y-2 text-sm text-slate-600 mb-4">
+                        {humanReasons.missingInfo > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-red-600 mt-1">•</span>
+                            <span><strong>{humanReasons.missingInfo}</strong> {humanReasons.missingInfo === 1 ? 'section is' : 'sections are'} incomplete or marked "TBC" (to be confirmed)</span>
+                          </li>
+                        )}
+                        {humanReasons.specialistRequired > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-red-600 mt-1">•</span>
+                            <span><strong>{humanReasons.specialistRequired}</strong> {humanReasons.specialistRequired === 1 ? 'item requires' : 'items require'} specialist input (e.g., fire strategy calculations, structural certifications)</span>
+                          </li>
+                        )}
+                        {humanReasons.ambiguousInterpretation > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-red-600 mt-1">•</span>
+                            <span><strong>{humanReasons.ambiguousInterpretation}</strong> {humanReasons.ambiguousInterpretation === 1 ? 'requirement needs' : 'requirements need'} professional interpretation of regulations</span>
+                          </li>
+                        )}
+                        {humanReasons.physicalEvidence > 0 && (
+                          <li className="flex items-start gap-2">
+                            <span className="text-red-600 mt-1">•</span>
+                            <span><strong>{humanReasons.physicalEvidence}</strong> {humanReasons.physicalEvidence === 1 ? 'item requires' : 'items require'} testing certificates or physical evidence</span>
+                          </li>
+                        )}
+                      </ul>
+                      <div className="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-800">
+                        <strong>Who needs to work on this:</strong> {humanGroups.map(g => g.responsible).join(', ')}. Your Outstanding Issues Report will show exactly what each specialist needs to provide.
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
 
-              {/* Section 3: Next Steps */}
+              {/* Next Steps */}
               <div className="bg-white border-2 border-indigo-500 rounded-lg overflow-hidden">
                 <div className="bg-indigo-600 px-6 py-3">
-                  <h4 className="text-lg font-semibold text-white">Section 3 — Next Steps</h4>
+                  <h4 className="text-lg font-semibold text-white">→ What Happens Next</h4>
                 </div>
                 <div className="p-6">
                   <div className="space-y-4">
@@ -433,12 +458,12 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-semibold text-slate-900 mb-1">
-                          {aiFixable.length > 0 ? 'Review AI-proposed changes' : 'Skip to document generation'}
+                          {aiFixable.length > 0 ? 'Review suggested edits (optional)' : 'Generate your reports'}
                         </p>
                         <p className="text-sm text-slate-600">
                           {aiFixable.length > 0
-                            ? `Quick batch review of ${aiGroups.length} grouped ${aiGroups.length === 1 ? 'section' : 'sections'} (accept/reject in bulk or individually)`
-                            : 'No AI changes to review—proceed directly to final documents'
+                            ? `You can review and approve ${aiFixable.length} minor text edits, or skip this and go straight to your reports.`
+                            : 'Click below to generate your assessment reports as downloadable PDFs.'
                           }
                         </p>
                       </div>
@@ -448,18 +473,15 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
                         <span className="text-indigo-700 font-bold text-sm">2</span>
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-slate-900 mb-1">Generate documentation</p>
-                        <p className="text-sm text-slate-600">
-                          System will produce:
-                        </p>
-                        <ul className="text-sm text-slate-600 mt-2 ml-4 space-y-1">
-                          <li className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
-                            <span><strong>Full Assessment Report</strong> — Complete analysis with all findings</span>
+                        <p className="text-sm font-semibold text-slate-900 mb-1">Download two PDF reports</p>
+                        <ul className="text-sm text-slate-600 mt-2 space-y-2">
+                          <li className="flex items-start gap-2">
+                            <span className="text-indigo-600 mt-0.5">📄</span>
+                            <span><strong>Full Assessment Report</strong> — Complete compliance analysis showing all {issues.length} items checked</span>
                           </li>
-                          <li className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span>
-                            <span><strong>Outstanding Issues Report</strong> — Human-required items grouped by responsible party</span>
+                          <li className="flex items-start gap-2">
+                            <span className="text-indigo-600 mt-0.5">📋</span>
+                            <span><strong>Outstanding Issues Report</strong> — Just the {humanRequired.length} {humanRequired.length === 1 ? 'issue' : 'issues'} that {humanRequired.length === 1 ? 'needs' : 'need'} work, organized by who needs to do it</span>
                           </li>
                         </ul>
                       </div>
@@ -469,9 +491,9 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
                         <span className="text-indigo-700 font-bold text-sm">3</span>
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-slate-900 mb-1">Download and distribute</p>
+                        <p className="text-sm font-semibold text-slate-900 mb-1">Send to your team</p>
                         <p className="text-sm text-slate-600">
-                          Documents ready for client handoff or specialist review (typically completes in ~30 seconds)
+                          Hand the Outstanding Issues Report directly to the Fire Engineer, Structural Engineer, etc. Each specialist gets exactly what they need to fix.
                         </p>
                       </div>
                     </div>
@@ -485,7 +507,7 @@ export const GroupedReviewFlow: React.FC<GroupedReviewFlowProps> = ({
                   onClick={() => setCurrentScreen(aiFixable.length > 0 ? 'ai-groups' : 'human-summary')}
                   className="w-full px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-semibold rounded-lg transition-colors shadow-lg flex items-center justify-center gap-3"
                 >
-                  {aiFixable.length > 0 ? 'Start Review Process' : 'Generate Documents'}
+                  {aiFixable.length > 0 ? 'Continue' : 'Generate Documents'}
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>

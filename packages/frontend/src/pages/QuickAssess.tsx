@@ -134,12 +134,19 @@ export default function QuickAssess() {
   };
 
   const handleGenerateDocuments = async (_acceptedIds: string[], _rejectedIds: string[]) => {
-    if (!assessment) return;
+    console.log('[QuickAssess] handleGenerateDocuments called');
+    console.log('[QuickAssess] Assessment:', assessment);
+
+    if (!assessment) {
+      console.error('[QuickAssess] No assessment found!');
+      return;
+    }
 
     setGeneratingDocs(true);
     setGenError(null);
 
     try {
+      console.log('[QuickAssess] Converting to FullAssessment format...');
       // Convert QuickAssessment to FullAssessment format for export
       const fullAssessment: FullAssessment = {
         pack_id: 'quick-assess',
@@ -164,23 +171,25 @@ export default function QuickAssess() {
         },
       };
 
+      console.log('[QuickAssess] Calling export services...');
       // Generate both documents
       await Promise.all([
         exportService.exportAssessmentPDF(
           'quick-assess',
           assessment.assessmentId,
           fullAssessment
-        ),
+        ).then(() => console.log('[QuickAssess] Full assessment PDF generated')),
         exportService.exportOutstandingIssues(
           'quick-assess',
           assessment.assessmentId,
           fullAssessment
-        ),
+        ).then(() => console.log('[QuickAssess] Outstanding issues PDF generated')),
       ]);
 
+      console.log('[QuickAssess] Both documents generated successfully');
       setDocsGenerated(true);
     } catch (err) {
-      console.error('Document generation failed:', err);
+      console.error('[QuickAssess] Document generation failed:', err);
       setGenError(err instanceof Error ? err.message : 'Failed to generate documents');
     } finally {
       setGeneratingDocs(false);
