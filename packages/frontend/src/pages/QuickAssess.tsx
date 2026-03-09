@@ -179,14 +179,22 @@ export default function QuickAssess() {
         pack_context: fullAssessment.pack_context
       });
 
-      // Generate simplified compliance report
-      await exportService.exportComplianceReport(
+      // Generate BOTH documents
+      console.log('[QuickAssess] Generating client gap analysis...');
+      await exportService.exportClientGapAnalysis(
         'quick-assess',
         assessment.assessmentId,
         fullAssessment
       );
 
-      console.log('[QuickAssess] Compliance report generated successfully');
+      console.log('[QuickAssess] Generating consultant action plan...');
+      await exportService.exportConsultantActionPlan(
+        'quick-assess',
+        assessment.assessmentId,
+        fullAssessment
+      );
+
+      console.log('[QuickAssess] Both documents generated successfully');
       setDocsGenerated(true);
     } catch (err) {
       console.error('[QuickAssess] Document generation failed:', err);
@@ -392,15 +400,26 @@ export default function QuickAssess() {
                 Documents Generated Successfully
               </h2>
               <p style={{ color: 'var(--muted)', marginBottom: '32px', fontSize: '16px' }}>
-                Your BSR compliance report has been downloaded
+                Two documents have been downloaded to your computer
               </p>
-              <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '32px', textAlign: 'left' }}>
+              <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <svg style={{ width: '48px', height: '48px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>BSR Compliance Report</div>
+                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>📋 Client Gap Analysis</div>
+                    <div style={{ fontSize: '14px', color: 'var(--muted)' }}>Simple checklist of what client needs to provide</div>
+                  </div>
+                </div>
+              </div>
+              <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '32px', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <svg style={{ width: '48px', height: '48px', color: 'var(--navy)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>🔧 Consultant Action Plan</div>
                     <div style={{ fontSize: '14px', color: 'var(--muted)' }}>
                       Executive summary with verdict • Critical issues highlighted • Issues grouped by responsible party • Clear action items
                     </div>

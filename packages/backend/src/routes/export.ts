@@ -7,6 +7,8 @@
 
 import express, { Request, Response } from 'express';
 import { generatePDFFromHTML, streamPDFToResponse } from '../utils/pdf-generator';
+import { generateClientGapAnalysisHTML } from '../templates/client-gap-analysis';
+import { generateConsultantActionPlanHTML } from '../templates/consultant-action-plan';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
@@ -51,6 +53,72 @@ router.post(
     } catch (error) {
       console.error('Error generating compliance report:', error);
       res.status(500).json({ error: 'Failed to generate compliance report' });
+    }
+  }
+);
+
+/**
+ * POST /api/packs/:packId/versions/:versionId/client-gap-analysis/download
+ *
+ * Generate client-facing gap analysis (what they need to provide)
+ * Simple checklist format, plain language, immediately actionable
+ */
+router.post(
+  '/packs/:packId/versions/:versionId/client-gap-analysis/download',
+  async (req: Request, res: Response) => {
+    try {
+      const { assessment } = req.body;
+
+      if (!assessment) {
+        res.status(400).json({ error: 'Assessment data required' });
+        return;
+      }
+
+      console.log('[Export] Generating client gap analysis...');
+      const html = generateClientGapAnalysisHTML(assessment);
+
+      // Generate PDF
+      const tempFile = await generatePDFFromHTML(html, 'client-gap-analysis');
+
+      // Stream to response
+      const filename = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
+      streamPDFToResponse(tempFile, res, filename);
+    } catch (error) {
+      console.error('Error generating client gap analysis:', error);
+      res.status(500).json({ error: 'Failed to generate client gap analysis' });
+    }
+  }
+);
+
+/**
+ * POST /api/packs/:packId/versions/:versionId/consultant-action-plan/download
+ *
+ * Generate consultant working document (internal technical action plan)
+ * Detailed analysis, specialist requirements, work breakdown, timeline
+ */
+router.post(
+  '/packs/:packId/versions/:versionId/consultant-action-plan/download',
+  async (req: Request, res: Response) => {
+    try {
+      const { assessment } = req.body;
+
+      if (!assessment) {
+        res.status(400).json({ error: 'Assessment data required' });
+        return;
+      }
+
+      console.log('[Export] Generating consultant action plan...');
+      const html = generateConsultantActionPlanHTML(assessment);
+
+      // Generate PDF
+      const tempFile = await generatePDFFromHTML(html, 'consultant-action-plan');
+
+      // Stream to response
+      const filename = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
+      streamPDFToResponse(tempFile, res, filename);
+    } catch (error) {
+      console.error('Error generating consultant action plan:', error);
+      res.status(500).json({ error: 'Failed to generate consultant action plan' });
     }
   }
 );
