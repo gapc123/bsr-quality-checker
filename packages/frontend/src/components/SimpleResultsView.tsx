@@ -197,6 +197,103 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
             </div>
           </div>
 
+          {/* EXECUTIVE SUMMARY */}
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">📊 Executive Summary</h3>
+
+            <div className="grid grid-cols-2 gap-6">
+              {/* What's Working Well */}
+              <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">✅</span>
+                  <h4 className="font-semibold text-slate-900">What's Working Well</h4>
+                </div>
+                <div className="text-3xl font-bold text-emerald-600 mb-1">
+                  {assessment.results.filter(r => r.status === 'meets').length}
+                </div>
+                <p className="text-sm text-slate-600">
+                  criteria meet requirements
+                </p>
+                {assessment.results.filter(r => r.status === 'meets').length > 0 && (
+                  <p className="text-xs text-slate-500 mt-2">
+                    {Math.round((assessment.results.filter(r => r.status === 'meets').length / assessment.results.length) * 100)}% of submission is compliant
+                  </p>
+                )}
+              </div>
+
+              {/* What Needs Work */}
+              <div className="bg-white rounded-lg p-4 border border-red-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">⚠️</span>
+                  <h4 className="font-semibold text-slate-900">What Needs Work</h4>
+                </div>
+                <div className="text-3xl font-bold text-red-600 mb-1">
+                  {categorizedIssues.total}
+                </div>
+                <p className="text-sm text-slate-600 mb-3">
+                  {categorizedIssues.total === 1 ? 'item requires' : 'items require'} attention
+                </p>
+                <div className="space-y-1 text-xs">
+                  {categorizedIssues.rejectionRisks.length > 0 && (
+                    <div className="flex items-center justify-between text-red-700">
+                      <span>🔴 Rejection risks</span>
+                      <span className="font-semibold">{categorizedIssues.rejectionRisks.length}</span>
+                    </div>
+                  )}
+                  {categorizedIssues.missingInfo.length > 0 && (
+                    <div className="flex items-center justify-between text-orange-700">
+                      <span>🟠 Missing information</span>
+                      <span className="font-semibold">{categorizedIssues.missingInfo.length}</span>
+                    </div>
+                  )}
+                  {categorizedIssues.requiresClarification.length > 0 && (
+                    <div className="flex items-center justify-between text-purple-700">
+                      <span>🟣 Needs clarification</span>
+                      <span className="font-semibold">{categorizedIssues.requiresClarification.length}</span>
+                    </div>
+                  )}
+                  {categorizedIssues.canBeAddressed.length > 0 && (
+                    <div className="flex items-center justify-between text-blue-700">
+                      <span>🔵 Can be addressed</span>
+                      <span className="font-semibold">{categorizedIssues.canBeAddressed.length}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Key Takeaways */}
+            <div className="mt-4 pt-4 border-t border-slate-200">
+              <p className="text-sm font-semibold text-slate-900 mb-2">Key Takeaways:</p>
+              <ul className="text-sm text-slate-700 space-y-1">
+                {categorizedIssues.rejectionRisks.length > 0 && (
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-600 mt-0.5">•</span>
+                    <span><strong className="text-red-800">{categorizedIssues.rejectionRisks.length}</strong> critical {categorizedIssues.rejectionRisks.length === 1 ? 'issue' : 'issues'} could cause submission rejection</span>
+                  </li>
+                )}
+                {categorizedIssues.missingInfo.length > 0 && (
+                  <li className="flex items-start gap-2">
+                    <span className="text-orange-600 mt-0.5">•</span>
+                    <span><strong className="text-orange-800">{categorizedIssues.missingInfo.length}</strong> {categorizedIssues.missingInfo.length === 1 ? 'item' : 'items'} missing from current documentation</span>
+                  </li>
+                )}
+                {categorizedIssues.requiresClarification.length > 0 && (
+                  <li className="flex items-start gap-2">
+                    <span className="text-purple-600 mt-0.5">•</span>
+                    <span><strong className="text-purple-800">{categorizedIssues.requiresClarification.length}</strong> {categorizedIssues.requiresClarification.length === 1 ? 'area needs' : 'areas need'} professional review</span>
+                  </li>
+                )}
+                {categorizedIssues.canBeAddressed.length > 0 && (
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-600 mt-0.5">•</span>
+                    <span><strong className="text-blue-800">{categorizedIssues.canBeAddressed.length}</strong> lower-priority {categorizedIssues.canBeAddressed.length === 1 ? 'improvement' : 'improvements'} recommended</span>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+
           {/* 1. REJECTION RISKS */}
           {categorizedIssues.rejectionRisks.length > 0 && (
             <div className="border-2 border-red-500 rounded-lg overflow-hidden">
