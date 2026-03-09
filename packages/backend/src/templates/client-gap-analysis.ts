@@ -1,8 +1,14 @@
 /**
- * Client Gap Analysis Template
+ * Client Gap Analysis Template (STANDALONE)
  *
- * Simple, actionable checklist for clients showing what they need to provide.
- * Plain language, no technical jargon, immediately actionable.
+ * For clients who want self-service gap analysis.
+ * Complete, actionable document they can work from independently.
+ * Includes:
+ * - Visual state of play
+ * - Actions required
+ * - Missing information
+ * - Who to engage
+ * - Timeline and next steps
  */
 
 export function generateClientGapAnalysisHTML(assessment: any): string {
@@ -170,6 +176,49 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
     <div class="subtitle">What We Need From You</div>
     <div style="margin-top: 10px; font-size: 14px;">
       Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+    </div>
+  </div>
+
+  <!-- STATE OF PLAY -->
+  <div style="background: #f8fafc; border: 2px solid #cbd5e1; padding: 30px; margin: 30px 0;">
+    <h2 style="margin: 0 0 20px 0; color: #0f172a; text-align: center;">📊 Where You Stand</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;">
+      <div style="background: #d1fae5; border: 2px solid #10b981; padding: 20px; text-align: center; border-radius: 8px;">
+        <div style="font-size: 48px; font-weight: 700; color: #059669;">
+          ${assessment.results.filter((r: any) => r.status === 'meets').length}
+        </div>
+        <div style="font-size: 14px; color: #065f46; margin-top: 8px;">
+          ✅ Criteria Met
+        </div>
+      </div>
+
+      <div style="background: #fef3c7; border: 2px solid #f59e0b; padding: 20px; text-align: center; border-radius: 8px;">
+        <div style="font-size: 48px; font-weight: 700; color: #d97706;">
+          ${allIssues.filter((r: any) => !critical.includes(r)).length}
+        </div>
+        <div style="font-size: 14px; color: #92400e; margin-top: 8px;">
+          ⚠️ Items to Address
+        </div>
+      </div>
+
+      <div style="background: ${critical.length > 0 ? '#fee2e2' : '#f0fdf4'}; border: 2px solid ${critical.length > 0 ? '#ef4444' : '#10b981'}; padding: 20px; text-align: center; border-radius: 8px;">
+        <div style="font-size: 48px; font-weight: 700; color: ${critical.length > 0 ? '#dc2626' : '#059669'};">
+          ${critical.length}
+        </div>
+        <div style="font-size: 14px; color: ${critical.length > 0 ? '#991b1b' : '#065f46'}; margin-top: 8px;">
+          ${critical.length > 0 ? '🚨 Critical Blockers' : '✅ No Blockers'}
+        </div>
+      </div>
+    </div>
+
+    <div style="background: ${critical.length > 0 ? '#fef2f2' : '#f0fdf4'}; border-left: 4px solid ${critical.length > 0 ? '#ef4444' : '#10b981'}; padding: 15px; text-align: center;">
+      <strong style="color: ${critical.length > 0 ? '#991b1b' : '#065f46'};">
+        ${critical.length > 0
+          ? `SUBMISSION BLOCKED - ${critical.length} critical ${critical.length === 1 ? 'item' : 'items'} must be resolved`
+          : 'READY TO PROCEED - No critical blockers identified'
+        }
+      </strong>
     </div>
   </div>
 
