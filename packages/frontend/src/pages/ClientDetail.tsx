@@ -52,6 +52,13 @@ export default function ClientDetail() {
         return;
       }
       const data = await res.json();
+      console.log('[ClientDetail] Fetched client data:', data);
+      console.log('[ClientDetail] Packs with assessments:', data.packs?.map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        hasAssessment: p.versions?.[0]?.matrixAssessment ? 'YES' : 'NO',
+        versionId: p.versions?.[0]?.id
+      })));
       setClient(data);
     } catch (error) {
       console.error('Error fetching client:', error);
@@ -114,44 +121,52 @@ export default function ClientDetail() {
     setDownloadingDocs(versionId);
 
     try {
-      console.log(`Downloading documents for pack ${packId}, version ${versionId}`);
+      console.log(`[ClientDetail] Downloading documents for pack ${packId}, version ${versionId}`);
 
       // Download Client Gap Analysis
-      const clientGapRes = await fetch(
-        `/api/packs/${packId}/versions/${versionId}/saved-assessment/client-gap-analysis`
-      );
+      const clientGapUrl = `/api/packs/${packId}/versions/${versionId}/saved-assessment/client-gap-analysis`;
+      console.log(`[ClientDetail] Fetching client gap analysis from: ${clientGapUrl}`);
+
+      const clientGapRes = await fetch(clientGapUrl);
+      console.log(`[ClientDetail] Client gap analysis response status: ${clientGapRes.status}`);
 
       if (!clientGapRes.ok) {
-        throw new Error('Failed to download client gap analysis');
+        const errorText = await clientGapRes.text();
+        console.error(`[ClientDetail] Client gap analysis error:`, errorText);
+        throw new Error(`Failed to download client gap analysis: ${errorText}`);
       }
 
       const clientGapBlob = await clientGapRes.blob();
-      const clientGapUrl = window.URL.createObjectURL(clientGapBlob);
+      const clientGapBlobUrl = window.URL.createObjectURL(clientGapBlob);
       const clientGapLink = document.createElement('a');
-      clientGapLink.href = clientGapUrl;
+      clientGapLink.href = clientGapBlobUrl;
       clientGapLink.download = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
       clientGapLink.click();
-      window.URL.revokeObjectURL(clientGapUrl);
+      window.URL.revokeObjectURL(clientGapBlobUrl);
 
       // Small delay between downloads
       await new Promise(resolve => setTimeout(resolve, 500));
 
       // Download Consultant Action Plan
-      const consultantPlanRes = await fetch(
-        `/api/packs/${packId}/versions/${versionId}/saved-assessment/consultant-action-plan`
-      );
+      const consultantPlanUrl = `/api/packs/${packId}/versions/${versionId}/saved-assessment/consultant-action-plan`;
+      console.log(`[ClientDetail] Fetching consultant action plan from: ${consultantPlanUrl}`);
+
+      const consultantPlanRes = await fetch(consultantPlanUrl);
+      console.log(`[ClientDetail] Consultant action plan response status: ${consultantPlanRes.status}`);
 
       if (!consultantPlanRes.ok) {
-        throw new Error('Failed to download consultant action plan');
+        const errorText = await consultantPlanRes.text();
+        console.error(`[ClientDetail] Consultant action plan error:`, errorText);
+        throw new Error(`Failed to download consultant action plan: ${errorText}`);
       }
 
       const consultantPlanBlob = await consultantPlanRes.blob();
-      const consultantPlanUrl = window.URL.createObjectURL(consultantPlanBlob);
+      const consultantPlanBlobUrl = window.URL.createObjectURL(consultantPlanBlob);
       const consultantPlanLink = document.createElement('a');
-      consultantPlanLink.href = consultantPlanUrl;
+      consultantPlanLink.href = consultantPlanBlobUrl;
       consultantPlanLink.download = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
       consultantPlanLink.click();
-      window.URL.revokeObjectURL(consultantPlanUrl);
+      window.URL.revokeObjectURL(consultantPlanBlobUrl);
 
       console.log('Documents downloaded successfully');
     } catch (error) {

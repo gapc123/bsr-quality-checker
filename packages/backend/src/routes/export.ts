@@ -1733,6 +1733,9 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const versionId = req.params.versionId as string;
+      const packId = req.params.packId as string;
+
+      console.log(`[Export] GET saved client gap analysis - Pack: ${packId}, Version: ${versionId}`);
 
       // Fetch the pack version with matrixAssessment
       const version = await prisma.packVersion.findUnique({
@@ -1740,26 +1743,35 @@ router.get(
         select: { matrixAssessment: true },
       });
 
-      if (!version || !version.matrixAssessment) {
+      if (!version) {
+        console.error(`[Export] Version not found: ${versionId}`);
+        res.status(404).json({ error: 'Version not found' });
+        return;
+      }
+
+      if (!version.matrixAssessment) {
+        console.error(`[Export] No saved assessment for version: ${versionId}`);
         res.status(404).json({ error: 'No saved assessment found for this version' });
         return;
       }
 
       // Parse the saved assessment
+      console.log('[Export] Parsing saved assessment...');
       const assessment = JSON.parse(version.matrixAssessment);
 
-      console.log('[Export] Generating client gap analysis from saved assessment...');
+      console.log('[Export] Generating client gap analysis HTML...');
       const html = generateClientGapAnalysisHTML(assessment);
 
-      // Generate PDF
+      console.log('[Export] Generating PDF...');
       const tempFile = await generatePDFFromHTML(html, 'client-gap-analysis');
 
       // Stream to response
       const filename = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
+      console.log(`[Export] Streaming PDF: ${filename}`);
       streamPDFToResponse(tempFile, res, filename);
     } catch (error) {
-      console.error('Error generating saved client gap analysis:', error);
-      res.status(500).json({ error: 'Failed to generate client gap analysis' });
+      console.error('[Export] Error generating saved client gap analysis:', error);
+      res.status(500).json({ error: 'Failed to generate client gap analysis', details: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 );
@@ -1774,6 +1786,9 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const versionId = req.params.versionId as string;
+      const packId = req.params.packId as string;
+
+      console.log(`[Export] GET saved consultant action plan - Pack: ${packId}, Version: ${versionId}`);
 
       // Fetch the pack version with matrixAssessment
       const version = await prisma.packVersion.findUnique({
@@ -1781,26 +1796,35 @@ router.get(
         select: { matrixAssessment: true },
       });
 
-      if (!version || !version.matrixAssessment) {
+      if (!version) {
+        console.error(`[Export] Version not found: ${versionId}`);
+        res.status(404).json({ error: 'Version not found' });
+        return;
+      }
+
+      if (!version.matrixAssessment) {
+        console.error(`[Export] No saved assessment for version: ${versionId}`);
         res.status(404).json({ error: 'No saved assessment found for this version' });
         return;
       }
 
       // Parse the saved assessment
+      console.log('[Export] Parsing saved assessment...');
       const assessment = JSON.parse(version.matrixAssessment);
 
-      console.log('[Export] Generating consultant action plan from saved assessment...');
+      console.log('[Export] Generating consultant action plan HTML...');
       const html = generateConsultantActionPlanHTML(assessment);
 
-      // Generate PDF
+      console.log('[Export] Generating PDF...');
       const tempFile = await generatePDFFromHTML(html, 'consultant-action-plan');
 
       // Stream to response
       const filename = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
+      console.log(`[Export] Streaming PDF: ${filename}`);
       streamPDFToResponse(tempFile, res, filename);
     } catch (error) {
-      console.error('Error generating saved consultant action plan:', error);
-      res.status(500).json({ error: 'Failed to generate consultant action plan' });
+      console.error('[Export] Error generating saved consultant action plan:', error);
+      res.status(500).json({ error: 'Failed to generate consultant action plan', details: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 );
