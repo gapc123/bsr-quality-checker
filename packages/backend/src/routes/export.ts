@@ -1188,43 +1188,67 @@ function generateOutstandingIssuesHTML(assessment: any, humanRequired: any[]): s
 /**
  * Generate Simplified Compliance Report HTML
  * Clean, consultant-friendly format focused on actionable insights
+ * Prioritized for time-pressured consultants
  */
 function generateComplianceReportHTML(assessment: any): string {
   // Filter to only issues (partial or does_not_meet)
-  const issues = assessment.results.filter((r: any) =>
+  const allIssues = assessment.results.filter((r: any) =>
     r.status === 'does_not_meet' || r.status === 'partial'
   );
 
-  // Count by severity
-  const critical = issues.filter((i: any) => i.triage?.urgency === 'CRITICAL_BLOCKER');
-  const high = issues.filter((i: any) => i.triage?.urgency === 'HIGH_PRIORITY');
-  const medium = issues.filter((i: any) => i.triage?.urgency === 'MEDIUM_PRIORITY');
-  const low = issues.filter((i: any) => !i.triage?.urgency || i.triage?.urgency === 'LOW_PRIORITY');
-  const blocksSubmission = issues.filter((i: any) => i.triage?.blocks_submission);
+  // CATEGORIZE ISSUES BY PRIORITY
+  // 1. REJECTION RISKS: Critical issues that block submission
+  const rejectionRisks = allIssues.filter((i: any) =>
+    i.triage?.urgency === 'CRITICAL_BLOCKER' ||
+    i.triage?.blocks_submission ||
+    i.severity === 'high'
+  );
+
+  // 2. MISSING INFORMATION: Issues with missing/TBC content
+  const missingInfo = allIssues.filter((i: any) => {
+    const reasoning = (i.reasoning || '').toLowerCase();
+    const gaps = (i.gaps_identified || []).join(' ').toLowerCase();
+    const hasMissingContent =
+      reasoning.includes('missing') ||
+      reasoning.includes('not provided') ||
+      reasoning.includes('tbc') ||
+      reasoning.includes('to be confirmed') ||
+      gaps.includes('missing');
+    return hasMissingContent && !rejectionRisks.includes(i);
+  });
+
+  // 3. REQUIRES CLARIFICATION: Low confidence or ambiguous
+  const requiresClarification = allIssues.filter((i: any) => {
+    const isLowConfidence = i.confidence?.level === 'REQUIRES_HUMAN_JUDGEMENT';
+    const reasoning = (i.reasoning || '').toLowerCase();
+    const isAmbiguous = reasoning.includes('unclear') || reasoning.includes('ambiguous');
+    return (isLowConfidence || isAmbiguous) && !rejectionRisks.includes(i) && !missingInfo.includes(i);
+  });
+
+  // 4. CAN BE ADDRESSED: Everything else
+  const canBeAddressed = allIssues.filter((i: any) =>
+    !rejectionRisks.includes(i) &&
+    !missingInfo.includes(i) &&
+    !requiresClarification.includes(i)
+  );
 
   // Determine verdict
   let verdict = 'GREEN';
   let verdictText = 'Submission Nearly Ready';
   let verdictColor = '#10b981';
-  if (critical.length > 10 || issues.length > 50) {
+  let verdictDetail = 'Minor issues remain but submission can proceed with minor corrections.';
+
+  if (rejectionRisks.length > 5 || allIssues.length > 50) {
     verdict = 'RED';
     verdictText = 'Submission Not Ready';
     verdictColor = '#ef4444';
-  } else if (critical.length > 0 || issues.length > 20) {
+    verdictDetail = 'Critical issues present that will likely result in rejection. Address rejection risks before submitting.';
+  } else if (rejectionRisks.length > 0 || allIssues.length > 20) {
     verdict = 'AMBER';
     verdictText = 'Submission Requires Work';
     verdictColor = '#f59e0b';
+    verdictDetail = 'Some critical issues identified. Review and address highlighted items before submission.';
   }
-
-  // Group by responsible party
-  const groupedIssues = groupIssuesByResponsible(issues);
-
-  // Sort groups: Quick Wins first, then by count descending
-  const sortedGroups = Array.from(groupedIssues.entries()).sort((a, b) => {
-    if (a[0].includes('Quick Win')) return -1;
-    if (b[0].includes('Quick Win')) return 1;
-    return b[1].length - a[1].length;
-  });
 
   return `
 <!DOCTYPE html>
@@ -1275,7 +1299,7 @@ function generateComplianceReportHTML(assessment: any): string {
     .verdict-box p {
       margin: 8px 0;
       color: #475569;
-      font-size: 16px;
+      font-size: 15px;
     }
     .stats {
       display: grid;
@@ -1295,41 +1319,69 @@ function generateComplianceReportHTML(assessment: any): string {
       display: block;
     }
     .stat-card .label {
-      font-size: 12px;
+      font-size: 11px;
       color: #64748b;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-top: 4px;
     }
-    .stat-card.critical { border-left: 4px solid #ef4444; }
-    .stat-card.critical .number { color: #dc2626; }
-    .stat-card.high { border-left: 4px solid #f59e0b; }
-    .stat-card.high .number { color: #d97706; }
-    .stat-card.medium { border-left: 4px solid #3b82f6; }
-    .stat-card.medium .number { color: #2563eb; }
-    .stat-card.low { border-left: 4px solid #94a3b8; }
-    .stat-card.low .number { color: #64748b; }
+    .stat-card.red { border-left: 4px solid #ef4444; }
+    .stat-card.red .number { color: #dc2626; }
+    .stat-card.orange { border-left: 4px solid #f59e0b; }
+    .stat-card.orange .number { color: #d97706; }
+    .stat-card.purple { border-left: 4px solid #a855f7; }
+    .stat-card.purple .number { color: #9333ea; }
+    .stat-card.blue { border-left: 4px solid #3b82f6; }
+    .stat-card.blue .number { color: #2563eb; }
     .section-title {
       font-size: 20px;
       font-weight: 600;
       color: #0f172a;
-      margin: 40px 0 20px 0;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e2e8f0;
+      margin: 40px 0 16px 0;
+      padding: 12px 16px;
+      border-left: 4px solid;
     }
-    .critical-issues {
+    .section-title.red {
       background: #fef2f2;
-      border: 2px solid #fca5a5;
+      border-left-color: #ef4444;
+      color: #991b1b;
+    }
+    .section-title.orange {
+      background: #fffbeb;
+      border-left-color: #f59e0b;
+      color: #92400e;
+    }
+    .section-title.purple {
+      background: #faf5ff;
+      border-left-color: #a855f7;
+      color: #6b21a8;
+    }
+    .section-title.blue {
+      background: #eff6ff;
+      border-left-color: #3b82f6;
+      color: #1e40af;
+    }
+    .what-to-request-box {
+      background: #fffbeb;
+      border: 2px solid #fbbf24;
+      border-radius: 8px;
       padding: 20px;
       margin: 20px 0;
     }
-    .group-header {
-      background: #f1f5f9;
-      padding: 16px;
-      margin: 20px 0 10px 0;
-      font-size: 18px;
+    .what-to-request-box h3 {
+      margin: 0 0 12px 0;
+      font-size: 16px;
+      color: #92400e;
       font-weight: 600;
-      color: #0f172a;
+    }
+    .what-to-request-box ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .what-to-request-box li {
+      margin: 6px 0;
+      color: #78350f;
+      font-size: 14px;
     }
     .issue {
       background: #ffffff;
@@ -1364,35 +1416,6 @@ function generateComplianceReportHTML(assessment: any): string {
       margin: 8px 0;
       line-height: 1.5;
     }
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      border-radius: 3px;
-      letter-spacing: 0.05em;
-    }
-    .badge-critical {
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fca5a5;
-    }
-    .badge-high {
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-    }
-    .badge-medium {
-      background: #eff6ff;
-      color: #1e40af;
-      border: 1px solid #93c5fd;
-    }
-    .badge-low {
-      background: #f8fafc;
-      color: #475569;
-      border: 1px solid #cbd5e1;
-    }
     .action-box {
       background: #eff6ff;
       border-left: 3px solid #3b82f6;
@@ -1414,6 +1437,27 @@ function generateComplianceReportHTML(assessment: any): string {
       color: #94a3b8;
       font-size: 11px;
     }
+    .next-actions {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .next-actions h3 {
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      color: #0f172a;
+    }
+    .next-actions ol {
+      margin: 0;
+      padding-left: 24px;
+    }
+    .next-actions li {
+      margin: 10px 0;
+      font-size: 14px;
+      color: #334155;
+    }
   </style>
 </head>
 <body>
@@ -1423,100 +1467,183 @@ function generateComplianceReportHTML(assessment: any): string {
     <div class="subtitle">Generated: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
   </div>
 
+  <!-- HEADLINE VERDICT -->
   <div class="verdict-box">
-    <h2>${verdictText}</h2>
-    <p><strong>${issues.length}</strong> ${issues.length === 1 ? 'issue' : 'issues'} identified that require attention before submission.</p>
-    ${blocksSubmission.length > 0 ? `<p><strong>⚠️ ${blocksSubmission.length} ${blocksSubmission.length === 1 ? 'issue blocks' : 'issues block'} submission</strong></p>` : ''}
+    <h2>${verdict}: ${verdictText}</h2>
+    <p>${verdictDetail}</p>
+    <p style="margin-top: 12px;"><strong>${allIssues.length}</strong> ${allIssues.length === 1 ? 'item requires' : 'items require'} attention before submission.</p>
   </div>
 
+  <!-- QUICK STATS -->
   <div class="stats">
-    <div class="stat-card critical">
-      <span class="number">${critical.length}</span>
-      <span class="label">Critical</span>
+    <div class="stat-card red">
+      <span class="number">${rejectionRisks.length}</span>
+      <span class="label">Rejection Risks</span>
     </div>
-    <div class="stat-card high">
-      <span class="number">${high.length}</span>
-      <span class="label">High Priority</span>
+    <div class="stat-card orange">
+      <span class="number">${missingInfo.length}</span>
+      <span class="label">Missing Info</span>
     </div>
-    <div class="stat-card medium">
-      <span class="number">${medium.length}</span>
-      <span class="label">Medium</span>
+    <div class="stat-card purple">
+      <span class="number">${requiresClarification.length}</span>
+      <span class="label">Needs Clarification</span>
     </div>
-    <div class="stat-card low">
-      <span class="number">${low.length}</span>
-      <span class="label">Low</span>
+    <div class="stat-card blue">
+      <span class="number">${canBeAddressed.length}</span>
+      <span class="label">Can Be Addressed</span>
     </div>
   </div>
 
-  ${critical.length > 0 ? `
-  <div class="section-title">Critical Issues (Immediate Action Required)</div>
-  <div class="critical-issues">
-    ${critical.map((issue: any, idx: number) => {
-      const action = issue.actions_required?.[0];
-      const rationale = transformRationale(issue);
-      return `
-        <div class="issue">
-          <div class="issue-header">
-            <div>
-              <div class="issue-id">${issue.matrix_id}</div>
-              <div class="issue-title">${idx + 1}. ${issue.matrix_title}</div>
-            </div>
-            ${issue.triage?.blocks_submission ? '<span class="badge badge-critical">BLOCKS SUBMISSION</span>' : '<span class="badge badge-critical">CRITICAL</span>'}
+  <!-- 1. REJECTION RISKS -->
+  ${rejectionRisks.length > 0 ? `
+  <div class="section-title red">⚠️ REJECTION RISKS (${rejectionRisks.length})</div>
+  <p style="margin: 12px 0 20px 0; color: #64748b; font-size: 14px;">
+    <strong>Critical issues that will likely cause submission rejection.</strong> These must be addressed before submitting.
+  </p>
+  ${rejectionRisks.map((issue: any) => {
+    const action = issue.actions_required?.[0];
+    const rationale = transformRationale(issue);
+    return `
+      <div class="issue">
+        <div class="issue-header">
+          <div>
+            <div class="issue-id">${issue.matrix_id}</div>
+            <div class="issue-title">${issue.matrix_title}</div>
           </div>
-          <div class="issue-description">${rationale}</div>
-          ${action ? `
-          <div class="action-box">
-            <strong>Required Action:</strong> ${action.action}<br>
-            <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
-          </div>
-          ` : ''}
         </div>
-      `;
-    }).join('\n')}
-  </div>
+        <div class="issue-description">${rationale}</div>
+        ${action ? `
+        <div class="action-box">
+          <strong>Required Action:</strong> ${action.action}<br>
+          <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
+        </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('\n')}
   ` : ''}
 
+  <!-- 2. MISSING INFORMATION -->
+  ${missingInfo.length > 0 ? `
   <div class="page-break"></div>
-  <div class="section-title">Issues by Responsible Party</div>
+  <div class="section-title orange">📋 MISSING INFORMATION (${missingInfo.length})</div>
+  <p style="margin: 12px 0 20px 0; color: #64748b; font-size: 14px;">
+    <strong>Information not provided in current submission.</strong> Request these items from the client or responsible parties.
+  </p>
 
-  ${sortedGroups.map(([responsible, groupIssues]) => `
-    <div class="group-header">
-      ${responsible} (${groupIssues.length} ${groupIssues.length === 1 ? 'issue' : 'issues'})
-    </div>
-    ${groupIssues.map((issue: any) => {
-      const urgency = issue.triage?.urgency || 'LOW_PRIORITY';
-      const badgeClass =
-        urgency === 'CRITICAL_BLOCKER' ? 'badge-critical' :
-        urgency === 'HIGH_PRIORITY' ? 'badge-high' :
-        urgency === 'MEDIUM_PRIORITY' ? 'badge-medium' : 'badge-low';
-      const badgeText =
-        urgency === 'CRITICAL_BLOCKER' ? 'Critical' :
-        urgency === 'HIGH_PRIORITY' ? 'High' :
-        urgency === 'MEDIUM_PRIORITY' ? 'Medium' : 'Low';
+  <div class="what-to-request-box">
+    <h3>📋 What to Request from Client:</h3>
+    <ul>
+      ${Array.from(new Set(missingInfo.map((issue: any) => {
+        const reasoning = (issue.reasoning || '').toLowerCase();
+        const gaps = issue.gaps_identified || [];
 
-      const action = issue.actions_required?.[0];
-      const rationale = transformRationale(issue);
+        // Extract what's missing
+        if (reasoning.includes('tbc') || reasoning.includes('to be confirmed')) {
+          return issue.matrix_title.replace('does not meet', '').replace('partial', '').trim();
+        }
+        if (gaps.length > 0) {
+          return gaps[0];
+        }
+        return issue.matrix_title.substring(0, 80) + (issue.matrix_title.length > 80 ? '...' : '');
+      }))).slice(0, 8).map(item => `<li>${item}</li>`).join('\n')}
+    </ul>
+  </div>
 
-      return `
-        <div class="issue">
-          <div class="issue-header">
-            <div>
-              <div class="issue-id">${issue.matrix_id}</div>
-              <div class="issue-title">${issue.matrix_title}</div>
-            </div>
-            <span class="badge ${badgeClass}">${badgeText}</span>
+  ${missingInfo.map((issue: any) => {
+    const action = issue.actions_required?.[0];
+    const rationale = transformRationale(issue);
+    return `
+      <div class="issue">
+        <div class="issue-header">
+          <div>
+            <div class="issue-id">${issue.matrix_id}</div>
+            <div class="issue-title">${issue.matrix_title}</div>
           </div>
-          <div class="issue-description">${rationale}</div>
-          ${action ? `
-          <div class="action-box">
-            <strong>Action:</strong> ${action.action}<br>
-            <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
-          </div>
-          ` : ''}
         </div>
-      `;
-    }).join('\n')}
-  `).join('\n')}
+        <div class="issue-description">${rationale}</div>
+        ${action ? `
+        <div class="action-box">
+          <strong>Action:</strong> ${action.action}<br>
+          <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
+        </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('\n')}
+  ` : ''}
+
+  <!-- 3. REQUIRES CLARIFICATION -->
+  ${requiresClarification.length > 0 ? `
+  <div class="page-break"></div>
+  <div class="section-title purple">❓ REQUIRES CLARIFICATION (${requiresClarification.length})</div>
+  <p style="margin: 12px 0 20px 0; color: #64748b; font-size: 14px;">
+    <strong>Ambiguous or uncertain areas requiring professional judgement.</strong> Review with specialists to determine compliance status.
+  </p>
+  ${requiresClarification.map((issue: any) => {
+    const action = issue.actions_required?.[0];
+    const rationale = transformRationale(issue);
+    return `
+      <div class="issue">
+        <div class="issue-header">
+          <div>
+            <div class="issue-id">${issue.matrix_id}</div>
+            <div class="issue-title">${issue.matrix_title}</div>
+          </div>
+        </div>
+        <div class="issue-description">${rationale}</div>
+        ${action ? `
+        <div class="action-box">
+          <strong>Action:</strong> ${action.action}<br>
+          <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
+        </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('\n')}
+  ` : ''}
+
+  <!-- 4. CAN BE ADDRESSED -->
+  ${canBeAddressed.length > 0 ? `
+  <div class="page-break"></div>
+  <div class="section-title blue">✓ CAN BE ADDRESSED (${canBeAddressed.length})</div>
+  <p style="margin: 12px 0 20px 0; color: #64748b; font-size: 14px;">
+    <strong>Lower priority items that can be resolved with moderate effort.</strong> Address these to improve submission quality.
+  </p>
+  ${canBeAddressed.map((issue: any) => {
+    const action = issue.actions_required?.[0];
+    const rationale = transformRationale(issue);
+    return `
+      <div class="issue">
+        <div class="issue-header">
+          <div>
+            <div class="issue-id">${issue.matrix_id}</div>
+            <div class="issue-title">${issue.matrix_title}</div>
+          </div>
+        </div>
+        <div class="issue-description">${rationale}</div>
+        ${action ? `
+        <div class="action-box">
+          <strong>Action:</strong> ${action.action}<br>
+          <strong>Owner:</strong> ${action.owner} • <strong>Effort:</strong> ${action.effort}
+        </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('\n')}
+  ` : ''}
+
+  <!-- NEXT ACTIONS -->
+  <div class="next-actions">
+    <h3>→ Next Actions</h3>
+    <ol>
+      ${rejectionRisks.length > 0 ? '<li><strong>Immediately address Rejection Risks</strong> - These will cause submission to be rejected</li>' : ''}
+      ${missingInfo.length > 0 ? '<li><strong>Request missing information from client</strong> - See "What to Request" summary above</li>' : ''}
+      ${requiresClarification.length > 0 ? '<li><strong>Review unclear items with specialists</strong> - Professional judgement required</li>' : ''}
+      ${canBeAddressed.length > 0 ? '<li><strong>Plan remediation for remaining items</strong> - Improve submission quality</li>' : ''}
+      <li><strong>Re-run assessment after updates</strong> - Verify corrections before final submission</li>
+    </ol>
+  </div>
 
   <div class="footer">
     <p><strong>BSR Quality Checker</strong> • Compliance Report</p>
