@@ -172,6 +172,13 @@ export default function QuickAssess() {
       };
 
       console.log('[QuickAssess] Calling export service...');
+      console.log('[QuickAssess] Full assessment being sent:', {
+        pack_id: fullAssessment.pack_id,
+        version_id: fullAssessment.version_id,
+        results_count: fullAssessment.results.length,
+        pack_context: fullAssessment.pack_context
+      });
+
       // Generate simplified compliance report
       await exportService.exportComplianceReport(
         'quick-assess',
