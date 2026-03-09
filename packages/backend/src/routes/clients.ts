@@ -37,6 +37,12 @@ router.get('/:id', async (req: Request, res: Response) => {
               orderBy: { sortOrder: 'asc' },
             },
             versions: {
+              select: {
+                id: true,
+                versionNumber: true,
+                createdAt: true,
+                matrixAssessment: true,
+              },
               orderBy: { versionNumber: 'desc' },
               take: 1,
             },

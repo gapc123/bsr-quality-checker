@@ -226,6 +226,105 @@ router.post('/save', async (req: Request, res: Response) => {
 
     console.log(`✓ Created version: ${version.id}`);
 
+    // AUTO-GENERATE ACTION ITEMS FROM ASSESSMENT
+    console.log(`📋 Auto-generating action items from assessment...`);
+
+    const allIssues = tempData.results.results.filter((r: any) =>
+      r.status === 'does_not_meet' || r.status === 'partial'
+    );
+
+    // Extract critical blockers
+    const criticalIssues = allIssues.filter((i: any) =>
+      i.triage?.urgency === 'CRITICAL_BLOCKER' ||
+      i.triage?.blocks_submission
+    );
+
+    // Extract missing information items
+    const missingInfo = allIssues.filter((i: any) => {
+      const reasoning = (i.reasoning || '').toLowerCase();
+      const gaps = (i.gaps_identified || []).join(' ').toLowerCase();
+      return (
+        reasoning.includes('missing') ||
+        reasoning.includes('not provided') ||
+        reasoning.includes('tbc') ||
+        reasoning.includes('to be confirmed') ||
+        gaps.includes('missing')
+      );
+    });
+
+    // Extract specialist requirements
+    const specialistRequired = allIssues.filter((i: any) => {
+      const action = i.actions_required?.[0];
+      return action?.owner && (
+        action.owner.toLowerCase().includes('fire') ||
+        action.owner.toLowerCase().includes('structural') ||
+        action.owner.toLowerCase().includes('mep') ||
+        action.owner.toLowerCase().includes('architect') ||
+        action.owner.toLowerCase().includes('engineer')
+      );
+    });
+
+    // Create tasks for critical blockers
+    const tasksToCreate: any[] = [];
+    let sortOrder = 0;
+
+    criticalIssues.forEach((issue: any) => {
+      tasksToCreate.push({
+        title: `[CRITICAL] ${issue.matrix_title}`,
+        description: issue.reasoning || 'Critical blocker - must be resolved before submission',
+        sortOrder: sortOrder++,
+        status: 'not_started',
+        priority: 'high',
+        category: 'Critical Blocker',
+        tags: JSON.stringify(['critical', 'blocker'])
+      });
+    });
+
+    // Create tasks for missing information (limit to 10 most important)
+    missingInfo.slice(0, 10).forEach((issue: any) => {
+      const action = issue.actions_required?.[0];
+      tasksToCreate.push({
+        title: `Missing: ${issue.matrix_title}`,
+        description: `${issue.reasoning || 'Information missing from submission'}\n\n${action ? `Action: ${action.action}` : ''}`,
+        sortOrder: sortOrder++,
+        status: 'not_started',
+        priority: 'medium',
+        category: 'Missing Information',
+        tags: JSON.stringify(['missing-info', 'client-action'])
+      });
+    });
+
+    // Create tasks for specialist requirements (limit to 5 most important)
+    const uniqueSpecialists = new Set<string>();
+    specialistRequired.slice(0, 5).forEach((issue: any) => {
+      const action = issue.actions_required?.[0];
+      const specialist = action?.owner || 'Specialist';
+
+      if (!uniqueSpecialists.has(specialist)) {
+        uniqueSpecialists.add(specialist);
+        tasksToCreate.push({
+          title: `Engage: ${specialist}`,
+          description: `Required for: ${issue.matrix_title}\n\n${action ? `Action: ${action.action}` : ''}`,
+          sortOrder: sortOrder++,
+          status: 'not_started',
+          priority: 'medium',
+          category: 'Specialist Required',
+          tags: JSON.stringify(['specialist', specialist.toLowerCase()])
+        });
+      }
+    });
+
+    // Bulk create all tasks
+    if (tasksToCreate.length > 0) {
+      await prisma.packTask.createMany({
+        data: tasksToCreate.map(task => ({
+          packId: pack.id,
+          ...task
+        }))
+      });
+      console.log(`✓ Created ${tasksToCreate.length} action items`);
+    }
+
     // Move uploaded files to permanent storage
     const uploadsDir = path.join(process.cwd(), 'uploads', pack.id);
     if (!fs.existsSync(uploadsDir)) {

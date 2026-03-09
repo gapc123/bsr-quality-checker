@@ -30,11 +30,11 @@ model ServicePackageTemplate {
 
   displayName       String
   description       String?
-  estimatedDuration Int?    // days
-  slaTargetDays     Int?    // SLA in days
+  estimatedDuration Int? // days
+  slaTargetDays     Int? // SLA in days
 
   // Template data (JSON)
-  taskTemplates      String  // JSON: [{ title, description, category, priority, estimatedHours, dayOffset, dependsOnIndices }]
+  taskTemplates      String // JSON: [{ title, description, category, priority, estimatedHours, dayOffset, dependsOnIndices }]
   milestoneTemplates String? // JSON: [{ name, dayOffset }]
   defaultTags        String? // JSON: ["tag1", "tag2"]
 
@@ -48,22 +48,22 @@ model Pack {
   id        String        @id @default(uuid())
   name      String
   createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
   versions  PackVersion[]
   tasks     PackTask[]
 
   // Client relationship for agency workflow
-  clientId  String?
-  client    Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientId String?
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
 
   // Service package type
-  servicePackage String?   // gap_assessment, full_pack_prep, compliance_review, ongoing_support
+  servicePackage String? // gap_assessment, full_pack_prep, compliance_review, ongoing_support
 
   // Initial requirements/brief captured at project kickoff
-  requirements   String?
+  requirements String?
 
   // AI-generated summary (cached)
-  aiSummary      String?
+  aiSummary        String?
   summaryUpdatedAt DateTime?
 
   // Lifecycle status tracking
@@ -89,15 +89,15 @@ model Pack {
 
 // Pack status change history for audit trail
 model PackStatusChange {
-  id            String   @id @default(uuid())
-  packId        String
-  pack          Pack     @relation(fields: [packId], references: [id], onDelete: Cascade)
+  id     String @id @default(uuid())
+  packId String
+  pack   Pack   @relation(fields: [packId], references: [id], onDelete: Cascade)
 
-  fromStatus    String?  // null for initial status
+  fromStatus    String? // null for initial status
   toStatus      String
-  changedBy     String   // Clerk userId
-  changedByName String   // Cached display name
-  notes         String?  // Optional notes about why status changed
+  changedBy     String // Clerk userId
+  changedByName String // Cached display name
+  notes         String? // Optional notes about why status changed
   createdAt     DateTime @default(now())
 
   @@index([packId])
@@ -106,41 +106,41 @@ model PackStatusChange {
 
 // Task/checklist items for tracking pack progress
 model PackTask {
-  id          String    @id @default(uuid())
-  packId      String
-  pack        Pack      @relation(fields: [packId], references: [id], onDelete: Cascade)
+  id     String @id @default(uuid())
+  packId String
+  pack   Pack   @relation(fields: [packId], references: [id], onDelete: Cascade)
 
   // Core fields
   title       String
   description String?
-  sortOrder   Int       @default(0)
-  createdAt   DateTime  @default(now())
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
 
   // Enhanced status (replaces boolean completed)
-  status      String    @default("not_started")  // not_started, in_progress, blocked, completed
-  completed   Boolean   @default(false)          // Keep for backward compatibility
+  status      String    @default("not_started") // not_started, in_progress, blocked, completed
+  completed   Boolean   @default(false) // Keep for backward compatibility
   completedAt DateTime?
   updatedAt   DateTime  @updatedAt
 
   // Assignment & ownership
-  assignedTo     String?  // Clerk userId
-  assignedToName String?  // Cached display name
+  assignedTo     String? // Clerk userId
+  assignedToName String? // Cached display name
 
   // Scheduling & priority
-  dueDate     DateTime?
-  priority    String    @default("medium") // low, medium, high
+  dueDate  DateTime?
+  priority String    @default("medium") // low, medium, high
 
   // Dependencies (stored as JSON array of task IDs)
-  blockedByIds String?  // JSON array: ["task-id-1", "task-id-2"]
+  blockedByIds String? // JSON array: ["task-id-1", "task-id-2"]
 
   // Categorization & tracking
-  tags           String?  // JSON array: ["tag1", "tag2"]
-  category       String?  // Align with service package phases
+  tags           String? // JSON array: ["tag1", "tag2"]
+  category       String? // Align with service package phases
   estimatedHours Float?
   actualHours    Float?
 
   // Relations
-  comments    TaskComment[]
+  comments TaskComment[]
 
   @@index([packId])
   @@index([assignedTo])
@@ -150,13 +150,13 @@ model PackTask {
 
 // Comments on tasks for team collaboration
 model TaskComment {
-  id        String   @id @default(uuid())
-  taskId    String
-  task      PackTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  id     String   @id @default(uuid())
+  taskId String
+  task   PackTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  userId    String   // Clerk userId
-  userName  String   // Cached display name
-  content   String
+  userId   String // Clerk userId
+  userName String // Cached display name
+  content  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -194,7 +194,7 @@ model Document {
   id              String           @id @default(uuid())
   packVersionId   String?
   packVersion     PackVersion?     @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
-  libraryType     String           // pack, baseline, butler
+  libraryType     String // pack, baseline, butler
   filename        String
   filepath        String
   docType         String?
@@ -214,14 +214,14 @@ model Chunk {
 }
 
 model ExtractedField {
-  id                 String       @id @default(uuid())
+  id                 String      @id @default(uuid())
   packVersionId      String
-  packVersion        PackVersion  @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
+  packVersion        PackVersion @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
   fieldName          String
   fieldValue         String?
-  confidence         String       // high, medium, low
+  confidence         String // high, medium, low
   evidenceDocumentId String?
-  evidenceDocument   Document?    @relation(fields: [evidenceDocumentId], references: [id])
+  evidenceDocument   Document?   @relation(fields: [evidenceDocumentId], references: [id])
   evidencePageRef    Int?
   evidenceQuote      String?
 }
@@ -230,19 +230,19 @@ model IssueAction {
   id                   String      @id @default(uuid())
   packVersionId        String
   packVersion          PackVersion @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
-  severity             String      // high, medium, low
+  severity             String // high, medium, low
   category             String
   title                String
   finding              String
   whyItMatters         String
   action               String
   ownerRole            String
-  effort               String      // S, M, L
+  effort               String // S, M, L
   endUserConsideration String
   expectedBenefit      String
-  confidence           String      // high, medium, low
-  citations            String      // JSON string
-  evidence             String      // JSON string
+  confidence           String // high, medium, low
+  citations            String // JSON string
+  evidence             String // JSON string
   createdAt            DateTime    @default(now())
 }
 
@@ -250,7 +250,7 @@ model OutputArtifact {
   id            String      @id @default(uuid())
   packVersionId String
   packVersion   PackVersion @relation(fields: [packVersionId], references: [id], onDelete: Cascade)
-  artifactType  String      // md, pdf, json
+  artifactType  String // md, pdf, json
   path          String
   createdAt     DateTime    @default(now())
 }

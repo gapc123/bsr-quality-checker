@@ -10,8 +10,10 @@ interface Pack {
     versions: number;
   };
   versions: Array<{
+    id: string;
     versionNumber: number;
     createdAt: string;
+    matrixAssessment: string | null;
   }>;
 }
 
@@ -36,6 +38,7 @@ export default function ClientDetail() {
   const [showCreatePackModal, setShowCreatePackModal] = useState(false);
   const [newPackName, setNewPackName] = useState('');
   const [creatingPack, setCreatingPack] = useState(false);
+  const [downloadingDocs, setDownloadingDocs] = useState<string | null>(null);
 
   useEffect(() => {
     fetchClient();
@@ -104,6 +107,58 @@ export default function ClientDetail() {
       fetchClient();
     } catch (error) {
       console.error('Error deleting pack:', error);
+    }
+  };
+
+  const downloadDocuments = async (packId: string, versionId: string) => {
+    setDownloadingDocs(versionId);
+
+    try {
+      console.log(`Downloading documents for pack ${packId}, version ${versionId}`);
+
+      // Download Client Gap Analysis
+      const clientGapRes = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/saved-assessment/client-gap-analysis`
+      );
+
+      if (!clientGapRes.ok) {
+        throw new Error('Failed to download client gap analysis');
+      }
+
+      const clientGapBlob = await clientGapRes.blob();
+      const clientGapUrl = window.URL.createObjectURL(clientGapBlob);
+      const clientGapLink = document.createElement('a');
+      clientGapLink.href = clientGapUrl;
+      clientGapLink.download = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
+      clientGapLink.click();
+      window.URL.revokeObjectURL(clientGapUrl);
+
+      // Small delay between downloads
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Download Consultant Action Plan
+      const consultantPlanRes = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/saved-assessment/consultant-action-plan`
+      );
+
+      if (!consultantPlanRes.ok) {
+        throw new Error('Failed to download consultant action plan');
+      }
+
+      const consultantPlanBlob = await consultantPlanRes.blob();
+      const consultantPlanUrl = window.URL.createObjectURL(consultantPlanBlob);
+      const consultantPlanLink = document.createElement('a');
+      consultantPlanLink.href = consultantPlanUrl;
+      consultantPlanLink.download = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
+      consultantPlanLink.click();
+      window.URL.revokeObjectURL(consultantPlanUrl);
+
+      console.log('Documents downloaded successfully');
+    } catch (error) {
+      console.error('Error downloading documents:', error);
+      alert(`Failed to download documents: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setDownloadingDocs(null);
     }
   };
 
@@ -265,6 +320,30 @@ export default function ClientDetail() {
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {/* Show download button if pack has saved assessment */}
+                    {pack.versions.length > 0 && pack.versions[0].matrixAssessment && (
+                      <button
+                        onClick={() => downloadDocuments(pack.id, pack.versions[0].id)}
+                        disabled={downloadingDocs === pack.versions[0].id}
+                        className="btn-primary"
+                        style={{ padding: '6px 12px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '6px', opacity: downloadingDocs === pack.versions[0].id ? 0.5 : 1 }}
+                        title="Download assessment reports"
+                      >
+                        {downloadingDocs === pack.versions[0].id ? (
+                          <>
+                            <div style={{ width: '16px', height: '16px', border: '2px solid var(--white)', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                            Downloading...
+                          </>
+                        ) : (
+                          <>
+                            <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download Reports
+                          </>
+                        )}
+                      </button>
+                    )}
                     <Link
                       to={`/packs/${pack.id}/upload`}
                       className="btn-ghost"

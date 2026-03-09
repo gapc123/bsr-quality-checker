@@ -9,6 +9,7 @@ import express, { Request, Response } from 'express';
 import { generatePDFFromHTML, streamPDFToResponse } from '../utils/pdf-generator';
 import { generateClientGapAnalysisHTML } from '../templates/client-gap-analysis';
 import { generateConsultantActionPlanHTML } from '../templates/consultant-action-plan';
+import prisma from '../db/client.js';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
@@ -1721,5 +1722,87 @@ function generateComplianceReportHTML(assessment: any): string {
 </html>
   `.trim();
 }
+
+/**
+ * GET /api/packs/:packId/versions/:versionId/saved-assessment/client-gap-analysis
+ *
+ * Download client gap analysis from SAVED assessment (matrixAssessment field)
+ */
+router.get(
+  '/packs/:packId/versions/:versionId/saved-assessment/client-gap-analysis',
+  async (req: Request, res: Response) => {
+    try {
+      const { versionId } = req.params;
+
+      // Fetch the pack version with matrixAssessment
+      const version = await prisma.packVersion.findUnique({
+        where: { id: versionId },
+        select: { matrixAssessment: true },
+      });
+
+      if (!version || !version.matrixAssessment) {
+        res.status(404).json({ error: 'No saved assessment found for this version' });
+        return;
+      }
+
+      // Parse the saved assessment
+      const assessment = JSON.parse(version.matrixAssessment);
+
+      console.log('[Export] Generating client gap analysis from saved assessment...');
+      const html = generateClientGapAnalysisHTML(assessment);
+
+      // Generate PDF
+      const tempFile = await generatePDFFromHTML(html, 'client-gap-analysis');
+
+      // Stream to response
+      const filename = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
+      streamPDFToResponse(tempFile, res, filename);
+    } catch (error) {
+      console.error('Error generating saved client gap analysis:', error);
+      res.status(500).json({ error: 'Failed to generate client gap analysis' });
+    }
+  }
+);
+
+/**
+ * GET /api/packs/:packId/versions/:versionId/saved-assessment/consultant-action-plan
+ *
+ * Download consultant action plan from SAVED assessment (matrixAssessment field)
+ */
+router.get(
+  '/packs/:packId/versions/:versionId/saved-assessment/consultant-action-plan',
+  async (req: Request, res: Response) => {
+    try {
+      const { versionId } = req.params;
+
+      // Fetch the pack version with matrixAssessment
+      const version = await prisma.packVersion.findUnique({
+        where: { id: versionId },
+        select: { matrixAssessment: true },
+      });
+
+      if (!version || !version.matrixAssessment) {
+        res.status(404).json({ error: 'No saved assessment found for this version' });
+        return;
+      }
+
+      // Parse the saved assessment
+      const assessment = JSON.parse(version.matrixAssessment);
+
+      console.log('[Export] Generating consultant action plan from saved assessment...');
+      const html = generateConsultantActionPlanHTML(assessment);
+
+      // Generate PDF
+      const tempFile = await generatePDFFromHTML(html, 'consultant-action-plan');
+
+      // Stream to response
+      const filename = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
+      streamPDFToResponse(tempFile, res, filename);
+    } catch (error) {
+      console.error('Error generating saved consultant action plan:', error);
+      res.status(500).json({ error: 'Failed to generate consultant action plan' });
+    }
+  }
+);
 
 export default router;
