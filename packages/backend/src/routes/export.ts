@@ -1732,7 +1732,7 @@ router.get(
   '/packs/:packId/versions/:versionId/saved-assessment/client-gap-analysis',
   async (req: Request, res: Response) => {
     try {
-      const { versionId } = req.params;
+      const versionId = req.params.versionId as string;
 
       // Fetch the pack version with matrixAssessment
       const version = await prisma.packVersion.findUnique({
@@ -1773,7 +1773,7 @@ router.get(
   '/packs/:packId/versions/:versionId/saved-assessment/consultant-action-plan',
   async (req: Request, res: Response) => {
     try {
-      const { versionId } = req.params;
+      const versionId = req.params.versionId as string;
 
       // Fetch the pack version with matrixAssessment
       const version = await prisma.packVersion.findUnique({
