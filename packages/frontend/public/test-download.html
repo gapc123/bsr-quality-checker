@@ -57,8 +57,15 @@
   <h1>PDF Download Test Tool</h1>
 
   <div class="test-section">
-    <h2>Step 1: Check Assessment Status</h2>
-    <p>Enter Pack ID and Version ID to check if assessment data exists:</p>
+    <h2>Step 1: Find Available Packs</h2>
+    <p>Click below to automatically load all packs and their IDs:</p>
+    <button onclick="fetchAllPacks()">🔍 Find All Packs</button>
+    <pre id="packsList">Available packs will appear here...</pre>
+  </div>
+
+  <div class="test-section">
+    <h2>Step 2: Check Assessment Status</h2>
+    <p>Copy Pack ID and Version ID from above, or enter manually:</p>
     <input type="text" id="packId" placeholder="Pack ID" />
     <input type="text" id="versionId" placeholder="Version ID" />
     <br>
@@ -67,7 +74,7 @@
   </div>
 
   <div class="test-section">
-    <h2>Step 2: Test Download</h2>
+    <h2>Step 3: Test Download</h2>
     <p>If status check shows assessment exists, try downloading:</p>
     <button onclick="downloadClientGap()">Download Client Gap Analysis</button>
     <button onclick="downloadConsultantPlan()">Download Consultant Action Plan</button>
@@ -86,6 +93,77 @@
       logDiv.scrollTop = logDiv.scrollHeight;
       console.log(message);
     };
+
+    async function fetchAllPacks() {
+      log('Fetching all packs from database...');
+
+      try {
+        const response = await fetch('/api/clients');
+        log(`Response status: ${response.status}`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const clients = await response.json();
+        log(`Found ${clients.length} clients`);
+
+        let output = '📦 AVAILABLE PACKS:\n\n';
+        let foundPacks = 0;
+
+        for (const client of clients) {
+          if (client.name) {
+            output += `\n🏢 Client: ${client.name}\n`;
+            output += `   ID: ${client.id}\n\n`;
+
+            // Fetch packs for this client
+            const packsResponse = await fetch(`/api/clients/${client.id}`);
+            const clientData = await packsResponse.json();
+
+            if (clientData.packs && clientData.packs.length > 0) {
+              for (const pack of clientData.packs) {
+                foundPacks++;
+                output += `   📁 Pack: ${pack.name}\n`;
+                output += `      Pack ID: ${pack.id}\n`;
+
+                if (pack.versions && pack.versions.length > 0) {
+                  const version = pack.versions[0];
+                  output += `      Version ID: ${version.id}\n`;
+                  output += `      Has Assessment: ${version.matrixAssessment ? '✅ YES' : '❌ NO'}\n`;
+
+                  if (version.matrixAssessment) {
+                    output += `\n      👉 USE THESE IDs TO TEST:\n`;
+                    output += `         Pack ID: ${pack.id}\n`;
+                    output += `         Version ID: ${version.id}\n`;
+                  }
+                } else {
+                  output += `      ⚠️  No versions\n`;
+                }
+                output += '\n';
+              }
+            } else {
+              output += '   (No packs)\n\n';
+            }
+          }
+        }
+
+        if (foundPacks === 0) {
+          output += '\n⚠️  NO PACKS FOUND\n\n';
+          output += 'You need to:\n';
+          output += '1. Go to Quick Assess\n';
+          output += '2. Upload documents and run assessment\n';
+          output += '3. Click "Save to Client"\n';
+          output += '4. Then come back here to test\n';
+        }
+
+        document.getElementById('packsList').textContent = output;
+        log(`✅ Found ${foundPacks} packs total`);
+
+      } catch (error) {
+        log(`ERROR: ${error.message}`);
+        document.getElementById('packsList').textContent = `Error: ${error.message}`;
+      }
+    }
 
     async function checkStatus() {
       const packId = document.getElementById('packId').value;
