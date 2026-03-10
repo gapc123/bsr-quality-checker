@@ -1829,4 +1829,75 @@ router.get(
   }
 );
 
+/**
+ * GET /api/packs/:packId/versions/:versionId/assessment-status
+ *
+ * Diagnostic endpoint to check if assessment exists
+ */
+router.get(
+  '/packs/:packId/versions/:versionId/assessment-status',
+  async (req: Request, res: Response) => {
+    try {
+      const versionId = req.params.versionId as string;
+      const packId = req.params.packId as string;
+
+      console.log(`[Debug] Checking assessment status for Pack: ${packId}, Version: ${versionId}`);
+
+      const version = await prisma.packVersion.findUnique({
+        where: { id: versionId },
+        select: {
+          id: true,
+          versionNumber: true,
+          matrixAssessment: true,
+          createdAt: true
+        },
+      });
+
+      if (!version) {
+        return res.json({
+          found: false,
+          error: 'Version not found'
+        });
+      }
+
+      const hasAssessment = !!version.matrixAssessment;
+      let assessmentInfo = null;
+
+      if (hasAssessment) {
+        try {
+          const assessment = JSON.parse(version.matrixAssessment!);
+          assessmentInfo = {
+            hasResults: !!assessment.results,
+            resultsCount: assessment.results?.length || 0,
+            hasPackContext: !!assessment.pack_context,
+            structure: Object.keys(assessment)
+          };
+        } catch (error) {
+          assessmentInfo = {
+            parseError: error instanceof Error ? error.message : 'Unknown error'
+          };
+        }
+      }
+
+      res.json({
+        found: true,
+        version: {
+          id: version.id,
+          versionNumber: version.versionNumber,
+          createdAt: version.createdAt,
+        },
+        hasAssessment,
+        assessmentDataLength: version.matrixAssessment?.length || 0,
+        assessmentInfo
+      });
+    } catch (error) {
+      console.error('[Debug] Error checking assessment status:', error);
+      res.status(500).json({
+        error: 'Failed to check assessment status',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+);
+
 export default router;

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF Download Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .test-section {
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    input {
+      padding: 8px;
+      margin: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 300px;
+    }
+    pre {
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .log {
+      background: #000;
+      color: #0f0;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>PDF Download Test Tool</h1>
+
+  <div class="test-section">
+    <h2>Step 1: Check Assessment Status</h2>
+    <p>Enter Pack ID and Version ID to check if assessment data exists:</p>
+    <input type="text" id="packId" placeholder="Pack ID" />
+    <input type="text" id="versionId" placeholder="Version ID" />
+    <br>
+    <button onclick="checkStatus()">Check Status</button>
+    <pre id="statusResult">Results will appear here...</pre>
+  </div>
+
+  <div class="test-section">
+    <h2>Step 2: Test Download</h2>
+    <p>If status check shows assessment exists, try downloading:</p>
+    <button onclick="downloadClientGap()">Download Client Gap Analysis</button>
+    <button onclick="downloadConsultantPlan()">Download Consultant Action Plan</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Console Log</h2>
+    <div id="log" class="log"></div>
+  </div>
+
+  <script>
+    const log = (message) => {
+      const logDiv = document.getElementById('log');
+      const timestamp = new Date().toLocaleTimeString();
+      logDiv.innerHTML += `[${timestamp}] ${message}\n`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+      console.log(message);
+    };
+
+    async function checkStatus() {
+      const packId = document.getElementById('packId').value;
+      const versionId = document.getElementById('versionId').value;
+
+      if (!packId || !versionId) {
+        alert('Please enter both Pack ID and Version ID');
+        return;
+      }
+
+      log(`Checking status for Pack: ${packId}, Version: ${versionId}`);
+
+      try {
+        const url = `/api/packs/${packId}/versions/${versionId}/assessment-status`;
+        log(`Fetching: ${url}`);
+
+        const response = await fetch(url);
+        log(`Response status: ${response.status}`);
+
+        const data = await response.json();
+        log(`Response data: ${JSON.stringify(data, null, 2)}`);
+
+        document.getElementById('statusResult').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        log(`ERROR: ${error.message}`);
+        document.getElementById('statusResult').textContent = `Error: ${error.message}`;
+      }
+    }
+
+    async function downloadClientGap() {
+      const packId = document.getElementById('packId').value;
+      const versionId = document.getElementById('versionId').value;
+
+      if (!packId || !versionId) {
+        alert('Please enter both Pack ID and Version ID');
+        return;
+      }
+
+      try {
+        const url = `/api/packs/${packId}/versions/${versionId}/saved-assessment/client-gap-analysis`;
+        log(`Downloading from: ${url}`);
+
+        const response = await fetch(url);
+        log(`Response status: ${response.status}`);
+        log(`Content-Type: ${response.headers.get('Content-Type')}`);
+
+        if (!response.ok) {
+          const text = await response.text();
+          log(`ERROR: ${text}`);
+          alert(`Download failed: ${text}`);
+          return;
+        }
+
+        const blob = await response.blob();
+        log(`Blob size: ${blob.size} bytes`);
+
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+
+        log(`✅ Client Gap Analysis downloaded successfully`);
+      } catch (error) {
+        log(`ERROR: ${error.message}`);
+        alert(`Download failed: ${error.message}`);
+      }
+    }
+
+    async function downloadConsultantPlan() {
+      const packId = document.getElementById('packId').value;
+      const versionId = document.getElementById('versionId').value;
+
+      if (!packId || !versionId) {
+        alert('Please enter both Pack ID and Version ID');
+        return;
+      }
+
+      try {
+        const url = `/api/packs/${packId}/versions/${versionId}/saved-assessment/consultant-action-plan`;
+        log(`Downloading from: ${url}`);
+
+        const response = await fetch(url);
+        log(`Response status: ${response.status}`);
+        log(`Content-Type: ${response.headers.get('Content-Type')}`);
+
+        if (!response.ok) {
+          const text = await response.text();
+          log(`ERROR: ${text}`);
+          alert(`Download failed: ${text}`);
+          return;
+        }
+
+        const blob = await response.blob();
+        log(`Blob size: ${blob.size} bytes`);
+
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+
+        log(`✅ Consultant Action Plan downloaded successfully`);
+      } catch (error) {
+        log(`ERROR: ${error.message}`);
+        alert(`Download failed: ${error.message}`);
+      }
+    }
+
+    log('Test page loaded. Enter Pack ID and Version ID to begin.');
+  </script>
+</body>
+</html>
