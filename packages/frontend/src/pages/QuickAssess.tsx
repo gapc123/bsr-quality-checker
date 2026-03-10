@@ -216,23 +216,30 @@ export default function QuickAssess() {
     <div style={{ maxWidth: '1600px', width: '100%', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ background: 'var(--navy)', padding: '24px', marginBottom: '24px', color: 'var(--white)' }}>
-        <h1 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '30px', marginBottom: '8px' }}>BSR Compliance Assessment</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+          <h1 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '30px', margin: 0 }}>AI-Powered BSR Compliance</h1>
+          <span style={{ background: 'var(--gold)', color: 'var(--navy)', padding: '4px 12px', fontSize: '12px', fontWeight: 700, borderRadius: '4px' }}>AI ENABLED</span>
+        </div>
         <p style={{ color: 'var(--cream)', fontSize: '18px', lineHeight: '1.6' }}>
-          Upload documents → Run full two-phase assessment → Review in carousel → Save to client
+          Automated compliance analysis in minutes, not days. Upload documents → AI assessment → Instant reports
         </p>
         <div style={{ marginTop: '16px', background: 'rgba(255, 255, 255, 0.1)', padding: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '14px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: '8px', height: '8px', background: 'var(--gold)' }}></div>
-              <span>55 Deterministic Rules</span>
+              <span>🤖 AI-Powered Analysis</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: '8px', height: '8px', background: 'var(--gold)' }}></div>
-              <span>AI-Enhanced Analysis</span>
+              <span>⚡ Minutes vs Days</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: '8px', height: '8px', background: 'var(--gold)' }}></div>
-              <span>Carousel Review</span>
+              <span>📊 Auto-Generated Matrices</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '8px', height: '8px', background: 'var(--gold)' }}></div>
+              <span>55 Compliance Rules</span>
             </div>
           </div>
         </div>
@@ -311,35 +318,40 @@ export default function QuickAssess() {
 
           {/* How it Works */}
           <div style={{ background: 'var(--beige)', border: '1px solid var(--beige)', padding: '24px' }}>
-            <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)', marginBottom: '12px' }}>Two-Phase Assessment Process</h3>
+            <h3 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 300, fontSize: '18px', color: 'var(--navy)', marginBottom: '12px' }}>🤖 AI-Powered Automation (Not Manual Review)</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px', color: 'var(--muted)' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <div style={{ width: '32px', height: '32px', background: 'var(--white)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ color: 'var(--navy)', fontWeight: 600 }}>1</span>
+                  <span style={{ color: 'var(--navy)', fontWeight: 600 }}>⚡</span>
                 </div>
                 <div>
-                  <p style={{ fontWeight: 600, color: 'var(--navy)' }}>Deterministic Rules Engine</p>
-                  <p>55 proprietary if-then rules check explicit BSR requirements with 100% consistency</p>
+                  <p style={{ fontWeight: 600, color: 'var(--navy)' }}>AI Document Analysis</p>
+                  <p>AI extracts requirements, evidence, and gaps automatically - no manual reading required</p>
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <div style={{ width: '32px', height: '32px', background: 'var(--white)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ color: 'var(--navy)', fontWeight: 600 }}>2</span>
+                  <span style={{ color: 'var(--navy)', fontWeight: 600 }}>🧠</span>
                 </div>
                 <div>
-                  <p style={{ fontWeight: 600, color: 'var(--navy)' }}>AI-Enhanced Analysis</p>
-                  <p>Claude enriches findings with reasoning, proposed changes, and regulatory context</p>
+                  <p style={{ fontWeight: 600, color: 'var(--navy)' }}>Intelligent Compliance Mapping</p>
+                  <p>AI links every requirement to evidence sources with page numbers and reasoning</p>
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                 <div style={{ width: '32px', height: '32px', background: 'var(--white)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ color: 'var(--navy)', fontWeight: 600 }}>✓</span>
+                  <span style={{ color: 'var(--navy)', fontWeight: 600 }}>📊</span>
                 </div>
                 <div>
-                  <p style={{ fontWeight: 600, color: 'var(--navy)' }}>Carousel Review & Save</p>
-                  <p>Navigate criterion-by-criterion in the carousel, then save to a client for record-keeping</p>
+                  <p style={{ fontWeight: 600, color: 'var(--navy)' }}>Instant Report Generation</p>
+                  <p>3 submission-ready documents generated in seconds - matrices that take consultants hours to build manually</p>
                 </div>
               </div>
+            </div>
+            <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(255, 215, 0, 0.1)', border: '1px solid var(--gold)' }}>
+              <p style={{ fontSize: '13px', color: 'var(--navy)', fontWeight: 600 }}>
+                💡 Traditional consultancies charge £500-1,000 for compliance matrices built over days. Our AI generates them in minutes.
+              </p>
             </div>
           </div>
         </>
@@ -405,10 +417,13 @@ export default function QuickAssess() {
                 </svg>
               </div>
               <h2 style={{ fontFamily: 'DM Sans, sans-serif', fontWeight: 200, fontSize: '28px', color: 'var(--navy)', marginBottom: '12px' }}>
-                Documents Generated Successfully
+                🤖 AI Generated Your Documents
               </h2>
-              <p style={{ color: 'var(--muted)', marginBottom: '32px', fontSize: '16px' }}>
-                Three documents have been downloaded to your computer
+              <p style={{ color: 'var(--muted)', marginBottom: '8px', fontSize: '16px' }}>
+                Three submission-ready documents created by AI in seconds
+              </p>
+              <p style={{ color: 'var(--gold)', fontSize: '14px', fontWeight: 600, marginBottom: '32px' }}>
+                Automated compliance analysis that saves hours of manual work
               </p>
               <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '16px', textAlign: 'left' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -416,8 +431,8 @@ export default function QuickAssess() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>📋 Client Gap Analysis</div>
-                    <div style={{ fontSize: '14px', color: 'var(--muted)' }}>Simple checklist of what client needs to provide</div>
+                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>📋 Client Gap Analysis (AI-Generated PDF)</div>
+                    <div style={{ fontSize: '14px', color: 'var(--muted)' }}>AI-extracted missing information checklist for client follow-up</div>
                   </div>
                 </div>
               </div>
@@ -427,9 +442,9 @@ export default function QuickAssess() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>🔧 Consultant Action Plan</div>
+                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>🔧 Consultant Action Plan (AI-Generated PDF)</div>
                     <div style={{ fontSize: '14px', color: 'var(--muted)' }}>
-                      Executive summary with verdict • Critical issues highlighted • Issues grouped by responsible party • Clear action items
+                      AI-prioritized action items with owner assignments and effort estimates
                     </div>
                   </div>
                 </div>
@@ -440,9 +455,9 @@ export default function QuickAssess() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                   </svg>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>📊 Compliance Matrix (Excel)</div>
+                    <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>📊 Compliance Matrix (AI-Generated Excel)</div>
                     <div style={{ fontSize: '14px', color: 'var(--muted)' }}>
-                      Submission-ready traceability matrix • Color-coded status • Evidence linking • Requirement → Document → Page mapping
+                      AI-mapped traceability matrix (worth £500-1,000) • Color-coded status • Auto-linked evidence • Generated in seconds vs hours of manual work
                     </div>
                   </div>
                 </div>

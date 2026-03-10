@@ -351,7 +351,10 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
           </div>
 
           <p className="text-center text-xs text-slate-500 mt-3">
-            Three documents: Client Gap Analysis + Consultant Action Plan + Compliance Matrix Excel
+            Three AI-generated documents: Client Gap Analysis + Consultant Action Plan + Compliance Matrix Excel
+          </p>
+          <p className="text-center text-xs text-slate-400 mt-1">
+            🤖 Powered by AI • Generated in seconds, not hours
           </p>
         </div>
       </div>
