@@ -140,6 +140,48 @@ export async function exportConsultantActionPlan(
 }
 
 /**
+ * Download compliance matrix as Excel (submission-ready traceability matrix)
+ */
+export async function exportComplianceMatrixExcel(
+  packId: string,
+  versionId: string,
+  assessment: FullAssessment,
+  projectName?: string
+): Promise<void> {
+  try {
+    console.log('[exportService] Downloading compliance matrix Excel...');
+    const response = await fetch(
+      `${API_BASE}/api/packs/${packId}/versions/${versionId}/compliance-matrix/excel`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ assessment, projectName })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Export failed: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `compliance-matrix-${new Date().toISOString().split('T')[0]}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    console.log('[exportService] Compliance matrix Excel downloaded successfully');
+  } catch (error) {
+    console.error('Failed to export compliance matrix:', error);
+    throw error;
+  }
+}
+
+/**
  * Download assessment report as PDF
  * @deprecated Use exportComplianceReport instead
  */

@@ -9,6 +9,8 @@ import express, { Request, Response } from 'express';
 import { generatePDFFromHTML, streamPDFToResponse } from '../utils/pdf-generator';
 import { generateClientGapAnalysisHTML } from '../templates/client-gap-analysis';
 import { generateConsultantActionPlanHTML } from '../templates/consultant-action-plan';
+import { generateComplianceMatrix } from '../services/compliance-matrix.js';
+import { generateComplianceMatrixExcel } from '../services/excel-export.js';
 import prisma from '../db/client.js';
 import path from 'path';
 import fs from 'fs';
@@ -1825,6 +1827,116 @@ router.get(
     } catch (error) {
       console.error('[Export] Error generating saved consultant action plan:', error);
       res.status(500).json({ error: 'Failed to generate consultant action plan', details: error instanceof Error ? error.message : 'Unknown error' });
+    }
+  }
+);
+
+/**
+ * POST /api/packs/:packId/versions/:versionId/compliance-matrix/excel
+ *
+ * Generate compliance matrix Excel export
+ */
+router.post(
+  '/packs/:packId/versions/:versionId/compliance-matrix/excel',
+  async (req: Request, res: Response) => {
+    try {
+      const { assessment, projectName } = req.body;
+
+      if (!assessment) {
+        res.status(400).json({ error: 'Assessment data required' });
+        return;
+      }
+
+      console.log('[Export] Generating compliance matrix Excel...');
+
+      // Generate matrix data
+      const matrix = generateComplianceMatrix(assessment, projectName || 'BSR Submission');
+
+      // Generate Excel file
+      const buffer = await generateComplianceMatrixExcel(matrix);
+
+      // Send file
+      const filename = `compliance-matrix-${new Date().toISOString().split('T')[0]}.xlsx`;
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', buffer.length);
+
+      res.send(buffer);
+
+      console.log(`[Export] Compliance matrix Excel generated: ${filename}`);
+    } catch (error) {
+      console.error('[Export] Error generating compliance matrix Excel:', error);
+      res.status(500).json({
+        error: 'Failed to generate compliance matrix',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+);
+
+/**
+ * GET /api/packs/:packId/versions/:versionId/saved-assessment/compliance-matrix/excel
+ *
+ * Generate compliance matrix Excel from SAVED assessment
+ */
+router.get(
+  '/packs/:packId/versions/:versionId/saved-assessment/compliance-matrix/excel',
+  async (req: Request, res: Response) => {
+    try {
+      const versionId = req.params.versionId as string;
+      const packId = req.params.packId as string;
+
+      console.log(`[Export] GET saved compliance matrix Excel - Pack: ${packId}, Version: ${versionId}`);
+
+      // Fetch the pack version with matrixAssessment
+      const version = await prisma.packVersion.findUnique({
+        where: { id: versionId },
+        include: {
+          pack: {
+            select: { name: true }
+          }
+        }
+      });
+
+      if (!version) {
+        console.error(`[Export] Version not found: ${versionId}`);
+        res.status(404).json({ error: 'Version not found' });
+        return;
+      }
+
+      if (!version.matrixAssessment) {
+        console.error(`[Export] No saved assessment for version: ${versionId}`);
+        res.status(404).json({ error: 'No saved assessment found for this version' });
+        return;
+      }
+
+      // Parse the saved assessment
+      console.log('[Export] Parsing saved assessment...');
+      const assessment = JSON.parse(version.matrixAssessment);
+
+      // Generate matrix
+      const matrix = generateComplianceMatrix(assessment, version.pack.name);
+
+      // Generate Excel file
+      const buffer = await generateComplianceMatrixExcel(matrix);
+
+      // Send file
+      const filename = `compliance-matrix-${version.pack.name.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.xlsx`;
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', buffer.length);
+
+      res.send(buffer);
+
+      console.log(`[Export] Compliance matrix Excel generated: ${filename}`);
+    } catch (error) {
+      console.error('[Export] Error generating saved compliance matrix Excel:', error);
+      res.status(500).json({
+        error: 'Failed to generate compliance matrix',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   }
 );

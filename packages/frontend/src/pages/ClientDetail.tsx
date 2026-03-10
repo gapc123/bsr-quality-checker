@@ -168,7 +168,31 @@ export default function ClientDetail() {
       consultantPlanLink.click();
       window.URL.revokeObjectURL(consultantPlanBlobUrl);
 
-      console.log('Documents downloaded successfully');
+      // Small delay between downloads
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Download Compliance Matrix Excel
+      const complianceMatrixUrl = `/api/packs/${packId}/versions/${versionId}/saved-assessment/compliance-matrix/excel`;
+      console.log(`[ClientDetail] Fetching compliance matrix Excel from: ${complianceMatrixUrl}`);
+
+      const complianceMatrixRes = await fetch(complianceMatrixUrl);
+      console.log(`[ClientDetail] Compliance matrix Excel response status: ${complianceMatrixRes.status}`);
+
+      if (!complianceMatrixRes.ok) {
+        const errorText = await complianceMatrixRes.text();
+        console.error(`[ClientDetail] Compliance matrix Excel error:`, errorText);
+        throw new Error(`Failed to download compliance matrix: ${errorText}`);
+      }
+
+      const complianceMatrixBlob = await complianceMatrixRes.blob();
+      const complianceMatrixBlobUrl = window.URL.createObjectURL(complianceMatrixBlob);
+      const complianceMatrixLink = document.createElement('a');
+      complianceMatrixLink.href = complianceMatrixBlobUrl;
+      complianceMatrixLink.download = `compliance-matrix-${new Date().toISOString().split('T')[0]}.xlsx`;
+      complianceMatrixLink.click();
+      window.URL.revokeObjectURL(complianceMatrixBlobUrl);
+
+      console.log('All three documents downloaded successfully');
     } catch (error) {
       console.error('Error downloading documents:', error);
       alert(`Failed to download documents: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -342,7 +366,7 @@ export default function ClientDetail() {
                         disabled={downloadingDocs === pack.versions[0].id}
                         className="btn-primary"
                         style={{ padding: '6px 12px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '6px', opacity: downloadingDocs === pack.versions[0].id ? 0.5 : 1 }}
-                        title="Download assessment reports"
+                        title="Download 3 documents: Client Gap Analysis PDF, Consultant Action Plan PDF, and Compliance Matrix Excel"
                       >
                         {downloadingDocs === pack.versions[0].id ? (
                           <>

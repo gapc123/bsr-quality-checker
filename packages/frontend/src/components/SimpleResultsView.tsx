@@ -351,7 +351,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
           </div>
 
           <p className="text-center text-xs text-slate-500 mt-3">
-            Two documents: Client Gap Analysis + Consultant Action Plan
+            Three documents: Client Gap Analysis + Consultant Action Plan + Compliance Matrix Excel
           </p>
         </div>
       </div>

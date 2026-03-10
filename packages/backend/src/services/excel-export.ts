@@ -1,0 +1,217 @@
+/**
+ * Excel Export Service for Compliance Matrices
+ *
+ * Generates professional Excel spreadsheets with:
+ * - Color-coded compliance status
+ * - Auto-sized columns
+ * - Frozen headers
+ * - Filters
+ */
+
+import ExcelJS from 'exceljs';
+import type { ComplianceMatrix, ComplianceMatrixRow } from './compliance-matrix.js';
+
+/**
+ * Generate Excel workbook from compliance matrix
+ */
+export async function generateComplianceMatrixExcel(
+  matrix: ComplianceMatrix
+): Promise<Buffer> {
+  const workbook = new ExcelJS.Workbook();
+
+  // Set workbook properties
+  workbook.creator = 'BSR Quality Checker';
+  workbook.created = new Date();
+  workbook.modified = new Date();
+
+  // Create main worksheet
+  const worksheet = workbook.addWorksheet('Compliance Matrix', {
+    views: [{ state: 'frozen', xSplit: 0, ySplit: 1 }] // Freeze header row
+  });
+
+  // Add title and summary
+  addSummarySection(worksheet, matrix);
+
+  // Add data table
+  addDataTable(worksheet, matrix);
+
+  // Generate buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+  return Buffer.from(buffer);
+}
+
+/**
+ * Add summary section at top of sheet
+ */
+function addSummarySection(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
+  // Title
+  worksheet.addRow(['BSR COMPLIANCE MATRIX']);
+  worksheet.getRow(1).font = { size: 16, bold: true };
+  worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'left' };
+
+  // Project info
+  worksheet.addRow(['Project:', matrix.projectName]);
+  worksheet.addRow(['Generated:', new Date(matrix.generatedDate).toLocaleDateString('en-GB')]);
+  worksheet.addRow([]); // Blank row
+
+  // Summary stats
+  worksheet.addRow(['SUMMARY']);
+  worksheet.getRow(5).font = { size: 12, bold: true };
+
+  worksheet.addRow(['Total Requirements:', matrix.totalRequirements]);
+  worksheet.addRow(['Met:', matrix.met, `${Math.round((matrix.met / matrix.totalRequirements) * 100)}%`]);
+  worksheet.addRow(['Partial:', matrix.partial, `${Math.round((matrix.partial / matrix.totalRequirements) * 100)}%`]);
+  worksheet.addRow(['Not Met:', matrix.notMet, `${Math.round((matrix.notMet / matrix.totalRequirements) * 100)}%`]);
+  worksheet.addRow(['Compliance Rate:', `${matrix.complianceRate}%`]);
+
+  // Color code summary
+  worksheet.getRow(7).getCell(3).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFD4EDDA' } // Green
+  };
+  worksheet.getRow(8).getCell(3).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFFFF3CD' } // Yellow
+  };
+  worksheet.getRow(9).getCell(3).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFF8D7DA' } // Red
+  };
+
+  worksheet.addRow([]); // Blank row
+  worksheet.addRow([]); // Blank row
+}
+
+/**
+ * Add main data table
+ */
+function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
+  const startRow = 13;
+
+  // Define columns
+  const columns = [
+    { header: 'ID', key: 'id', width: 12 },
+    { header: 'Requirement', key: 'requirement', width: 50 },
+    { header: 'Category', key: 'category', width: 15 },
+    { header: 'Status', key: 'status', width: 12 },
+    { header: 'Priority', key: 'priority', width: 12 },
+    { header: 'Evidence Document', key: 'evidenceDoc', width: 30 },
+    { header: 'Page', key: 'page', width: 10 },
+    { header: 'Action Required', key: 'action', width: 40 },
+    { header: 'Owner', key: 'owner', width: 20 },
+    { header: 'Notes', key: 'notes', width: 50 }
+  ];
+
+  worksheet.columns = columns;
+
+  // Style header row
+  const headerRow = worksheet.getRow(startRow);
+  headerRow.values = columns.map(c => c.header);
+  headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+  headerRow.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF1E40AF' } // Navy blue
+  };
+  headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+  headerRow.height = 20;
+
+  // Add data rows
+  matrix.rows.forEach((row, index) => {
+    const excelRow = worksheet.addRow({
+      id: row.requirementId,
+      requirement: row.requirement,
+      category: row.category,
+      status: row.status,
+      priority: row.priority || '',
+      evidenceDoc: row.evidenceDocument || 'Not provided',
+      page: row.evidencePage || '',
+      action: row.action || '',
+      owner: row.owner || '',
+      notes: truncate(row.notes || '', 200)
+    });
+
+    // Color code by status
+    const statusCell = excelRow.getCell('status');
+    switch (row.status) {
+      case 'Met':
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFD4EDDA' } // Green
+        };
+        statusCell.font = { color: { argb: 'FF155724' }, bold: true };
+        break;
+      case 'Partial':
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFFF3CD' } // Yellow
+        };
+        statusCell.font = { color: { argb: 'FF856404' }, bold: true };
+        break;
+      case 'Not Met':
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFF8D7DA' } // Red
+        };
+        statusCell.font = { color: { argb: 'FF721C24' }, bold: true };
+        break;
+    }
+
+    // Color code by priority
+    const priorityCell = excelRow.getCell('priority');
+    if (row.priority === 'Critical') {
+      priorityCell.font = { color: { argb: 'FFDC2626' }, bold: true };
+    } else if (row.priority === 'High') {
+      priorityCell.font = { color: { argb: 'FFF59E0B' }, bold: true };
+    }
+
+    // Alternate row colors for readability
+    if (index % 2 === 0) {
+      excelRow.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFF8FAFC' } // Light gray
+      };
+    }
+
+    // Text wrapping for long cells
+    excelRow.getCell('requirement').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.getCell('action').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.getCell('notes').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.height = 30; // Taller rows for wrapped text
+  });
+
+  // Add autofilter
+  worksheet.autoFilter = {
+    from: { row: startRow, column: 1 },
+    to: { row: startRow + matrix.rows.length, column: columns.length }
+  };
+
+  // Add borders to all data cells
+  for (let i = startRow; i <= startRow + matrix.rows.length; i++) {
+    const row = worksheet.getRow(i);
+    for (let j = 1; j <= columns.length; j++) {
+      const cell = row.getCell(j);
+      cell.border = {
+        top: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+        left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+        bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+        right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+      };
+    }
+  }
+}
+
+/**
+ * Truncate text to max length
+ */
+function truncate(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength - 3) + '...';
+}
