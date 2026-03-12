@@ -162,6 +162,153 @@ const MATRIX_PATH = isProduction
   ? path.join(process.cwd(), 'knowledge', 'success_matrix.json')
   : path.join(process.cwd(), '..', '..', 'knowledge', 'success_matrix.json');
 
+// ============================================
+// TWO-STAGE ASSESSMENT: FACT EXTRACTION + COMPLIANCE LOGIC
+// TASK #15: Separate fact extraction from compliance judgement
+// ============================================
+
+/**
+ * Stage 1: Structured facts extracted by LLM (no judgement)
+ */
+interface FactExtractionResult {
+  // Evidence found
+  evidence_found: boolean;
+  evidence_document: string | null;
+  evidence_quote: string | null;
+  evidence_quality: 'explicit' | 'implicit' | 'ambiguous' | 'absent'; // TASK #17
+
+  // Cross-document evidence (if info found elsewhere)
+  cross_document_evidence: {
+    found: boolean;
+    source_document: string | null;
+    quote: string | null;
+  };
+
+  // Extracted facts (criterion-specific)
+  facts: {
+    key: string;           // Fact identifier (e.g., "building_height", "compartmentation_rating")
+    value: string | null;  // Extracted value (e.g., "24.5m", "60 minutes")
+    confidence: 'high' | 'medium' | 'low'; // LLM's confidence in extraction
+  }[];
+
+  // What's missing (no judgement, just what's not stated)
+  missing_information: string[];
+
+  // Ambiguities or contradictions
+  ambiguities: string[];
+}
+
+/**
+ * Stage 2: Deterministic compliance logic (maps facts → status)
+ */
+interface ComplianceJudgement {
+  status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed' | 'missing_information';
+  reasoning: string;
+  decision_logic: string; // Explain the rule applied (e.g., "Building height >= 18m AND residential → HRB")
+  gaps_identified: string[];
+  actions_required: Array<{
+    action: string;
+    owner: string;
+    effort: 'S' | 'M' | 'L';
+    expected_benefit: string;
+  }>;
+}
+
+// ============================================
+// EVIDENCE VALIDATION (TASK #14: Anti-hallucination)
+// Post-extraction validation to catch LLM hallucinations
+// ============================================
+
+interface EvidenceValidation {
+  isValid: boolean;
+  issues: string[];
+  similarityScore?: number;
+}
+
+/**
+ * Calculate fuzzy match score between quote and document text
+ * Uses Levenshtein-like similarity (0-1, higher = more similar)
+ */
+function calculateSimilarity(quote: string, documentText: string): number {
+  if (!quote || !documentText) return 0;
+
+  // Normalize: lowercase, remove extra whitespace, remove punctuation
+  const normalize = (str: string) =>
+    str.toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/[.,;:!?()[\]{}'"]/g, '')
+      .trim();
+
+  const normalizedQuote = normalize(quote);
+  const normalizedDoc = normalize(documentText);
+
+  // Simple substring match (good enough for quotes)
+  if (normalizedDoc.includes(normalizedQuote)) {
+    return 1.0;
+  }
+
+  // Check for partial matches (at least 80% of quote appears consecutively)
+  const quoteLength = normalizedQuote.length;
+  const threshold = Math.floor(quoteLength * 0.8);
+
+  for (let i = 0; i <= normalizedDoc.length - threshold; i++) {
+    const substring = normalizedDoc.substring(i, i + quoteLength);
+    let matches = 0;
+
+    for (let j = 0; j < normalizedQuote.length && j < substring.length; j++) {
+      if (normalizedQuote[j] === substring[j]) matches++;
+    }
+
+    const similarity = matches / quoteLength;
+    if (similarity >= 0.8) return similarity;
+  }
+
+  return 0;
+}
+
+/**
+ * Validate evidence extracted by LLM
+ * Returns validation result with issues list
+ */
+function validateEvidence(
+  evidence: {
+    found: boolean;
+    document: string | null;
+    page: number | null;
+    quote: string | null;
+  },
+  packDocs: PackDocument[]
+): EvidenceValidation {
+  const issues: string[] = [];
+
+  // If no evidence claimed, validation passes
+  if (!evidence.found || !evidence.document) {
+    return { isValid: true, issues: [] };
+  }
+
+  // Check 1: Document exists in pack
+  const referencedDoc = packDocs.find(d => d.filename === evidence.document);
+  if (!referencedDoc) {
+    issues.push(`Document '${evidence.document}' not found in pack`);
+    return { isValid: false, issues };
+  }
+
+  // Check 2: Quote fuzzy-match to document text (if quote provided)
+  if (evidence.quote) {
+    const similarity = calculateSimilarity(evidence.quote, referencedDoc.extractedText);
+
+    if (similarity < 0.8) {
+      issues.push(`Quote similarity too low (${Math.round(similarity * 100)}%). Possible hallucination.`);
+      return { isValid: false, issues, similarityScore: similarity };
+    }
+
+    return { isValid: true, issues: [], similarityScore: similarity };
+  }
+
+  // If document exists but no quote, that's acceptable (general reference)
+  return { isValid: true, issues: [] };
+}
+
 // Types
 interface MatrixRow {
   matrix_id: string;
@@ -216,11 +363,18 @@ export type OwnerType =
   | 'CLIENT_INFO'            // Client must provide information
   | 'PROJECT_TEAM';          // Generic project team (fallback)
 
+// Evidence quality taxonomy (TASK #17)
+export type EvidenceQuality =
+  | 'explicit'     // Direct, unambiguous statement (e.g., "Building height is 24.5m")
+  | 'implicit'     // Can be inferred from context (e.g., "8 storeys above ground" implies HRB)
+  | 'ambiguous'    // Present but unclear or contradictory
+  | 'absent';      // Not mentioned in any document
+
 export interface AssessmentResult {
   matrix_id: string;
   matrix_title: string;
   category: string;
-  status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed';
+  status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed' | 'missing_information';
   severity: string;
   reasoning: string;
   success_definition: string;
@@ -292,6 +446,9 @@ export interface AssessmentResult {
   // NEW: Structured owner taxonomy (replaces generic "Project Team")
   owner_type?: OwnerType;
 
+  // NEW: Evidence quality scoring (TASK #17)
+  evidence_quality?: EvidenceQuality;
+
   // NEW: Cost estimation for budgeting
   estimated_cost?: {
     hours: number;              // Estimated hours of work
@@ -315,6 +472,7 @@ export interface FullAssessment {
     meets: number;
     partial: number;
     does_not_meet: number;
+    missing_information: number;
   };
   flagged_by_severity: {
     high: number;
@@ -594,7 +752,376 @@ function estimateCost(
   };
 }
 
-// Use LLM to assess a single criterion
+// ============================================
+// STAGE 1: FACT EXTRACTION (LLM extracts facts, no judgement)
+// ============================================
+
+/**
+ * Extract structured facts from documents using LLM
+ * No compliance judgement - just fact extraction
+ */
+async function extractFacts(
+  row: MatrixRow,
+  packDocs: PackDocument[],
+  referenceEvidence: RetrievalResult | null,
+  client: Anthropic
+): Promise<FactExtractionResult> {
+  const sortedDocs = [...packDocs].sort((a, b) => a.filename.localeCompare(b.filename));
+
+  const packContext = sortedDocs.map(d =>
+    `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\nContent excerpt:\n${d.extractedText.slice(0, 3000)}`
+  ).join('\n\n---\n\n');
+
+  const referenceContext = referenceEvidence
+    ? `Reference from ${referenceEvidence.doc_title} (page ${referenceEvidence.page_number}):\n"${referenceEvidence.snippet}"`
+    : 'No specific reference excerpt available.';
+
+  const systemPrompt = `You are a fact extraction specialist. Your ONLY job is to extract factual information from documents - DO NOT make compliance judgements.
+
+CRITICAL RULES:
+1. Extract ONLY what is explicitly stated in the documents
+2. DO NOT judge whether information is sufficient or compliant
+3. DO NOT infer or assume information not present
+4. Quote exact text when possible
+5. Mark confidence level for each extracted fact
+6. List what information is missing (but don't judge if that's good or bad)`;
+
+  const prompt = `## Criterion Context
+ID: ${row.matrix_id}
+Title: ${row.matrix_title}
+Description: ${row.matrix_description}
+
+## What Information to Extract
+${row.success_definition}
+
+Expected evidence types:
+${row.evidence_expected.map((e, i) => `${i + 1}. ${e}`).join('\n')}
+
+## Reference Standard
+${referenceContext}
+
+## Documents to Analyze
+${packContext}
+
+## Your Task
+Extract factual information relevant to this criterion. DO NOT judge compliance.
+
+For each piece of expected evidence:
+1. Search ALL documents for relevant information
+2. If found: extract the fact, quote the source, note which document
+3. If not found in primary document but found elsewhere: note the cross-reference
+4. If not found anywhere: list as missing information
+5. If ambiguous or contradictory: note the ambiguity
+6. Score evidence quality:
+   - "explicit": Direct, unambiguous statement (e.g., "Building height is 24.5m")
+   - "implicit": Can be inferred from context (e.g., "8 storeys" implies height)
+   - "ambiguous": Present but unclear, vague, or contradictory
+   - "absent": Not mentioned in any document
+
+Respond in JSON format:
+{
+  "evidence_found": true | false,
+  "evidence_document": "exact filename or null",
+  "evidence_quote": "exact quote from primary document or null",
+  "evidence_quality": "explicit" | "implicit" | "ambiguous" | "absent",
+  "cross_document_evidence": {
+    "found": true | false,
+    "source_document": "filename or null",
+    "quote": "exact quote or null"
+  },
+  "facts": [
+    {
+      "key": "descriptive_identifier",
+      "value": "extracted value or null",
+      "confidence": "high" | "medium" | "low"
+    }
+  ],
+  "missing_information": ["specific info not found 1", "specific info not found 2"],
+  "ambiguities": ["contradiction or unclear statement 1"]
+}
+
+Example for building height criterion:
+{
+  "evidence_found": true,
+  "evidence_document": "Fire_Strategy.pdf",
+  "evidence_quote": "The building has a height of 24.5 metres",
+  "evidence_quality": "explicit",
+  "cross_document_evidence": {
+    "found": true,
+    "source_document": "Planning_Application.pdf",
+    "quote": "Total building height: 24.5m above ground level"
+  },
+  "facts": [
+    {
+      "key": "building_height_meters",
+      "value": "24.5",
+      "confidence": "high"
+    },
+    {
+      "key": "measurement_method",
+      "value": "above ground level",
+      "confidence": "high"
+    }
+  ],
+  "missing_information": [],
+  "ambiguities": []
+}`;
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      temperature: 0,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const content = response.content[0];
+    if (content.type !== 'text') {
+      throw new Error('Unexpected response type');
+    }
+
+    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No JSON found in response');
+    }
+
+    return JSON.parse(jsonMatch[0]);
+  } catch (error) {
+    console.error(`Error extracting facts for ${row.matrix_id}:`, error);
+    return {
+      evidence_found: false,
+      evidence_document: null,
+      evidence_quote: null,
+      evidence_quality: 'absent',
+      cross_document_evidence: {
+        found: false,
+        source_document: null,
+        quote: null
+      },
+      facts: [],
+      missing_information: ['Failed to extract facts due to processing error'],
+      ambiguities: []
+    };
+  }
+}
+
+// ============================================
+// STAGE 2: COMPLIANCE LOGIC (Deterministic judgement)
+// ============================================
+
+/**
+ * Apply deterministic compliance logic to extracted facts
+ * Same facts → same verdict (reproducible)
+ */
+function applyComplianceLogic(
+  row: MatrixRow,
+  facts: FactExtractionResult
+): ComplianceJudgement {
+  // Default: not enough information
+  let status: ComplianceJudgement['status'] = 'missing_information';
+  let reasoning = '';
+  let decisionLogic = '';
+  const gaps: string[] = [];
+  const actions: ComplianceJudgement['actions_required'] = [];
+
+  // Logic: If no evidence found → missing_information (TASK #16)
+  // This distinguishes "not mentioned" from "mentioned but wrong"
+  if (!facts.evidence_found && !facts.cross_document_evidence.found) {
+    status = 'missing_information';
+    reasoning = `Required information not found in any document for ${row.matrix_title}. Missing: ${facts.missing_information.join('; ')}`;
+    decisionLogic = 'RULE: No evidence found in any document → missing_information';
+    gaps.push(...facts.missing_information);
+
+    actions.push({
+      action: `Add documentation addressing ${row.matrix_title}: ${facts.missing_information.slice(0, 2).join(', ')}`,
+      owner: 'Project Team',
+      effort: 'M',
+      expected_benefit: 'Provide required information to meet compliance'
+    });
+
+    return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
+  }
+
+  // Logic: If evidence found but has missing information → partial
+  if (facts.evidence_found && facts.missing_information.length > 0) {
+    status = 'partial';
+    reasoning = `Partial evidence found in ${facts.evidence_document}. Missing: ${facts.missing_information.join('; ')}`;
+    decisionLogic = 'RULE: Evidence present but incomplete → partial';
+    gaps.push(...facts.missing_information);
+
+    actions.push({
+      action: `Add missing information: ${facts.missing_information.join(', ')}`,
+      owner: 'Project Team',
+      effort: 'S',
+      expected_benefit: 'Complete compliance documentation'
+    });
+
+    return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
+  }
+
+  // Logic: If evidence found with ambiguities or contradictions → does_not_meet (TASK #16)
+  // This is different from missing_information: the document mentions it but is wrong/unclear
+  if (facts.ambiguities.length > 0) {
+    // Check if ambiguity indicates contradiction (evidence exists but is wrong)
+    const isContradiction = facts.ambiguities.some(a =>
+      a.toLowerCase().includes('contradict') ||
+      a.toLowerCase().includes('conflict') ||
+      a.toLowerCase().includes('incorrect') ||
+      a.toLowerCase().includes('does not meet')
+    );
+
+    if (isContradiction) {
+      status = 'does_not_meet';
+      reasoning = `Evidence found but contradicts requirements: ${facts.ambiguities.join('; ')}`;
+      decisionLogic = 'RULE: Evidence contradicts requirements → does_not_meet';
+    } else {
+      status = 'partial';
+      reasoning = `Evidence found but ambiguous: ${facts.ambiguities.join('; ')}`;
+      decisionLogic = 'RULE: Evidence ambiguous or unclear → partial';
+    }
+
+    gaps.push(...facts.ambiguities);
+
+    actions.push({
+      action: `Clarify or correct: ${facts.ambiguities.slice(0, 2).join(', ')}`,
+      owner: 'Project Team',
+      effort: 'S',
+      expected_benefit: isContradiction ? 'Correct non-compliant information' : 'Remove ambiguity for clear compliance'
+    });
+
+    return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
+  }
+
+  // Logic: If evidence found and complete → meets (but consider quality - TASK #17)
+  if (facts.evidence_found && facts.missing_information.length === 0 && facts.ambiguities.length === 0) {
+    // Check evidence quality
+    if (facts.evidence_quality === 'explicit') {
+      status = 'meets';
+      reasoning = `Explicit evidence found in ${facts.evidence_document}: "${facts.evidence_quote?.slice(0, 100)}..."`;
+      decisionLogic = 'RULE: Evidence present, complete, explicit → meets';
+    } else if (facts.evidence_quality === 'implicit') {
+      status = 'partial';
+      reasoning = `Implicit evidence found in ${facts.evidence_document}. Information can be inferred but is not explicitly stated.`;
+      decisionLogic = 'RULE: Evidence inferred but not explicit → partial';
+      gaps.push('Evidence is implicit rather than explicit');
+      actions.push({
+        action: 'Make implicit information explicit in documentation',
+        owner: 'Project Team',
+        effort: 'S',
+        expected_benefit: 'Provide clear, unambiguous evidence'
+      });
+    } else {
+      // ambiguous quality handled earlier
+      status = 'partial';
+      reasoning = `Evidence found but quality is unclear`;
+      decisionLogic = 'RULE: Evidence quality unclear → partial';
+    }
+
+    return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
+  }
+
+  // Fallback (should not reach here)
+  status = 'not_assessed';
+  reasoning = 'Unable to determine compliance status from extracted facts';
+  decisionLogic = 'FALLBACK: Insufficient information to apply compliance rules';
+
+  return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
+}
+
+// ============================================
+// TWO-STAGE ASSESSMENT FUNCTION (NEW)
+// TASK #15: Evidence-first, deterministic compliance logic
+// ============================================
+
+/**
+ * Assess criterion using two-stage approach:
+ * Stage 1: LLM extracts facts (no judgement)
+ * Stage 2: Deterministic logic applies compliance rules
+ */
+async function assessCriterionTwoStage(
+  row: MatrixRow,
+  packDocs: PackDocument[],
+  referenceEvidence: RetrievalResult | null,
+  client: Anthropic
+): Promise<AssessmentResult> {
+  console.log(`  [TWO-STAGE] Assessing ${row.matrix_id}`);
+
+  // STAGE 1: Extract facts using LLM (no judgement)
+  const facts = await extractFacts(row, packDocs, referenceEvidence, client);
+
+  // Validate extracted evidence
+  const evidenceValidation = validateEvidence(
+    {
+      found: facts.evidence_found,
+      document: facts.evidence_document,
+      page: null,
+      quote: facts.evidence_quote
+    },
+    packDocs
+  );
+
+  if (!evidenceValidation.isValid) {
+    console.warn(`  [VALIDATION FAILED] ${row.matrix_id}:`, evidenceValidation.issues.join('; '));
+  }
+
+  // STAGE 2: Apply deterministic compliance logic
+  const judgement = applyComplianceLogic(row, facts);
+
+  // Augment reasoning with validation warnings
+  let finalReasoning = judgement.reasoning;
+  if (!evidenceValidation.isValid && evidenceValidation.issues.length > 0) {
+    finalReasoning += `\n\n⚠️ Evidence validation warning: ${evidenceValidation.issues.join('; ')}`;
+  }
+  // Append decision logic for transparency
+  finalReasoning += `\n\n[Decision Logic: ${judgement.decision_logic}]`;
+
+  // Determine owner type
+  const ownerType = determineOwnerType(
+    judgement.actions_required?.[0]?.owner,
+    false, // No proposed_change in two-stage flow yet
+    finalReasoning,
+    judgement.gaps_identified
+  );
+
+  // Estimate cost
+  const effort = judgement.actions_required?.[0]?.effort || 'M';
+  const estimatedCost = estimateCost(ownerType, effort);
+
+  return {
+    matrix_id: row.matrix_id,
+    matrix_title: row.matrix_title,
+    category: row.category,
+    status: judgement.status,
+    severity: row.severity_if_unmet,
+    reasoning: finalReasoning,
+    success_definition: row.success_definition,
+    pack_evidence: {
+      found: facts.evidence_found && evidenceValidation.isValid,
+      document: evidenceValidation.isValid ? facts.evidence_document : null,
+      page: null,
+      quote: evidenceValidation.isValid ? facts.evidence_quote : null
+    },
+    reference_evidence: {
+      found: referenceEvidence !== null,
+      doc_id: referenceEvidence?.doc_id || null,
+      doc_title: referenceEvidence?.doc_title || null,
+      page: referenceEvidence?.page_number || null,
+      quote: referenceEvidence?.snippet || null
+    },
+    gaps_identified: judgement.gaps_identified,
+    actions_required: judgement.actions_required,
+    confidence_old: 'medium',
+    proposed_change: null, // Not generated in two-stage flow yet
+    proposed_change_source: null,
+    insertion_location: undefined,
+    owner_type: ownerType,
+    estimated_cost: estimatedCost,
+    evidence_quality: facts.evidence_quality, // TASK #17
+  };
+}
+
+// Use LLM to assess a single criterion (LEGACY - to be replaced by assessCriterionTwoStage)
 async function assessCriterion(
   row: MatrixRow,
   packDocs: PackDocument[],
@@ -802,6 +1329,28 @@ Set to null if:
 
     const parsed = JSON.parse(jsonMatch[0]);
 
+    // TASK #14: Validate pack evidence to catch hallucinations
+    const packEvidenceValidation = validateEvidence(
+      {
+        found: parsed.pack_evidence_found,
+        document: parsed.pack_evidence_document,
+        page: null, // Not currently extracted from LLM
+        quote: parsed.pack_evidence_quote
+      },
+      packDocs
+    );
+
+    // Log validation failures for debugging
+    if (!packEvidenceValidation.isValid) {
+      console.warn(`  [VALIDATION FAILED] ${row.matrix_id}:`, packEvidenceValidation.issues.join('; '));
+    }
+
+    // Augment reasoning with validation warnings if evidence is unreliable
+    let finalReasoning = parsed.reasoning || `Assessment of ${row.matrix_title} based on submitted documentation.`;
+    if (!packEvidenceValidation.isValid && packEvidenceValidation.issues.length > 0) {
+      finalReasoning += `\n\n⚠️ Evidence validation warning: ${packEvidenceValidation.issues.join('; ')}`;
+    }
+
     // Filter and validate proposed_change
     const filteredProposedChange = filterProposedChange(parsed.proposed_change || null);
 
@@ -809,7 +1358,7 @@ Set to null if:
     const ownerType = parsed.owner_type as OwnerType || determineOwnerType(
       parsed.actions?.[0]?.owner,
       !!filteredProposedChange,
-      parsed.reasoning || '',
+      finalReasoning,
       parsed.gaps || []
     );
 
@@ -833,13 +1382,13 @@ Set to null if:
       category: row.category,
       status: parsed.status,
       severity: row.severity_if_unmet,
-      reasoning: parsed.reasoning || `Assessment of ${row.matrix_title} based on submitted documentation.`,
+      reasoning: finalReasoning,
       success_definition: row.success_definition,
       pack_evidence: {
-        found: parsed.pack_evidence_found,
-        document: parsed.pack_evidence_document,
+        found: parsed.pack_evidence_found && packEvidenceValidation.isValid, // Mark as not found if validation failed
+        document: packEvidenceValidation.isValid ? parsed.pack_evidence_document : null,
         page: null,
-        quote: parsed.pack_evidence_quote
+        quote: packEvidenceValidation.isValid ? parsed.pack_evidence_quote : null
       },
       reference_evidence: {
         found: referenceEvidence !== null,
@@ -1160,8 +1709,9 @@ export async function assessPackAgainstMatrix(
       }
     }
 
-    // Assess the criterion using LLM
-    const result = await assessCriterion(row, packDocs, referenceEvidence, client);
+    // Assess the criterion using two-stage flow (fact extraction → deterministic logic)
+    // TASK #15: Use new evidence-first approach for reproducible assessments
+    const result = await assessCriterionTwoStage(row, packDocs, referenceEvidence, client);
     llmResults.push(result);
   }
 
@@ -1212,6 +1762,7 @@ export async function assessPackAgainstMatrix(
   const meets = allResults.filter(r => r.status === 'meets').length;
   const partial = allResults.filter(r => r.status === 'partial').length;
   const doesNotMeet = allResults.filter(r => r.status === 'does_not_meet').length;
+  const missingInformation = allResults.filter(r => r.status === 'missing_information').length;
 
   const flaggedHigh = allResults.filter(r =>
     r.status !== 'meets' && r.severity === 'high'
@@ -1238,7 +1789,7 @@ export async function assessPackAgainstMatrix(
   console.log(`${'='.repeat(60)}`);
   console.log(`  Total criteria: ${allResults.length} (${deterministicResults.length} deterministic + ${llmResults.length} LLM)`);
   console.log(`  Readiness score: ${readinessScore}%`);
-  console.log(`  Pass: ${meets}, Partial: ${partial}, Fail: ${doesNotMeet}`);
+  console.log(`  Pass: ${meets}, Partial: ${partial}, Fail: ${doesNotMeet}, Missing Info: ${missingInformation}`);
   console.log(`  High severity issues: ${flaggedHigh}`);
 
   return {
@@ -1250,7 +1801,8 @@ export async function assessPackAgainstMatrix(
       not_assessed: notAssessed,
       meets,
       partial,
-      does_not_meet: doesNotMeet
+      does_not_meet: doesNotMeet,
+      missing_information: missingInformation
     },
     flagged_by_severity: {
       high: flaggedHigh,
