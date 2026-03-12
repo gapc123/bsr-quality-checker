@@ -18,7 +18,7 @@ interface ExportSettings {
 }
 
 /**
- * Download simplified compliance report as PDF (PRIMARY EXPORT)
+ * Download Submission Readiness Report (NEW - replaces old PDFs)
  */
 export async function exportComplianceReport(
   packId: string,
@@ -27,7 +27,7 @@ export async function exportComplianceReport(
 ): Promise<void> {
   try {
     const response = await fetch(
-      `${API_BASE}/api/packs/${packId}/versions/${versionId}/compliance-report/download`,
+      `${API_BASE}/api/packs/${packId}/versions/${versionId}/submission-readiness/download`,
       {
         method: 'POST',
         headers: {
@@ -46,97 +46,41 @@ export async function exportComplianceReport(
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `bsr-compliance-report-${new Date().toISOString().split('T')[0]}.pdf`;
+    a.download = `submission-readiness-${new Date().toISOString().split('T')[0]}.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    console.error('Failed to export compliance report:', error);
+    console.error('Failed to export submission readiness report:', error);
     throw error;
   }
 }
 
 /**
- * Download client gap analysis (what client needs to provide)
+ * Download client gap analysis (redirects to Submission Readiness Report)
+ * @deprecated Use exportComplianceReport instead
  */
 export async function exportClientGapAnalysis(
   packId: string,
   versionId: string,
   assessment: FullAssessment
 ): Promise<void> {
-  try {
-    console.log('[exportService] Downloading client gap analysis...');
-    const response = await fetch(
-      `${API_BASE}/api/packs/${packId}/versions/${versionId}/client-gap-analysis/download`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ assessment })
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Export failed: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `client-gap-analysis-${new Date().toISOString().split('T')[0]}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-    console.log('[exportService] Client gap analysis downloaded successfully');
-  } catch (error) {
-    console.error('Failed to export client gap analysis:', error);
-    throw error;
-  }
+  // Redirect to new submission readiness report
+  return exportComplianceReport(packId, versionId, assessment);
 }
 
 /**
- * Download consultant action plan (internal working document)
+ * Download consultant action plan (redirects to Submission Readiness Report)
+ * @deprecated Use exportComplianceReport instead
  */
 export async function exportConsultantActionPlan(
   packId: string,
   versionId: string,
   assessment: FullAssessment
 ): Promise<void> {
-  try {
-    console.log('[exportService] Downloading consultant action plan...');
-    const response = await fetch(
-      `${API_BASE}/api/packs/${packId}/versions/${versionId}/consultant-action-plan/download`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ assessment })
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Export failed: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `consultant-action-plan-${new Date().toISOString().split('T')[0]}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-    console.log('[exportService] Consultant action plan downloaded successfully');
-  } catch (error) {
-    console.error('Failed to export consultant action plan:', error);
-    throw error;
-  }
+  // Redirect to new submission readiness report
+  return exportComplianceReport(packId, versionId, assessment);
 }
 
 /**
@@ -355,85 +299,28 @@ export async function exportAssessmentJSON(
 }
 
 /**
- * Generate executive summary (simplified report)
+ * Generate executive summary (redirects to Submission Readiness Report)
+ * @deprecated Use exportComplianceReport instead
  */
 export async function exportExecutiveSummary(
   packId: string,
   versionId: string,
   assessment: FullAssessment,
-  submissionGate?: SubmissionGate
+  _submissionGate?: SubmissionGate
 ): Promise<void> {
-  try {
-    const response = await fetch(
-      `${API_BASE}/api/packs/${packId}/versions/${versionId}/executive-summary/download`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          assessment,
-          submissionGate
-        })
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Executive summary export failed: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `executive-summary-${new Date().toISOString().split('T')[0]}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error('Failed to export executive summary:', error);
-    throw error;
-  }
+  // Redirect to new submission readiness report
+  return exportComplianceReport(packId, versionId, assessment);
 }
 
 /**
- * Generate outstanding issues report (human-required items only)
+ * Generate outstanding issues report (redirects to Submission Readiness Report)
+ * @deprecated Use exportComplianceReport instead
  */
 export async function exportOutstandingIssues(
   packId: string,
   versionId: string,
   assessment: FullAssessment
 ): Promise<void> {
-  try {
-    const response = await fetch(
-      `${API_BASE}/api/packs/${packId}/versions/${versionId}/outstanding-issues/download`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          assessment
-        })
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Outstanding issues export failed: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `outstanding-issues-${new Date().toISOString().split('T')[0]}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error('Failed to export outstanding issues:', error);
-    throw error;
-  }
+  // Redirect to new submission readiness report
+  return exportComplianceReport(packId, versionId, assessment);
 }
