@@ -35,6 +35,24 @@ export async function generateComplianceMatrixExcel(
   // Add data table
   addDataTable(worksheet, matrix);
 
+  // Set print layout (landscape, fit to 1 page wide)
+  worksheet.pageSetup = {
+    paperSize: 9, // A4
+    orientation: 'landscape',
+    fitToPage: true,
+    fitToWidth: 1,
+    fitToHeight: 0, // Auto height
+    margins: {
+      left: 0.5,
+      right: 0.5,
+      top: 0.75,
+      bottom: 0.75,
+      header: 0.3,
+      footer: 0.3
+    },
+    printTitlesRow: '14:14' // Repeat header row on each page
+  };
+
   // Generate buffer
   const buffer = await workbook.xlsx.writeBuffer();
   return Buffer.from(buffer);
@@ -93,17 +111,21 @@ function addSummarySection(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatri
 function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
   const startRow = 14;
 
-  // Define columns
+  // Define columns (updated to match spec)
   const columns = [
-    { header: 'ID', key: 'id', width: 12 },
+    { header: 'ID', key: 'id', width: 8 },
     { header: 'Requirement', key: 'requirement', width: 50 },
     { header: 'Category', key: 'category', width: 15 },
     { header: 'Status', key: 'status', width: 12 },
-    { header: 'Priority', key: 'priority', width: 12 },
-    { header: 'Evidence Document', key: 'evidenceDoc', width: 30 },
-    { header: 'Page', key: 'page', width: 10 },
-    { header: 'Action Required', key: 'action', width: 40 },
+    { header: 'Priority', key: 'priority', width: 10 },
+    { header: "What's Wrong", key: 'whatsWrong', width: 40 },
+    { header: 'Why It Matters', key: 'whyItMatters', width: 40 },
+    { header: 'Request', key: 'request', width: 50 },
     { header: 'Owner', key: 'owner', width: 20 },
+    { header: 'Evidence Document', key: 'evidenceDoc', width: 25 },
+    { header: 'Page', key: 'page', width: 8 },
+    { header: 'Evidence Quote', key: 'evidenceQuote', width: 60 },
+    { header: 'Evidence Quality', key: 'evidenceQuality', width: 12 },
     { header: 'Notes', key: 'notes', width: 50 }
   ];
 
@@ -129,14 +151,18 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
       category: row.category,
       status: row.status,
       priority: row.priority || '',
+      whatsWrong: row.whatsWrong || '',
+      whyItMatters: row.whyItMatters || '',
+      request: row.request || '',
+      owner: row.owner || '',
       evidenceDoc: row.evidenceDocument || 'Not provided',
       page: row.evidencePage || '',
-      action: row.action || '',
-      owner: row.owner || '',
+      evidenceQuote: truncate(row.evidenceQuote || '', 200),
+      evidenceQuality: row.evidenceQuality || '',
       notes: truncate(row.notes || '', 200)
     });
 
-    // Color code by status
+    // Color code by status (new triage-based statuses)
     const statusCell = excelRow.getCell('status');
     switch (row.status) {
       case 'Met':
@@ -147,7 +173,7 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
         };
         statusCell.font = { color: { argb: 'FF155724' }, bold: true };
         break;
-      case 'Partial':
+      case 'Review Required':
         statusCell.fill = {
           type: 'pattern',
           pattern: 'solid',
@@ -155,11 +181,19 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
         };
         statusCell.font = { color: { argb: 'FF856404' }, bold: true };
         break;
-      case 'Not Met':
+      case 'Blocker':
         statusCell.fill = {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: 'FFF8D7DA' } // Red
+          fgColor: { argb: 'FFDC2626' } // Bright red
+        };
+        statusCell.font = { color: { argb: 'FFFFFFFF' }, bold: true };
+        break;
+      case 'Missing Info':
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFF8D7DA' } // Light red
         };
         statusCell.font = { color: { argb: 'FF721C24' }, bold: true };
         break;
@@ -184,7 +218,10 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
 
     // Text wrapping for long cells
     excelRow.getCell('requirement').alignment = { wrapText: true, vertical: 'top' };
-    excelRow.getCell('action').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.getCell('whatsWrong').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.getCell('whyItMatters').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.getCell('request').alignment = { wrapText: true, vertical: 'top' };
+    excelRow.getCell('evidenceQuote').alignment = { wrapText: true, vertical: 'top' };
     excelRow.getCell('notes').alignment = { wrapText: true, vertical: 'top' };
     excelRow.height = 30; // Taller rows for wrapped text
   });
