@@ -5,6 +5,9 @@ import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import pdfParse from 'pdf-parse';
 import { assessPackAgainstMatrix } from '../services/matrix-assessment.js';
+import { chunkDocuments } from '../services/document-chunker.js';
+import { generateEmbeddings } from '../services/vector-embeddings.js';
+import { vectorStore } from '../services/vector-store.js';
 import prisma from '../db/client.js';
 
 const router = express.Router();
@@ -105,8 +108,31 @@ router.post('/', upload.array('documents', 20), async (req: Request, res: Respon
 
     console.log('Assessment context:', context);
 
+    // TASK #21: RAG Integration - Chunk documents and create vector index
+    console.log('📊 Chunking documents for RAG...');
+    const chunkedDocs = await chunkDocuments(
+      files.map((file, idx) => ({
+        filepath: file.path,
+        filename: file.originalname,
+        docType: packDocs[idx].docType
+      }))
+    );
+
+    // Flatten all chunks
+    const allChunks = chunkedDocs.flatMap(doc => doc.chunks);
+    console.log(`  ✓ Created ${allChunks.length} chunks`);
+
+    // Generate embeddings
+    console.log('🧠 Generating vector embeddings...');
+    const embeddings = await generateEmbeddings(allChunks);
+    console.log(`  ✓ Generated ${embeddings.length} embeddings`);
+
+    // Index in vector store
+    await vectorStore.index(embeddings);
+    console.log(`  ✓ Vector store ready for semantic search`);
+
     // Run full two-phase assessment (deterministic + LLM)
-    console.log('🚀 Starting two-phase assessment...');
+    console.log('🚀 Starting two-phase assessment with RAG...');
     const fullAssessment = await assessPackAgainstMatrix(packDocs, context);
 
     console.log(`✅ Assessment complete: ${fullAssessment.results.length} criteria assessed`);

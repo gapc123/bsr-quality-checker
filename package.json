@@ -16,6 +16,10 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "marked": "^17.0.4",
     "pptxgenjs": "^4.0.1"
+  },
+  "dependencies": {
+    "openai": "^6.27.0"
   }
 }

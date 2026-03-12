@@ -33,6 +33,7 @@ import type {
 import { analyzeImpacts } from './impact-analyzer.js';
 import type { TriageAssessment } from '../types/triage.js';
 import { analyzeTriageForIssue } from './triage-analyzer.js';
+import { vectorStore } from './vector-store.js';
 
 // ============================================
 // PROPOSED CHANGE VALIDATION
@@ -174,6 +175,7 @@ interface FactExtractionResult {
   // Evidence found
   evidence_found: boolean;
   evidence_document: string | null;
+  evidence_page: number | null; // TASK #21: Now tracked with RAG
   evidence_quote: string | null;
   evidence_quality: 'explicit' | 'implicit' | 'ambiguous' | 'absent'; // TASK #17
 
@@ -766,11 +768,43 @@ async function extractFacts(
   referenceEvidence: RetrievalResult | null,
   client: Anthropic
 ): Promise<FactExtractionResult> {
-  const sortedDocs = [...packDocs].sort((a, b) => a.filename.localeCompare(b.filename));
+  // TASK #21: Use RAG to retrieve relevant chunks instead of full documents
+  let packContext: string;
 
-  const packContext = sortedDocs.map(d =>
-    `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\nContent excerpt:\n${d.extractedText.slice(0, 3000)}`
-  ).join('\n\n---\n\n');
+  if (vectorStore.isReady()) {
+    // Build search queries from requirement
+    const queries = [
+      row.matrix_title,
+      row.matrix_description,
+      ...row.evidence_expected.slice(0, 2)
+    ];
+
+    // Retrieve top 5 most relevant chunks using multi-query search
+    const relevantChunks = await vectorStore.multiSearch(queries, {
+      top_k: 5,
+      min_similarity: 0.65 // Lower threshold to catch more possibilities
+    });
+
+    if (relevantChunks.length > 0) {
+      // Build context from retrieved chunks (with page numbers!)
+      packContext = relevantChunks.map(chunk =>
+        `Document: ${chunk.document_name} (Page ${chunk.page_number})\n` +
+        `Type: ${chunk.doc_type || 'Unknown'}\n` +
+        `${chunk.section_context ? `Section: ${chunk.section_context}\n` : ''}` +
+        `Content:\n${chunk.text}\n` +
+        `[Relevance: ${Math.round(chunk.similarity_score * 100)}%]`
+      ).join('\n\n---\n\n');
+    } else {
+      // No relevant chunks found - use fallback
+      packContext = 'No relevant document sections found for this criterion.';
+    }
+  } else {
+    // Fallback to old approach if vector store not ready
+    const sortedDocs = [...packDocs].sort((a, b) => a.filename.localeCompare(b.filename));
+    packContext = sortedDocs.map(d =>
+      `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\nContent excerpt:\n${d.extractedText.slice(0, 3000)}`
+    ).join('\n\n---\n\n');
+  }
 
   const referenceContext = referenceEvidence
     ? `Reference from ${referenceEvidence.doc_title} (page ${referenceEvidence.page_number}):\n"${referenceEvidence.snippet}"`
@@ -822,6 +856,7 @@ Respond in JSON format:
 {
   "evidence_found": true | false,
   "evidence_document": "exact filename or null",
+  "evidence_page": page_number or null,
   "evidence_quote": "exact quote from primary document or null",
   "evidence_quality": "explicit" | "implicit" | "ambiguous" | "absent",
   "cross_document_evidence": {
@@ -844,6 +879,7 @@ Example for building height criterion:
 {
   "evidence_found": true,
   "evidence_document": "Fire_Strategy.pdf",
+  "evidence_page": 3,
   "evidence_quote": "The building has a height of 24.5 metres",
   "evidence_quality": "explicit",
   "cross_document_evidence": {
@@ -892,6 +928,7 @@ Example for building height criterion:
     return {
       evidence_found: false,
       evidence_document: null,
+      evidence_page: null,
       evidence_quote: null,
       evidence_quality: 'absent',
       cross_document_evidence: {
@@ -1050,12 +1087,12 @@ async function assessCriterionTwoStage(
   // STAGE 1: Extract facts using LLM (no judgement)
   const facts = await extractFacts(row, packDocs, referenceEvidence, client);
 
-  // Validate extracted evidence
+  // Validate extracted evidence (TASK #21: Now includes page numbers from RAG)
   const evidenceValidation = validateEvidence(
     {
       found: facts.evidence_found,
       document: facts.evidence_document,
-      page: null,
+      page: facts.evidence_page,
       quote: facts.evidence_quote
     },
     packDocs
@@ -1099,7 +1136,7 @@ async function assessCriterionTwoStage(
     pack_evidence: {
       found: facts.evidence_found && evidenceValidation.isValid,
       document: evidenceValidation.isValid ? facts.evidence_document : null,
-      page: null,
+      page: evidenceValidation.isValid ? facts.evidence_page : null, // TASK #21: Page numbers from RAG
       quote: evidenceValidation.isValid ? facts.evidence_quote : null
     },
     reference_evidence: {
