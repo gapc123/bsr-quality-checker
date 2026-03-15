@@ -9,7 +9,11 @@
  * - Missing information
  * - Who to engage
  * - Timeline and next steps
+ *
+ * UPDATED (GitHub Issue #3): Uses centralized owner role config
  */
+
+import { detectSpecialistRoles } from '../config/owner-roles.js';
 
 export function generateClientGapAnalysisHTML(assessment: any): string {
   const allIssues = assessment.results.filter((r: any) =>
@@ -48,15 +52,11 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
       informationNeeded.push(title);
     }
 
-    // Extract specialist requirements
-    const action = issue.actions_required?.[0];
-    if (action?.owner) {
-      const owner = action.owner.toLowerCase();
-      if (owner.includes('fire')) specialistsNeeded.add('Fire Safety Engineer');
-      if (owner.includes('structural')) specialistsNeeded.add('Structural Engineer');
-      if (owner.includes('mep')) specialistsNeeded.add('MEP Engineer');
-      if (owner.includes('acoustic')) specialistsNeeded.add('Acoustic Consultant');
-      if (owner.includes('architect')) specialistsNeeded.add('Architect');
+    // Extract specialist requirements using centralized config (GitHub Issue #3)
+    const ownerType = issue.owner_type || issue.actions_required?.[0]?.owner_type;
+    if (ownerType) {
+      const detectedRoles = detectSpecialistRoles(ownerType);
+      detectedRoles.forEach(role => specialistsNeeded.add(role));
     }
   });
 

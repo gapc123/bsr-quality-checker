@@ -7,6 +7,8 @@
  * Similar to patent claim charts - maps requirements to evidence
  */
 
+import { formatOwnerRole } from '../config/owner-roles.js';
+
 export interface ComplianceMatrixRow {
   requirementId: string;
   requirement: string;
@@ -73,6 +75,10 @@ export function generateComplianceMatrix(
     const evidenceQuality = result.evidence_quality ?
       formatEvidenceQuality(result.evidence_quality) : undefined;
 
+    // Owner: Format using centralized config (GitHub Issue #3)
+    const ownerType = result.owner_type || action?.owner_type || result.triage?.owner_type;
+    const formattedOwner = formatOwnerRole(ownerType);
+
     const row: ComplianceMatrixRow = {
       requirementId: result.matrix_id || '',
       requirement: result.matrix_title || result.requirement || '',
@@ -82,7 +88,7 @@ export function generateComplianceMatrix(
       whatsWrong,
       whyItMatters,
       request,
-      owner: action?.owner || result.triage?.owner || undefined,
+      owner: formattedOwner,
       evidenceDocument: evidenceDocument || undefined,
       evidencePage: evidencePage || undefined,
       evidenceQuote: evidenceQuote || undefined,
@@ -114,6 +120,8 @@ export function generateComplianceMatrix(
 /**
  * Map assessment status to matrix status
  * Uses new triage-based classification
+ *
+ * FIXED (GitHub Issue #1): Properly promotes partial status with explicit evidence to "Met"
  */
 function mapStatus(result: any): 'Blocker' | 'Review Required' | 'Missing Info' | 'Met' {
   const status = result.status?.toLowerCase();
@@ -125,18 +133,18 @@ function mapStatus(result: any): 'Blocker' | 'Review Required' | 'Missing Info' 
     return 'Blocker';
   }
 
-  // Review Required: Ambiguous or implicit evidence
-  if (evidenceQuality === 'ambiguous' || evidenceQuality === 'implicit') {
-    return 'Review Required';
-  }
-
   // Missing Info: Missing information or absent evidence
   if (status === 'missing_information' || evidenceQuality === 'absent') {
     return 'Missing Info';
   }
 
-  // Met: All other cases (meets, partial with explicit evidence)
-  if (status === 'meets') {
+  // Review Required: Ambiguous or implicit evidence
+  if (evidenceQuality === 'ambiguous' || evidenceQuality === 'implicit') {
+    return 'Review Required';
+  }
+
+  // Met: Fully met, or partial with explicit evidence
+  if (status === 'meets' || (status === 'partial' && evidenceQuality === 'explicit')) {
     return 'Met';
   }
 

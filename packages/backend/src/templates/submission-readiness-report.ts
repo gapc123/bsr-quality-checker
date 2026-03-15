@@ -9,9 +9,12 @@
  * - Page 5: Next Steps & Caveats
  *
  * Spec: Keep short, actionable, scannable
+ *
+ * UPDATED (GitHub Issue #3): Uses centralized owner role config
  */
 
 import type { FullAssessment, AssessmentResult } from '../services/matrix-assessment.js';
+import { formatOwnerRole, mapOwnerToConsultantGroup } from '../config/owner-roles.js';
 
 // Triage categories
 type TriageCategory = 'Blocker' | 'Review' | 'Missing' | 'Met';
@@ -157,7 +160,7 @@ function generateBlockers(blockers: AssessmentResult[]): string {
     const what = blocker.gaps_identified[0] || blocker.reasoning.split('.')[0];
     const why = extractWhyItMatters(blocker);
     const request = extractSpecificRequest(blocker);
-    const owner = formatOwner(blocker.owner_type);
+    const owner = formatOwnerRole(blocker.owner_type);
 
     return `
       <div class="blocker">
@@ -315,7 +318,7 @@ function groupRequestsByOwner(results: AssessmentResult[]): ConsultantGroup[] {
   for (const result of results) {
     if (classifyIssue(result) === 'Met') continue; // Skip satisfied requirements
 
-    const groupKey = mapOwnerToGroup(result.owner_type);
+    const groupKey = mapOwnerToConsultantGroup(result.owner_type);
     const request = extractSpecificRequest(result);
 
     if (groups[groupKey] && request) {
@@ -337,26 +340,7 @@ function groupRequestsByOwner(results: AssessmentResult[]): ConsultantGroup[] {
   return consultantGroups;
 }
 
-/**
- * Map owner type to consultant group
- */
-function mapOwnerToGroup(ownerType?: string): string {
-  if (!ownerType) return 'CLIENT / DEVELOPER';
-
-  const mapping: Record<string, string> = {
-    'FIRE_ENGINEER': 'FIRE ENGINEER',
-    'STRUCTURAL_ENGINEER': 'STRUCTURAL ENGINEER',
-    'MEP_CONSULTANT': 'MEP CONSULTANT',
-    'ARCHITECT': 'ARCHITECT',
-    'PRINCIPAL_DESIGNER': 'PRINCIPAL DESIGNER',
-    'PRINCIPAL_CONTRACTOR': 'PRINCIPAL DESIGNER',
-    'CLIENT_INFO': 'CLIENT / DEVELOPER',
-    'PROJECT_TEAM': 'CLIENT / DEVELOPER',
-    'AI_AMENDABLE': 'CLIENT / DEVELOPER'
-  };
-
-  return mapping[ownerType] || 'CLIENT / DEVELOPER';
-}
+// REMOVED: mapOwnerToGroup - now using centralized config (GitHub Issue #3)
 
 /**
  * Extract specific request from assessment result
@@ -402,17 +386,7 @@ function extractWhyItMatters(result: AssessmentResult): string {
   return `${result.category} compliance requirement`;
 }
 
-/**
- * Format owner type for display
- */
-function formatOwner(ownerType?: string): string {
-  if (!ownerType) return 'Project Team';
-
-  return ownerType
-    .split('_')
-    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
-    .join(' ');
-}
+// REMOVED: formatOwner - now using centralized config (GitHub Issue #3)
 
 /**
  * Format title (convert to sentence case, remove prefixes)
