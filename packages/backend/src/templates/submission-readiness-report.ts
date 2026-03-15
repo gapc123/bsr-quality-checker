@@ -11,10 +11,17 @@
  * Spec: Keep short, actionable, scannable
  *
  * UPDATED (GitHub Issue #3): Uses centralized owner role config
+ * UPDATED (GitHub Issues #7, #8): Consistent branding and project metadata cover page
  */
 
 import type { FullAssessment, AssessmentResult } from '../services/matrix-assessment.js';
 import { formatOwnerRole, mapOwnerToConsultantGroup } from '../config/owner-roles.js';
+import {
+  getPDFStyles,
+  formatProjectMetadata,
+  DEFAULT_PROJECT_METADATA,
+  type ProjectMetadata
+} from '../config/branding.js';
 
 // Triage categories
 type TriageCategory = 'Blocker' | 'Review' | 'Missing' | 'Met';
@@ -401,14 +408,26 @@ function formatTitle(title: string): string {
 
 /**
  * Generate complete HTML for submission readiness report
+ * Updated (GitHub Issues #7, #8): Includes cover page and project metadata
  */
-export function generateSubmissionReadinessHTML(assessment: FullAssessment): string {
+export function generateSubmissionReadinessHTML(
+  assessment: FullAssessment,
+  projectMetadata?: ProjectMetadata
+): string {
   const classified = classifyResults(assessment.results);
   const verdict = generateVerdict(classified);
   const blockers = generateBlockers(classified.blockers);
   const reviewItems = generateReviewItems(classified.reviewRequired);
   const consultantRequests = generateConsultantRequests(assessment.results);
   const missingInfo = generateMissingInfo(classified.missingInfo);
+
+  // Use provided metadata or defaults
+  const metadata = projectMetadata || {
+    ...DEFAULT_PROJECT_METADATA,
+    projectName: assessment.pack_context?.buildingType || 'Gateway 2 Submission'
+  };
+
+  const formatted = formatProjectMetadata(metadata);
 
   const today = new Date().toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -421,7 +440,11 @@ export function generateSubmissionReadinessHTML(assessment: FullAssessment): str
 <html>
 <head>
   <meta charset="UTF-8">
+  <title>Submission Readiness Report - ${formatted.title}</title>
   <style>
+    ${getPDFStyles()}
+
+    /* Additional styles specific to this report */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
