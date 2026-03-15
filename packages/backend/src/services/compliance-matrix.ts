@@ -5,9 +5,13 @@
  * - BSR Requirement | Evidence Location | Status | Notes
  *
  * Similar to patent claim charts - maps requirements to evidence
+ *
+ * UPDATED (GitHub Issues #4, #5): Uses enrichment service for actionable Request text
+ * and regulatory-specific "Why It Matters" content
  */
 
 import { formatOwnerRole } from '../config/owner-roles.js';
+import { enrichRequestText, enrichWhyItMatters } from './compliance-enrichment.js';
 
 export interface ComplianceMatrixRow {
   requirementId: string;
@@ -63,13 +67,11 @@ export function generateComplianceMatrix(
     const whatsWrong = result.gaps_identified?.[0] ||
                        (status === 'Missing Info' ? 'Information not provided' : undefined);
 
-    // Why It Matters: Use rejection/impact assessment or severity
-    const whyItMatters = result.rejection_assessment?.reasoning ||
-                         result.triage?.impact_summary ||
-                         (result.severity === 'high' ? 'Critical for BSR approval' : undefined);
+    // Why It Matters: Enriched with regulatory context (GitHub Issue #5)
+    const whyItMatters = enrichWhyItMatters(result);
 
-    // Request: Specific consultant request from action
-    const request = action?.action || result.triage?.recommended_action || undefined;
+    // Request: Enriched with actionable, specific instructions (GitHub Issue #4)
+    const request = enrichRequestText(result);
 
     // Evidence Quality: Map to readable label
     const evidenceQuality = result.evidence_quality ?

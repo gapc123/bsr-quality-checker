@@ -11,9 +11,12 @@
  * - Timeline and next steps
  *
  * UPDATED (GitHub Issue #3): Uses centralized owner role config
+ * UPDATED (GitHub Issue #6): Includes detailed gap descriptions (what was found,
+ * what is missing, what is needed) instead of just listing check titles
  */
 
 import { detectSpecialistRoles } from '../config/owner-roles.js';
+import { generateGapDescription } from '../services/compliance-enrichment.js';
 
 export function generateClientGapAnalysisHTML(assessment: any): string {
   const allIssues = assessment.results.filter((r: any) =>
@@ -33,23 +36,43 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
     );
   });
 
-  // Group by what needs to be obtained
-  const documentsNeeded: string[] = [];
-  const certificationsNeeded: string[] = [];
-  const informationNeeded: string[] = [];
+  // Group gaps with detailed descriptions (GitHub Issue #6)
+  interface DetailedGap {
+    title: string;
+    whatWasFound: string;
+    whatIsMissing: string;
+    whatIsNeeded: string;
+    priority: string;
+  }
+
+  const documentsNeeded: DetailedGap[] = [];
+  const certificationsNeeded: DetailedGap[] = [];
+  const informationNeeded: DetailedGap[] = [];
   const specialistsNeeded: Set<string> = new Set();
 
   missingInfo.forEach((issue: any) => {
     const reasoning = issue.reasoning || '';
     const title = issue.matrix_title;
+    const priority = issue.triage?.urgency || 'MEDIUM_PRIORITY';
+
+    // Generate detailed gap description (GitHub Issue #6)
+    const gapDescription = generateGapDescription(issue);
+
+    const detailedGap: DetailedGap = {
+      title,
+      whatWasFound: gapDescription.whatWasFound,
+      whatIsMissing: gapDescription.whatIsMissing,
+      whatIsNeeded: gapDescription.whatIsNeeded,
+      priority: priority.replace(/_/g, ' ')
+    };
 
     // Categorize what's needed
     if (reasoning.includes('certificate') || reasoning.includes('certification')) {
-      certificationsNeeded.push(title);
+      certificationsNeeded.push(detailedGap);
     } else if (reasoning.includes('document') || title.includes('Document')) {
-      documentsNeeded.push(title);
+      documentsNeeded.push(detailedGap);
     } else {
-      informationNeeded.push(title);
+      informationNeeded.push(detailedGap);
     }
 
     // Extract specialist requirements using centralized config (GitHub Issue #3)
@@ -242,28 +265,40 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
   ${documentsNeeded.length > 0 ? `
   <div class="section">
     <h2>📄 Documents to Provide</h2>
-    <div class="checklist">
-      ${documentsNeeded.map(doc => `
-        <div class="checklist-item">
+    ${documentsNeeded.map(gap => `
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; margin: 12px 0; border-radius: 4px;">
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
           <div class="checkbox"></div>
-          <div>${doc}</div>
+          <strong style="color: #0f172a; font-size: 15px;">${gap.title}</strong>
         </div>
-      `).join('')}
-    </div>
+        <div style="margin-left: 32px; font-size: 14px; color: #475569;">
+          <p style="margin: 6px 0;"><strong>Found:</strong> ${gap.whatWasFound}</p>
+          <p style="margin: 6px 0;"><strong>Missing:</strong> ${gap.whatIsMissing}</p>
+          <p style="margin: 6px 0;"><strong>Action needed:</strong> ${gap.whatIsNeeded}</p>
+          <p style="margin: 6px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+        </div>
+      </div>
+    `).join('')}
   </div>
   ` : ''}
 
   ${certificationsNeeded.length > 0 ? `
   <div class="section">
     <h2>🎓 Certifications & Test Reports</h2>
-    <div class="checklist">
-      ${certificationsNeeded.map(cert => `
-        <div class="checklist-item">
+    ${certificationsNeeded.map(gap => `
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; margin: 12px 0; border-radius: 4px;">
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
           <div class="checkbox"></div>
-          <div>${cert}</div>
+          <strong style="color: #0f172a; font-size: 15px;">${gap.title}</strong>
         </div>
-      `).join('')}
-    </div>
+        <div style="margin-left: 32px; font-size: 14px; color: #475569;">
+          <p style="margin: 6px 0;"><strong>Found:</strong> ${gap.whatWasFound}</p>
+          <p style="margin: 6px 0;"><strong>Missing:</strong> ${gap.whatIsMissing}</p>
+          <p style="margin: 6px 0;"><strong>Action needed:</strong> ${gap.whatIsNeeded}</p>
+          <p style="margin: 6px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+        </div>
+      </div>
+    `).join('')}
   </div>
   ` : ''}
 
@@ -273,14 +308,20 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
     <p style="color: #64748b; margin-bottom: 20px;">
       The following items are listed as "TBC" or missing in your submission. Please provide confirmed details.
     </p>
-    <div class="checklist">
-      ${informationNeeded.map(info => `
-        <div class="checklist-item">
+    ${informationNeeded.map(gap => `
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 16px; margin: 12px 0; border-radius: 4px;">
+        <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
           <div class="checkbox"></div>
-          <div>${info}</div>
+          <strong style="color: #0f172a; font-size: 15px;">${gap.title}</strong>
         </div>
-      `).join('')}
-    </div>
+        <div style="margin-left: 32px; font-size: 14px; color: #475569;">
+          <p style="margin: 6px 0;"><strong>Found:</strong> ${gap.whatWasFound}</p>
+          <p style="margin: 6px 0;"><strong>Missing:</strong> ${gap.whatIsMissing}</p>
+          <p style="margin: 6px 0;"><strong>Action needed:</strong> ${gap.whatIsNeeded}</p>
+          <p style="margin: 6px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+        </div>
+      </div>
+    `).join('')}
   </div>
   ` : ''}
 
