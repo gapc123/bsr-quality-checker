@@ -157,12 +157,12 @@ export function generateGapDescription(result: AssessmentResult): {
   const evidencePage = result.pack_evidence?.page;
   const gaps = result.gaps_identified || [];
 
-  // What was found
+  // What was found (GitHub Issue #2: Proper page number formatting)
   let whatWasFound = '';
   if (status === 'missing_information' || evidenceQuality === 'absent') {
     whatWasFound = 'No documentation found';
   } else if (evidenceDoc) {
-    const pageRef = evidencePage ? ` (page ${evidencePage})` : '';
+    const pageRef = evidencePage ? ` (p.${evidencePage})` : ' (page N/A)';
     if (evidenceQuality === 'explicit') {
       whatWasFound = `${evidenceDoc}${pageRef} contains explicit information but is incomplete`;
     } else if (evidenceQuality === 'implicit') {

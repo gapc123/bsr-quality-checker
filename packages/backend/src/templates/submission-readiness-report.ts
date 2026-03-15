@@ -40,6 +40,7 @@ interface ConsultantGroup {
 
 /**
  * Classify assessment results into triage categories
+ * GitHub Issue #10: Deduplicate by matrix_id to prevent duplicate entries
  */
 function classifyResults(results: AssessmentResult[]): ClassifiedResults {
   const classified: ClassifiedResults = {
@@ -49,7 +50,19 @@ function classifyResults(results: AssessmentResult[]): ClassifiedResults {
     met: []
   };
 
+  // Deduplicate by matrix_id (GitHub Issue #10)
+  const seenIds = new Set<string>();
+  const uniqueResults: AssessmentResult[] = [];
+
   for (const result of results) {
+    if (!seenIds.has(result.matrix_id)) {
+      seenIds.add(result.matrix_id);
+      uniqueResults.push(result);
+    }
+  }
+
+  // Classify unique results
+  for (const result of uniqueResults) {
     const category = classifyIssue(result);
 
     if (category === 'Blocker') classified.blockers.push(result);
@@ -245,6 +258,7 @@ function generateConsultantRequests(results: AssessmentResult[]): string {
 
 /**
  * Generate missing information summary
+ * GitHub Issue #10: Gaps already deduplicated in classifyResults
  */
 function generateMissingInfo(missingItems: AssessmentResult[]): string {
   const top10 = missingItems.slice(0, 10);
@@ -254,35 +268,36 @@ function generateMissingInfo(missingItems: AssessmentResult[]): string {
   }
 
   // Split into document gaps vs specification gaps
-  const documentGaps: string[] = [];
-  const specificationGaps: string[] = [];
+  // Use Set to further deduplicate gap descriptions
+  const documentGaps = new Set<string>();
+  const specificationGaps = new Set<string>();
 
   for (const item of top10) {
     const gap = item.gaps_identified[0] || item.matrix_title;
 
     if (gap.toLowerCase().includes('document') || gap.toLowerCase().includes('report') || gap.toLowerCase().includes('strategy')) {
-      documentGaps.push(gap);
+      documentGaps.add(gap);
     } else {
-      specificationGaps.push(gap);
+      specificationGaps.add(gap);
     }
   }
 
   let html = '';
 
-  if (documentGaps.length > 0) {
+  if (documentGaps.size > 0) {
     html += `
       <h4>Document Gaps</h4>
       <ul class="missing-list">
-        ${documentGaps.map(gap => `<li>${gap}</li>`).join('')}
+        ${Array.from(documentGaps).map(gap => `<li>${gap}</li>`).join('')}
       </ul>
     `;
   }
 
-  if (specificationGaps.length > 0) {
+  if (specificationGaps.size > 0) {
     html += `
       <h4>Specification Gaps</h4>
       <ul class="missing-list">
-        ${specificationGaps.map(gap => `<li>${gap}</li>`).join('')}
+        ${Array.from(specificationGaps).map(gap => `<li>${gap}</li>`).join('')}
       </ul>
     `;
   }
@@ -311,35 +326,44 @@ function groupByCategory(results: AssessmentResult[]): Record<string, Assessment
 
 /**
  * Group requests by owner
+ * GitHub Issue #10: Deduplicate by matrix_id to prevent duplicate entries
  */
 function groupRequestsByOwner(results: AssessmentResult[]): ConsultantGroup[] {
-  const groups: Record<string, Set<string>> = {
-    'FIRE ENGINEER': new Set(),
-    'STRUCTURAL ENGINEER': new Set(),
-    'MEP CONSULTANT': new Set(),
-    'ARCHITECT': new Set(),
-    'PRINCIPAL DESIGNER': new Set(),
-    'CLIENT / DEVELOPER': new Set()
+  const groups: Record<string, Map<string, string>> = {
+    'FIRE ENGINEER': new Map(),
+    'STRUCTURAL ENGINEER': new Map(),
+    'MEP CONSULTANT': new Map(),
+    'ARCHITECT': new Map(),
+    'PRINCIPAL DESIGNER': new Map(),
+    'CLIENT / DEVELOPER': new Map()
   };
+
+  // Deduplicate by matrix_id first (GitHub Issue #10)
+  const seenIds = new Set<string>();
 
   for (const result of results) {
     if (classifyIssue(result) === 'Met') continue; // Skip satisfied requirements
+
+    // Deduplicate: skip if we've already seen this matrix_id
+    if (seenIds.has(result.matrix_id)) continue;
+    seenIds.add(result.matrix_id);
 
     const groupKey = mapOwnerToConsultantGroup(result.owner_type);
     const request = extractSpecificRequest(result);
 
     if (groups[groupKey] && request) {
-      groups[groupKey].add(request);
+      // Use matrix_id as key to ensure uniqueness
+      groups[groupKey].set(result.matrix_id, request);
     }
   }
 
   // Convert to array and limit to 6 per group
   const consultantGroups: ConsultantGroup[] = [];
-  for (const [name, requestSet] of Object.entries(groups)) {
-    if (requestSet.size > 0) {
+  for (const [name, requestMap] of Object.entries(groups)) {
+    if (requestMap.size > 0) {
       consultantGroups.push({
         name,
-        requests: Array.from(requestSet).slice(0, 6)
+        requests: Array.from(requestMap.values()).slice(0, 6)
       });
     }
   }

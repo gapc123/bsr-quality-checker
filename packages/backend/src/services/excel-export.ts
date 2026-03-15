@@ -231,7 +231,7 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
       request: row.request || '',
       owner: row.owner || '',
       evidenceDoc: row.evidenceDocument || 'Not provided',
-      page: row.evidencePage || '',
+      page: row.evidencePage ? `p.${row.evidencePage}` : 'N/A', // GitHub Issue #2: Show N/A when page not available
       evidenceQuote: truncate(row.evidenceQuote || '', 200),
       evidenceQuality: row.evidenceQuality || '',
       notes: truncate(row.notes || '', 200),

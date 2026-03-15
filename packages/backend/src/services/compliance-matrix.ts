@@ -54,10 +54,10 @@ export function generateComplianceMatrix(
   for (const result of assessment.results || []) {
     const status = mapStatus(result);
 
-    // Extract evidence
+    // Extract evidence (GitHub Issue #2: Ensure page numbers are properly formatted)
     const evidence = result.pack_evidence || result.evidence || {};
     const evidenceDocument = evidence.document || evidence.doc_title || '';
-    const evidencePage = evidence.page || evidence.page_ref || '';
+    const evidencePage = evidence.page || evidence.page_ref || null;
     const evidenceQuote = evidence.quote || '';
 
     // Extract action info
