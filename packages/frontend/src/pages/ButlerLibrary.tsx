@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useToast } from '../components/Toast';
 import FileUpload from '../components/FileUpload';
 
 interface ButlerDoc {
@@ -13,6 +14,7 @@ interface ButlerDoc {
 }
 
 export default function ButlerLibrary() {
+  const { showToast } = useToast();
   const [docs, setDocs] = useState<ButlerDoc[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
@@ -60,11 +62,11 @@ export default function ButlerLibrary() {
         setShowUpload(false);
         fetchDocs();
       } else {
-        alert('Failed to upload document');
+        showToast('Failed to upload document', 'error');
       }
     } catch (error) {
       console.error('Error uploading:', error);
-      alert('Failed to upload document');
+      showToast('Failed to upload document', 'error');
     } finally {
       setUploading(false);
     }

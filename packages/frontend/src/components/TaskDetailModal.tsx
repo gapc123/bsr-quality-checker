@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
+import { useToast } from './Toast';
 
 interface Task {
   id: string;
@@ -35,6 +36,7 @@ interface TaskDetailModalProps {
 
 export default function TaskDetailModal({ packId, task, allTasks, onClose, onUpdate }: TaskDetailModalProps) {
   const { user } = useUser();
+  const { showToast } = useToast();
   const [editedTask, setEditedTask] = useState<Task>(task);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
@@ -70,7 +72,7 @@ export default function TaskDetailModal({ packId, task, allTasks, onClose, onUpd
       onClose();
     } catch (error) {
       console.error('Error saving task:', error);
-      alert('Failed to save task');
+      showToast('Failed to save task', 'error');
     } finally {
       setSaving(false);
     }

@@ -24,6 +24,9 @@ import ActionItemsTracker from './ActionItemsTracker';
 import DocumentRevisionDashboard from './DocumentRevisionDashboard';
 import TrackChangesViewer from './TrackChangesViewer';
 import HumanReviewTable from './HumanReviewTable';
+import ByConsultantView from './ByConsultantView';
+import { useToast } from './Toast';
+import { BarChartIcon, CircleDotIcon, ZapIcon, TargetIcon, PencilIcon, AlertCircleIcon, CheckIcon, ClipboardIcon, FileTextIcon } from './Icons';
 import type { AssessmentResult, SubmissionGate, FullAssessment, EngagementBrief } from '../types/assessment';
 import * as exportService from '../services/exportService';
 
@@ -37,6 +40,8 @@ interface ResultsDashboardProps {
 
 type FilterType = 'all' | 'blockers' | 'quick_wins' | 'specialist';
 
+type ViewTab = 'overview' | 'by-consultant' | 'revisions' | 'human-review' | 'action-tracker';
+
 export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   assessment,
   submissionGate,
@@ -44,7 +49,9 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   onExportReport,
   onViewIssue
 }) => {
+  const { showToast } = useToast();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [activeTab, setActiveTab] = useState<ViewTab>('overview');
   const [_acceptedQuickWins, setAcceptedQuickWins] = useState<Set<string>>(new Set());
   const [selectedIssueIds, setSelectedIssueIds] = useState<string[]>([]);
   const [viewedIssue, setViewedIssue] = useState<AssessmentResult | null>(null);
@@ -56,16 +63,11 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   const [currentBrief, setCurrentBrief] = useState<EngagementBrief | null>(null);
   const [briefSpecialist, setBriefSpecialist] = useState<string>('');
   const [briefIssues, setBriefIssues] = useState<AssessmentResult[]>([]);
-  const [showActionTracker, setShowActionTracker] = useState(false);
 
   // Stage 4B: Document revision state
-  const [showRevisionDashboard, setShowRevisionDashboard] = useState(false);
   const [showTrackChanges, setShowTrackChanges] = useState(false);
   const [revisionDocument, setRevisionDocument] = useState<string>('');
   const [revisionIssues, setRevisionIssues] = useState<AssessmentResult[]>([]);
-
-  // Human review state
-  const [showHumanReview, setShowHumanReview] = useState(false);
 
   // Calculate metrics
   const { results } = assessment;
@@ -74,6 +76,16 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
     results.filter(r => r.status === 'does_not_meet' || r.status === 'partial'),
     [results]
   );
+
+  const passingResults = useMemo(() =>
+    results.filter(r => r.status === 'meets'),
+    [results]
+  );
+
+  const complianceRate = useMemo(() => {
+    if (results.length === 0) return 0;
+    return Math.round((passingResults.length / results.length) * 100);
+  }, [passingResults, results]);
 
   const quickWins = useMemo(() =>
     failedResults.filter(r => r.triage?.quick_win),
@@ -110,17 +122,44 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   }, [activeFilter, blockers, quickWins, failedResults]);
 
   // Handlers
-  const handleAcceptAllQuickWins = () => {
-    const allIds = new Set(quickWins.map(qw => qw.matrix_id));
-    setAcceptedQuickWins(allIds);
-    // TODO: Call backend to apply changes
-    console.log('Accepting all quick wins:', allIds);
+  const handleAcceptAllQuickWins = async () => {
+    const allIds = quickWins.map(qw => qw.matrix_id);
+
+    try {
+      // TODO: Replace with actual backend API call
+      // await fetch(`/api/packs/${assessment.pack_id}/versions/${assessment.version_id}/quick-wins/accept`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ issueIds: allIds })
+      // });
+
+      // Simulate backend processing
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      setAcceptedQuickWins(new Set(allIds));
+      showToast(`Accepted ${allIds.length} quick win${allIds.length === 1 ? '' : 's'}! Changes will be applied to documents.`, 'success');
+    } catch (error) {
+      console.error('Failed to accept quick wins:', error);
+      showToast('Failed to accept quick wins. Please try again.', 'error');
+    }
   };
 
-  const handleAcceptQuickWin = (issueId: string) => {
-    setAcceptedQuickWins(prev => new Set([...prev, issueId]));
-    // TODO: Call backend to apply change
-    console.log('Accepting quick win:', issueId);
+  const handleAcceptQuickWin = async (issueId: string) => {
+    try {
+      // TODO: Replace with actual backend API call
+      // await fetch(`/api/packs/${assessment.pack_id}/versions/${assessment.version_id}/quick-wins/${issueId}/accept`, {
+      //   method: 'POST'
+      // });
+
+      // Simulate backend processing
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      setAcceptedQuickWins(prev => new Set([...prev, issueId]));
+      showToast('Quick win accepted! Change will be applied to document.', 'success');
+    } catch (error) {
+      console.error('Failed to accept quick win:', error);
+      showToast('Failed to accept quick win. Please try again.', 'error');
+    }
   };
 
   const handleViewBlockers = () => {
@@ -187,14 +226,34 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
     return filteredResults.filter(issue => selectedIssueIds.includes(issue.matrix_id));
   }, [filteredResults, selectedIssueIds]);
 
-  const handleBulkAcceptQuickWins = () => {
+  const handleBulkAcceptQuickWins = async () => {
     const quickWinIds = selectedIssues
       .filter(i => i.triage?.quick_win)
       .map(i => i.matrix_id);
-    setAcceptedQuickWins(prev => new Set([...prev, ...quickWinIds]));
-    // TODO: Call backend to apply changes
-    console.log('Bulk accepting quick wins:', quickWinIds);
-    setSelectedIssueIds([]);
+
+    if (quickWinIds.length === 0) {
+      showToast('No quick wins selected', 'warning');
+      return;
+    }
+
+    try {
+      // TODO: Replace with actual backend API call
+      // await fetch(`/api/packs/${assessment.pack_id}/versions/${assessment.version_id}/quick-wins/accept-bulk`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ issueIds: quickWinIds })
+      // });
+
+      // Simulate backend processing
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      setAcceptedQuickWins(prev => new Set([...prev, ...quickWinIds]));
+      showToast(`Accepted ${quickWinIds.length} quick win${quickWinIds.length === 1 ? '' : 's'} from selection!`, 'success');
+      setSelectedIssueIds([]);
+    } catch (error) {
+      console.error('Failed to bulk accept quick wins:', error);
+      showToast('Failed to accept quick wins. Please try again.', 'error');
+    }
   };
 
   const handleBulkGenerateBrief = () => {
@@ -235,9 +294,53 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   };
 
   const handleSendBrief = (brief: EngagementBrief) => {
-    // TODO: Implement email sending
-    console.log('Sending brief:', brief);
-    alert(`Brief for ${brief.specialist_type} ready to send!\n\nIn production, this would open your email client with the brief pre-filled.`);
+    // Generate email content
+    const subject = `Engagement Brief: ${brief.specialist_type} - ${assessment.pack_context.buildingType}`;
+
+    const body = `Dear ${brief.specialist_type},
+
+We would like to engage your services for the following project:
+
+Project: ${assessment.pack_context.buildingType}
+${assessment.pack_context.isHRB ? 'Classification: Higher-Risk Building (HRB)' : ''}
+${assessment.pack_context.isLondon ? 'Location: London' : ''}
+
+SCOPE OF WORK:
+${brief.scope_of_work}
+
+KEY ISSUES TO ADDRESS (${brief.issues.length} items):
+${brief.issues.map((issue, idx) => `${idx + 1}. ${issue.matrix_id}: ${issue.matrix_title}`).join('\n')}
+
+DELIVERABLES REQUIRED:
+${brief.deliverables_required}
+
+ESTIMATED EFFORT:
+${brief.estimated_effort}
+
+ESTIMATED COST:
+${brief.estimated_cost}
+
+TIMELINE:
+${brief.timeline_expectations}
+
+Please review and confirm your availability for this engagement.
+
+Best regards`;
+
+    // Create mailto link
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+
+    // Also copy to clipboard as a fallback
+    navigator.clipboard.writeText(`${subject}\n\n${body}`)
+      .then(() => {
+        showToast('Brief copied to clipboard and email client opened!', 'success');
+      })
+      .catch(() => {
+        showToast('Email client opened with brief', 'success');
+      });
   };
 
   const handleExportBrief = async (brief: EngagementBrief) => {
@@ -249,7 +352,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
       );
     } catch (error) {
       console.error('Failed to export brief:', error);
-      alert('Failed to export engagement brief. Please try again.');
+      showToast('Failed to export engagement brief. Please try again.', 'error');
     }
   };
 
@@ -285,11 +388,11 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
 
         case 'specialist_briefs':
           // Generate briefs for all specialists with issues
-          alert('Specialist Briefs Pack: Generate individual briefs from the Specialist Actions card, then export each one.');
+          showToast('Specialist Briefs Pack: Generate individual briefs from the Specialist Actions card, then export each one.', 'info');
           break;
 
         case 'client_presentation':
-          alert('PowerPoint export coming soon. For now, use Executive Summary PDF.');
+          showToast('PowerPoint export coming soon. For now, use Executive Summary PDF.', 'info');
           break;
 
         default:
@@ -299,7 +402,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
       setShowExportModal(false);
     } catch (error) {
       console.error('Failed to export:', error);
-      alert('Failed to export document. Please try again.');
+      showToast('Failed to export document. Please try again.', 'error');
     }
   };
 
@@ -321,17 +424,17 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
 
   const handleGenerateRevisions = (documentName: string, issues: AssessmentResult[]) => {
     console.log('Generating revisions for:', documentName);
-    alert(`Generating revised ${documentName} with ${issues.length} changes...\n\nIn production, this would generate a DOCX with track changes.`);
+    showToast(`Generating revised ${documentName} with ${issues.length} changes... In production, this would generate a DOCX with track changes.`, 'info');
   };
 
   const handleBulkGenerateRevisions = (documentNames: string[]) => {
     console.log('Bulk generating revisions for:', documentNames);
-    alert(`Generating ${documentNames.length} revised documents with track changes...\n\nIn production, this would generate a ZIP file with all DOCXs.`);
+    showToast(`Generating ${documentNames.length} revised documents with track changes... In production, this would generate a ZIP file with all DOCXs.`, 'info');
   };
 
   const handleExportWithTrackChanges = (changes: any[]) => {
     console.log('Exporting with track changes:', changes);
-    alert(`Exporting ${revisionDocument} with ${changes.filter(c => c.status === 'accepted').length} accepted changes...\n\nIn production, this would generate a branded DOCX with Microsoft Word track changes.`);
+    showToast(`Exporting ${revisionDocument} with ${changes.filter(c => c.status === 'accepted').length} accepted changes... In production, this would generate a branded DOCX with Microsoft Word track changes.`, 'info');
   };
 
   // Human review handlers
@@ -353,10 +456,10 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
       // a.download = `Human-Review-Required-${assessment.pack_context.buildingType}.pdf`;
       // a.click();
 
-      alert('Human Review PDF export initiated!\n\nThis PDF will contain only items requiring professional judgment, formatted for specialist review and sign-off.');
+      showToast('Human Review PDF export initiated! This PDF will contain only items requiring professional judgment, formatted for specialist review and sign-off.', 'success');
     } catch (error) {
       console.error('Failed to export Human Review PDF:', error);
-      alert('Failed to export Human Review PDF. Please try again.');
+      showToast('Failed to export Human Review PDF. Please try again.', 'error');
     }
   };
 
@@ -374,32 +477,60 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
       {/* Assessment Summary Card */}
       <div className="rounded-lg border-2 border-slate-300 bg-white p-6 shadow-sm">
         <h2 className="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <span className="text-3xl">📊</span>
+          <BarChartIcon size={28} color="var(--navy)" />
           ASSESSMENT SUMMARY
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          {/* Readiness Score */}
+          {/* Readiness Score & Compliance Rate */}
           <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <div className="text-3xl font-bold text-slate-900">
-              {assessment.readiness_score}/100
+            <div className="space-y-2">
+              <div>
+                <div className="text-3xl font-bold text-slate-900">
+                  {assessment.readiness_score}/100
+                </div>
+                <div className="text-sm text-slate-600">Readiness Score</div>
+              </div>
+              <div className="pt-2 border-t border-slate-300">
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-2xl font-bold ${
+                    complianceRate >= 80 ? 'text-green-600' :
+                    complianceRate >= 60 ? 'text-amber-600' :
+                    'text-red-600'
+                  }`}>
+                    {complianceRate}%
+                  </div>
+                  <div className="text-xs text-slate-600">
+                    ({passingResults.length}/{results.length} passing)
+                  </div>
+                </div>
+                <div className="text-sm text-slate-600">Compliance Rate</div>
+              </div>
             </div>
-            <div className="text-sm text-slate-600">Readiness Score</div>
           </div>
 
           {/* Issues Breakdown */}
           <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
             <div className="space-y-1">
-              <div className="flex justify-between text-sm">
-                <span className="text-red-600 font-semibold">🔴 Critical:</span>
+              <div className="flex justify-between text-sm items-center">
+                <span className="text-red-600 font-semibold flex items-center gap-1.5">
+                  <CircleDotIcon size={12} color="#dc2626" />
+                  Critical:
+                </span>
                 <span className="text-red-600 font-bold">{criticalIssues.length}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-amber-600 font-semibold">🟡 High:</span>
+              <div className="flex justify-between text-sm items-center">
+                <span className="text-amber-600 font-semibold flex items-center gap-1.5">
+                  <CircleDotIcon size={12} color="#f59e0b" />
+                  High:
+                </span>
                 <span className="text-amber-600 font-bold">{highPriorityIssues.length}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600">🟢 Medium/Low:</span>
+              <div className="flex justify-between text-sm items-center">
+                <span className="text-slate-600 flex items-center gap-1.5">
+                  <CircleDotIcon size={12} color="#10b981" />
+                  Medium/Low:
+                </span>
                 <span className="text-slate-600 font-bold">
                   {failedResults.length - criticalIssues.length - highPriorityIssues.length}
                 </span>
@@ -410,12 +541,18 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           {/* Quick Actions */}
           <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
             <div className="space-y-1">
-              <div className="flex justify-between text-sm">
-                <span className="text-emerald-600 font-semibold">⚡ Quick Wins:</span>
+              <div className="flex justify-between text-sm items-center">
+                <span className="text-emerald-600 font-semibold flex items-center gap-1.5">
+                  <ZapIcon size={14} color="#10b981" />
+                  Quick Wins:
+                </span>
                 <span className="text-emerald-600 font-bold">{quickWins.length}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-indigo-600 font-semibold">🎯 Specialists:</span>
+              <div className="flex justify-between text-sm items-center">
+                <span className="text-indigo-600 font-semibold flex items-center gap-1.5">
+                  <TargetIcon size={14} color="#4f46e5" />
+                  Specialists:
+                </span>
                 <span className="text-indigo-600 font-bold">
                   {failedResults.filter(r => r.triage?.engagement_type === 'SPECIALIST_REQUIRED').length}
                 </span>
@@ -424,43 +561,127 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-3 flex-wrap">
-          <button
-            onClick={handleViewRevisions}
-            className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            📝 {showRevisionDashboard ? 'Hide' : 'View'} Document Revisions
-          </button>
-          <button
-            onClick={() => setShowHumanReview(!showHumanReview)}
-            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            🔴 {showHumanReview ? 'Hide' : 'View'} Human Review Required
-          </button>
-          <button
-            onClick={() => setShowActionTracker(!showActionTracker)}
-            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            ✓ {showActionTracker ? 'Hide' : 'View'} Action Tracker
-          </button>
-          <button
-            onClick={handleOpenExportModal}
-            className="px-6 py-3 bg-slate-700 hover:bg-slate-800 text-white font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            📄 Export Report
-          </button>
-          <button
-            onClick={() => setActiveFilter('quick_wins')}
-            className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors shadow-sm"
-          >
-            ⚡ Quick Wins ({quickWins.length})
-          </button>
+        {/* Tab Navigation */}
+        <div className="border-b-2 border-slate-300">
+          <div className="flex gap-1">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-6 py-3 font-semibold transition-all flex items-center gap-2 border-b-4 ${
+                activeTab === 'overview'
+                  ? 'border-slate-700 text-slate-900 bg-white'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <ClipboardIcon size={18} color={activeTab === 'overview' ? 'var(--navy)' : '#64748b'} />
+              Overview & Issues
+            </button>
+            <button
+              onClick={() => setActiveTab('by-consultant')}
+              className={`px-6 py-3 font-semibold transition-all flex items-center gap-2 border-b-4 ${
+                activeTab === 'by-consultant'
+                  ? 'border-purple-600 text-purple-900 bg-purple-50'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <TargetIcon size={18} color={activeTab === 'by-consultant' ? '#9333ea' : '#64748b'} />
+              By Consultant
+            </button>
+            <button
+              onClick={() => setActiveTab('revisions')}
+              className={`px-6 py-3 font-semibold transition-all flex items-center gap-2 border-b-4 ${
+                activeTab === 'revisions'
+                  ? 'border-emerald-600 text-emerald-900 bg-emerald-50'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <PencilIcon size={18} color={activeTab === 'revisions' ? '#047857' : '#64748b'} />
+              Document Revisions
+            </button>
+            <button
+              onClick={() => setActiveTab('human-review')}
+              className={`px-6 py-3 font-semibold transition-all flex items-center gap-2 border-b-4 ${
+                activeTab === 'human-review'
+                  ? 'border-red-600 text-red-900 bg-red-50'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <AlertCircleIcon size={18} color={activeTab === 'human-review' ? '#dc2626' : '#64748b'} />
+              Human Review Required
+            </button>
+            <button
+              onClick={() => setActiveTab('action-tracker')}
+              className={`px-6 py-3 font-semibold transition-all flex items-center gap-2 border-b-4 ${
+                activeTab === 'action-tracker'
+                  ? 'border-indigo-600 text-indigo-900 bg-indigo-50'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <CheckIcon size={18} color={activeTab === 'action-tracker' ? '#4f46e5' : '#64748b'} />
+              Action Tracker
+            </button>
+            <div className="flex-1"></div>
+            {/* Explicit Download Buttons */}
+            <div className="flex gap-2 my-1 mr-1">
+              <button
+                onClick={async () => {
+                  try {
+                    await exportService.exportComplianceMatrixExcel(assessment.pack_id, assessment.version_id, assessment);
+                    showToast('Excel compliance matrix downloaded', 'success');
+                  } catch (error) {
+                    showToast('Failed to export Excel matrix', 'error');
+                  }
+                }}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition-colors shadow-sm flex items-center gap-1.5 rounded-t-lg"
+                title="Download compliance matrix as Excel spreadsheet"
+              >
+                <FileTextIcon size={16} color="white" />
+                Excel
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    await exportService.exportClientGapAnalysis(assessment.pack_id, assessment.version_id, assessment);
+                    showToast('Gap Analysis PDF downloaded', 'success');
+                  } catch (error) {
+                    showToast('Failed to export Gap Analysis PDF', 'error');
+                  }
+                }}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors shadow-sm flex items-center gap-1.5 rounded-t-lg"
+                title="Download Gap Analysis PDF for client review"
+              >
+                <FileTextIcon size={16} color="white" />
+                Gap PDF
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    await exportService.exportComplianceReport(assessment.pack_id, assessment.version_id, assessment);
+                    showToast('Submission Readiness PDF downloaded', 'success');
+                  } catch (error) {
+                    showToast('Failed to export Readiness PDF', 'error');
+                  }
+                }}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-colors shadow-sm flex items-center gap-1.5 rounded-t-lg"
+                title="Download Submission Readiness Report PDF"
+              >
+                <FileTextIcon size={16} color="white" />
+                Readiness PDF
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Document Revision Dashboard */}
-      {showRevisionDashboard && (
+      {/* Tab Content */}
+      {activeTab === 'by-consultant' && (
+        <ByConsultantView
+          issues={failedResults}
+          onViewIssue={onViewIssue}
+          onGenerateBrief={handleGenerateBriefClick}
+        />
+      )}
+
+      {activeTab === 'revisions' && (
         <DocumentRevisionDashboard
           issues={failedResults}
           onViewChanges={handleViewChanges}
@@ -469,42 +690,43 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
         />
       )}
 
-      {/* Action Items Tracker */}
-      {showActionTracker && (
+      {activeTab === 'action-tracker' && (
         <ActionItemsTracker
           issues={failedResults}
           onExport={() => setShowExportModal(true)}
         />
       )}
 
-      {/* Human Review Table */}
-      {showHumanReview && (
+      {activeTab === 'human-review' && (
         <HumanReviewTable
           issues={results}
           onExportPdf={handleExportHumanReviewPdf}
         />
       )}
 
-      {/* Quick Wins Section */}
-      {quickWins.length > 0 && (
-        <QuickWinsSection
-          quickWins={quickWins}
-          onAcceptAll={handleAcceptAllQuickWins}
-          onAcceptSingle={handleAcceptQuickWin}
-          onViewAll={() => setActiveFilter('quick_wins')}
-        />
-      )}
+      {/* Overview Tab Content */}
+      {activeTab === 'overview' && (
+        <>
+          {/* Quick Wins Section */}
+          {quickWins.length > 0 && (
+            <QuickWinsSection
+              quickWins={quickWins}
+              onAcceptAll={handleAcceptAllQuickWins}
+              onAcceptSingle={handleAcceptQuickWin}
+              onViewAll={() => setActiveFilter('quick_wins')}
+            />
+          )}
 
-      {/* Specialist Actions */}
-      <SpecialistActionsCard
-        results={results}
-        onGenerateBrief={handleGenerateBriefClick}
-        onViewIssues={(issues) => {
-          if (issues.length > 0 && onViewIssue) {
-            onViewIssue(issues[0]);
-          }
-        }}
-      />
+          {/* Specialist Actions */}
+          <SpecialistActionsCard
+            results={results}
+            onGenerateBrief={handleGenerateBriefClick}
+            onViewIssues={(issues) => {
+              if (issues.length > 0 && onViewIssue) {
+                onViewIssue(issues[0]);
+              }
+            }}
+          />
 
       {/* Issues Section Anchor */}
       <div id="issues-section" className="scroll-mt-4">
@@ -527,8 +749,9 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           {/* Header with Filters */}
           <div className="bg-white border-b-2 border-slate-300 p-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-900">
-                📋 ALL ISSUES ({filteredResults.length} items)
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <ClipboardIcon size={24} color="var(--navy)" />
+                ALL ISSUES ({filteredResults.length} items)
               </h2>
 
               {/* Filters */}
@@ -605,6 +828,8 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
           </div>
         </div>
       </div>
+        </>
+      )}
 
       {/* Stage 4: Modals */}
       {/* Brief Generator (hidden component that generates brief data) */}

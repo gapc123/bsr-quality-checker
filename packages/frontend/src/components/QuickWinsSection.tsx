@@ -6,6 +6,7 @@
  */
 
 import React, { useState } from 'react';
+import { ZapIcon, CheckIcon } from './Icons';
 import type { AssessmentResult } from '../types/assessment';
 
 interface QuickWinsSectionProps {
@@ -46,9 +47,7 @@ export const QuickWinsSection: React.FC<QuickWinsSectionProps> = ({
       <div className="flex items-start justify-between mb-4">
         <div>
           <h2 className="text-2xl font-bold text-emerald-900 flex items-center gap-2">
-            <span className="text-3xl" role="img" aria-label="Quick wins">
-              ⚡
-            </span>
+            <ZapIcon size={32} color="#065f46" aria-label="Quick wins" />
             QUICK WINS
           </h2>
           <p className="text-sm text-emerald-700 mt-1">
@@ -79,7 +78,7 @@ export const QuickWinsSection: React.FC<QuickWinsSectionProps> = ({
             onClick={handleAcceptAll}
             className="w-full md:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2"
           >
-            <span>✓</span>
+            <CheckIcon size={18} color="white" />
             Accept All {remainingCount} Quick Wins
           </button>
         </div>
@@ -115,7 +114,8 @@ export const QuickWinsSection: React.FC<QuickWinsSectionProps> = ({
                 <div className="flex items-center gap-3 mt-1 text-xs text-emerald-700">
                   {quickWin.effort_assessment && (
                     <span className="flex items-center gap-1">
-                      ⚡ {quickWin.effort_assessment.level === 'QUICK_FIX' ? '< 1 day' : quickWin.effort_assessment.level}
+                      <ZapIcon size={12} color="#047857" />
+                      {quickWin.effort_assessment.level === 'QUICK_FIX' ? '< 1 day' : quickWin.effort_assessment.level}
                     </span>
                   )}
                   {quickWin.triage?.engagement_type === 'AI_AMENDABLE' && (
@@ -130,7 +130,7 @@ export const QuickWinsSection: React.FC<QuickWinsSectionProps> = ({
               <div className="ml-4">
                 {isAccepted ? (
                   <span className="text-emerald-600 font-semibold flex items-center gap-1">
-                    <span className="text-xl">✓</span>
+                    <CheckIcon size={18} color="#059669" />
                     Accepted
                   </span>
                 ) : (
@@ -162,12 +162,15 @@ export const QuickWinsSection: React.FC<QuickWinsSectionProps> = ({
       {/* Success Message */}
       {acceptedItems.size > 0 && (
         <div className="mt-4 p-3 bg-emerald-100 border border-emerald-400 rounded-lg">
-          <p className="text-sm text-emerald-800">
-            <strong>✓ {acceptedItems.size} {acceptedItems.size === 1 ? 'change' : 'changes'} accepted</strong>
-            {remainingCount === 0 ?
-              ' - All quick wins processed! These fixes will be applied to your documents.' :
-              ` - ${remainingCount} quick ${remainingCount === 1 ? 'win' : 'wins'} remaining.`
-            }
+          <p className="text-sm text-emerald-800 flex items-start gap-2">
+            <CheckIcon size={16} color="#047857" className="flex-shrink-0 mt-0.5" />
+            <span>
+              <strong>{acceptedItems.size} {acceptedItems.size === 1 ? 'change' : 'changes'} accepted</strong>
+              {remainingCount === 0 ?
+                ' - All quick wins processed! These fixes will be applied to your documents.' :
+                ` - ${remainingCount} quick ${remainingCount === 1 ? 'win' : 'wins'} remaining.`
+              }
+            </span>
           </p>
         </div>
       )}

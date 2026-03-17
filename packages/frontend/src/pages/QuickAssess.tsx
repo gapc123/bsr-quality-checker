@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useToast } from '../components/Toast';
 import FileUpload from '../components/FileUpload';
 import SimpleResultsView from '../components/SimpleResultsView';
 import type { AssessmentResult, FullAssessment } from '../types/assessment';
@@ -26,6 +27,7 @@ interface QuickAssessment {
 }
 
 export default function QuickAssess() {
+  const { showToast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const [assessing, setAssessing] = useState(false);
   const [assessment, setAssessment] = useState<QuickAssessment | null>(null);
@@ -96,7 +98,7 @@ export default function QuickAssess() {
 
   const handleSaveToClient = async () => {
     if (!clientName.trim() || !projectName.trim()) {
-      alert('Please provide both client name and project name');
+      showToast('Please provide both client name and project name', 'warning');
       return;
     }
 
@@ -120,14 +122,14 @@ export default function QuickAssess() {
       }
 
       const data = await res.json();
-      alert(`✅ Saved! Client: ${data.client.name}, Pack: ${data.pack.name}`);
+      showToast(`Saved! Client: ${data.client.name}, Pack: ${data.pack.name}`, 'success');
       setShowSaveDialog(false);
 
       // Optionally redirect to the pack
       window.location.href = `/packs/${data.pack.id}`;
 
     } catch (err) {
-      alert(`Error: ${err instanceof Error ? err.message : 'Failed to save'}`);
+      showToast(`Error: ${err instanceof Error ? err.message : 'Failed to save'}`, 'error');
     } finally {
       setSaving(false);
     }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useToast } from '../components/Toast';
 import AISummary from '../components/AISummary';
 import TaskChecklist from '../components/TaskChecklist';
 import PackStatusBadge from '../components/PackStatusBadge';
@@ -92,6 +93,7 @@ interface Template {
 
 export default function PackDetail() {
   const { packId } = useParams<{ packId: string }>();
+  const { showToast } = useToast();
   const [pack, setPack] = useState<Pack | null>(null);
   const [loading, setLoading] = useState(true);
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -147,7 +149,7 @@ export default function PackDetail() {
       await fetchPack();
     } catch (error) {
       console.error('Error applying template:', error);
-      alert('Failed to apply template');
+      showToast('Failed to apply template', 'error');
     } finally {
       setApplyingTemplate(false);
     }

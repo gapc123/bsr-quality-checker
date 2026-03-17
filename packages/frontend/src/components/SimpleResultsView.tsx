@@ -9,6 +9,7 @@
  */
 
 import React, { useMemo, useState } from 'react';
+import { useToast } from './Toast';
 import type { AssessmentResult } from '../types/assessment';
 
 interface SimpleResultsViewProps {
@@ -31,6 +32,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   onClose,
   onSaveToClient
 }) => {
+  const { showToast } = useToast();
   const [isDownloading, setIsDownloading] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
 
@@ -103,7 +105,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
         await result;
       }
     } catch (error) {
-      alert(`Download failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      showToast(`Download failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     } finally {
       setIsDownloading(false);
     }

@@ -7,8 +7,10 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useToast } from '../components/Toast';
 import ResultsDashboard from '../components/ResultsDashboard';
 import MobileDashboardView from '../components/MobileDashboardView';
+import ProjectMetadataCard from '../components/ProjectMetadataCard';
 import { useResponsive } from '../components/ResponsiveContainer';
 import { useA11y } from '../components/AccessibilityEnhancements';
 import type { FullAssessment, SubmissionGate, AssessmentResult } from '../types/assessment';
@@ -19,6 +21,7 @@ export default function Results() {
   const navigate = useNavigate();
   const { isMobile } = useResponsive();
   const { announce } = useA11y();
+  const { showToast } = useToast();
 
   const [assessment, setAssessment] = useState<FullAssessment | null>(null);
   const [submissionGate, setSubmissionGate] = useState<SubmissionGate | null>(null);
@@ -219,7 +222,7 @@ export default function Results() {
     } catch (error) {
       console.error('Export failed:', error);
       announce('Failed to export report', 'assertive');
-      alert('Failed to export report. Please try again.');
+      showToast('Failed to export report. Please try again.', 'error');
     }
   };
 
@@ -313,21 +316,12 @@ export default function Results() {
         ) : (
           <div className="container mx-auto px-4 py-8 max-w-7xl">
             {/* Header */}
-            <div className="mb-8">
+            <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h1 className="text-4xl font-bold text-slate-900 mb-2">
                     Assessment Results
                   </h1>
-                  <p className="text-slate-600">
-                    {assessment.pack_context.buildingType}
-                    {assessment.pack_context.isLondon && <span className="ml-2">• London</span>}
-                    {assessment.pack_context.isHRB && (
-                      <span className="ml-3 px-3 py-1 bg-red-100 text-red-800 text-sm font-semibold rounded-full">
-                        HRB
-                      </span>
-                    )}
-                  </p>
                 </div>
                 <button
                   onClick={() => navigate(`/packs/${packId}`)}
@@ -336,6 +330,16 @@ export default function Results() {
                   ← Back to Pack
                 </button>
               </div>
+            </div>
+
+            {/* Project Metadata Card */}
+            <div className="mb-6">
+              <ProjectMetadataCard
+                packContext={assessment.pack_context}
+                packId={assessment.pack_id}
+                versionId={assessment.version_id}
+                generatedAt={assessment.generated_at}
+              />
             </div>
 
             {/* Dashboard */}

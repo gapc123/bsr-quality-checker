@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useToast } from '../components/Toast';
 import AISummary from '../components/AISummary';
 
 interface Pack {
@@ -33,6 +34,7 @@ interface Client {
 export default function ClientDetail() {
   const { clientId } = useParams<{ clientId: string }>();
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [client, setClient] = useState<Client | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreatePackModal, setShowCreatePackModal] = useState(false);
@@ -69,7 +71,7 @@ export default function ClientDetail() {
 
   const createPack = async () => {
     if (!newPackName.trim()) {
-      alert('Please enter a pack name');
+      showToast('Please enter a pack name', 'warning');
       return;
     }
 
@@ -96,11 +98,11 @@ export default function ClientDetail() {
       } else {
         const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
         console.error('Failed to create pack:', errorData);
-        alert(`Failed to create pack: ${errorData.error || 'Unknown error'}`);
+        showToast(`Failed to create pack: ${errorData.error || 'Unknown error'}`, 'error');
       }
     } catch (error) {
       console.error('Error creating pack:', error);
-      alert(`Error creating pack: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      showToast(`Error creating pack: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     } finally {
       setCreatingPack(false);
     }
@@ -195,7 +197,7 @@ export default function ClientDetail() {
       console.log('All three documents downloaded successfully');
     } catch (error) {
       console.error('Error downloading documents:', error);
-      alert(`Failed to download documents: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      showToast(`Failed to download documents: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     } finally {
       setDownloadingDocs(null);
     }

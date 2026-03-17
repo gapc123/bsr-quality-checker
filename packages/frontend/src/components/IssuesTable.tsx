@@ -195,6 +195,35 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
     }
   };
 
+  // Get resolution status badge
+  const getResolutionStatus = (_issue: AssessmentResult) => {
+    // TODO: Connect to backend resolution tracking (UI Fix 5)
+    // For now, all issues show as "Open"
+    const status = 'open'; // Future: issue.resolution_status
+
+    switch (status) {
+      case 'resolved':
+        return (
+          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-300">
+            ✓ Resolved
+          </span>
+        );
+      case 'in-progress':
+        return (
+          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800 border border-blue-300">
+            ⟳ In Progress
+          </span>
+        );
+      case 'open':
+      default:
+        return (
+          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-amber-100 text-amber-800 border border-amber-300">
+            ◌ Open
+          </span>
+        );
+    }
+  };
+
   // Sort indicator
   const SortIndicator: React.FC<{ field: SortField }> = ({ field }) => {
     if (sortField !== field) {
@@ -294,6 +323,11 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
               <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900">
                 Action Type
               </th>
+
+              {/* Status */}
+              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900">
+                Status
+              </th>
             </tr>
           </thead>
 
@@ -379,6 +413,11 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
                   {/* Action Type */}
                   <td className="px-4 py-3 whitespace-nowrap">
                     {getActionTypeBadge(issue)}
+                  </td>
+
+                  {/* Status */}
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    {getResolutionStatus(issue)}
                   </td>
                 </tr>
               );

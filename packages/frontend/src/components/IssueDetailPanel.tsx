@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from './Icons';
 import type { AssessmentResult } from '../types/assessment';
 
 interface IssueDetailPanelProps {
@@ -58,13 +59,33 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
     const urgency = issue.triage?.urgency;
     switch (urgency) {
       case 'CRITICAL_BLOCKER':
-        return <span className="px-3 py-1 text-sm font-semibold rounded bg-red-100 text-red-800">🔴 CRITICAL BLOCKER</span>;
+        return (
+          <span className="px-3 py-1 text-sm font-semibold rounded bg-red-100 text-red-800 flex items-center gap-1.5">
+            <CircleDotIcon size={10} color="#dc2626" />
+            CRITICAL BLOCKER
+          </span>
+        );
       case 'HIGH_PRIORITY':
-        return <span className="px-3 py-1 text-sm font-semibold rounded bg-amber-100 text-amber-800">🟡 HIGH PRIORITY</span>;
+        return (
+          <span className="px-3 py-1 text-sm font-semibold rounded bg-amber-100 text-amber-800 flex items-center gap-1.5">
+            <CircleDotIcon size={10} color="#f59e0b" />
+            HIGH PRIORITY
+          </span>
+        );
       case 'MEDIUM_PRIORITY':
-        return <span className="px-3 py-1 text-sm font-semibold rounded bg-blue-100 text-blue-800">🔵 MEDIUM PRIORITY</span>;
+        return (
+          <span className="px-3 py-1 text-sm font-semibold rounded bg-blue-100 text-blue-800 flex items-center gap-1.5">
+            <CircleDotIcon size={10} color="#3b82f6" />
+            MEDIUM PRIORITY
+          </span>
+        );
       case 'LOW_PRIORITY':
-        return <span className="px-3 py-1 text-sm font-semibold rounded bg-slate-100 text-slate-800">⚪ LOW PRIORITY</span>;
+        return (
+          <span className="px-3 py-1 text-sm font-semibold rounded bg-slate-100 text-slate-800 flex items-center gap-1.5">
+            <CircleDotIcon size={10} color="#64748b" />
+            LOW PRIORITY
+          </span>
+        );
       default:
         return null;
     }
@@ -82,13 +103,15 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
               </span>
               {getPriorityBadge()}
               {issue.triage?.blocks_submission && (
-                <span className="px-2 py-1 text-xs font-semibold rounded bg-red-600 text-white">
-                  🚫 BLOCKS SUBMISSION
+                <span className="px-2 py-1 text-xs font-semibold rounded bg-red-600 text-white flex items-center gap-1.5">
+                  <XCircleIcon size={12} color="white" />
+                  BLOCKS SUBMISSION
                 </span>
               )}
               {issue.triage?.quick_win && (
-                <span className="px-2 py-1 text-xs font-semibold rounded bg-emerald-600 text-white">
-                  ⚡ QUICK WIN
+                <span className="px-2 py-1 text-xs font-semibold rounded bg-emerald-600 text-white flex items-center gap-1.5">
+                  <ZapIcon size={12} color="white" />
+                  QUICK WIN
                 </span>
               )}
             </div>
@@ -190,8 +213,12 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
                 </div>
                 <div>
                   <span className="text-slate-600 font-medium">Quick Win:</span>
-                  <div className="text-indigo-900 font-semibold mt-1">
-                    {issue.triage.quick_win ? '✓ Yes' : '✗ No'}
+                  <div className="text-indigo-900 font-semibold mt-1 flex items-center gap-1.5">
+                    {issue.triage.quick_win ? (
+                      <><CheckIcon size={14} color="#4f46e5" /> Yes</>
+                    ) : (
+                      <><XIcon size={14} color="#4f46e5" /> No</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -383,8 +410,12 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
                 <span className="px-2 py-1 text-xs font-semibold rounded bg-purple-100 text-purple-800">
                   {issue.confidence.level}
                 </span>
-                <span className={`text-sm font-semibold ${issue.confidence.can_system_act ? 'text-green-600' : 'text-amber-600'}`}>
-                  {issue.confidence.can_system_act ? '✓ System can act' : '⚠ Human review needed'}
+                <span className={`text-sm font-semibold flex items-center gap-1.5 ${issue.confidence.can_system_act ? 'text-green-600' : 'text-amber-600'}`}>
+                  {issue.confidence.can_system_act ? (
+                    <><CheckIcon size={14} color="#16a34a" /> System can act</>
+                  ) : (
+                    <><AlertCircleIcon size={14} color="#d97706" /> Human review needed</>
+                  )}
                 </span>
               </div>
               <p className="text-sm text-purple-900">

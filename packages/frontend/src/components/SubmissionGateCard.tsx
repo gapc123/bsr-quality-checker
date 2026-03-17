@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { CheckCircleIcon, AlertCircleIcon, XCircleIcon } from './Icons';
 import type { SubmissionGate } from '../types/assessment';
 
 interface SubmissionGateCardProps {
@@ -25,16 +26,16 @@ export const SubmissionGateCard: React.FC<SubmissionGateCardProps> = ({
         return {
           bgColor: 'bg-green-50',
           borderColor: 'border-green-500',
-          iconColor: 'text-green-600',
-          icon: '✅',
+          iconColor: '#16a34a',
+          IconComponent: CheckCircleIcon,
           textColor: 'text-green-900'
         };
       case 'AMBER':
         return {
           bgColor: 'bg-amber-50',
           borderColor: 'border-amber-500',
-          iconColor: 'text-amber-600',
-          icon: '⚠️',
+          iconColor: '#d97706',
+          IconComponent: AlertCircleIcon,
           textColor: 'text-amber-900'
         };
       case 'RED':
@@ -42,14 +43,15 @@ export const SubmissionGateCard: React.FC<SubmissionGateCardProps> = ({
         return {
           bgColor: 'bg-red-50',
           borderColor: 'border-red-500',
-          iconColor: 'text-red-600',
-          icon: '🚨',
+          iconColor: '#dc2626',
+          IconComponent: XCircleIcon,
           textColor: 'text-red-900'
         };
     }
   };
 
   const styles = getGateStyles();
+  const StatusIcon = styles.IconComponent;
 
   return (
     <div
@@ -61,9 +63,7 @@ export const SubmissionGateCard: React.FC<SubmissionGateCardProps> = ({
       <div className="flex items-start justify-between mb-4">
         <div>
           <h2 className={`text-2xl font-bold ${styles.textColor} flex items-center gap-2`}>
-            <span className="text-3xl" role="img" aria-label={gate.gate_status}>
-              {styles.icon}
-            </span>
+            <StatusIcon size={32} color={styles.iconColor} aria-label={gate.gate_status} />
             SUBMISSION DECISION GATE
           </h2>
           <p className={`text-sm ${styles.textColor} opacity-80 mt-1`}>

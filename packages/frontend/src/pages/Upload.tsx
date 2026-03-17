@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useToast } from '../components/Toast';
 import UploadWizard from '../components/UploadWizard';
 import type { ProjectContext } from '../components/ProjectContextForm';
 import type { UploadedDocument } from '../components/DocumentUploadZone';
@@ -12,6 +13,7 @@ interface Pack {
 export default function Upload() {
   const { packId } = useParams<{ packId: string }>();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [pack, setPack] = useState<Pack | null>(null);
 
@@ -62,11 +64,11 @@ export default function Upload() {
         const version = await res.json();
         navigate(`/packs/${packId}/versions/${version.id}/results`);
       } else {
-        alert('Failed to upload documents');
+        showToast('Failed to upload documents', 'error');
       }
     } catch (error) {
       console.error('Error uploading:', error);
-      alert('Failed to upload documents');
+      showToast('Failed to upload documents', 'error');
     }
   };
 
