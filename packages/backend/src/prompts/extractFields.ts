@@ -9,9 +9,13 @@ For each field, you must provide:
 - pageRef: The page number where the evidence was found (if available)
 
 Be conservative with confidence ratings:
-- high: Clear, unambiguous statement in the document
-- medium: Information is present but may require interpretation
-- low: Information is implied or partially present`;
+- high: Clear, unambiguous statement with direct quote
+- medium: Information is present but requires interpretation
+- low: Information is partially present or requires inference
+
+CRITICAL: Only extract information that is EXPLICITLY STATED in the document.
+Do NOT infer, assume, or extract "clearly implied" information.
+If information is not explicitly present, set fieldValue to null.`;
 
 export const FIELD_EXTRACTION_USER_PROMPT = (documentContent: string, filename: string) => `
 Analyze the following document and extract the key building information fields.
@@ -90,7 +94,8 @@ Extract the following fields and return as JSON:
   ]
 }
 
-Only return valid JSON. Extract only what is explicitly stated or clearly implied in the document.`;
+Only return valid JSON. Extract ONLY what is explicitly stated in the document with direct quotes as evidence.
+Do NOT include information that is merely implied, assumed, or requires inference.`;
 
 export interface ExtractedFieldResult {
   fieldName: string;

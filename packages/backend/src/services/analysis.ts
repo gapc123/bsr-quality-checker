@@ -1,21 +1,26 @@
 import prisma from '../db/client.js';
-import { extractJSON } from './claude.js';
+import { extractJSON, extractValidatedJSON } from './claude.js';
 import { searchChunks } from './ingestion.js';
 import {
   FIELD_EXTRACTION_SYSTEM_PROMPT,
   FIELD_EXTRACTION_USER_PROMPT,
-  FieldExtractionResponse,
 } from '../prompts/extractFields.js';
 import {
   ISSUE_GENERATION_SYSTEM_PROMPT,
   ISSUE_GENERATION_USER_PROMPT,
-  IssueGenerationResponse,
 } from '../prompts/generateReport.js';
 import {
   assessPackAgainstMatrix,
   determinePackContext,
   FullAssessment,
 } from './matrix-assessment.js';
+import {
+  FieldExtractionResponseSchema,
+  IssueGenerationResponseSchema,
+  FieldExtractionResponse,
+  IssueGenerationResponse,
+} from '../schemas/llm-output.js';
+import { verifyIssueEvidence } from './evidence-verifier.js';
 
 type Confidence = 'high' | 'medium' | 'low';
 
@@ -39,10 +44,22 @@ async function extractFieldsFromDocument(
     .join('\n')
     .slice(0, 50000);
 
-  const response = await extractJSON<FieldExtractionResponse>(
+  // Use validated extraction with schema
+  const response = await extractValidatedJSON(
     FIELD_EXTRACTION_SYSTEM_PROMPT,
-    FIELD_EXTRACTION_USER_PROMPT(content, document.filename)
+    FIELD_EXTRACTION_USER_PROMPT(content, document.filename),
+    FieldExtractionResponseSchema
   );
+
+  // Additional validation: high confidence requires evidence
+  for (const field of response.fields) {
+    if (field.confidence === 'high' && !field.evidenceQuote) {
+      console.warn(
+        `Field ${field.fieldName} has high confidence but no evidence quote - downgrading to medium`
+      );
+      field.confidence = 'medium';
+    }
+  }
 
   return response;
 }
@@ -284,9 +301,9 @@ async function getReferencContext(
     .join('\n\n');
 }
 
-// Generate issues using Claude
+// Generate issues using Claude with validation and verification
 async function generateIssues(
-  packVersion: { documents: Array<{ filename: string; docType: string | null }> },
+  packVersion: { id: string; documents: Array<{ filename: string; docType: string | null }> },
   extractedFields: Array<{
     fieldName: string;
     fieldValue: string | null;
@@ -310,17 +327,56 @@ async function generateIssues(
     .join('\n');
 
   try {
-    const response = await extractJSON<IssueGenerationResponse>(
+    // Use validated extraction with schema
+    const response = await extractValidatedJSON(
       ISSUE_GENERATION_SYSTEM_PROMPT,
       ISSUE_GENERATION_USER_PROMPT(
         fieldsJson,
         docSummaries,
         referenceContext || 'No reference documents available.'
       ),
+      IssueGenerationResponseSchema,
       8192
     );
 
-    return response.issues || [];
+    // Verify evidence for all issues
+    const verifiedIssues = [];
+
+    for (const issue of response.issues) {
+      // Verify evidence quotes exist in documents
+      const verification = await verifyIssueEvidence(
+        issue.evidence,
+        packVersion.id
+      );
+
+      // Log verification results
+      if (!verification.allVerified) {
+        console.warn(
+          `Issue "${issue.title}" has unverified evidence (${verification.verifiedCount}/${verification.totalCount} verified)`
+        );
+
+        // For high severity issues with low verification, downgrade or skip
+        if (issue.severity === 'high' && verification.verifiedCount === 0) {
+          console.warn(
+            `Skipping high severity issue with no verified evidence: ${issue.title}`
+          );
+          continue;
+        }
+
+        // Downgrade confidence if evidence is weak
+        if (issue.confidence === 'high' && verification.verifiedCount < verification.totalCount / 2) {
+          issue.confidence = 'medium';
+        }
+      }
+
+      verifiedIssues.push(issue);
+    }
+
+    console.log(
+      `Generated ${verifiedIssues.length} issues (${response.issues.length - verifiedIssues.length} filtered for poor evidence)`
+    );
+
+    return verifiedIssues;
   } catch (error) {
     console.error('Error generating issues:', error);
     return [];

@@ -9,12 +9,12 @@ echo "🔧 Generating Prisma Client..."
 cd /app/packages/backend
 npx prisma generate
 
-# Initialize database with schema (PostgreSQL)
-echo "📊 Initializing database schema..."
-npx prisma db push --accept-data-loss || {
-  echo "❌ Database push failed with error code $?"
-  echo "Trying alternative: prisma migrate deploy"
-  npx prisma migrate deploy || echo "❌ Migrate also failed"
+# Apply migrations safely (no data loss)
+echo "📊 Applying database migrations..."
+npx prisma migrate deploy || {
+  echo "❌ Migration failed with error code $?"
+  echo "⚠️  Please check migration files and database state"
+  exit 1
 }
 echo "✅ Database schema ready"
 

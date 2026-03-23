@@ -19,9 +19,17 @@ For each issue you identify, you must provide:
 - expectedBenefit: What improves when this is fixed
 - confidence: "high", "medium", or "low" in your assessment
 - citations: References to guidance/standards (if applicable)
-- evidence: Direct quotes/references from the documents
+- evidence: Direct quotes/references from the documents (REQUIRED - at least one quote per issue)
 
-IMPORTANT: Focus on quality and clarity issues, not compliance judgments. The BSR will determine compliance.`;
+CRITICAL EVIDENCE REQUIREMENTS:
+- Every issue MUST include at least one evidence item with a direct quote from the documents
+- Quotes must be verbatim text from the source (minimum 10 characters)
+- Include the document name and page number where the quote was found
+- Do NOT create issues without direct evidence from the documents
+- High severity issues require strong evidence with multiple quotes
+
+IMPORTANT: Focus on quality and clarity issues, not compliance judgments. The BSR will determine compliance.
+NO CLAIMS WITHOUT EVIDENCE. If you cannot find a direct quote to support a claim, do not make that claim.`;
 
 export const ISSUE_GENERATION_USER_PROMPT = (
   extractedFields: string,

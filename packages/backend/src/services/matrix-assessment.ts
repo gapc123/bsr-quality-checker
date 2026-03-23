@@ -842,15 +842,17 @@ Extract factual information relevant to this criterion. DO NOT judge compliance.
 
 For each piece of expected evidence:
 1. Search ALL documents for relevant information
-2. If found: extract the fact, quote the source, note which document
-3. If not found in primary document but found elsewhere: note the cross-reference
-4. If not found anywhere: list as missing information
-5. If ambiguous or contradictory: note the ambiguity
+2. If found: extract the fact, quote the source, note the PAGE NUMBER and document
+3. If not found in primary document but found elsewhere: note the cross-reference with page number
+4. If not found anywhere: list SPECIFIC items that are missing (not just "missing information" but "missing: building height in meters, number of storeys, floor area")
+5. If ambiguous or contradictory: note the SPECIFIC ambiguity (e.g., "states '8 floors' on page 2 but '7 storeys' on page 5")
 6. Score evidence quality:
    - "explicit": Direct, unambiguous statement (e.g., "Building height is 24.5m")
    - "implicit": Can be inferred from context (e.g., "8 storeys" implies height)
    - "ambiguous": Present but unclear, vague, or contradictory
    - "absent": Not mentioned in any document
+
+CRITICAL: Be SPECIFIC in missing_information. Instead of "building description incomplete", say "missing: building height (meters), number of storeys, total floor area, occupancy classification".
 
 Respond in JSON format:
 {
@@ -966,15 +968,32 @@ function applyComplianceLogic(
   // This distinguishes "not mentioned" from "mentioned but wrong"
   if (!facts.evidence_found && !facts.cross_document_evidence.found) {
     status = 'missing_information';
-    reasoning = `Required information not found in any document for ${row.matrix_title}. Missing: ${facts.missing_information.join('; ')}`;
+
+    // Build specific, actionable reasoning
+    reasoning = `❌ No evidence found for ${row.matrix_title}. `;
+    reasoning += `Required information is completely absent. You need to add: ${facts.missing_information.join(', ')}. `;
+
+    // If there are expected evidence types, provide guidance
+    if (row.evidence_expected && row.evidence_expected.length > 0) {
+      reasoning += `Expected documentation should include: ${row.evidence_expected.slice(0, 3).join('; ')}.`;
+    }
+
     decisionLogic = 'RULE: No evidence found in any document → missing_information';
     gaps.push(...facts.missing_information);
 
+    // Determine appropriate owner based on context
+    const ownerType1 = determineOwnerType(
+      undefined,
+      false,
+      reasoning + ' ' + row.matrix_title,
+      facts.missing_information
+    );
+
     actions.push({
-      action: `Add documentation addressing ${row.matrix_title}: ${facts.missing_information.slice(0, 2).join(', ')}`,
-      owner: 'Project Team',
+      action: `Add documentation for ${row.matrix_title} covering: ${facts.missing_information.slice(0, 3).join(', ')}${facts.missing_information.length > 3 ? ` (and ${facts.missing_information.length - 3} more items)` : ''}`,
+      owner: formatOwnerRole(ownerType1),
       effort: 'M',
-      expected_benefit: 'Provide required information to meet compliance'
+      expected_benefit: 'Provide required information to meet compliance requirements'
     });
 
     return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
@@ -983,15 +1002,52 @@ function applyComplianceLogic(
   // Logic: If evidence found but has missing information → partial
   if (facts.evidence_found && facts.missing_information.length > 0) {
     status = 'partial';
-    reasoning = `Partial evidence found in ${facts.evidence_document}. Missing: ${facts.missing_information.join('; ')}`;
+
+    // ANTI-HALLUCINATION: Only cite page if we actually have it
+    const pageRef = (facts.evidence_page && typeof facts.evidence_page === 'number')
+      ? ` on page ${facts.evidence_page}`
+      : '';
+
+    // ANTI-HALLUCINATION: Only include quote if it exists and was validated
+    const quotePreview = facts.evidence_quote
+      ? `"${facts.evidence_quote.slice(0, 150)}${facts.evidence_quote.length > 150 ? '...' : ''}"`
+      : null;
+
+    // Create specific, auditable reasoning
+    reasoning = `📄 ${facts.evidence_document}${pageRef}: `;
+
+    if (quotePreview) {
+      // We have verified quote - cite it specifically
+      reasoning += `You state ${quotePreview}, but this is missing information about: ${facts.missing_information.join(', ')}. `;
+    } else if (pageRef) {
+      // We have page but no quote - be specific about location
+      reasoning += `Content found but missing specific information about: ${facts.missing_information.join(', ')}. `;
+    } else {
+      // No page or quote - general reference only
+      reasoning += `Document contains partial information but is missing: ${facts.missing_information.join(', ')}. `;
+    }
+
+    reasoning += `Review and add explicit details covering these gaps.`;
+
     decisionLogic = 'RULE: Evidence present but incomplete → partial';
     gaps.push(...facts.missing_information);
 
+    // Create specific action with document reference
+    const locationRef = pageRef ? `${facts.evidence_document}${pageRef}` : facts.evidence_document;
+
+    // Determine appropriate owner based on context
+    const ownerType2 = determineOwnerType(
+      undefined,
+      false,
+      reasoning + ' ' + row.matrix_title,
+      facts.missing_information
+    );
+
     actions.push({
-      action: `Add missing information: ${facts.missing_information.join(', ')}`,
-      owner: 'Project Team',
+      action: `Review ${locationRef} and add missing information: ${facts.missing_information.slice(0, 3).join(', ')}${facts.missing_information.length > 3 ? `, and ${facts.missing_information.length - 3} more` : ''}`,
+      owner: formatOwnerRole(ownerType2),
       effort: 'S',
-      expected_benefit: 'Complete compliance documentation'
+      expected_benefit: 'Complete compliance documentation with all required details'
     });
 
     return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
@@ -1008,23 +1064,71 @@ function applyComplianceLogic(
       a.toLowerCase().includes('does not meet')
     );
 
+    // ANTI-HALLUCINATION: Only cite page if we actually have it
+    const pageRef = (facts.evidence_page && typeof facts.evidence_page === 'number')
+      ? ` on page ${facts.evidence_page}`
+      : '';
+
+    // ANTI-HALLUCINATION: Only include quote if verified
+    const quotePreview = facts.evidence_quote
+      ? `"${facts.evidence_quote.slice(0, 100)}${facts.evidence_quote.length > 100 ? '...' : ''}"`
+      : null;
+
     if (isContradiction) {
       status = 'does_not_meet';
-      reasoning = `Evidence found but contradicts requirements: ${facts.ambiguities.join('; ')}`;
+      reasoning = `⚠️ ${facts.evidence_document}${pageRef}: `;
+
+      if (quotePreview) {
+        // Verified quote - cite specifically
+        reasoning += `You state ${quotePreview}, but this contradicts requirements. `;
+      } else if (pageRef) {
+        // Have page but no quote
+        reasoning += `Content contradicts requirements. `;
+      } else {
+        // No specific citation available
+        reasoning += `Document contains information that contradicts requirements. `;
+      }
+
+      reasoning += `Issues identified: ${facts.ambiguities.join('; ')}. `;
+      reasoning += `Review and correct to align with regulatory requirements.`;
       decisionLogic = 'RULE: Evidence contradicts requirements → does_not_meet';
     } else {
       status = 'partial';
-      reasoning = `Evidence found but ambiguous: ${facts.ambiguities.join('; ')}`;
+      reasoning = `⚠️ ${facts.evidence_document}${pageRef}: `;
+
+      if (quotePreview) {
+        // Verified quote - cite specifically
+        reasoning += `You state ${quotePreview}, but this is unclear or ambiguous. `;
+      } else if (pageRef) {
+        // Have page but no quote
+        reasoning += `Content is unclear or ambiguous. `;
+      } else {
+        // No specific citation
+        reasoning += `Document contains unclear or ambiguous information. `;
+      }
+
+      reasoning += `Clarification needed: ${facts.ambiguities.join('; ')}. `;
+      reasoning += `Revise to provide clear, unambiguous statements.`;
       decisionLogic = 'RULE: Evidence ambiguous or unclear → partial';
     }
 
     gaps.push(...facts.ambiguities);
 
+    const locationRef = pageRef ? `${facts.evidence_document}${pageRef}` : facts.evidence_document;
+
+    // Determine appropriate owner based on context
+    const ownerType3 = determineOwnerType(
+      undefined,
+      false,
+      reasoning + ' ' + row.matrix_title,
+      facts.ambiguities
+    );
+
     actions.push({
-      action: `Clarify or correct: ${facts.ambiguities.slice(0, 2).join(', ')}`,
-      owner: 'Project Team',
+      action: `Review ${locationRef} and ${isContradiction ? 'correct' : 'clarify'}: ${facts.ambiguities.slice(0, 2).join('; ')}${facts.ambiguities.length > 2 ? ` (and ${facts.ambiguities.length - 2} more)` : ''}`,
+      owner: formatOwnerRole(ownerType3),
       effort: 'S',
-      expected_benefit: isContradiction ? 'Correct non-compliant information' : 'Remove ambiguity for clear compliance'
+      expected_benefit: isContradiction ? 'Correct non-compliant information to meet requirements' : 'Remove ambiguity for clear compliance'
     });
 
     return { status, reasoning, decision_logic: decisionLogic, gaps_identified: gaps, actions_required: actions };
@@ -1033,25 +1137,71 @@ function applyComplianceLogic(
   // Logic: If evidence found and complete → meets (but consider quality - TASK #17)
   if (facts.evidence_found && facts.missing_information.length === 0 && facts.ambiguities.length === 0) {
     // Check evidence quality
+    // ANTI-HALLUCINATION: Only cite page if we actually have it
+    const pageRef = (facts.evidence_page && typeof facts.evidence_page === 'number')
+      ? ` on page ${facts.evidence_page}`
+      : '';
+
+    // ANTI-HALLUCINATION: Only include quote if verified
+    const quotePreview = facts.evidence_quote
+      ? `"${facts.evidence_quote.slice(0, 150)}${facts.evidence_quote.length > 150 ? '...' : ''}"`
+      : null;
+
     if (facts.evidence_quality === 'explicit') {
       status = 'meets';
-      reasoning = `Explicit evidence found in ${facts.evidence_document}: "${facts.evidence_quote?.slice(0, 100)}..."`;
+
+      if (quotePreview) {
+        // We have verified quote - show it
+        reasoning = `✅ ${facts.evidence_document}${pageRef}: ${quotePreview}`;
+      } else if (pageRef) {
+        // We have page but no quote
+        reasoning = `✅ ${facts.evidence_document}${pageRef}: Explicit evidence found`;
+      } else {
+        // General reference only
+        reasoning = `✅ ${facts.evidence_document}: Explicit evidence found`;
+      }
+
       decisionLogic = 'RULE: Evidence present, complete, explicit → meets';
     } else if (facts.evidence_quality === 'implicit') {
       status = 'partial';
-      reasoning = `Implicit evidence found in ${facts.evidence_document}. Information can be inferred but is not explicitly stated.`;
+      reasoning = `📋 ${facts.evidence_document}${pageRef}: `;
+
+      if (quotePreview) {
+        // We have verified quote showing implicit evidence
+        reasoning += `You state ${quotePreview}, which provides the information but not explicitly. `;
+      } else if (pageRef) {
+        // We have page but no quote
+        reasoning += `Information can be inferred but is not explicitly stated. `;
+      } else {
+        // No specific citation
+        reasoning += `Information present in document can be inferred but is not explicitly stated. `;
+      }
+
+      reasoning += `Consider adding a clear, direct statement for stronger compliance evidence.`;
       decisionLogic = 'RULE: Evidence inferred but not explicit → partial';
       gaps.push('Evidence is implicit rather than explicit');
+
+      const locationRef = pageRef ? `${facts.evidence_document}${pageRef}` : facts.evidence_document;
+
+      // Determine appropriate owner based on context
+      const ownerType4 = determineOwnerType(
+        undefined,
+        false,
+        reasoning + ' ' + row.matrix_title,
+        gaps
+      );
+
       actions.push({
-        action: 'Make implicit information explicit in documentation',
-        owner: 'Project Team',
+        action: `Review ${locationRef} and make implicit information explicit with direct statements`,
+        owner: formatOwnerRole(ownerType4),
         effort: 'S',
-        expected_benefit: 'Provide clear, unambiguous evidence'
+        expected_benefit: 'Provide clear, unambiguous evidence that leaves no room for interpretation'
       });
     } else {
       // ambiguous quality handled earlier
       status = 'partial';
-      reasoning = `Evidence found but quality is unclear`;
+      const locationRef = pageRef ? `${facts.evidence_document}${pageRef}` : facts.evidence_document;
+      reasoning = `${locationRef}: Evidence found but quality is unclear`;
       decisionLogic = 'RULE: Evidence quality unclear → partial';
     }
 
@@ -1413,6 +1563,11 @@ Set to null if:
     const effort = parsed.actions?.[0]?.effort || 'M';
     const estimatedCost = estimateCost(ownerType, effort);
 
+    // Infer evidence quality from pack evidence
+    const evidenceQuality: EvidenceQuality = !(parsed.pack_evidence_found && packEvidenceValidation.isValid)
+      ? 'absent'
+      : (packEvidenceValidation.isValid && parsed.pack_evidence_quote ? 'explicit' : 'implicit');
+
     return {
       matrix_id: row.matrix_id,
       matrix_title: row.matrix_title,
@@ -1443,6 +1598,7 @@ Set to null if:
       insertion_location: insertionLocation,
       owner_type: ownerType,
       estimated_cost: estimatedCost,
+      evidence_quality: evidenceQuality,
     };
   } catch (error) {
     console.error(`Error assessing ${row.matrix_id}:`, error);
@@ -1472,6 +1628,7 @@ Set to null if:
       insertion_location: undefined,
       owner_type: 'PROJECT_TEAM',
       estimated_cost: undefined,
+      evidence_quality: 'absent',
     };
   }
 }
@@ -1485,6 +1642,7 @@ import {
   SEVERITY_REJECTION_RISK,
   EFFORT_TIME_ESTIMATES
 } from '../constants/cost-estimation.js';
+import { formatOwnerRole } from '../config/owner-roles.js';
 
 /**
  * Determine owner type from criterion (adapter for enrichment)
@@ -1701,7 +1859,12 @@ export async function assessPackAgainstMatrix(
     gaps_identified: dr.result.failureMode ? [dr.result.failureMode] : [],
     actions_required: dr.result.failureMode ? [{
       action: `Address: ${dr.result.failureMode}`,
-      owner: 'Project Team',
+      owner: formatOwnerRole(determineOwnerType(
+        undefined,
+        false,
+        dr.result.reasoning + ' ' + dr.ruleName + ' ' + dr.category,
+        dr.result.failureMode ? [dr.result.failureMode] : []
+      )),
       effort: dr.severity === 'high' ? 'L' : (dr.severity === 'medium' ? 'M' : 'S'),
       expected_benefit: `Resolve ${dr.category} compliance gap`
     }] : [],
@@ -1711,7 +1874,11 @@ export async function assessPackAgainstMatrix(
     // are either: (a) missing documents (human required), or (b) gaps that need
     // LLM to generate specific text based on document context.
     // Setting to null means these will be triaged as "Human Intervention" in the carousel.
-    proposed_change: null
+    proposed_change: null,
+    // Infer evidence quality from deterministic evidence
+    evidence_quality: !dr.result.evidence.found
+      ? 'absent'
+      : (dr.result.evidence.quote ? 'explicit' : 'implicit')
   }));
 
   // ============================================

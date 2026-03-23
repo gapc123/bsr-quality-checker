@@ -28,14 +28,29 @@ const storage = multer.diskStorage({
   },
 });
 
+// PDF validation helper
+function isPdfFile(buffer: Buffer): boolean {
+  // Check PDF magic bytes (%PDF-)
+  return buffer.length >= 5 && buffer.subarray(0, 5).toString() === '%PDF-';
+}
+
+// Sanitize filename to prevent path traversal
+function sanitizeFilename(filename: string): string {
+  return path.basename(filename).replace(/[^a-zA-Z0-9._-]/g, '_');
+}
+
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'application/pdf') {
-      cb(null, true);
-    } else {
-      cb(new Error('Only PDF files are allowed'));
+    // Check MIME type first
+    if (file.mimetype !== 'application/pdf') {
+      return cb(new Error('Only PDF files are allowed'));
     }
+
+    // Sanitize filename
+    file.originalname = sanitizeFilename(file.originalname);
+
+    cb(null, true);
   },
   limits: {
     fileSize: 50 * 1024 * 1024, // 50MB limit
@@ -810,14 +825,28 @@ router.post(
         },
       });
 
-      // Ingest documents
+      // Validate and ingest documents
       const documentIds: string[] = [];
       for (const file of files || []) {
         try {
+          // Verify PDF magic bytes
+          const fileBuffer = await fs.promises.readFile(file.path);
+          if (!isPdfFile(fileBuffer)) {
+            console.error(`File ${file.originalname} failed PDF validation - removing`);
+            await fs.promises.unlink(file.path);
+            continue;
+          }
+
           const docId = await ingestDocument(file.path, 'pack', version.id);
           documentIds.push(docId);
         } catch (error) {
           console.error(`Error ingesting ${file.originalname}:`, error);
+          // Clean up failed upload
+          try {
+            await fs.promises.unlink(file.path);
+          } catch (unlinkError) {
+            console.error(`Failed to clean up ${file.path}:`, unlinkError);
+          }
         }
       }
 
