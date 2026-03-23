@@ -46,7 +46,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   assessment,
   submissionGate,
   onGenerateBrief,
-  onExportReport,
+  onExportReport: _onExportReport,
   onViewIssue
 }) => {
   const { showToast } = useToast();
@@ -308,20 +308,17 @@ ${assessment.pack_context.isLondon ? 'Location: London' : ''}
 SCOPE OF WORK:
 ${brief.scope_of_work}
 
-KEY ISSUES TO ADDRESS (${brief.issues.length} items):
-${brief.issues.map((issue, idx) => `${idx + 1}. ${issue.matrix_id}: ${issue.matrix_title}`).join('\n')}
+KEY ISSUES TO ADDRESS (${brief.issues_to_address.length} items):
+${brief.issues_to_address.map((issue, idx) => `${idx + 1}. ${issue.id}: ${issue.title}`).join('\n')}
 
 DELIVERABLES REQUIRED:
-${brief.deliverables_required}
+${brief.deliverables.join('\n- ')}
 
-ESTIMATED EFFORT:
-${brief.estimated_effort}
+ESTIMATED DURATION:
+${brief.estimated_duration}
 
-ESTIMATED COST:
-${brief.estimated_cost}
-
-TIMELINE:
-${brief.timeline_expectations}
+REGULATORY CONTEXT:
+${brief.regulatory_context.join('\n- ')}
 
 Please review and confirm your availability for this engagement.
 
@@ -406,16 +403,7 @@ Best regards`;
     }
   };
 
-  const handleOpenExportModal = () => {
-    setShowExportModal(true);
-    onExportReport?.();
-  };
-
   // Stage 4B: Document revision handlers
-  const handleViewRevisions = () => {
-    setShowRevisionDashboard(!showRevisionDashboard);
-  };
-
   const handleViewChanges = (documentName: string, issues: AssessmentResult[]) => {
     setRevisionDocument(documentName);
     setRevisionIssues(issues);

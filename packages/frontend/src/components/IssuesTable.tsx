@@ -199,29 +199,31 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
   const getResolutionStatus = (_issue: AssessmentResult) => {
     // TODO: Connect to backend resolution tracking (UI Fix 5)
     // For now, all issues show as "Open"
-    const status = 'open'; // Future: issue.resolution_status
+    type ResolutionStatus = 'open' | 'resolved' | 'in-progress';
+    const status: ResolutionStatus = 'open' as ResolutionStatus; // Future: issue.resolution_status
 
-    switch (status) {
-      case 'resolved':
-        return (
-          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-300">
-            ✓ Resolved
-          </span>
-        );
-      case 'in-progress':
-        return (
-          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800 border border-blue-300">
-            ⟳ In Progress
-          </span>
-        );
-      case 'open':
-      default:
-        return (
-          <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-amber-100 text-amber-800 border border-amber-300">
-            ◌ Open
-          </span>
-        );
+    if (status === 'resolved') {
+      return (
+        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-300">
+          ✓ Resolved
+        </span>
+      );
     }
+
+    if (status === 'in-progress') {
+      return (
+        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800 border border-blue-300">
+          ⟳ In Progress
+        </span>
+      );
+    }
+
+    // default: 'open'
+    return (
+      <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-amber-100 text-amber-800 border border-amber-300">
+        ◌ Open
+      </span>
+    );
   };
 
   // Sort indicator
