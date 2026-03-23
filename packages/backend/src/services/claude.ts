@@ -103,7 +103,7 @@ export async function extractValidatedJSON<T>(
       }
 
       // Validation failed - log errors
-      const errors = result.error.errors
+      const errors = result.error.issues
         .map((err) => `${err.path.join('.')}: ${err.message}`)
         .join('; ');
 

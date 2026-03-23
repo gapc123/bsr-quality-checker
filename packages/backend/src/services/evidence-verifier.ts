@@ -70,7 +70,7 @@ export async function verifyEvidence(
     let chunks = document.chunks;
     if (evidence.page !== null) {
       chunks = chunks.filter(
-        (chunk) => chunk.pageNumber === evidence.page
+        (chunk) => chunk.pageRef === evidence.page
       );
 
       if (chunks.length === 0) {
@@ -170,7 +170,7 @@ export async function verifyCitation(
       },
       include: {
         chunks: {
-          select: { pageNumber: true },
+          select: { pageRef: true },
         },
       },
     });
@@ -189,11 +189,11 @@ export async function verifyCitation(
       };
     }
 
-    const hasPage = document.chunks.some((chunk) => chunk.pageNumber === page);
+    const hasPage = document.chunks.some((chunk) => chunk.pageRef === page);
 
     if (!hasPage) {
       const maxPage = Math.max(
-        ...document.chunks.map((c) => c.pageNumber || 0)
+        ...document.chunks.map((c) => c.pageRef || 0)
       );
       return {
         valid: false,
