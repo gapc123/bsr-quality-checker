@@ -5,6 +5,7 @@ import fs from 'fs';
 import prisma from '../db/client.js';
 import { ingestDocument } from '../services/ingestion.js';
 import { getPackSummary } from '../services/ai-summary.js';
+import { uploadLimiter } from '../middleware/rate-limit.js';
 
 const router = Router();
 
@@ -778,6 +779,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
 // POST /api/packs/:id/versions - Create new version with documents
 router.post(
   '/:id/versions',
+  uploadLimiter,
   upload.array('documents', 20),
   async (req: Request, res: Response) => {
     try {
@@ -816,31 +818,28 @@ router.post(
           : null,
       };
 
-      // Create version
-      const version = await prisma.packVersion.create({
-        data: {
-          packId: id,
-          versionNumber: nextVersion,
-          ...metadata,
-        },
-      });
+      // Phase 1: Validate and process all files BEFORE creating database records
+      const processedDocs = [];
+      const failedFiles = [];
 
-      // Validate and ingest documents
-      const documentIds: string[] = [];
       for (const file of files || []) {
         try {
           // Verify PDF magic bytes
           const fileBuffer = await fs.promises.readFile(file.path);
           if (!isPdfFile(fileBuffer)) {
-            console.error(`File ${file.originalname} failed PDF validation - removing`);
+            console.error(`File ${file.originalname} failed PDF validation`);
+            failedFiles.push(file.originalname);
             await fs.promises.unlink(file.path);
             continue;
           }
 
-          const docId = await ingestDocument(file.path, 'pack', version.id);
-          documentIds.push(docId);
+          // Process PDF to extract document info
+          const { processPDF } = await import('../services/ingestion.js');
+          const docInfo = await processPDF(file.path);
+          processedDocs.push(docInfo);
         } catch (error) {
-          console.error(`Error ingesting ${file.originalname}:`, error);
+          console.error(`Error processing ${file.originalname}:`, error);
+          failedFiles.push(file.originalname);
           // Clean up failed upload
           try {
             await fs.promises.unlink(file.path);
@@ -850,12 +849,55 @@ router.post(
         }
       }
 
-      // Return version with documents
-      const result = await prisma.packVersion.findUnique({
-        where: { id: version.id },
-        include: {
-          documents: true,
-        },
+      // If no documents were successfully processed, fail
+      if (processedDocs.length === 0) {
+        res.status(400).json({
+          error: 'No valid documents uploaded',
+          failed_files: failedFiles
+        });
+        return;
+      }
+
+      // Phase 2: Create version + all documents atomically in a transaction
+      const result = await prisma.$transaction(async (tx) => {
+        // Create version
+        const version = await tx.packVersion.create({
+          data: {
+            packId: id,
+            versionNumber: nextVersion,
+            ...metadata,
+          },
+        });
+
+        // Create all documents with chunks in one transaction
+        const documents = await Promise.all(
+          processedDocs.map((docInfo) =>
+            tx.document.create({
+              data: {
+                filename: docInfo.filename,
+                filepath: docInfo.filepath,
+                docType: docInfo.docType,
+                libraryType: 'pack',
+                packVersionId: version.id,
+                chunks: {
+                  create: docInfo.chunks.map((chunk) => ({
+                    text: chunk.text,
+                    pageRef: chunk.pageRef,
+                    chunkIndex: chunk.chunkIndex,
+                  })),
+                },
+              },
+            })
+          )
+        );
+
+        // Return version with documents
+        return await tx.packVersion.findUnique({
+          where: { id: version.id },
+          include: {
+            documents: true,
+          },
+        });
       });
 
       res.status(201).json(result);

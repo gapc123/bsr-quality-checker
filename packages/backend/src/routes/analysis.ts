@@ -13,6 +13,7 @@ import {
   generateMatrixPDFReport,
   generateMatrixJSONExport,
 } from '../services/report.js';
+import { analysisLimiter, exportLimiter } from '../middleware/rate-limit.js';
 
 const router = Router();
 
@@ -25,6 +26,7 @@ const analysisStatus = new Map<
 // POST /api/packs/:packId/versions/:versionId/analyze - Run analysis
 router.post(
   '/packs/:packId/versions/:versionId/analyze',
+  analysisLimiter,
   async (req: Request, res: Response) => {
     try {
       const versionId = req.params.versionId as string;
@@ -186,6 +188,7 @@ router.get(
 // GET /api/packs/:packId/versions/:versionId/report/download/:format - Download report
 router.get(
   '/packs/:packId/versions/:versionId/report/download/:format',
+  exportLimiter,
   async (req: Request, res: Response) => {
     try {
       const versionId = req.params.versionId as string; const format = req.params.format as string;
@@ -297,6 +300,7 @@ router.get(
 // POST /api/packs/:packId/versions/:versionId/matrix-assess - Run matrix assessment
 router.post(
   '/packs/:packId/versions/:versionId/matrix-assess',
+  analysisLimiter,
   async (req: Request, res: Response) => {
     try {
       const versionId = req.params.versionId as string;
@@ -378,6 +382,7 @@ router.get(
 // GET /api/packs/:packId/versions/:versionId/matrix-report/download/:format
 router.get(
   '/packs/:packId/versions/:versionId/matrix-report/download/:format',
+  exportLimiter,
   async (req: Request, res: Response) => {
     try {
       const versionId = req.params.versionId as string; const format = req.params.format as string;
@@ -412,6 +417,119 @@ router.get(
     } catch (error) {
       console.error('Error downloading matrix report:', error);
       res.status(500).json({ error: 'Failed to download matrix report' });
+    }
+  }
+);
+
+// GET /api/packs/:packId/versions/:versionId/assessment - Get full assessment (frontend-compatible)
+// This is an alias/transformation of matrix-report for frontend compatibility
+router.get(
+  '/packs/:packId/versions/:versionId/assessment',
+  async (req: Request, res: Response) => {
+    try {
+      const packId = req.params.packId as string;
+      const versionId = req.params.versionId as string;
+
+      // Get matrix assessment data
+      const { assessment } = await getMatrixReportContent(versionId);
+
+      if (!assessment) {
+        res.status(404).json({ error: 'No assessment found. Run matrix-assess first.' });
+        return;
+      }
+
+      // Get pack version for context
+      const packVersion = await prisma.packVersion.findUnique({
+        where: { id: versionId },
+        include: {
+          pack: true,
+        },
+      });
+
+      if (!packVersion) {
+        res.status(404).json({ error: 'Pack version not found' });
+        return;
+      }
+
+      // Transform to FullAssessment format expected by frontend
+      const fullAssessment = {
+        pack_id: packId,
+        version_id: versionId,
+        pack_context: assessment.pack_context,
+        readiness_score: assessment.readiness_score,
+        reference_standards_applied: assessment.reference_standards_applied,
+        results: assessment.results,
+        generated_at: (assessment as any).generated_at || new Date().toISOString(),
+      };
+
+      res.json(fullAssessment);
+    } catch (error) {
+      console.error('Error getting assessment:', error);
+      res.status(500).json({ error: 'Failed to get assessment' });
+    }
+  }
+);
+
+// GET /api/packs/:packId/versions/:versionId/submission-gate - Get submission gate decision
+router.get(
+  '/packs/:packId/versions/:versionId/submission-gate',
+  async (req: Request, res: Response) => {
+    try {
+      const versionId = req.params.versionId as string;
+
+      // Get matrix assessment data
+      const { assessment } = await getMatrixReportContent(versionId);
+
+      if (!assessment) {
+        res.status(404).json({ error: 'No assessment found. Run matrix-assess first.' });
+        return;
+      }
+
+      // Calculate submission gate decision
+      const criticalFailures = assessment.results.filter(
+        (r: any) => r.status === 'does_not_meet' && r.category.includes('Critical')
+      ).length;
+
+      const highPriorityFailures = assessment.results.filter(
+        (r: any) => r.status === 'does_not_meet' || r.status === 'partial'
+      ).length;
+
+      const totalCriteria = assessment.results.length;
+      const passedCriteria = assessment.results.filter((r: any) => r.status === 'meets').length;
+
+      // Determine gate status
+      let decision: 'red' | 'amber' | 'green';
+      let recommendation: string;
+
+      if (criticalFailures > 0) {
+        decision = 'red';
+        recommendation = 'NOT READY - Critical issues must be resolved before submission';
+      } else if (highPriorityFailures > totalCriteria * 0.3) {
+        decision = 'amber';
+        recommendation = 'REVIEW REQUIRED - Significant gaps identified that should be addressed';
+      } else if (assessment.readiness_score >= 80) {
+        decision = 'green';
+        recommendation = 'READY - Pack meets quality standards for submission';
+      } else {
+        decision = 'amber';
+        recommendation = 'REVIEW REQUIRED - Some gaps identified that should be addressed';
+      }
+
+      const submissionGate = {
+        decision,
+        recommendation,
+        readiness_score: assessment.readiness_score,
+        blockers: criticalFailures,
+        high_priority_issues: highPriorityFailures,
+        total_criteria: totalCriteria,
+        passed_criteria: passedCriteria,
+        generated_at: new Date().toISOString(),
+      };
+
+      res.json(submissionGate);
+    } catch (error) {
+      console.error('Error getting submission gate:', error);
+      res.status(500).json({ error: 'Failed to get submission gate' });
     }
   }
 );

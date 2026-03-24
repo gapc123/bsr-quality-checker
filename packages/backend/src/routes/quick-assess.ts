@@ -9,6 +9,7 @@ import { chunkDocuments } from '../services/document-chunker.js';
 import { generateEmbeddings } from '../services/vector-embeddings.js';
 import { vectorStore } from '../services/vector-store.js';
 import prisma from '../db/client.js';
+import { analysisLimiter, uploadLimiter } from '../middleware/rate-limit.js';
 
 const router = express.Router();
 
@@ -71,7 +72,7 @@ function classifyDocType(filename: string, text: string): string | null {
  *
  * Returns complete assessment results for carousel display
  */
-router.post('/', upload.array('documents', 20), async (req: Request, res: Response) => {
+router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), async (req: Request, res: Response) => {
   try {
     const files = req.files as Express.Multer.File[];
     const { buildingType, heightMeters, storeys, isLondon, isHRB } = req.body;

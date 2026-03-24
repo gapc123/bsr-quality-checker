@@ -11,6 +11,10 @@ import teamRouter from './routes/team.js';
 import templatesRouter from './routes/templates.js';
 import quickAssessRouter from './routes/quick-assess.js';
 import exportRouter from './routes/export.js';
+import {
+  requestIdMiddleware,
+  requestLoggingMiddleware,
+} from './middleware/request-logging.js';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
@@ -42,6 +46,10 @@ app.use(cors({
 }));
 
 app.use(express.json({ limit: '10mb' })); // Increase limit for large assessment data
+
+// Request tracking and logging
+app.use(requestIdMiddleware);
+app.use(requestLoggingMiddleware);
 
 // Increase timeout for long-running operations like matrix assessment
 // Default is 120000ms (2 min), increase to 10 min for AI analysis
