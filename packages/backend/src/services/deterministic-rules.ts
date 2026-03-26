@@ -3653,7 +3653,7 @@ export function runSingleRule(matrixId: string, docs: DocumentEvidence[]): Deter
     ruleName: rule.name,
     category: rule.category,
     severity: rule.severity,
-    regulatoryRef: rule.regulatoryRef,
+    regulatoryRef: rule.regulatoryRef || getDefaultRegulatoryRef(rule.category),
     result,
     requiresLLMReview: result.confidence === 'needs_review'
   };

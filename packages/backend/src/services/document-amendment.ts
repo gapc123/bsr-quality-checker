@@ -11,7 +11,7 @@
 import fs from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
-import { marked } from 'marked';
+// import { marked } from 'marked'; // Currently unused
 import {
   Document,
   Packer,
@@ -29,10 +29,10 @@ import {
   Header,
   Footer,
   PageNumber,
-  NumberFormat,
+  // NumberFormat, // Currently unused
   convertInchesToTwip,
-  LevelFormat,
-  CheckBox,
+  // LevelFormat, // Currently unused
+  // CheckBox, // Currently unused
 } from 'docx';
 import prisma from '../db/client.js';
 import { FullAssessment, AssessmentResult } from './matrix-assessment.js';

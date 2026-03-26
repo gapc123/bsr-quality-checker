@@ -4,8 +4,38 @@ import { getClientSummary } from '../services/ai-summary.js';
 
 const router = Router();
 
-// GET /api/clients - List all clients with pack counts
-router.get('/', async (req: Request, res: Response) => {
+/**
+ * @openapi
+ * /api/clients:
+ *   get:
+ *     tags:
+ *       - Clients
+ *     summary: List all clients
+ *     description: Retrieve all clients with their pack counts, ordered by creation date (newest first)
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved clients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 allOf:
+ *                   - $ref: '#/components/schemas/Client'
+ *                   - type: object
+ *                     properties:
+ *                       _count:
+ *                         type: object
+ *                         properties:
+ *                           packs:
+ *                             type: integer
+ *                             description: Number of packs for this client
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const clients = await prisma.client.findMany({
       include: {
@@ -23,7 +53,43 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/clients/:id - Get single client with their packs
+/**
+ * @openapi
+ * /api/clients/{id}:
+ *   get:
+ *     tags:
+ *       - Clients
+ *     summary: Get client by ID
+ *     description: Retrieve a single client with all their packs and pack details
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Client ID
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved client
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/Client'
+ *                 - type: object
+ *                   properties:
+ *                     packs:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Pack'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
@@ -83,7 +149,56 @@ router.get('/:id/summary', async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/clients - Create new client
+/**
+ * @openapi
+ * /api/clients:
+ *   post:
+ *     tags:
+ *       - Clients
+ *     summary: Create a new client
+ *     description: Create a new client record
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Client name
+ *                 example: John Smith
+ *               company:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Company name
+ *                 example: Acme Corp
+ *               contactEmail:
+ *                 type: string
+ *                 format: email
+ *                 nullable: true
+ *                 description: Contact email
+ *                 example: john@acme.com
+ *               notes:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Additional notes
+ *     responses:
+ *       201:
+ *         description: Client created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Client'
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { name, company, contactEmail, notes } = req.body;
@@ -108,7 +223,59 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// PUT /api/clients/:id - Update client
+/**
+ * @openapi
+ * /api/clients/{id}:
+ *   put:
+ *     tags:
+ *       - Clients
+ *     summary: Update client
+ *     description: Update an existing client's information
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Client ID
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *               company:
+ *                 type: string
+ *                 nullable: true
+ *               contactEmail:
+ *                 type: string
+ *                 format: email
+ *                 nullable: true
+ *               notes:
+ *                 type: string
+ *                 nullable: true
+ *     responses:
+ *       200:
+ *         description: Client updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Client'
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;
@@ -135,7 +302,32 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE /api/clients/:id - Delete client (packs remain but unlinked)
+/**
+ * @openapi
+ * /api/clients/{id}:
+ *   delete:
+ *     tags:
+ *       - Clients
+ *     summary: Delete client
+ *     description: Delete a client. Associated packs will remain but become unlinked.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Client ID
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Client deleted successfully
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id as string;

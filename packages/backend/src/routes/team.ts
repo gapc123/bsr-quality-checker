@@ -5,7 +5,7 @@ const router = Router();
 // GET /api/team/members - Get team members from Clerk
 // Note: This is a placeholder. In production, you would use Clerk's Users API
 // to fetch organization members. For now, returns mock data or can be extended.
-router.get('/members', async (req: Request, res: Response) => {
+router.get('/members', async (_req: Request, res: Response) => {
   try {
     // TODO: Integrate with Clerk's Users API
     // const { clerkClient } = await import('@clerk/express');

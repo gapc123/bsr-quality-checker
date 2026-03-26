@@ -52,7 +52,7 @@ export const uploadLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   // Custom handler to provide more context
-  handler: (req, res) => {
+  handler: (_req, res) => {
     const retryAfter = res.getHeader('Retry-After') || 60;
     res.status(429).json({
       error: 'Rate limit exceeded',

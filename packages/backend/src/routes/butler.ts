@@ -1,48 +1,18 @@
 import { Router, Request, Response } from 'express';
-import multer from 'multer';
-import path from 'path';
 import fs from 'fs';
 import prisma from '../db/client.js';
 import { ingestDocument } from '../services/ingestion.js';
+import { createUploadMiddleware } from '../utils/upload-config.js';
 
 const router = Router();
 
 // Configure multer for butler library uploads
-// In Docker, process.cwd() is /app. In dev, it's /packages/backend
-const isProduction = process.env.NODE_ENV === 'production';
-const butlerDir = isProduction
-  ? path.join(process.cwd(), 'data', 'butler')
-  : path.join(process.cwd(), '..', '..', 'data', 'butler');
-if (!fs.existsSync(butlerDir)) {
-  fs.mkdirSync(butlerDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, butlerDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
-  },
-});
-
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'application/pdf') {
-      cb(null, true);
-    } else {
-      cb(new Error('Only PDF files are allowed'));
-    }
-  },
-  limits: {
-    fileSize: 50 * 1024 * 1024, // 50MB limit
-  },
+const upload = createUploadMiddleware({
+  directory: 'data/butler',
 });
 
 // GET /api/butler - List butler library documents
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const documents = await prisma.document.findMany({
       where: { libraryType: 'butler' },

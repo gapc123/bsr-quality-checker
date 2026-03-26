@@ -212,7 +212,7 @@ function determinePriority(result: any): string {
 function sortRows(rows: ComplianceMatrixRow[]): ComplianceMatrixRow[] {
   return rows.sort((a, b) => {
     // Priority first (Critical > High > Medium > Low)
-    const priorityOrder = { 'Critical': 0, 'High': 1, 'Medium': 2, 'Low': 3 };
+    const priorityOrder: Record<string, number> = { 'Critical': 0, 'High': 1, 'Medium': 2, 'Low': 3 };
     const aPriority = priorityOrder[a.priority || 'Low'] ?? 999;
     const bPriority = priorityOrder[b.priority || 'Low'] ?? 999;
 

@@ -1,93 +1,121 @@
 import { Router, Request, Response } from 'express';
-import multer from 'multer';
-import path from 'path';
 import fs from 'fs';
 import prisma from '../db/client.js';
-import { ingestDocument } from '../services/ingestion.js';
+import { DocumentInfo } from '../services/ingestion.js';
 import { getPackSummary } from '../services/ai-summary.js';
 import { uploadLimiter } from '../middleware/rate-limit.js';
+import { createUploadMiddleware, isPdfFile } from '../utils/upload-config.js';
+import { catchAsync, NotFoundError } from '../utils/errors.js';
 
 const router = Router();
 
-// Configure multer for file uploads
-// In Docker, process.cwd() is /app. In dev, it's /packages/backend
-const isProduction = process.env.NODE_ENV === 'production';
-const uploadsDir = isProduction
-  ? path.join(process.cwd(), 'uploads')
-  : path.join(process.cwd(), '..', '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
-  },
+// Configure multer for pack uploads with filename sanitization
+const upload = createUploadMiddleware({
+  directory: 'uploads',
+  sanitizeFilename: true,
 });
 
-// PDF validation helper
-function isPdfFile(buffer: Buffer): boolean {
-  // Check PDF magic bytes (%PDF-)
-  return buffer.length >= 5 && buffer.subarray(0, 5).toString() === '%PDF-';
-}
+/**
+ * @openapi
+ * /api/packs:
+ *   get:
+ *     tags:
+ *       - Packs
+ *     summary: List all packs
+ *     description: Retrieve all packs with optional filtering by client ID. Includes latest version info.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: clientId
+ *         in: query
+ *         description: Filter packs by client ID
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved packs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Pack'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+router.get('/', catchAsync(async (req: Request, res: Response) => {
+  const { clientId } = req.query;
 
-// Sanitize filename to prevent path traversal
-function sanitizeFilename(filename: string): string {
-  return path.basename(filename).replace(/[^a-zA-Z0-9._-]/g, '_');
-}
-
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    // Check MIME type first
-    if (file.mimetype !== 'application/pdf') {
-      return cb(new Error('Only PDF files are allowed'));
-    }
-
-    // Sanitize filename
-    file.originalname = sanitizeFilename(file.originalname);
-
-    cb(null, true);
-  },
-  limits: {
-    fileSize: 50 * 1024 * 1024, // 50MB limit
-  },
-});
-
-// GET /api/packs - List all packs (optionally filter by clientId)
-router.get('/', async (req: Request, res: Response) => {
-  try {
-    const { clientId } = req.query;
-
-    const packs = await prisma.pack.findMany({
-      where: clientId ? { clientId: clientId as string } : undefined,
-      include: {
-        client: {
-          select: { id: true, name: true, company: true },
-        },
-        versions: {
-          orderBy: { versionNumber: 'desc' },
-          take: 1,
-        },
-        _count: {
-          select: { versions: true },
-        },
+  const packs = await prisma.pack.findMany({
+    where: clientId ? { clientId: clientId as string } : undefined,
+    include: {
+      client: {
+        select: { id: true, name: true, company: true },
       },
-      orderBy: { createdAt: 'desc' },
-    });
+      versions: {
+        orderBy: { versionNumber: 'desc' },
+        take: 1,
+      },
+      _count: {
+        select: { versions: true },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
 
-    res.json(packs);
-  } catch (error) {
-    console.error('Error listing packs:', error);
-    res.status(500).json({ error: 'Failed to list packs' });
-  }
-});
+  res.json(packs);
+}));
 
-// POST /api/packs - Create a new pack
+/**
+ * @openapi
+ * /api/packs:
+ *   post:
+ *     tags:
+ *       - Packs
+ *     summary: Create a new pack
+ *     description: Create a new pack for tracking building safety documentation
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Pack name
+ *                 example: Westminster Tower Gateway 2
+ *               clientId:
+ *                 type: string
+ *                 format: uuid
+ *                 nullable: true
+ *                 description: Associated client ID
+ *               servicePackage:
+ *                 type: string
+ *                 enum: [gap_assessment, full_pack_prep, compliance_review, ongoing_support]
+ *                 nullable: true
+ *                 description: Service package type
+ *               requirements:
+ *                 type: string
+ *                 nullable: true
+ *                 description: Initial requirements or brief
+ *     responses:
+ *       201:
+ *         description: Pack created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Pack'
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { name, clientId, servicePackage, requirements } = req.body;
@@ -122,60 +150,54 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // GET /api/packs/:id - Get pack with versions
-router.get('/:id', async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id as string;
+router.get('/:id', catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
 
-    const pack = await prisma.pack.findUnique({
-      where: { id },
-      include: {
-        client: {
-          select: { id: true, name: true, company: true },
-        },
-        tasks: {
-          orderBy: { sortOrder: 'asc' },
-        },
-        versions: {
-          orderBy: { versionNumber: 'desc' },
-          include: {
-            documents: true,
-            _count: {
-              select: {
-                fields: true,
-                issues: true,
-              },
+  const pack = await prisma.pack.findUnique({
+    where: { id },
+    include: {
+      client: {
+        select: { id: true, name: true, company: true },
+      },
+      tasks: {
+        orderBy: { sortOrder: 'asc' },
+      },
+      versions: {
+        orderBy: { versionNumber: 'desc' },
+        include: {
+          documents: true,
+          _count: {
+            select: {
+              fields: true,
+              issues: true,
             },
           },
         },
-        statusHistory: {
-          orderBy: { createdAt: 'desc' },
-          take: 5, // Last 5 status changes
-        },
       },
-    });
+      statusHistory: {
+        orderBy: { createdAt: 'desc' },
+        take: 5, // Last 5 status changes
+      },
+    },
+  });
 
-    if (!pack) {
-      res.status(404).json({ error: 'Pack not found' });
-      return;
-    }
-
-    // Parse JSON fields
-    const packWithParsedData = {
-      ...pack,
-      milestones: pack.milestones ? JSON.parse(pack.milestones) : null,
-      tasks: pack.tasks.map(task => ({
-        ...task,
-        blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
-        tags: task.tags ? JSON.parse(task.tags) : [],
-      })),
-    };
-
-    res.json(packWithParsedData);
-  } catch (error) {
-    console.error('Error getting pack:', error);
-    res.status(500).json({ error: 'Failed to get pack' });
+  if (!pack) {
+    throw new NotFoundError('Pack not found');
   }
-});
+
+  // Parse JSON fields
+  const packWithParsedData = {
+    ...pack,
+    milestones: pack.milestones ? JSON.parse(pack.milestones) : null,
+    tasks: pack.tasks.map(task => ({
+      ...task,
+      blockedByIds: task.blockedByIds ? JSON.parse(task.blockedByIds) : [],
+      tags: task.tags ? JSON.parse(task.tags) : [],
+    })),
+  };
+
+  res.json(packWithParsedData);
+}));
 
 // PUT /api/packs/:id - Update pack details
 router.put('/:id', async (req: Request, res: Response) => {
@@ -504,7 +526,7 @@ router.post('/:id/tasks', async (req: Request, res: Response) => {
 router.put('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
   try {
     const taskId = req.params.taskId as string;
-    const packId = req.params.packId as string;
+    const _packId = req.params.packId as string;
     const {
       title,
       description,
@@ -819,8 +841,8 @@ router.post(
       };
 
       // Phase 1: Validate and process all files BEFORE creating database records
-      const processedDocs = [];
-      const failedFiles = [];
+      const processedDocs: DocumentInfo[] = [];
+      const failedFiles: string[] = [];
 
       for (const file of files || []) {
         try {
@@ -870,7 +892,7 @@ router.post(
         });
 
         // Create all documents with chunks in one transaction
-        const documents = await Promise.all(
+        await Promise.all(
           processedDocs.map((docInfo) =>
             tx.document.create({
               data: {

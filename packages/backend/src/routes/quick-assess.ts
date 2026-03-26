@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,24 +9,15 @@ import { generateEmbeddings } from '../services/vector-embeddings.js';
 import { vectorStore } from '../services/vector-store.js';
 import prisma from '../db/client.js';
 import { analysisLimiter, uploadLimiter } from '../middleware/rate-limit.js';
+import { createUploadMiddleware } from '../utils/upload-config.js';
 
 const router = express.Router();
 
-// Configure multer for file uploads (temp storage)
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      const tempDir = path.join(process.cwd(), 'temp-uploads');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true });
-      }
-      cb(null, tempDir);
-    },
-    filename: (req, file, cb) => {
-      cb(null, `${uuidv4()}-${file.originalname}`);
-    }
-  }),
-  limits: { fileSize: 50 * 1024 * 1024 }
+// Configure multer for temporary uploads (uses UUID filenames)
+const upload = createUploadMiddleware({
+  directory: 'temp-uploads',
+  filenameStrategy: 'uuid',
+  validatePdf: false, // PDF validation happens later in the flow
 });
 
 async function extractPDFText(filepath: string): Promise<string> {
@@ -73,6 +63,7 @@ function classifyDocType(filename: string, text: string): string | null {
  * Returns complete assessment results for carousel display
  */
 router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), async (req: Request, res: Response) => {
+  const startTime = Date.now();
   try {
     const files = req.files as Express.Multer.File[];
     const { buildingType, heightMeters, storeys, isLondon, isHRB } = req.body;
@@ -153,6 +144,8 @@ router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), 
 
     // Store in temp directory for potential save
     const tempDataPath = path.join(process.cwd(), 'temp-uploads', `${assessmentId}.json`);
+    const processingTimeSeconds = Math.round((Date.now() - startTime) / 1000);
+    (tempData as any).processingTimeSeconds = processingTimeSeconds;
     fs.writeFileSync(tempDataPath, JSON.stringify(tempData));
 
     // Clean up temp files after 1 hour
@@ -198,7 +191,7 @@ router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), 
  */
 router.post('/save', async (req: Request, res: Response) => {
   try {
-    const { assessmentId, clientName, projectName, clientCompany } = req.body;
+    const { assessmentId, clientName, projectName, clientCompany, userEmail } = req.body;
 
     if (!assessmentId) {
       return res.status(400).json({ error: 'Assessment ID required' });
@@ -377,6 +370,72 @@ router.post('/save', async (req: Request, res: Response) => {
     }
 
     console.log(`✓ Saved ${tempData.packDocs.length} documents`);
+
+    // ── Admin instrumentation: create Organisation + Submission ──────────────
+    try {
+      const assessment = tempData.results;
+      const orgName = clientCompany || clientName;
+      const orgEmail = userEmail || 'unknown@attlee.ai';
+      const pilotOrgs = ['l&q', 'peabody', 'clarion', 'notting hill genesis'];
+      const isPilot = pilotOrgs.some(p => orgName.toLowerCase().includes(p));
+
+      // Find or create Organisation
+      let org = await prisma.organisation.findFirst({ where: { name: orgName } });
+      if (!org) {
+        org = await prisma.organisation.create({
+          data: { name: orgName, primaryEmail: orgEmail, isPilot }
+        });
+      }
+
+      // Extract failure categories from results
+      const failedResults = (assessment.results || []).filter(
+        (r: any) => r.status === 'does_not_meet' || r.status === 'partial'
+      );
+      const failureCategorySet = new Set<string>(failedResults.map((r: any) => r.category).filter(Boolean));
+      const failureCategories = Array.from(failureCategorySet);
+
+      // API usage from assessment
+      const apiUsage = assessment.api_usage || { api_calls_made: 0, tokens_input: 0, tokens_output: 0 };
+      // Estimate cost: claude-sonnet-4 at ~$3/M input, $15/M output, convert to GBP (0.79)
+      const estimatedCostUsd = (apiUsage.tokens_input / 1_000_000) * 3 + (apiUsage.tokens_output / 1_000_000) * 15;
+      const estimatedCostGbp = estimatedCostUsd * 0.79;
+
+      const summary = assessment.criteria_summary || {};
+
+      await prisma.submission.create({
+        data: {
+          organisationId: org.id,
+          userEmail: orgEmail,
+          completedAt: new Date(),
+          processingTimeSeconds: tempData.processingTimeSeconds || null,
+          documentCount: tempData.packDocs.length,
+          documentNames: JSON.stringify(tempData.packDocs.map((d: any) => d.filename)),
+          totalChecksRun: summary.total_applicable || 0,
+          checksPassed: summary.meets || 0,
+          checksPartial: summary.partial || 0,
+          checksFailed: summary.does_not_meet || 0,
+          regulatoryReadinessScore: assessment.readiness_score ?? null,
+          failureCategories: JSON.stringify(failureCategories),
+          apiCallsMade: apiUsage.api_calls_made,
+          tokensInput: apiUsage.tokens_input,
+          tokensOutput: apiUsage.tokens_output,
+          estimatedApiCostGbp: estimatedCostGbp,
+          status: 'completed'
+        }
+      });
+
+      // Update org last_active and submission count
+      await prisma.organisation.update({
+        where: { id: org.id },
+        data: { lastActiveAt: new Date(), submissionCount: { increment: 1 } }
+      });
+
+      console.log(`✓ Admin submission record created for org: ${orgName}`);
+    } catch (adminErr) {
+      // Non-fatal: don't fail the save if admin instrumentation fails
+      console.error('Warning: admin instrumentation failed:', adminErr);
+    }
+    // ─────────────────────────────────────────────────────────────────────────
 
     // Clean up temp files
     fs.unlinkSync(tempDataPath);

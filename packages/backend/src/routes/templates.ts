@@ -5,7 +5,7 @@ import { applyTemplateToPack } from '../services/template-service.js';
 const router = Router();
 
 // GET /api/templates - List all templates
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const templates = await prisma.servicePackageTemplate.findMany({
       orderBy: { displayName: 'asc' },

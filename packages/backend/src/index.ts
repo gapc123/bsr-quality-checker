@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import session from 'express-session';
 import path from 'path';
 import fs from 'fs';
 import packsRouter from './routes/packs.js';
@@ -11,10 +12,14 @@ import teamRouter from './routes/team.js';
 import templatesRouter from './routes/templates.js';
 import quickAssessRouter from './routes/quick-assess.js';
 import exportRouter from './routes/export.js';
+import adminRouter from './routes/admin.js';
 import {
   requestIdMiddleware,
   requestLoggingMiddleware,
 } from './middleware/request-logging.js';
+import { errorHandler } from './utils/errors.js';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
@@ -46,6 +51,19 @@ app.use(cors({
 }));
 
 app.use(express.json({ limit: '10mb' })); // Increase limit for large assessment data
+
+// Session middleware (used by admin panel)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'attlee-admin-session-secret-dev-only',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: isProduction, // HTTPS only in production
+    httpOnly: true,
+    maxAge: 8 * 60 * 60 * 1000, // 8 hours
+    sameSite: 'lax',
+  },
+}));
 
 // Request tracking and logging
 app.use(requestIdMiddleware);
@@ -94,13 +112,13 @@ if (!isProduction) {
 }
 
 // Health check (public - no auth required)
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Debug endpoint (development only)
 if (!isProduction) {
-  app.get('/api/debug', (req, res) => {
+  app.get('/api/debug', (_req, res) => {
     const frontendPath = path.join(process.cwd(), 'packages', 'frontend', 'dist');
     const exists = fs.existsSync(frontendPath);
     const cwd = process.cwd();
@@ -120,6 +138,23 @@ if (!isProduction) {
     });
   });
 }
+
+// API Documentation (Swagger UI) - available in all environments
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'BSR Quality Checker API Documentation',
+}));
+
+// OpenAPI JSON spec endpoint
+app.get('/api-docs.json', (_req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+console.log('📚 API Documentation available at /api-docs');
+
+// Admin routes (session-based auth, separate from Clerk)
+app.use('/api/admin', adminRouter);
 
 // Protected API Routes (require authentication in production)
 app.use('/api/assess', requireAuth, quickAssessRouter);
@@ -152,28 +187,8 @@ if (isProduction) {
   }
 }
 
-// Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  // Log full error details internally
-  console.error('Unhandled error:', {
-    message: err.message,
-    stack: err.stack,
-    path: req.path,
-    method: req.method,
-  });
-
-  // Return generic error to client (don't leak internals)
-  if (isProduction) {
-    res.status(500).json({ error: 'Internal server error' });
-  } else {
-    // In development, include error details for debugging
-    res.status(500).json({
-      error: 'Internal server error',
-      details: err.message,
-      stack: err.stack
-    });
-  }
-});
+// Error handling middleware (must be after all routes)
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {

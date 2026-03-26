@@ -1,5 +1,5 @@
 import prisma from '../db/client.js';
-import { extractJSON, extractValidatedJSON } from './claude.js';
+import { extractValidatedJSON } from './claude.js';
 import { searchChunks } from './ingestion.js';
 import {
   FIELD_EXTRACTION_SYSTEM_PROMPT,
