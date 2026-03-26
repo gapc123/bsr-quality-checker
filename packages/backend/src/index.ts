@@ -18,6 +18,7 @@ import {
   requestLoggingMiddleware,
 } from './middleware/request-logging.js';
 import { errorHandler } from './utils/errors.js';
+import { initializeTelegramBot } from './services/telegram.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
 
@@ -189,6 +190,11 @@ if (isProduction) {
 
 // Error handling middleware (must be after all routes)
 app.use(errorHandler);
+
+// Initialize Telegram bot (polling + scheduled tasks)
+initializeTelegramBot().catch((err) => {
+  console.error('[Telegram] Failed to initialize bot:', err);
+});
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
