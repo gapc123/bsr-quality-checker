@@ -73,8 +73,14 @@ export default function QuickAssess() {
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Assessment failed');
+        let errorMessage = `Assessment failed (${res.status})`;
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // Response wasn't JSON (e.g. rate-limit plain text, HTML error page)
+        }
+        throw new Error(errorMessage);
       }
 
       setProgress('Running Phase 2: LLM Enrichment...');
