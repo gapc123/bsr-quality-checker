@@ -14,6 +14,9 @@ import Problem from './pages/Problem';
 import System from './pages/System';
 import Approach from './pages/Approach';
 import Security from './pages/Security';
+import AdminLogin from './pages/AdminLogin';
+import AdminOperations from './pages/AdminOperations';
+import AdminShowcase from './pages/AdminShowcase';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AttleeLogo from './components/AttleeLogo';
@@ -58,8 +61,20 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 
 function AppContent() {
   const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
   const isPublicPage = ['/', '/problem', '/system', '/approach', '/security'].includes(location.pathname);
   const isSignInPage = location.pathname.startsWith('/sign-in');
+
+  // Admin pages have their own layout (no Clerk, no main nav)
+  if (isAdminPage) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/showcase" element={<AdminShowcase />} />
+        <Route path="/admin" element={<AdminOperations />} />
+      </Routes>
+    );
+  }
 
   // Public pages (landing, problem, system, approach, security) and sign-in have their own layouts
   if (isPublicPage || isSignInPage) {

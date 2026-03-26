@@ -10,9 +10,6 @@
 
 import type { AssessmentResult } from './matrix-assessment.js';
 import type {
-  EffortLevel,
-  CostImpact,
-  RejectionLikelihood,
   EffortAssessment,
   CostImpactAssessment,
   RejectionAssessment,

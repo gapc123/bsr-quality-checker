@@ -221,7 +221,7 @@ describe('Packs API Routes', () => {
     });
 
     it('should return 404 when updating non-existent pack', async () => {
-      const response = await request(app)
+      await request(app)
         .put('/api/packs/nonexistent-id')
         .send({ name: 'Updated Name' })
         .expect(500); // Will be 404 once proper error handling is added

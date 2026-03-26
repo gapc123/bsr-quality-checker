@@ -10,15 +10,16 @@
 
 import { FullAssessment, AssessmentResult } from './matrix-assessment.js';
 import type { ConfidenceLevel } from '../types/confidence.js';
-import type {
-  EffortLevel,
-  CostImpact,
-  RejectionLikelihood,
-} from '../types/impact.js';
+// Unused types - commented out
+// import type {
+//   EffortLevel,
+//   CostImpact,
+//   RejectionLikelihood,
+// } from '../types/impact.js';
 import {
-  describeEffortLevel,
-  describeCostImpact,
-  describeRejectionLikelihood,
+  // describeEffortLevel,
+  // describeCostImpact,
+  // describeRejectionLikelihood,
   getEffortEmoji,
   getCostImpactEmoji,
   getRejectionEmoji,
@@ -69,63 +70,63 @@ function getConfidenceDescription(level: ConfidenceLevel | undefined): string {
 /**
  * Stage 2: Format effort assessment (prefers new format, falls back to old)
  */
-function formatEffort(result: AssessmentResult): string {
-  // Prefer new impact assessment
-  if (result.effort_assessment) {
-    const emoji = getEffortEmoji(result.effort_assessment.level);
-    return `${emoji} ${result.effort_assessment.description}`;
-  }
-
-  // Fallback to old format
-  if (result.timeline_estimate) {
-    return result.timeline_estimate.description;
-  }
-
-  return 'Unknown';
-}
+// function _formatEffort(result: AssessmentResult): string {
+//   // Prefer new impact assessment
+//   if (result.effort_assessment) {
+//     const emoji = getEffortEmoji(result.effort_assessment.level);
+//     return `${emoji} ${result.effort_assessment.description}`;
+//   }
+//
+//   // Fallback to old format
+//   if (result.timeline_estimate) {
+//     return result.timeline_estimate.description;
+//   }
+//
+//   return 'Unknown';
+// }
 
 /**
  * Stage 2: Format cost impact (prefers new format, falls back to old)
  */
-function formatCostImpact(result: AssessmentResult): string {
-  // Prefer new impact assessment
-  if (result.cost_impact_assessment) {
-    const emoji = getCostImpactEmoji(result.cost_impact_assessment.impact);
-    return `${emoji} ${result.cost_impact_assessment.description}`;
-  }
-
-  // Fallback to old format
-  if (result.cost_estimate) {
-    return `£${result.cost_estimate.min.toLocaleString()}-£${result.cost_estimate.max.toLocaleString()}`;
-  }
-
-  return 'Unknown';
-}
+// function _formatCostImpact(result: AssessmentResult): string {
+//   // Prefer new impact assessment
+//   if (result.cost_impact_assessment) {
+//     const emoji = getCostImpactEmoji(result.cost_impact_assessment.impact);
+//     return `${emoji} ${result.cost_impact_assessment.description}`;
+//   }
+//
+//   // Fallback to old format
+//   if (result.cost_estimate) {
+//     return `£${result.cost_estimate.min.toLocaleString()}-£${result.cost_estimate.max.toLocaleString()}`;
+//   }
+//
+//   return 'Unknown';
+// }
 
 /**
  * Stage 2: Format rejection likelihood (prefers new format, falls back to old)
  */
-function formatRejectionLikelihood(result: AssessmentResult): string {
-  // Prefer new impact assessment
-  if (result.rejection_assessment) {
-    const emoji = getRejectionEmoji(result.rejection_assessment.likelihood);
-    return `${emoji} ${describeRejectionLikelihood(result.rejection_assessment.likelihood)}`;
-  }
-
-  // Fallback to old format
-  if (result.rejection_risk) {
-    return `${Math.round(result.rejection_risk.probability * 100)}% risk`;
-  }
-
-  return 'Unknown';
-}
+// function _formatRejectionLikelihood(result: AssessmentResult): string {
+//   // Prefer new impact assessment
+//   if (result.rejection_assessment) {
+//     const emoji = getRejectionEmoji(result.rejection_assessment.likelihood);
+//     return `${emoji} ${describeRejectionLikelihood(result.rejection_assessment.likelihood)}`;
+//   }
+//
+//   // Fallback to old format
+//   if (result.rejection_risk) {
+//     return `${Math.round(result.rejection_risk.probability * 100)}% risk`;
+//   }
+//
+//   return 'Unknown';
+// }
 
 /**
  * Generate markdown report from matrix assessment
  * ENHANCED VERSION with Executive Summary + Issues Register
  */
 export function generateMatrixReport(data: ReportData): string {
-  const { assessment, packName, projectName, versionNumber, documentCount } = data;
+  const { assessment, packName, projectName, versionNumber, documentCount: _documentCount } = data;
 
   console.log('[Report Gen] Generating enhanced report with executive summary...');
 
@@ -939,7 +940,7 @@ function getOwnerForCostEstimate(criterion: AssessmentResult): string {
  */
 export function generateExecutiveSummary(
   assessment: FullAssessment,
-  projectName: string
+  _projectName: string
 ): ExecutiveSummary {
   const failedCriteria = assessment.results.filter(
     c => c.status === 'does_not_meet' || c.status === 'partial'

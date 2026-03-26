@@ -14,12 +14,11 @@
  */
 
 import ExcelJS from 'exceljs';
-import type { ComplianceMatrix, ComplianceMatrixRow } from './compliance-matrix.js';
+import type { ComplianceMatrix } from './compliance-matrix.js';
 import {
   BRAND_COLORS,
   BRAND_LAYOUT,
   BRAND_LOGO,
-  BRAND_VERSION,
   type ProjectMetadata,
   formatProjectMetadata
 } from '../config/branding.js';

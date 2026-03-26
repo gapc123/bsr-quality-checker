@@ -13,9 +13,9 @@ import path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
 import {
   searchCorpus,
-  getObligations,
+  // getObligations, // Unused import
   getDocumentMetadata,
-  hasExtractedContent,
+  // hasExtractedContent, // Unused import
   RetrievalResult
 } from './corpus-retrieval.js';
 import {
@@ -35,127 +35,11 @@ import type { TriageAssessment } from '../types/triage.js';
 import { analyzeTriageForIssue } from './triage-analyzer.js';
 import { vectorStore } from './vector-store.js';
 
+// Module-level API usage accumulator (reset per assessment run)
+const _apiUsage = { api_calls_made: 0, tokens_input: 0, tokens_output: 0 };
+
 // ============================================
 // PROPOSED CHANGE VALIDATION
-// Filters out generic/weak proposed_changes that require human intervention
-// ============================================
-
-interface ProposedChangeValidation {
-  valid: boolean;
-  reason?: string;
-}
-
-/**
- * Validates a proposed_change to ensure it's specific, actionable, and insertable.
- * Returns { valid: false } for generic prompts that require human intervention.
- */
-function validateProposedChange(change: string | null): ProposedChangeValidation {
-  if (!change) {
-    return { valid: false, reason: 'no_change' };
-  }
-
-  const changeLower = change.toLowerCase();
-
-  // Too short = probably generic (need at least ~150 chars for substantive content)
-  if (change.length < 120) {
-    return { valid: false, reason: 'too_short' };
-  }
-
-  // Starts with generic directive phrases
-  const genericStarts = [
-    /^add\s+(documentation|information|details|evidence|text|content|section)/i,
-    /^provide\s+(documentation|information|details|evidence|text|content)/i,
-    /^include\s+(documentation|information|details|evidence|text|content)/i,
-    /^document\s+(the|how|what|when|where|why)/i,
-    /^ensure\s+(that|the|compliance)/i,
-    /^update\s+(the|documentation|to)/i,
-    /^address\s+(the|this|gap|issue)/i,
-    /^specify\s+(the|how|what)/i,
-  ];
-  if (genericStarts.some(p => p.test(change))) {
-    return { valid: false, reason: 'generic_directive' };
-  }
-
-  // Contains "Add documentation addressing" pattern (common generic output)
-  if (/add documentation addressing/i.test(change)) {
-    return { valid: false, reason: 'generic_addressing_pattern' };
-  }
-
-  // Contains placeholders that need to be filled in
-  if (/\[.*?\]/.test(change) || /\{.*?\}/.test(change)) {
-    return { valid: false, reason: 'has_placeholders' };
-  }
-
-  // Contains TBC/TBA/XXX markers
-  if (/\b(tbc|tba|xxx|to be confirmed|to be advised|to be determined)\b/i.test(change)) {
-    return { valid: false, reason: 'has_tbc_markers' };
-  }
-
-  // Asks for things that require human input
-  const humanRequiredPatterns = [
-    /obtain.*from/i,
-    /commission\s+(a|an|the)/i,
-    /engage\s+(a|an|the).*specialist/i,
-    /prepare\s+(a|an|the).*report/i,
-    /provide\s+(a|an|the).*certification/i,
-    /confirm\s+(with|that the)/i,
-    /appoint\s+(a|an|the)/i,
-    /create\s+(a|an|the|new)/i,
-    /produce\s+(a|an|the)/i,
-    /undertake\s+(a|an|the)/i,
-    /carry out\s+(a|an|the)/i,
-  ];
-  if (humanRequiredPatterns.some(p => p.test(change))) {
-    return { valid: false, reason: 'requires_human_action' };
-  }
-
-  // Keywords indicating human intervention needed
-  const humanKeywords = [
-    'principal contractor',
-    'principal designer',
-    'fire engineer',
-    'structural engineer',
-    'specialist',
-    'competence evidence',
-    'appointment',
-    'certification',
-    'test result',
-    'calculation',
-    'assessment by',
-    'review by',
-    'sign off',
-    'sign-off',
-    'approval from',
-  ];
-  if (humanKeywords.some(kw => changeLower.includes(kw))) {
-    return { valid: false, reason: 'references_human_role' };
-  }
-
-  // If it's just telling you what to do rather than providing text
-  const imperativeOnly = [
-    /^(you should|should|must|need to|please|consider)/i,
-  ];
-  if (imperativeOnly.some(p => p.test(change))) {
-    return { valid: false, reason: 'imperative_instruction' };
-  }
-
-  return { valid: true };
-}
-
-/**
- * Filters proposed_change: returns the change if valid, null otherwise
- */
-function filterProposedChange(change: string | null): string | null {
-  const validation = validateProposedChange(change);
-  if (!validation.valid) {
-    // Log for debugging during development
-    if (change && process.env.NODE_ENV !== 'production') {
-      console.log(`    [Filtered proposed_change] Reason: ${validation.reason}, Text: "${change.slice(0, 80)}..."`);
-    }
-    return null;
-  }
-  return change;
-}
 
 // In Docker, process.cwd() is /app. In dev, it's /packages/backend
 const isProduction = process.env.NODE_ENV === 'production';
@@ -506,6 +390,11 @@ export interface FullAssessment {
     deterministic_rule_count: number;
     llm_criteria_count: number;
   };
+  api_usage: {
+    api_calls_made: number;
+    tokens_input: number;
+    tokens_output: number;
+  };
 }
 
 // Load the success matrix
@@ -572,7 +461,7 @@ function getCorpusEvidence(row: MatrixRow): RetrievalResult | null {
 // Build reference standards summary
 function buildReferenceStandardsSummary(
   applicableCriteria: MatrixRow[],
-  context: PackContext
+  _context: PackContext
 ): FullAssessment['reference_standards_applied'] {
   const usedDocIds = new Set<string>();
   for (const row of applicableCriteria) {
@@ -913,6 +802,9 @@ Example for building height criterion:
       system: systemPrompt,
       messages: [{ role: 'user', content: prompt }]
     });
+    _apiUsage.api_calls_made += 1;
+    _apiUsage.tokens_input += response.usage?.input_tokens ?? 0;
+    _apiUsage.tokens_output += response.usage?.output_tokens ?? 0;
 
     const content = response.content[0];
     if (content.type !== 'text') {
@@ -1307,332 +1199,6 @@ async function assessCriterionTwoStage(
     evidence_quality: facts.evidence_quality, // TASK #17
   };
 }
-
-// Use LLM to assess a single criterion (LEGACY - to be replaced by assessCriterionTwoStage)
-async function assessCriterion(
-  row: MatrixRow,
-  packDocs: PackDocument[],
-  referenceEvidence: RetrievalResult | null,
-  client: Anthropic
-): Promise<AssessmentResult> {
-  // Sort documents alphabetically by filename for consistent ordering
-  const sortedDocs = [...packDocs].sort((a, b) => a.filename.localeCompare(b.filename));
-
-  // Build pack context for the prompt
-  const packContext = sortedDocs.map(d =>
-    `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\nContent excerpt:\n${d.extractedText.slice(0, 3000)}`
-  ).join('\n\n---\n\n');
-
-  const referenceContext = referenceEvidence
-    ? `Reference from ${referenceEvidence.doc_title} (page ${referenceEvidence.page_number}):\n"${referenceEvidence.snippet}"`
-    : 'No specific reference excerpt available for this criterion.';
-
-  const systemPrompt = `You are a deterministic regulatory compliance assessor. Your assessments must be:
-1. EVIDENCE-BASED: Only assess based on explicit evidence present in the documents. Do not infer or assume.
-2. CONSISTENT: Given the same documents and criterion, you must always produce the same assessment.
-3. BINARY LOGIC: Use clear decision rules - if specific evidence exists, status is "meets". If evidence is missing or unclear, status is "partial" or "does_not_meet".
-4. QUOTE-DRIVEN: Always cite specific text from documents when available.
-
-Assessment Rules:
-- "meets": Direct, explicit evidence satisfies the criterion completely
-- "partial": Some evidence exists but is incomplete, vague, or only partially addresses the criterion
-- "does_not_meet": No evidence found or evidence contradicts the criterion
-- "not_assessed": Cannot be evaluated (e.g., criterion doesn't apply)`;
-
-  const prompt = `## Criterion Being Assessed
-ID: ${row.matrix_id}
-Title: ${row.matrix_title}
-Description: ${row.matrix_description}
-
-## What Success Looks Like
-${row.success_definition}
-
-## Common Failure Modes
-${row.failure_modes.map((f, i) => `${i + 1}. ${f}`).join('\n')}
-
-## Reference Standard (from corpus)
-${referenceContext}
-
-## Documents to Assess
-${packContext}
-
-## Your Task
-Assess whether the pack meets this criterion using the evidence provided. Apply the following decision logic:
-
-1. Search for explicit evidence that addresses the criterion IN ALL DOCUMENTS
-2. If found: quote it directly and assess if it fully or partially satisfies requirements
-3. If not found in the primary document but found elsewhere: note the cross-reference
-4. If not found anywhere: mark as "does_not_meet" with clear explanation
-
-## CROSS-DOCUMENT INTELLIGENCE (Important!)
-When assessing gaps, actively search ALL provided documents for missing information:
-- If Document A is missing information about building height, check if it's stated in Document B
-- If you find the information in another document, you CAN propose adding it to fill the gap
-- Include SOURCE ATTRIBUTION: "Based on [source document]: [specific text to add]"
-- This allows the AI to consolidate scattered information into comprehensive documentation
-
-Example: If Fire Strategy is missing building height, but Planning Application states "24.5m":
-- Gap exists in Fire Strategy
-- Information exists in Planning Application
-- Proposed change: "Based on Planning Application: The building height is 24.5m as measured from ground level."
-
-Respond in JSON format:
-{
-  "status": "meets" | "partial" | "does_not_meet" | "not_assessed",
-  "reasoning": "Clear explanation citing specific evidence or lack thereof",
-  "pack_evidence_found": true | false,
-  "pack_evidence_document": "exact filename or null",
-  "pack_evidence_quote": "exact quote from document or null",
-  "gaps": ["specific gap 1", "specific gap 2"],
-  "actions": [
-    {
-      "action": "specific action to address gap",
-      "owner": "responsible role",
-      "effort": "S" | "M" | "L",
-      "benefit": "expected outcome"
-    }
-  ],
-  "confidence": "high" | "medium" | "low",
-  "proposed_change_source": "If proposed_change uses info from another document, state that document's filename here. Otherwise null.",
-  "owner_type": "MUST provide one of: AI_AMENDABLE, FIRE_ENGINEER, STRUCTURAL_ENGINEER, ARCHITECT, MEP_CONSULTANT, PRINCIPAL_DESIGNER, PRINCIPAL_CONTRACTOR, CLIENT_INFO, PROJECT_TEAM",
-  "insertion_location": {
-    "document": "Target document filename where text should be inserted",
-    "section": "Section heading (e.g., '3.2 Compartmentation')",
-    "paragraph_number": "Paragraph number within section (1, 2, 3...)",
-    "anchor_text": "20-50 character text snippet that uniquely identifies insertion point",
-    "context_before": "1-2 sentences that appear immediately before insertion point",
-    "context_after": "1-2 sentences that appear immediately after insertion point"
-  },
-  "proposed_change": "CRITICAL INSTRUCTIONS FOR PROPOSED_CHANGE:
-
-ONLY provide a proposed_change if ALL of these conditions are true:
-1. You can write COMPLETE, SPECIFIC text (at least 2-3 sentences of substantive content)
-2. The text can be DIRECTLY INSERTED into an existing document without modification
-3. NO professional judgement is required (not calculations, certifications, or expert assessment)
-4. NO new information needs to be gathered (you have everything needed in the documents)
-
-Set proposed_change to NULL if ANY of these apply:
-- Status is 'meets' (no change needed)
-- Issue requires creating a NEW DOCUMENT (fire strategy, structural report, etc.)
-- Issue requires EXPERT ANALYSIS (fire engineering, structural calculations)
-- Issue requires PHYSICAL EVIDENCE (test certificates, material certifications)
-- Issue requires APPOINTING someone (Principal Designer, Principal Contractor)
-- Issue requires PROFESSIONAL JUDGEMENT or DESIGN DECISIONS
-- You would write something generic like 'Add documentation about X' or 'Include evidence of Y'
-- The text contains placeholders like [X], {Y}, or TBC
-
-INVALID proposed_change examples (should be null):
-- 'Add documentation addressing the compartmentation gap'
-- 'Include evidence of Principal Designer competence'
-- 'Provide fire strategy details for means of escape'
-- 'Document the golden thread approach'
-- 'Add information about [specific item]'
-
-VALID proposed_change examples (specific, insertable text):
-- 'The building is classified as a Higher-Risk Building under the Building Safety Act 2022, with a height of 24.5m and containing 8 residential storeys above ground level. This classification requires compliance with the enhanced regulatory requirements of Part 4 of the Act.'
-- 'Horizontal compartmentation is achieved through 60-minute fire-rated separating floors constructed of 150mm reinforced concrete with intumescent seals at all service penetrations. Vertical compartmentation uses 60-minute fire-rated walls with fire-stopped service penetrations.'
-- 'The evacuation strategy is simultaneous evacuation, with all occupants directed to leave the building immediately upon activation of the fire alarm. This approach is appropriate for the building height and occupancy type as assessed by the fire engineer.'
-
-CROSS-DOCUMENT proposed_change examples (pulling info from other documents):
-- 'Based on the Planning Application Form: The building has a total height of 24.5 metres and contains 8 residential storeys above ground level, meeting the threshold for classification as a Higher-Risk Building under the Building Safety Act 2022.'
-- 'As stated in the Structural Engineering Report: The primary structural frame achieves 90-minute fire resistance in accordance with BS EN 1992-1-2, with all connections and junctions detailed to maintain compartmentation integrity.'
-- 'Refer to Section 4.2 of the Fire Strategy Report for full compartmentation details. The separating floors achieve 60-minute fire resistance as confirmed by the fire engineer.'
-
-When using cross-document information:
-1. Always cite the SOURCE DOCUMENT by name
-2. Quote or paraphrase the specific information found
-3. Explain how it addresses the gap in the target document",
-
-  "owner_type": "CRITICAL - OWNER TYPE CLASSIFICATION:
-
-Choose the MOST SPECIFIC owner type that applies:
-
-- AI_AMENDABLE: Use ONLY when proposed_change is provided AND text can be inserted automatically without human review
-- FIRE_ENGINEER: Fire safety, means of escape, compartmentation, fire resistance, sprinklers, external walls
-- STRUCTURAL_ENGINEER: Structural design, load calculations, fire resistance of structure, disproportionate collapse
-- ARCHITECT: Building layout, space planning, accessibility, general coordination
-- MEP_CONSULTANT: M&E systems, ventilation, electrical, plumbing, fire alarms
-- PRINCIPAL_DESIGNER: Competence evidence, design coordination, CDM duties, golden thread strategy
-- PRINCIPAL_CONTRACTOR: Construction phase duties, competence evidence, site safety
-- CLIENT_INFO: Missing information that only the client can provide (building details, certifications, appointments)
-- PROJECT_TEAM: Generic fallback (use sparingly - prefer specific owner)
-
-Rules:
-- If proposed_change exists AND is valid → AI_AMENDABLE
-- If issue requires professional engineering judgment → specific engineer type
-- If issue is missing document or client-side info → CLIENT_INFO
-- If competence/appointment related → PRINCIPAL_DESIGNER or PRINCIPAL_CONTRACTOR",
-
-  "insertion_location": "CRITICAL - INSERTION LOCATION (required if proposed_change is provided):
-
-You MUST provide insertion_location if proposed_change is not null. This allows precise markup in the document.
-
-Steps to determine insertion_location:
-1. Identify which document the proposed_change should be added to
-2. Find the section heading where it belongs (scan the document for section numbers/titles)
-3. Count paragraphs in that section to determine paragraph_number
-4. Extract 20-50 chars of unique text at the insertion point as anchor_text
-5. Capture 1-2 sentences before and after the insertion point
-
-Example:
-If Fire Strategy Section 3.2 has text:
-'Compartmentation is achieved through concrete floors and masonry walls. All service penetrations are fire-stopped using intumescent seals. The building is divided into residential compartments on each floor.'
-
-And you want to insert after the second sentence, provide:
-{
-  'document': 'Fire_Strategy_Report.pdf',
-  'section': '3.2 Compartmentation',
-  'paragraph_number': 1,
-  'anchor_text': 'fire-stopped using intumescent seals.',
-  'context_before': 'Compartmentation is achieved through concrete floors and masonry walls. All service penetrations are fire-stopped using intumescent seals.',
-  'context_after': 'The building is divided into residential compartments on each floor.'
-}
-
-Set to null if:
-- proposed_change is null
-- Status is 'meets' (no change needed)
-- Issue requires creating a NEW document (not insertion into existing doc)"
-}`;
-
-  try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1500,
-      temperature: 0, // Deterministic responses for consistency
-      system: systemPrompt,
-      messages: [{ role: 'user', content: prompt }]
-    });
-
-    const content = response.content[0];
-    if (content.type !== 'text') {
-      throw new Error('Unexpected response type');
-    }
-
-    // Parse JSON from response
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('No JSON found in response');
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]);
-
-    // TASK #14: Validate pack evidence to catch hallucinations
-    const packEvidenceValidation = validateEvidence(
-      {
-        found: parsed.pack_evidence_found,
-        document: parsed.pack_evidence_document,
-        page: null, // Not currently extracted from LLM
-        quote: parsed.pack_evidence_quote
-      },
-      packDocs
-    );
-
-    // Log validation failures for debugging
-    if (!packEvidenceValidation.isValid) {
-      console.warn(`  [VALIDATION FAILED] ${row.matrix_id}:`, packEvidenceValidation.issues.join('; '));
-    }
-
-    // Augment reasoning with validation warnings if evidence is unreliable
-    let finalReasoning = parsed.reasoning || `Assessment of ${row.matrix_title} based on submitted documentation.`;
-    if (!packEvidenceValidation.isValid && packEvidenceValidation.issues.length > 0) {
-      finalReasoning += `\n\n⚠️ Evidence validation warning: ${packEvidenceValidation.issues.join('; ')}`;
-    }
-
-    // Filter and validate proposed_change
-    const filteredProposedChange = filterProposedChange(parsed.proposed_change || null);
-
-    // Determine owner type (use LLM suggestion or fallback to heuristic)
-    const ownerType = parsed.owner_type as OwnerType || determineOwnerType(
-      parsed.actions?.[0]?.owner,
-      !!filteredProposedChange,
-      finalReasoning,
-      parsed.gaps || []
-    );
-
-    // Parse insertion_location if provided
-    const insertionLocation = parsed.insertion_location && filteredProposedChange ? {
-      document: parsed.insertion_location.document || '',
-      section: parsed.insertion_location.section || '',
-      paragraph_number: parseInt(parsed.insertion_location.paragraph_number) || 1,
-      anchor_text: parsed.insertion_location.anchor_text || '',
-      context_before: parsed.insertion_location.context_before || '',
-      context_after: parsed.insertion_location.context_after || '',
-    } : undefined;
-
-    // Estimate cost based on owner type and effort
-    const effort = parsed.actions?.[0]?.effort || 'M';
-    const estimatedCost = estimateCost(ownerType, effort);
-
-    // Infer evidence quality from pack evidence
-    const evidenceQuality: EvidenceQuality = !(parsed.pack_evidence_found && packEvidenceValidation.isValid)
-      ? 'absent'
-      : (packEvidenceValidation.isValid && parsed.pack_evidence_quote ? 'explicit' : 'implicit');
-
-    return {
-      matrix_id: row.matrix_id,
-      matrix_title: row.matrix_title,
-      category: row.category,
-      status: parsed.status,
-      severity: row.severity_if_unmet,
-      reasoning: finalReasoning,
-      success_definition: row.success_definition,
-      pack_evidence: {
-        found: parsed.pack_evidence_found && packEvidenceValidation.isValid, // Mark as not found if validation failed
-        document: packEvidenceValidation.isValid ? parsed.pack_evidence_document : null,
-        page: null,
-        quote: packEvidenceValidation.isValid ? parsed.pack_evidence_quote : null
-      },
-      reference_evidence: {
-        found: referenceEvidence !== null,
-        doc_id: referenceEvidence?.doc_id || null,
-        doc_title: referenceEvidence?.doc_title || null,
-        page: referenceEvidence?.page_number || null,
-        quote: referenceEvidence?.snippet || null
-      },
-      gaps_identified: parsed.gaps || [],
-      actions_required: parsed.actions || [],
-      confidence: parsed.confidence || 'medium',
-      proposed_change: filteredProposedChange,
-      proposed_change_source: parsed.proposed_change_source || null,
-      // NEW: Enhanced fields
-      insertion_location: insertionLocation,
-      owner_type: ownerType,
-      estimated_cost: estimatedCost,
-      evidence_quality: evidenceQuality,
-    };
-  } catch (error) {
-    console.error(`Error assessing ${row.matrix_id}:`, error);
-
-    return {
-      matrix_id: row.matrix_id,
-      matrix_title: row.matrix_title,
-      category: row.category,
-      status: 'not_assessed',
-      severity: row.severity_if_unmet,
-      reasoning: 'Assessment failed due to processing error',
-      success_definition: row.success_definition,
-      pack_evidence: { found: false, document: null, page: null, quote: null },
-      reference_evidence: {
-        found: referenceEvidence !== null,
-        doc_id: referenceEvidence?.doc_id || null,
-        doc_title: referenceEvidence?.doc_title || null,
-        page: referenceEvidence?.page_number || null,
-        quote: referenceEvidence?.snippet || null
-      },
-      gaps_identified: [],
-      actions_required: [],
-      confidence_old: 'low', // Will be replaced with proper ConfidenceTag
-      proposed_change: null,
-      proposed_change_source: null,
-      // NEW: Enhanced fields with safe defaults
-      insertion_location: undefined,
-      owner_type: 'PROJECT_TEAM',
-      estimated_cost: undefined,
-      evidence_quality: 'absent',
-    };
-  }
-}
-
 // ============================================
 // PHASE 1 ENHANCEMENT: COST/RISK/TIMELINE ENRICHMENT
 // ============================================
@@ -1797,6 +1363,10 @@ export async function assessPackAgainstMatrix(
   context: PackContext
 ): Promise<FullAssessment> {
   const client = new Anthropic();
+  // Reset module-level token accumulator for this assessment run
+  _apiUsage.api_calls_made = 0;
+  _apiUsage.tokens_input = 0;
+  _apiUsage.tokens_output = 0;
   const matrix = loadMatrix();
 
   console.log(`\n${'='.repeat(60)}`);
@@ -2036,7 +1606,8 @@ export async function assessPackAgainstMatrix(
       reference_anchor_rate: referenceAnchorRate,
       deterministic_rule_count: deterministicResults.length,
       llm_criteria_count: llmResults.length
-    }
+    },
+    api_usage: { ..._apiUsage }
   };
 }
 

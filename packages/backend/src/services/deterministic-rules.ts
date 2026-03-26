@@ -37,10 +37,11 @@ function normalise(text: string): string {
   return text.toLowerCase().replace(/\s+/g, ' ').trim();
 }
 
-function containsAllKeywords(text: string, keywords: string[]): boolean {
-  const normText = normalise(text);
-  return keywords.every(kw => normText.includes(normalise(kw)));
-}
+// Unused helper - kept for potential future use
+// function containsAllKeywords(text: string, keywords: string[]): boolean {
+//   const normText = normalise(text);
+//   return keywords.every(kw => normText.includes(normalise(kw)));
+// }
 
 function containsAnyKeyword(text: string, keywords: string[]): boolean {
   const normText = normalise(text);
@@ -67,15 +68,17 @@ function findDocument(docs: DocumentEvidence[], patterns: string[]): DocumentEvi
   return null;
 }
 
-function findDocumentsByContent(docs: DocumentEvidence[], keywords: string[], charLimit: number = 5000): DocumentEvidence[] {
-  return docs.filter(d => containsAnyKeyword(d.extractedText.slice(0, charLimit), keywords));
-}
+// Unused helper - kept for potential future use
+// function findDocumentsByContent(docs: DocumentEvidence[], keywords: string[], charLimit: number = 5000): DocumentEvidence[] {
+//   return docs.filter(d => containsAnyKeyword(d.extractedText.slice(0, charLimit), keywords));
+// }
 
-function countKeywordOccurrences(text: string, keyword: string): number {
-  const normText = normalise(text);
-  const normKw = normalise(keyword);
-  return (normText.match(new RegExp(normKw, 'g')) || []).length;
-}
+// Unused helper - kept for potential future use
+// function countKeywordOccurrences(text: string, keyword: string): number {
+//   const normText = normalise(text);
+//   const normKw = normalise(keyword);
+//   return (normText.match(new RegExp(normKw, 'g')) || []).length;
+// }
 
 // Extract all height values mentioned in text
 function extractHeights(text: string): number[] {
@@ -97,61 +100,64 @@ function extractStoreys(text: string): number[] {
  * Find evidence for keywords and track which document/keyword triggered the match.
  * This ensures the evidence quote shown to users contains the actual trigger text.
  */
-interface TrackedEvidence {
-  found: boolean;
-  document: string | null;
-  quote: string | null;
-  triggerKeyword: string | null;
-  matchType: 'keyword' | 'pattern' | 'absence';
-}
+// Unused interface - kept for potential future use
+// interface TrackedEvidence {
+//   found: boolean;
+//   document: string | null;
+//   quote: string | null;
+//   triggerKeyword: string | null;
+//   matchType: 'keyword' | 'pattern' | 'absence';
+// }
 
-function findAndTrackEvidence(docs: DocumentEvidence[], keywords: string[]): TrackedEvidence {
-  for (const doc of docs) {
-    for (const kw of keywords) {
-      if (containsAnyKeyword(doc.extractedText, [kw])) {
-        return {
-          found: true,
-          document: doc.filename,
-          quote: extractQuote(doc.extractedText, kw),
-          triggerKeyword: kw,
-          matchType: 'keyword'
-        };
-      }
-    }
-  }
-  return {
-    found: false,
-    document: null,
-    quote: null,
-    triggerKeyword: null,
-    matchType: 'absence'
-  };
-}
+// Unused helper - kept for potential future use
+// function findAndTrackEvidence(docs: DocumentEvidence[], keywords: string[]): TrackedEvidence {
+//   for (const doc of docs) {
+//     for (const kw of keywords) {
+//       if (containsAnyKeyword(doc.extractedText, [kw])) {
+//         return {
+//           found: true,
+//           document: doc.filename,
+//           quote: extractQuote(doc.extractedText, kw),
+//           triggerKeyword: kw,
+//           matchType: 'keyword'
+//         };
+//       }
+//     }
+//   }
+//   return {
+//     found: false,
+//     document: null,
+//     quote: null,
+//     triggerKeyword: null,
+//     matchType: 'absence'
+//   };
+// }
 
+// Unused helper - kept for potential future use
 /**
  * Find evidence in a SPECIFIC document for keywords.
  * Use this when you've already identified the relevant document.
  */
-function findEvidenceInDocument(doc: DocumentEvidence, keywords: string[]): TrackedEvidence {
-  for (const kw of keywords) {
-    if (containsAnyKeyword(doc.extractedText, [kw])) {
-      return {
-        found: true,
-        document: doc.filename,
-        quote: extractQuote(doc.extractedText, kw),
-        triggerKeyword: kw,
-        matchType: 'keyword'
-      };
-    }
-  }
-  return {
-    found: false,
-    document: doc.filename,
-    quote: null,
-    triggerKeyword: null,
-    matchType: 'absence'
-  };
-}
+// function findEvidenceInDocument(doc: DocumentEvidence, keywords: string[]): TrackedEvidence {
+//   for (const kw of keywords) {
+//     if (containsAnyKeyword(doc.extractedText, [kw])) {
+//       return {
+//         found: true,
+//         document: doc.filename,
+//         quote: extractQuote(doc.extractedText, kw),
+//         triggerKeyword: kw,
+//         matchType: 'keyword'
+//       };
+//     }
+//   }
+//   return {
+//     found: false,
+//     document: doc.filename,
+//     quote: null,
+//     triggerKeyword: null,
+//     matchType: 'absence'
+//   };
+// }
 
 // ============================================
 // RULE TYPE DEFINITION
@@ -2608,7 +2614,8 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasEmergencyLighting = containsAnyKeyword(allText, ['emergency lighting', 'emergency light', 'escape lighting']);
       const hasDuration = /\d+\s*(hour|hr).*emergency|emergency.*\d+\s*(hour|hr)/i.test(allText);
-      const hasLuxLevel = containsAnyKeyword(allText, ['lux', 'illumination level', 'light level']);
+      // Unused variable - kept for potential future use
+      // const hasLuxLevel = containsAnyKeyword(allText, ['lux', 'illumination level', 'light level']);
       const hasBS5266 = containsAnyKeyword(allText, ['bs 5266', 'bs5266', 'en 1838']);
 
       if (hasEmergencyLighting && (hasDuration || hasBS5266)) {
@@ -2771,7 +2778,8 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
 
       const hasDryRiser = containsAnyKeyword(allText, ['dry riser', 'dry rising main']);
       const hasWetRiser = containsAnyKeyword(allText, ['wet riser', 'wet rising main']);
-      const hasBS9990 = containsAnyKeyword(allText, ['bs 9990', 'bs9990']);
+      // Unused variable
+      // const hasBS9990 = containsAnyKeyword(allText, ['bs 9990', 'bs9990']);
 
       // Dry riser required above 18m, wet riser above 50m
       if (maxHeight > 50 && !hasWetRiser) {
@@ -2971,7 +2979,8 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       }
 
       const hasSeparation = containsAnyKeyword(allText, ['refuse room', 'bin store compartment', 'fire rated', 'separated']);
-      const hasSprinkler = containsAnyKeyword(allText, ['refuse sprinkler', 'bin store sprinkler']);
+      // Unused variable
+      // const hasSprinkler = containsAnyKeyword(allText, ['refuse sprinkler', 'bin store sprinkler']);
 
       if (hasSeparation) {
         return {
@@ -3119,7 +3128,8 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasSubcontractor = containsAnyKeyword(allText, ['subcontractor', 'sub-contractor', 'specialist contractor', 'trade contractor']);
       const hasCompetence = containsAnyKeyword(allText, ['competence', 'competent', 'qualified', 'trained', 'certification']);
-      const hasVetting = containsAnyKeyword(allText, ['vetting', 'assessment', 'approved', 'supply chain']);
+      // Unused variable
+      // const hasVetting = containsAnyKeyword(allText, ['vetting', 'assessment', 'approved', 'supply chain']);
 
       if (hasSubcontractor && hasCompetence) {
         return {
@@ -3236,7 +3246,8 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasDrawingControl = containsAnyKeyword(allText, ['drawing register', 'drawing issue', 'revision control', 'document register']);
       const hasRevision = /rev\s*[a-z\d]|revision\s*[a-z\d]|issue\s*\d/i.test(allText);
-      const hasNaming = containsAnyKeyword(allText, ['naming convention', 'file naming', 'drawing number']);
+      // Unused variable
+      // const hasNaming = containsAnyKeyword(allText, ['naming convention', 'file naming', 'drawing number']);
 
       if (hasDrawingControl && hasRevision) {
         return {

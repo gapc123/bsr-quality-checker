@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useToast } from '../components/Toast';
 import FileUpload from '../components/FileUpload';
+import { sanitizeForFormData } from '../utils/fileUtils';
 import SimpleResultsView from '../components/SimpleResultsView';
 import type { AssessmentResult, FullAssessment } from '../types/assessment';
 import * as exportService from '../services/exportService';
@@ -58,7 +59,7 @@ export default function QuickAssess() {
 
     try {
       const formData = new FormData();
-      files.forEach(file => formData.append('documents', file));
+      files.forEach(file => formData.append('documents', sanitizeForFormData(file)));
 
       // Add default context (can be enhanced with form inputs)
       formData.append('buildingType', 'residential');

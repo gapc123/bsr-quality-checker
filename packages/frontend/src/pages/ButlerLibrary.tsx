@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '../components/Toast';
 import FileUpload from '../components/FileUpload';
+import { sanitizeForFormData } from '../utils/fileUtils';
 
 interface ButlerDoc {
   id: string;
@@ -46,7 +47,7 @@ export default function ButlerLibrary() {
     setUploading(true);
     try {
       const formData = new FormData();
-      formData.append('document', files[0]);
+      formData.append('document', sanitizeForFormData(files[0]));
       if (source) {
         formData.append('source', source);
       }

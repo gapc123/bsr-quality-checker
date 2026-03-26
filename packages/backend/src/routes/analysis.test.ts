@@ -55,7 +55,7 @@ describe('Analysis API Routes', () => {
       const version = await createTestPackVersion(pack.id);
       // No documents created
 
-      const response = await request(app)
+      await request(app)
         .post(`/api/analysis/${version.id}`)
         .send({})
         .expect((res) => {
@@ -125,7 +125,7 @@ describe('Analysis API Routes', () => {
       const pack = await createTestPack(client.id);
       const version = await createTestPackVersion(pack.id);
 
-      const response = await request(app)
+      await request(app)
         .post(`/api/analysis/${version.id}/cancel`)
         .expect((res) => {
           // Accept 200 (cancelled) or 404 (nothing to cancel)

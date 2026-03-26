@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../components/Toast';
+import { sanitizeForFormData } from '../utils/fileUtils';
 import UploadWizard from '../components/UploadWizard';
 import type { ProjectContext } from '../components/ProjectContextForm';
 import type { UploadedDocument } from '../components/DocumentUploadZone';
@@ -35,9 +36,9 @@ export default function Upload() {
     try {
       const formData = new FormData();
 
-      // Add all document files
+      // Add all document files (sanitize names for Safari FormData compatibility)
       documents.forEach((doc) => {
-        formData.append('documents', doc.file);
+        formData.append('documents', sanitizeForFormData(doc.file));
       });
 
       // Add project context as metadata

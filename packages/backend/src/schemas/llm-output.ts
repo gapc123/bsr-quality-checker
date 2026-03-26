@@ -32,7 +32,7 @@ export const ExtractedFieldSchema = z.object({
   fieldValue: z.string().nullable(),
   confidence: ConfidenceSchema,
   evidenceQuote: z.string().nullable().refine(
-    (quote) => {
+    (_quote) => {
       // If confidence is high, evidence quote is REQUIRED
       return true; // Will be validated in context
     },

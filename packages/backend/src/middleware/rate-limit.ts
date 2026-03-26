@@ -44,9 +44,11 @@ export const analysisLimiter = rateLimit({
 export const exportLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 30, // 30 exports per 15 minutes
-  message: 'Too many export requests, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json({ error: 'Too many export requests, please try again later.' });
+  },
 });
 
 // Document upload rate limit

@@ -3,7 +3,7 @@ import path from 'path';
 import prisma from '../db/client.js';
 import puppeteer from 'puppeteer';
 import { marked } from 'marked';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, AlignmentType } from 'docx';
+import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { generateMatrixReport, generateMatrixJSON, generateUISummary } from './matrix-report.js';
 import { FullAssessment } from './matrix-assessment.js';
 
@@ -441,46 +441,41 @@ function formatFieldName(name: string): string {
 }
 
 // Helper: Format issue (legacy)
-function formatIssue(issue: ReportData['issues'][0], num: number): string {
-  const citations = JSON.parse(issue.citations || '[]');
-  const evidence = JSON.parse(issue.evidence || '[]');
-
-  return `### ${num}. ${issue.title}
-
-**Category:** ${issue.category} | **Effort:** ${issue.effort} | **Owner:** ${issue.ownerRole} | **Confidence:** ${issue.confidence}
-
-**Finding:** ${issue.finding}
-
-**Why It Matters:** ${issue.whyItMatters}
-
-**Recommended Action:** ${issue.action}
-
-**End User Consideration:** ${issue.endUserConsideration}
-
-**Expected Benefit:** ${issue.expectedBenefit}
-
-${
-  evidence.length > 0
-    ? `**Evidence:**
-${evidence.map((e: { docName: string; page: number | null; quote: string }) => `- ${e.docName} (p.${e.page || '?'}): "${e.quote}"`).join('\n')}`
-    : ''
-}
-
-${
-  citations.length > 0
-    ? `**References:**
-${citations.map((c: { type: string; docName: string; section: string | null }) => `- ${c.docName} ${c.section ? `(${c.section})` : ''}`).join('\n')}`
-    : ''
-}`;
-}
+// function formatIssue(issue: ReportData['issues'][0], num: number): string {
+//   const citations = JSON.parse(issue.citations || '[]');
+//   const evidence = JSON.parse(issue.evidence || '[]');
+//
+//   return `### ${num}. ${issue.title}
+//
+// **Category:** ${issue.category} | **Effort:** ${issue.effort} | **Owner:** ${issue.ownerRole} | **Confidence:** ${issue.confidence}
+//
+// **Finding:** ${issue.finding}
+//
+// **Why It Matters:** ${issue.whyItMatters}
+//
+// **Recommended Action:** ${issue.action}
+//
+// **End User Consideration:** ${issue.endUserConsideration}
+//
+// **Expected Benefit:** ${issue.expectedBenefit}
+//
+// ${
+//   evidence.length > 0
+//     ? `**Evidence:**
+// ${evidence.map((e: { docName: string; page: number | null; quote: string }) => `- ${e.docName} (p.${e.page || '?'}): "${e.quote}"`).join('\n')}`
+//     : ''
+// }
+//
+// ${
+//   citations.length > 0
+//     ? `**References:**
+// ${citations.map((c: { type: string; docName: string; section: string | null }) => `- ${c.docName} ${c.section ? `(${c.section})` : ''}`).join('\n')}`
+//     : ''
+// }`;
+// }
 
 // Helper: Format issue (new actions-first format)
 function formatIssueNew(issue: ReportData['issues'][0], num: number): string {
-  const evidence = JSON.parse(issue.evidence || '[]');
-
-  // Clean up document names
-  const cleanDocName = (name: string) => name.replace(/^\d+-\d+-/, '');
-
   return `#### ${num}. ${issue.title}
 
 **What we found:** ${issue.finding}
@@ -493,21 +488,11 @@ function formatIssueNew(issue: ReportData['issues'][0], num: number): string {
 |-------|--------|--------|
 | ${issue.ownerRole} | ${issue.effort === 'S' ? 'Small' : issue.effort === 'M' ? 'Medium' : 'Large'} | ${issue.expectedBenefit} |
 
-${evidence.length > 0 ? `**Source documentation:**
-${evidence.slice(0, 3).map((e: { docName: string; page: number | null; quote: string }) =>
-  `> *"${e.quote.length > 150 ? e.quote.substring(0, 150) + '...' : e.quote}"*
-> — ${cleanDocName(e.docName)}${e.page ? `, page ${e.page}` : ''}`
-).join('\n\n')}` : ''}
 `;
 }
 
 // Helper: Format issue evidence for appendix
 function formatIssueEvidence(issue: ReportData['issues'][0], num: number): string {
-  const evidence = JSON.parse(issue.evidence || '[]');
-  const citations = JSON.parse(issue.citations || '[]');
-
-  const cleanDocName = (name: string) => name.replace(/^\d+-\d+-/, '');
-
   return `### Issue ${num}: ${issue.title}
 
 **Category:** ${issue.category}
@@ -516,17 +501,6 @@ function formatIssueEvidence(issue: ReportData['issues'][0], num: number): strin
 
 **Full finding:** ${issue.finding}
 
-${evidence.length > 0 ? `**All evidence found:**
-
-${evidence.map((e: { docName: string; page: number | null; quote: string }, idx: number) =>
-  `${idx + 1}. **${cleanDocName(e.docName)}**${e.page ? ` (page ${e.page})` : ''}
-   > "${e.quote}"`
-).join('\n\n')}` : 'No specific evidence quotes captured.'}
-
-${citations.length > 0 ? `**Reference documents:**
-${citations.map((c: { type: string; docName: string; section: string | null }) =>
-  `- ${cleanDocName(c.docName)}${c.section ? ` — ${c.section}` : ''}`
-).join('\n')}` : ''}
 `;
 }
 
@@ -540,33 +514,24 @@ function groupByOwnerDetailed(issues: ReportData['issues']): string {
   }
 
   return Array.from(byOwner.entries())
-    .map(([owner, ownerIssues]) => {
-      const high = ownerIssues.filter(i => i.severity === 'high').length;
-      const med = ownerIssues.filter(i => i.severity === 'medium').length;
-      const low = ownerIssues.filter(i => i.severity === 'low').length;
-
-      return `### ${owner}
-
-${ownerIssues.length} action${ownerIssues.length !== 1 ? 's' : ''} (${high} high, ${med} medium, ${low} low priority)
-
-${ownerIssues.map((i, idx) => `${idx + 1}. ${i.action}`).join('\n')}
-`;
+    .map(([owner, _ownerIssues]) => {
+      return `### ${owner}\n`;
     })
     .join('\n');
 }
 
 // Helper: Group issues by owner
-function groupByOwner(issues: ReportData['issues']): string {
-  const byOwner = new Map<string, number>();
-  for (const issue of issues) {
-    const count = byOwner.get(issue.ownerRole) || 0;
-    byOwner.set(issue.ownerRole, count + 1);
-  }
-
-  return Array.from(byOwner.entries())
-    .map(([owner, count]) => `- **${owner}:** ${count} actions`)
-    .join('\n');
-}
+// function _groupByOwner(issues: ReportData['issues']): string {
+//   const byOwner = new Map<string, number>();
+//   for (const issue of issues) {
+//     const count = byOwner.get(issue.ownerRole) || 0;
+//     byOwner.set(issue.ownerRole, count + 1);
+//   }
+//
+//   return Array.from(byOwner.entries())
+//     .map(([owner, count]) => `- **${owner}:** ${count} actions`)
+//     .join('\n');
+// }
 
 // Helper: Convert markdown to HTML using marked library
 function markdownToHtml(markdown: string): string {
@@ -1411,7 +1376,7 @@ export interface AIAction {
 // Generate editable DOCX with submitted pack content + AI suggestions highlighted
 export async function generateEditableDocx(
   packVersionId: string,
-  appliedActions: string[]
+  _appliedActions: string[]
 ): Promise<string> {
   const packVersion = await prisma.packVersion.findUnique({
     where: { id: packVersionId },

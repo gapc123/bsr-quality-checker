@@ -176,7 +176,6 @@ function generateBlockers(blockers: AssessmentResult[]): string {
   }
 
   return top5.map((blocker, index) => {
-    const action = blocker.actions_required[0];
     const what = blocker.gaps_identified[0] || blocker.reasoning.split('.')[0];
     const why = extractWhyItMatters(blocker);
     const request = extractSpecificRequest(blocker);

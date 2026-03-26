@@ -227,8 +227,6 @@ export async function generateAmendedDocuments(
   }
 
   const assessment: FullAssessment = JSON.parse(packVersion.matrixAssessment);
-  const packName = packVersion.pack.name.replace(/[^a-zA-Z0-9]/g, '-');
-  const versionNum = packVersion.versionNumber;
 
   // Generate all three documents
   const [docxPath, pdfPath, issuesPath] = await Promise.all([
@@ -841,7 +839,7 @@ async function generateAmendedDocx(
       }),
     );
 
-    humanReviewCriteria.forEach((criterion, index) => {
+    humanReviewCriteria.forEach((criterion, _index) => {
       children.push(
         new Paragraph({
           children: [

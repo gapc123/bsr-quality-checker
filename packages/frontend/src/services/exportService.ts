@@ -7,7 +7,9 @@
 
 import type { FullAssessment, SubmissionGate, EngagementBrief } from '../types/assessment';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Use relative URLs so exports work regardless of deployment domain.
+// Set VITE_API_URL only if the frontend is served from a different origin than the API.
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 interface ExportSettings {
   includeEvidence: boolean;

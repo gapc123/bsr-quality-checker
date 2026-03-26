@@ -255,24 +255,46 @@ model OutputArtifact {
   createdAt     DateTime    @default(now())
 }
 
-// Team collaboration models (optional - for future audit trail)
-// Uncomment when implementing team member tracking
-// model Organization {
-//   id        String   @id @default(uuid())
-//   name      String
-//   createdAt DateTime @default(now())
-//   members   TeamMember[]
-// }
+// Admin panel: Organisation tracking
+model Organisation {
+  id              String       @id @default(uuid())
+  name            String
+  primaryEmail    String
+  createdAt       DateTime     @default(now())
+  lastActiveAt    DateTime     @default(now())
+  isPilot         Boolean      @default(false)
+  submissionCount Int          @default(0)
+  submissions     Submission[]
 
-// model TeamMember {
-//   id             String       @id @default(uuid())
-//   organizationId String
-//   organization   Organization @relation(fields: [organizationId], references: [id])
-//   userId         String       // Clerk user ID
-//   userName       String
-//   email          String
-//   role           String       // admin, member
-//   createdAt      DateTime     @default(now())
-//
-//   @@unique([organizationId, userId])
-// }
+  @@index([name])
+  @@index([createdAt])
+}
+
+// Admin panel: Submission tracking (one per compliance run)
+model Submission {
+  id                       String       @id @default(uuid())
+  organisationId           String
+  organisation             Organisation @relation(fields: [organisationId], references: [id])
+  userEmail                String
+  createdAt                DateTime     @default(now())
+  completedAt              DateTime?
+  processingTimeSeconds    Int?
+  documentCount            Int          @default(0)
+  documentNames            String       @default("[]") // JSON array
+  totalChecksRun           Int          @default(0)
+  checksPassed             Int          @default(0)
+  checksPartial            Int          @default(0)
+  checksFailed             Int          @default(0)
+  regulatoryReadinessScore Float?
+  failureCategories        String?      // JSON array of category strings
+  apiCallsMade             Int          @default(0)
+  tokensInput              Int          @default(0)
+  tokensOutput             Int          @default(0)
+  estimatedApiCostGbp      Float        @default(0)
+  status                   String       @default("processing") // processing, completed, error
+  errorMessage             String?
+
+  @@index([organisationId])
+  @@index([createdAt])
+  @@index([status])
+}

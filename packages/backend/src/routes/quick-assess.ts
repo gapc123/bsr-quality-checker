@@ -8,6 +8,7 @@ import { chunkDocuments } from '../services/document-chunker.js';
 import { generateEmbeddings } from '../services/vector-embeddings.js';
 import { vectorStore } from '../services/vector-store.js';
 import prisma from '../db/client.js';
+import { sendSubmissionErrorNotification, sendNewOrgNotification } from '../services/telegram.js';
 import { analysisLimiter, uploadLimiter } from '../middleware/rate-limit.js';
 import { createUploadMiddleware } from '../utils/upload-config.js';
 
@@ -179,9 +180,11 @@ router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), 
 
   } catch (error) {
     console.error('❌ Matrix assessment error:', error);
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    sendSubmissionErrorNotification({ submissionId: 'quick-assess', errorMessage: errMsg }).catch(() => {});
     res.status(500).json({
       error: 'Assessment failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: errMsg,
     });
   }
 });
@@ -221,6 +224,7 @@ router.post('/save', async (req: Request, res: Response) => {
     });
 
     console.log(`✓ Created client: ${client.id}`);
+    sendNewOrgNotification(client.name).catch(() => {});
 
     // Create pack
     const pack = await prisma.pack.create({
