@@ -351,7 +351,7 @@ export async function initializeTelegramBot(): Promise<void> {
   }
 
   // Now start polling cleanly
-  bot.startPolling({ interval: 1000 });
+  bot.startPolling();
   console.log('[Telegram] Bot initialized with polling');
 
   // Graceful shutdown — stops polling so Railway redeploys don't leave ghost connections
