@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import AISummary from '../components/AISummary';
 import TaskChecklist from '../components/TaskChecklist';
@@ -94,6 +94,7 @@ interface Template {
 export default function PackDetail() {
   const { packId } = useParams<{ packId: string }>();
   const { showToast } = useToast();
+  const navigate = useNavigate();
   const [pack, setPack] = useState<Pack | null>(null);
   const [loading, setLoading] = useState(true);
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -152,6 +153,28 @@ export default function PackDetail() {
       showToast('Failed to apply template', 'error');
     } finally {
       setApplyingTemplate(false);
+    }
+  };
+
+  const handleRunAssessment = async () => {
+    const versionId = pack?.versions?.[0]?.id;
+    if (!versionId || typeof versionId !== 'string' || !versionId.trim()) {
+      showToast('No version available to assess. Please upload documents first.', 'error');
+      return;
+    }
+    try {
+      const res = await fetch(`/api/packs/${packId}/versions/${versionId}/analyze`, {
+        method: 'POST',
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        showToast(data.error || 'Failed to start assessment', 'error');
+        return;
+      }
+      navigate(`/packs/${packId}/versions/${versionId}/results`);
+    } catch (error) {
+      console.error('Error starting assessment:', error);
+      showToast('Failed to start assessment', 'error');
     }
   };
 
@@ -233,6 +256,17 @@ export default function PackDetail() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Change Status
+            </button>
+            <button
+              onClick={handleRunAssessment}
+              disabled={!pack?.versions?.length}
+              className="btn-ghost"
+              style={{ padding: '8px 16px', fontSize: '14px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px', opacity: !pack?.versions?.length ? 0.5 : 1 }}
+            >
+              <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              Run Assessment
             </button>
             <Link
               to={`/packs/${packId}/upload`}

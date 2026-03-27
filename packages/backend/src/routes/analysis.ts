@@ -32,6 +32,11 @@ router.post(
     try {
       const versionId = req.params.versionId as string;
 
+      const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!versionId || !UUID_REGEX.test(versionId)) {
+        return res.status(400).json({ error: 'Invalid version ID — must be a valid UUID.' });
+      }
+
       // Check version exists
       const version = await prisma.packVersion.findUnique({
         where: { id: versionId },
