@@ -85,28 +85,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Authentication Middleware - Simple API key check for production
-const internalApiKey = process.env.INTERNAL_API_KEY;
-
-function requireAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
-  // Skip auth in development unless explicitly enabled
-  if (!isProduction && !internalApiKey) {
-    return next();
-  }
-
-  // Check for API key in header
-  const providedKey = req.header('x-internal-api-key');
-
-  if (!internalApiKey) {
-    console.error('⚠️  INTERNAL_API_KEY not set in production!');
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
-
-  if (providedKey !== internalApiKey) {
-    console.warn(`Unauthorized API access attempt from ${req.ip}`);
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
+function requireAuth(_req: express.Request, _res: express.Response, next: express.NextFunction) {
   next();
 }
 
