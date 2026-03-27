@@ -1499,7 +1499,13 @@ export async function assessPackAgainstMatrix(
   console.log(`${'─'.repeat(40)}`);
 
   // Combine both result sets
-  const combinedResults = [...deterministicAssessmentResults, ...llmResults];
+  // Deduplicate: deterministic results take priority over LLM results for the same matrix_id
+  const combined = new Map<string, AssessmentResult>();
+  deterministicAssessmentResults.forEach(r => combined.set(r.matrix_id, r));
+  llmResults.forEach(r => {
+    if (!combined.has(r.matrix_id)) combined.set(r.matrix_id, r);
+  });
+  const combinedResults = Array.from(combined.values());
 
   // ============================================
   // ENRICHMENT: Add confidence tags + cost/timeline/risk metadata
