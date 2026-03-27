@@ -344,7 +344,7 @@ export async function initializeTelegramBot(): Promise<void> {
   // drop_pending_updates: true discards messages that accumulated while the old
   // instance was dying — they would be processed by the wrong (dead) context anyway.
   try {
-    await (bot as any).deleteWebhook({ drop_pending_updates: true });
+    await bot.deleteWebHook();
     console.log('[Telegram] Stale webhook/polling cleared');
   } catch (err) {
     console.error('[Telegram] Failed to clear webhook (non-fatal):', err);
