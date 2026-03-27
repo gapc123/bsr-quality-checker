@@ -417,11 +417,25 @@ export async function runMatrixAssessment(packVersionId: string): Promise<FullAs
     .sort((a, b) => a.filename.localeCompare(b.filename)); // Double-ensure sorting
 
   // Determine pack context from version metadata
+  // Auto-detect height/storeys from document content when DB metadata is absent
+  let heightForContext = packVersion.height;
+  let storeysForContext = packVersion.storeys;
+  if (!heightForContext || !storeysForContext) {
+    const allDocText = packDocs.map(d => d.extractedText).join(' ');
+    if (!heightForContext) {
+      const hMatch = allDocText.match(/(\d+(?:\.\d+)?)\s*m(?:etres?|eters?)?\b/i);
+      if (hMatch) heightForContext = hMatch[1] + 'm';
+    }
+    if (!storeysForContext) {
+      const sMatch = allDocText.match(/(\d+)\s*(?:storey|floor|level)s?\b/i);
+      if (sMatch) storeysForContext = sMatch[1];
+    }
+  }
   const context = determinePackContext(
     packVersion.borough,
     packVersion.buildingType,
-    packVersion.height,
-    packVersion.storeys
+    heightForContext,
+    storeysForContext
   );
 
   console.log(`[Matrix Assessment] Starting assessment for pack version ${packVersionId}`);
