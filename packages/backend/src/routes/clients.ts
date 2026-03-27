@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../db/client.js';
 import { getClientSummary } from '../services/ai-summary.js';
+import { sendNewOrgNotification } from '../services/telegram.js';
 
 const router = Router();
 
@@ -215,6 +216,8 @@ router.post('/', async (req: Request, res: Response) => {
         notes: notes?.trim() || null,
       },
     });
+
+    sendNewOrgNotification(client.name).catch(() => {});
 
     res.status(201).json(client);
   } catch (error) {

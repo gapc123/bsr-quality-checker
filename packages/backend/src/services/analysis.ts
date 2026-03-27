@@ -1,4 +1,5 @@
 import prisma from '../db/client.js';
+import { sendAssessmentCompleteNotification } from './telegram.js';
 import { extractValidatedJSON } from './claude.js';
 import { searchChunks } from './ingestion.js';
 import {
@@ -390,6 +391,7 @@ export async function runMatrixAssessment(packVersionId: string): Promise<FullAs
   const packVersion = await prisma.packVersion.findUnique({
     where: { id: packVersionId },
     include: {
+      pack: { select: { name: true } },
       documents: {
         include: { chunks: true },
         orderBy: { filename: 'asc' }, // Consistent ordering for deterministic results
@@ -435,6 +437,16 @@ export async function runMatrixAssessment(packVersionId: string): Promise<FullAs
       matrixAssessment: JSON.stringify(assessment),
     },
   });
+
+  // Send Telegram notification
+  const summary = assessment.criteria_summary;
+  sendAssessmentCompleteNotification({
+    organisationName: packVersion.pack.name,
+    readinessScore: assessment.readiness_score,
+    passed: summary.meets,
+    partial: summary.partial,
+    failed: summary.does_not_meet,
+  }).catch((err) => console.error('[Telegram] Notification failed:', err));
 
   return assessment;
 }

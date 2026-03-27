@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import prisma from '../db/client.js';
 import { analyzePackVersion, runMatrixAssessment } from '../services/analysis.js';
+import { sendSubmissionErrorNotification } from '../services/telegram.js';
 import {
   generateMarkdownReport,
   generatePDFReport,
@@ -338,6 +339,10 @@ router.post(
             status: 'failed',
             error: error.message,
           });
+          sendSubmissionErrorNotification({
+            submissionId: versionId,
+            errorMessage: error.message,
+          }).catch(() => {});
         });
     } catch (error) {
       console.error('Error starting matrix assessment:', error);

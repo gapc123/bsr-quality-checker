@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
+import passport from 'passport';
 import path from 'path';
 import fs from 'fs';
 import packsRouter from './routes/packs.js';
@@ -65,6 +66,10 @@ app.use(session({
     sameSite: 'lax',
   },
 }));
+
+// Passport (used by Microsoft SSO for admin panel)
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Request tracking and logging
 app.use(requestIdMiddleware);

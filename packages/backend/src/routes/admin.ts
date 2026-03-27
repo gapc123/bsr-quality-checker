@@ -1,11 +1,71 @@
 import express, { Request, Response } from 'express';
+import passport from 'passport';
+import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 import prisma from '../db/client.js';
-import { verifyAdminCredentials, requireAdminSession } from '../middleware/admin-auth.js';
+import { isAdminEmail, verifyAdminCredentials, requireAdminSession } from '../middleware/admin-auth.js';
 
 const router = express.Router();
 
+// ─── Microsoft SSO Setup ────────────────────────────────────────────────────
+
+const ADMIN_CALLBACK_URL = process.env.NODE_ENV === 'production'
+  ? 'https://www.attlee.ai/api/admin/auth/microsoft/callback'
+  : 'http://localhost:3001/api/admin/auth/microsoft/callback';
+
+const FRONTEND_ADMIN_URL = process.env.NODE_ENV === 'production'
+  ? 'https://www.attlee.ai/admin'
+  : 'http://localhost:5173/admin';
+
+if (process.env.AZURE_CLIENT_ID && process.env.AZURE_CLIENT_SECRET) {
+  const msStrategy = new MicrosoftStrategy(
+    {
+      clientID: process.env.AZURE_CLIENT_ID,
+      clientSecret: process.env.AZURE_CLIENT_SECRET,
+      callbackURL: ADMIN_CALLBACK_URL,
+      scope: ['user.read'],
+      tenant: 'common',
+      addUPNAsEmail: true,
+    },
+    (_accessToken, _refreshToken, profile, done) => {
+      // Extract email from profile
+      const email = profile.emails?.[0]?.value
+        || profile._json?.mail
+        || profile._json?.userPrincipalName
+        || '';
+
+      if (!email || !isAdminEmail(email.toLowerCase())) {
+        return done(null, false);
+      }
+      return done(null, { email: email.toLowerCase() });
+    }
+  );
+  passport.use('admin-microsoft', msStrategy as unknown as passport.Strategy);
+  passport.serializeUser((user: any, done) => done(null, user));
+  passport.deserializeUser((user: any, done) => done(null, user));
+}
+
 // ─── Auth ───────────────────────────────────────────────────────────────────
 
+// Microsoft SSO — redirect to Microsoft login
+router.get('/auth/microsoft', (req: Request, res: Response, next) => {
+  if (!process.env.AZURE_CLIENT_ID) {
+    return res.status(501).json({ error: 'Microsoft SSO not configured' });
+  }
+  passport.authenticate('admin-microsoft')(req, res, next);
+});
+
+// Microsoft SSO — callback from Microsoft
+router.get('/auth/microsoft/callback', (req: Request, res: Response, next) => {
+  passport.authenticate('admin-microsoft', (err: Error | null, user: { email: string } | false) => {
+    if (err || !user) {
+      return res.redirect(`${FRONTEND_ADMIN_URL}/login?error=unauthorized`);
+    }
+    (req as any).session.adminUser = user.email;
+    return res.redirect(FRONTEND_ADMIN_URL);
+  })(req, res, next);
+});
+
+// Password login (fallback / dev)
 router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) {
