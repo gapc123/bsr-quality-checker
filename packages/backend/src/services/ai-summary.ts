@@ -104,8 +104,6 @@ export async function generatePackSummary(packId: string): Promise<string> {
     tasks.filter((t) => t.assignedToName).map((t) => t.assignedToName)
   );
 
-  const completedTasks_old = tasks.filter((t) => t.completed).length;
-
   // Build enhanced context for the LLM
   const context = {
     packName: pack.name,

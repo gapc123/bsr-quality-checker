@@ -87,7 +87,6 @@ function chunkText(
   docType: string | null,
   baseChunkId: string
 ): DocumentChunk[] {
-  const TARGET_TOKENS = 400;  // Target chunk size
   const MIN_TOKENS = 300;     // Minimum chunk size
   const MAX_TOKENS = 500;     // Maximum chunk size
   const OVERLAP_TOKENS = 50;  // Overlap between chunks
@@ -197,7 +196,7 @@ async function extractPDFWithPages(filepath: string): Promise<{ text: string; pa
     // Extract text for each page using render_page option
     for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
       try {
-        const pageData = await pdfParse(dataBuffer, {
+        await pdfParse(dataBuffer, {
           max: 1,
           pagerender: (pageData: any) => {
             return pageData.getTextContent().then((textContent: any) => {

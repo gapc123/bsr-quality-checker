@@ -526,7 +526,6 @@ router.post('/:id/tasks', async (req: Request, res: Response) => {
 router.put('/:packId/tasks/:taskId', async (req: Request, res: Response) => {
   try {
     const taskId = req.params.taskId as string;
-    const _packId = req.params.packId as string;
     const {
       title,
       description,
