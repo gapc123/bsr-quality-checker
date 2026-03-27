@@ -9,7 +9,6 @@
  * 2. Content verification (does it contain required elements?)
  * 3. Quality assessment (is the content complete and specific?)
  */
-
 export interface DocumentEvidence {
   filename: string;
   docType: string | null;
@@ -34,7 +33,7 @@ export interface RuleResult {
 // ============================================
 
 function normalise(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, ' ').trim();
+  return text.toLowerCase().replace(/[_-]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 // Unused helper - kept for potential future use
