@@ -298,3 +298,18 @@ model Submission {
   @@index([createdAt])
   @@index([status])
 }
+
+// Seeded CLC guidance suite reference data (one versioned record per guidance suite release)
+model ClcRequirements {
+  id                    String   @id @default(uuid())
+  guidanceSuiteVersion  String   @unique
+  icjFramework          String   // JSON
+  statutoryDocuments    String   // JSON
+  nonStatutoryDocuments String   // JSON
+  aisColumns            String   // JSON
+  fileNamingRules       String   // JSON
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("clc_requirements")
+}
