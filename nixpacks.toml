@@ -1,10 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "chromium", "python3"]
+nixPkgs = ["nodejs_20", "chromium", "python3", "python312Packages.pip"]
 
 [phases.install]
 cmds = [
     "rm -f package-lock.json packages/*/package-lock.json",
-    "npm install --legacy-peer-deps"
+    "npm install --legacy-peer-deps",
+    "pip install --no-cache-dir -r requirements.txt"
 ]
 
 [phases.build]

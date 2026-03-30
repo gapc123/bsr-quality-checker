@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import multer from 'multer';
 
 /**
  * Custom error class for API errors
@@ -80,6 +81,16 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ): void {
+  // Handle multer-specific errors with a clear 400 response
+  if (err instanceof multer.MulterError) {
+    const msg =
+      err.code === 'LIMIT_UNEXPECTED_FILE'
+        ? `Unexpected upload field "${err.field}". Expected field name: "documents".`
+        : err.message;
+    res.status(400).json({ error: msg });
+    return;
+  }
+
   // Determine if it's an operational error
   const isOperational = err instanceof ApiError && err.isOperational;
   const statusCode = err instanceof ApiError ? err.statusCode : 500;
