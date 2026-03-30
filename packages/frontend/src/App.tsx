@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import { CopilotKit } from '@copilotkit/react-core';
+import '@copilotkit/react-ui/styles.css';
 import PacksList from './pages/PacksList';
 import PackDetail from './pages/PackDetail';
 import Upload from './pages/Upload';
@@ -290,16 +292,18 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <ToastProvider>
-        <A11yProvider>
-          <ResponsiveContainer>
-            <SkipLinks />
-            <AppContent />
-          </ResponsiveContainer>
-        </A11yProvider>
-      </ToastProvider>
-    </BrowserRouter>
+    <CopilotKit runtimeUrl="/api/copilotkit">
+      <BrowserRouter>
+        <ToastProvider>
+          <A11yProvider>
+            <ResponsiveContainer>
+              <SkipLinks />
+              <AppContent />
+            </ResponsiveContainer>
+          </A11yProvider>
+        </ToastProvider>
+      </BrowserRouter>
+    </CopilotKit>
   );
 }
 

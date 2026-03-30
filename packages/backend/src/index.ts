@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import passport from 'passport';
+import { CopilotRuntime, AnthropicAdapter, copilotRuntimeNodeExpressEndpoint } from '@copilotkit/runtime';
 import path from 'path';
 import fs from 'fs';
 import packsRouter from './routes/packs.js';
@@ -137,6 +138,13 @@ app.get('/api-docs.json', (_req, res) => {
 });
 
 console.log('📚 API Documentation available at /api-docs');
+
+// CopilotKit runtime endpoint — powers the AI copilot on the results screen
+app.use('/api/copilotkit', copilotRuntimeNodeExpressEndpoint({
+  runtime: new CopilotRuntime(),
+  serviceAdapter: new AnthropicAdapter({ model: 'claude-sonnet-4-20250514' } as any),
+  endpoint: '/api/copilotkit',
+}));
 
 // Admin routes (session-based auth, separate from Clerk)
 app.use('/api/admin', adminRouter);

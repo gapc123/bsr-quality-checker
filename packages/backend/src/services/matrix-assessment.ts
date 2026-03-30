@@ -11,6 +11,7 @@
 import fs from 'fs';
 import path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
+import { runLangGraphAssessment } from './langgraph-assessment.js';
 import {
   searchCorpus,
   // getObligations, // Unused import
@@ -1118,7 +1119,8 @@ function applyComplianceLogic(
  * Stage 1: LLM extracts facts (no judgement)
  * Stage 2: Deterministic logic applies compliance rules
  */
-async function assessCriterionTwoStage(
+// Kept as exported fallback. Phase 2 now uses runLangGraphAssessment().
+export async function assessCriterionTwoStage(
   row: MatrixRow,
   packDocs: PackDocument[],
   referenceEvidence: RetrievalResult | null,
@@ -1465,31 +1467,21 @@ export async function assessPackAgainstMatrix(
   // Build reference standards summary
   const referenceStandards = buildReferenceStandardsSummary(applicableCriteria, context);
 
-  // Assess each LLM criterion
-  const llmResults: AssessmentResult[] = [];
+  // Assess each LLM criterion via LangGraph (parallel by category + critique pass)
   let corpusBackedCount = 0;
   let withReferenceAnchor = 0;
 
+  // Count corpus-backed criteria (for stats)
   for (const row of applicableCriteria) {
-    console.log(`  [LLM] Assessing ${row.matrix_id}: ${row.matrix_title}`);
-
-    // Get corpus evidence
-    const referenceEvidence = getCorpusEvidence(row);
-
     if (row.reference_sources.length > 0) {
       corpusBackedCount++;
-      if (referenceEvidence) {
-        withReferenceAnchor++;
-      }
+      if (getCorpusEvidence(row)) withReferenceAnchor++;
     }
-
-    // Assess the criterion using two-stage flow (fact extraction → deterministic logic)
-    // TASK #15: Use new evidence-first approach for reproducible assessments
-    const result = await assessCriterionTwoStage(row, packDocs, referenceEvidence, client);
-    llmResults.push(result);
   }
 
-  console.log(`  ✓ Completed ${llmResults.length} LLM assessments`);
+  console.log(`  [LangGraph] Starting parallel assessment (${applicableCriteria.length} criteria across categories)`);
+  const llmResults = await runLangGraphAssessment(applicableCriteria, packDocs, context, client);
+  console.log(`  ✓ Completed ${llmResults.length} LLM assessments (LangGraph parallel + critique)`);
 
   // ============================================
   // COMBINE RESULTS

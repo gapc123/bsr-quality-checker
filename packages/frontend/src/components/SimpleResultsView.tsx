@@ -8,9 +8,19 @@
  * - Clear: Client actions vs Internal actions
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useToast } from './Toast';
 import type { AssessmentResult } from '../types/assessment';
+import { useCopilotReadable } from '@copilotkit/react-core';
+import { CopilotPopup } from '@copilotkit/react-ui';
+
+interface DomainReviews {
+  fire_safety: string;
+  documentation: string;
+  regulatory: string;
+  quality: string;
+  synthesis: string;
+}
 
 interface SimpleResultsViewProps {
   assessment: {
@@ -20,6 +30,7 @@ interface SimpleResultsViewProps {
       isHRB: boolean;
       isLondon: boolean;
     };
+    assessmentId?: string;
   };
   onDownloadReport: () => void | Promise<void>;
   onClose?: () => void;
@@ -35,6 +46,35 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   const { showToast } = useToast();
   const [isDownloading, setIsDownloading] = useState(false);
   const [showAllDetails, setShowAllDetails] = useState(false);
+  const [crewReviews, setCrewReviews] = useState<DomainReviews | null>(null);
+  const [crewStatus, setCrewStatus] = useState<'idle' | 'pending' | 'done' | 'error'>('idle');
+  const [activeReviewTab, setActiveReviewTab] = useState<keyof DomainReviews>('synthesis');
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Poll for CrewAI specialist review
+  useEffect(() => {
+    const assessmentId = (assessment as any).assessmentId;
+    if (!assessmentId) return;
+    setCrewStatus('pending');
+    pollRef.current = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/assess/crew-review/${assessmentId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'done') {
+          setCrewReviews(data.domain_reviews);
+          setCrewStatus('done');
+          if (pollRef.current) clearInterval(pollRef.current);
+        } else if (data.status === 'error') {
+          setCrewStatus('error');
+          if (pollRef.current) clearInterval(pollRef.current);
+        }
+      } catch {
+        // ignore transient fetch errors, keep polling
+      }
+    }, 5000);
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+  }, []);
 
   // Categorize issues
   const analysis = useMemo(() => {
@@ -97,6 +137,33 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
     };
   }, [assessment.results]);
 
+  // Give the copilot full awareness of the assessment results
+  useCopilotReadable({
+    description: 'BSR compliance assessment results for this building',
+    value: {
+      verdict: analysis.statusText,
+      totalChecks: analysis.total,
+      passing: analysis.passing,
+      buildingType: assessment.pack_context?.buildingType,
+      isHighRiseBuilding: assessment.pack_context?.isHRB,
+      isLondon: assessment.pack_context?.isLondon,
+      criticalBlockers: analysis.blockers.map(b => ({
+        check: b.matrix_title,
+        reason: b.reasoning,
+        gaps: b.gaps_identified,
+      })),
+      clientActions: analysis.clientActions.map(c => ({
+        check: c.matrix_title,
+        reason: c.reasoning,
+      })),
+      internalActions: analysis.internalActions.map(i => ({
+        check: i.matrix_title,
+        owner: i.actions_required?.[0]?.owner,
+        reason: i.reasoning,
+      })),
+    },
+  });
+
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
@@ -112,6 +179,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   };
 
   return (
+    <>
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col rounded-lg">
 
@@ -316,6 +384,61 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
           )}
         </div>
 
+        {/* Specialist Reviews — CrewAI domain expert second pass */}
+        {crewStatus !== 'idle' && (
+          <div className="border-t-2 border-indigo-100 bg-indigo-50 p-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-indigo-900 text-sm tracking-wide uppercase">
+                Specialist Review
+              </h3>
+              {crewStatus === 'pending' && (
+                <span className="text-xs text-indigo-500 animate-pulse">
+                  ⏳ Specialist agents reviewing...
+                </span>
+              )}
+              {crewStatus === 'error' && (
+                <span className="text-xs text-red-500">Review unavailable</span>
+              )}
+            </div>
+
+            {crewStatus === 'done' && crewReviews && (
+              <>
+                {/* Tab nav */}
+                <div className="flex gap-1 mb-4 flex-wrap">
+                  {([
+                    ['synthesis',     '🏛 Executive Summary'],
+                    ['fire_safety',   '🔥 Fire Safety'],
+                    ['documentation', '📋 Documentation'],
+                    ['regulatory',    '⚖️ Regulatory'],
+                    ['quality',       '🔍 Consistency'],
+                  ] as [keyof DomainReviews, string][]).map(([key, label]) => (
+                    <button
+                      key={key}
+                      onClick={() => setActiveReviewTab(key)}
+                      className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                        activeReviewTab === key
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-100'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <div className="bg-white rounded-lg p-4 text-sm text-slate-700 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto border border-indigo-100">
+                  {crewReviews[activeReviewTab]}
+                </div>
+              </>
+            )}
+
+            {crewStatus === 'pending' && (
+              <div className="text-xs text-indigo-400 text-center py-4">
+                Five specialist AI agents (Fire Safety, Documentation, Regulatory, Quality, Lead Reviewer) are independently reviewing your results...
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Footer - Download Buttons */}
         <div className="border-t-2 border-slate-200 bg-slate-50 p-6">
           <div className="flex gap-4 justify-center items-center">
@@ -361,6 +484,28 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
         </div>
       </div>
     </div>
+
+    {/* AI Copilot — ask questions about your assessment results */}
+    <CopilotPopup
+      instructions={`You are an expert BSR (Building Safety Regulator) compliance advisor embedded in Attlee AI's assessment tool.
+You have full visibility of the assessment results for this building, including critical blockers, client actions required, and internal specialist actions.
+
+Your role is to help housing association staff and consultants understand:
+- What the blockers mean in plain English
+- What they need to do to pass, and in what order
+- Which consultant disciplines need to be involved
+- How serious each issue is and typical remediation timescales
+
+Be concise, practical, and action-oriented. Reference specific checks from the results when relevant.
+Do not speculate beyond the evidence in the assessment.`}
+      defaultOpen={false}
+      clickOutsideToClose={true}
+      labels={{
+        title: 'Attlee AI Assistant',
+        initial: 'Ask me anything about these results — what to fix, who to call, or what the blockers mean.',
+      }}
+    />
+    </>
   );
 };
 

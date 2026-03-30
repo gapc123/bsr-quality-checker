@@ -14,6 +14,34 @@ import { createUploadMiddleware } from '../utils/upload-config.js';
 
 const router = express.Router();
 
+// In-memory store for crew review results (keyed by assessmentId)
+// In production this would use Redis or the database
+const crewReviewCache = new Map<string, { status: 'pending' | 'done' | 'error'; result?: any; error?: string }>();
+
+const CREW_SERVICE_URL = process.env.CREW_SERVICE_URL || 'http://localhost:8001';
+
+async function triggerCrewReview(assessmentId: string, context: any, results: any[]) {
+  crewReviewCache.set(assessmentId, { status: 'pending' });
+  try {
+    const response = await fetch(`${CREW_SERVICE_URL}/review`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context, results }),
+      signal: AbortSignal.timeout(300_000), // 5 min timeout
+    });
+    if (!response.ok) throw new Error(`Crew service returned ${response.status}`);
+    const data = await response.json() as { domain_reviews: any };
+    crewReviewCache.set(assessmentId, { status: 'done', result: data.domain_reviews });
+    console.log(`✅ Crew review complete for ${assessmentId}`);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : 'Unknown error';
+    console.error(`❌ Crew review failed for ${assessmentId}: ${msg}`);
+    crewReviewCache.set(assessmentId, { status: 'error', error: msg });
+  }
+  // Clean up after 2 hours
+  setTimeout(() => crewReviewCache.delete(assessmentId), 7_200_000);
+}
+
 // Configure multer for temporary uploads (uses UUID filenames)
 const upload = createUploadMiddleware({
   directory: 'temp-uploads',
@@ -149,6 +177,10 @@ router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), 
     (tempData as any).processingTimeSeconds = processingTimeSeconds;
     fs.writeFileSync(tempDataPath, JSON.stringify(tempData));
 
+    // Fire CrewAI specialist review in background (non-blocking)
+    // Result stored separately and fetched via /api/assess/crew-review/:assessmentId
+    triggerCrewReview(assessmentId, context, fullAssessment.results);
+
     // Clean up temp files after 1 hour
     setTimeout(() => {
       try {
@@ -187,6 +219,24 @@ router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), 
       details: errMsg,
     });
   }
+});
+
+/**
+ * Poll for CrewAI specialist review result
+ * Returns { status: 'pending' | 'done' | 'error', domain_reviews? }
+ */
+router.get('/crew-review/:assessmentId', (req: Request, res: Response) => {
+  const entry = crewReviewCache.get(String(req.params['assessmentId']));
+  if (!entry) {
+    return res.status(404).json({ error: 'No crew review found for this assessment' });
+  }
+  if (entry.status === 'pending') {
+    return res.json({ status: 'pending' });
+  }
+  if (entry.status === 'error') {
+    return res.json({ status: 'error', error: entry.error });
+  }
+  return res.json({ status: 'done', domain_reviews: entry.result });
 });
 
 /**
