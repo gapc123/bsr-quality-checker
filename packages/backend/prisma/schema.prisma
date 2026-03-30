@@ -313,3 +313,17 @@ model ClcRequirements {
 
   @@map("clc_requirements")
 }
+
+// Seeded BSR rejection reasons, one record per Approved Document part
+model BsrRejectionReason {
+  id                    String   @id @default(uuid())
+  part                  String   @unique
+  subParts              String   // JSON array of sub-part strings
+  insufficientInfoItems String   // JSON array of strings
+  bsrExampleReasons     String   // JSON array of strings
+  hasFeedback           Boolean
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("bsr_rejection_reasons")
+}

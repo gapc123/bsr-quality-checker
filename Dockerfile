@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     xdg-utils \
     python3 \
+    python3-pip \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
@@ -26,6 +27,10 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
+
+# Install Python dependencies for bsr_quality_checker (Layers 2–6)
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 # Copy package files first
 COPY package*.json ./

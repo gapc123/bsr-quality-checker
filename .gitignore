@@ -40,3 +40,5 @@ coverage/
 # Misc
 *.tsbuildinfo
 package-lock.json
+__pycache__/
+*.pyc
