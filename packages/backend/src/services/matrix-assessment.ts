@@ -1480,7 +1480,7 @@ export async function assessPackAgainstMatrix(
   }
 
   console.log(`  [LangGraph] Starting parallel assessment (${applicableCriteria.length} criteria across categories)`);
-  const llmResults = await runLangGraphAssessment(applicableCriteria, packDocs, context, client);
+  const llmResults: AssessmentResult[] = await runLangGraphAssessment(applicableCriteria, packDocs, context, client);
   console.log(`  ✓ Completed ${llmResults.length} LLM assessments (LangGraph parallel + critique)`);
 
   // ============================================
