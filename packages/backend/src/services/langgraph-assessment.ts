@@ -91,7 +91,7 @@ async function singleCriterionCall(
 ): Promise<AssessmentResult> {
   const docContext = packDocs.map(d =>
     `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\n` +
-    `Content excerpt:\n${d.extractedText.slice(0, 3000)}`
+    `Content excerpt:\n${d.extractedText.slice(0, 1500)}`
   ).join('\n\n---\n\n');
 
   const critiquePrefix = mode === 'critique'
@@ -192,21 +192,17 @@ async function parallelAssessNode(state: AssessmentState): Promise<Partial<Asses
   const groupNames = [...groups.keys()].join(', ');
   console.log(`[LangGraph] Categories: ${groupNames}`);
 
-  // Run all category groups concurrently
-  const groupResults = await Promise.all(
-    [...groups.entries()].map(async ([category, rows]) => {
-      console.log(`  [LangGraph] → ${category}: ${rows.length} checks`);
-      const catResults: AssessmentResult[] = [];
-      for (const row of rows) {
-        const result = await singleCriterionCall(row, packDocs, client, 'standard');
-        catResults.push(result);
-      }
-      console.log(`  [LangGraph] ✓ ${category} done`);
-      return catResults;
-    })
-  );
-
-  const results = groupResults.flat();
+  // Run category groups sequentially to prevent OOM on constrained containers.
+  // (Speed is not critical here — assessments run in the background with async polling.)
+  const results: AssessmentResult[] = [];
+  for (const [category, rows] of groups.entries()) {
+    console.log(`  [LangGraph] → ${category}: ${rows.length} checks`);
+    for (const row of rows) {
+      const result = await singleCriterionCall(row, packDocs, client, 'standard');
+      results.push(result);
+    }
+    console.log(`  [LangGraph] ✓ ${category} done`);
+  }
   console.log(`[LangGraph] parallel_assess complete: ${results.length} results`);
   return { results };
 }
@@ -237,25 +233,23 @@ async function critiqueNode(state: AssessmentState): Promise<Partial<AssessmentS
 
   const updates = new Map<string, AssessmentResult>();
 
-  await Promise.all(
-    toReview.map(async (original) => {
-      const row = criteria.find(c => c.matrix_id === original.matrix_id);
-      if (!row) return;
+  for (const original of toReview) {
+    const row = criteria.find(c => c.matrix_id === original.matrix_id);
+    if (!row) continue;
 
-      const revised = await singleCriterionCall(row, packDocs, client, 'critique');
+    const revised = await singleCriterionCall(row, packDocs, client, 'critique');
 
-      // Only upgrade from partial → meets (don't downgrade)
-      if (revised.status === 'meets' && original.status === 'partial') {
-        console.log(`  [LangGraph] ✓ ${row.matrix_id}: upgraded partial → meets after critique`);
-        updates.set(row.matrix_id, {
-          ...revised,
-          reasoning: `[Critique confirmed: meets]\n${revised.reasoning}`,
-        });
-      } else {
-        console.log(`  [LangGraph] → ${row.matrix_id}: critique confirmed ${original.status}`);
-      }
-    })
-  );
+    // Only upgrade from partial → meets (don't downgrade)
+    if (revised.status === 'meets' && original.status === 'partial') {
+      console.log(`  [LangGraph] ✓ ${row.matrix_id}: upgraded partial → meets after critique`);
+      updates.set(row.matrix_id, {
+        ...revised,
+        reasoning: `[Critique confirmed: meets]\n${revised.reasoning}`,
+      });
+    } else {
+      console.log(`  [LangGraph] → ${row.matrix_id}: critique confirmed ${original.status}`);
+    }
+  }
 
   console.log(`[LangGraph] critique complete: ${updates.size} upgrades`);
   return { critiqueUpdates: updates };

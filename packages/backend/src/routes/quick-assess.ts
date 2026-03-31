@@ -120,6 +120,11 @@ function classifyDocType(filename: string, text: string): string | null {
  *
  * Returns complete assessment results for carousel display
  */
+// Safety net: unhandled rejections in background work must not crash the process
+process.on('unhandledRejection', (reason) => {
+  console.error('[assess] Unhandled rejection (caught by safety net):', reason);
+});
+
 // Background worker — runs the full pipeline and populates assessmentCache
 async function runAssessmentBackground(
   assessmentId: string,
