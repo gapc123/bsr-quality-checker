@@ -18,6 +18,14 @@ const router = express.Router();
 // In production this would use Redis or the database
 const crewReviewCache = new Map<string, { status: 'pending' | 'done' | 'error'; result?: any; error?: string }>();
 
+// In-memory store for async assessment results
+const assessmentCache = new Map<string, {
+  status: 'pending' | 'done' | 'error';
+  progress?: string;
+  result?: any;
+  error?: string;
+}>();
+
 const CREW_SERVICE_URL = process.env.CREW_SERVICE_URL || 'http://localhost:8001';
 
 async function triggerCrewReview(assessmentId: string, context: any, results: any[]) {
@@ -91,115 +99,61 @@ function classifyDocType(filename: string, text: string): string | null {
  *
  * Returns complete assessment results for carousel display
  */
-router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Request, res: Response) => {
+// Background worker — runs the full pipeline and populates assessmentCache
+async function runAssessmentBackground(
+  assessmentId: string,
+  files: Express.Multer.File[],
+  context: any,
+) {
   const startTime = Date.now();
+  const tempDataPath = path.join(process.cwd(), 'temp-uploads', `${assessmentId}.json`);
+
+  const setProgress = (msg: string) => {
+    assessmentCache.set(assessmentId, { ...assessmentCache.get(assessmentId)!, progress: msg });
+  };
+
   try {
-    // Accept any field name; filter to files uploaded under 'documents'
-    const allFiles = (req.files as Express.Multer.File[]) || [];
-    const files = allFiles.filter(f => f.fieldname === 'documents');
-    const { buildingType, heightMeters, storeys, isLondon, isHRB } = req.body;
-
-    if (files.length === 0) {
-      return res.status(400).json({ error: 'No documents uploaded' });
-    }
-
-    if (files.length > 20) {
-      return res.status(400).json({ error: 'Maximum 20 documents per assessment' });
-    }
-
-    console.log(`📄 Full matrix assessment started with ${files.length} documents`);
-
-    // Extract text from all PDFs
+    setProgress('Extracting text from documents…');
     const packDocs = await Promise.all(
       files.map(async (file) => {
         const extractedText = await extractPDFText(file.path);
         const docType = classifyDocType(file.originalname, extractedText);
-
-        return {
-          filename: file.originalname,
-          docType,
-          extractedText,
-          filepath: file.path // Store for later saving
-        };
+        return { filename: file.originalname, docType, extractedText, filepath: file.path };
       })
     );
 
-    // Create pack context (use provided values or defaults)
-    const context = {
-      isLondon: isLondon === 'true' || isLondon === true || false,
-      isHRB: isHRB === 'true' || isHRB === true || true, // Default to HRB
-      buildingType: buildingType || 'residential',
-      heightMeters: heightMeters ? parseFloat(heightMeters) : null,
-      storeys: storeys ? parseInt(storeys) : null
-    };
+    // RAG indexing is optional — skip gracefully if OPENAI_API_KEY is absent
+    try {
+      setProgress('Indexing documents for semantic search…');
+      const chunkedDocs = await chunkDocuments(
+        files.map((file, idx) => ({
+          filepath: file.path,
+          filename: file.originalname,
+          docType: packDocs[idx].docType,
+        }))
+      );
+      const allChunks = chunkedDocs.flatMap(doc => doc.chunks);
+      const embeddings = await generateEmbeddings(allChunks);
+      await vectorStore.index(embeddings);
+      console.log(`[assess] RAG: ${allChunks.length} chunks indexed`);
+    } catch (ragErr) {
+      console.warn('[assess] RAG skipped (OPENAI_API_KEY not set or embeddings failed):', ragErr instanceof Error ? ragErr.message : ragErr);
+    }
 
-    console.log('Assessment context:', context);
-
-    // TASK #21: RAG Integration - Chunk documents and create vector index
-    console.log('📊 Chunking documents for RAG...');
-    const chunkedDocs = await chunkDocuments(
-      files.map((file, idx) => ({
-        filepath: file.path,
-        filename: file.originalname,
-        docType: packDocs[idx].docType
-      }))
-    );
-
-    // Flatten all chunks
-    const allChunks = chunkedDocs.flatMap(doc => doc.chunks);
-    console.log(`  ✓ Created ${allChunks.length} chunks`);
-
-    // Generate embeddings
-    console.log('🧠 Generating vector embeddings...');
-    const embeddings = await generateEmbeddings(allChunks);
-    console.log(`  ✓ Generated ${embeddings.length} embeddings`);
-
-    // Index in vector store
-    await vectorStore.index(embeddings);
-    console.log(`  ✓ Vector store ready for semantic search`);
-
-    // Run full two-phase assessment (deterministic + LLM)
-    console.log('🚀 Starting two-phase assessment with RAG...');
+    setProgress('Running Phase 1: deterministic rules…');
     const fullAssessment = await assessPackAgainstMatrix(packDocs, context);
 
-    console.log(`✅ Assessment complete: ${fullAssessment.results.length} criteria assessed`);
-
-    // Store file paths temporarily for later save
-    const assessmentId = uuidv4();
+    const processingTimeSeconds = Math.round((Date.now() - startTime) / 1000);
     const tempData = {
       assessmentId,
-      packDocs: packDocs.map(d => ({
-        filename: d.filename,
-        docType: d.docType,
-        filepath: d.filepath
-      })),
+      packDocs: packDocs.map(d => ({ filename: d.filename, docType: d.docType, filepath: d.filepath })),
       context,
-      results: fullAssessment
+      results: fullAssessment,
+      processingTimeSeconds,
     };
-
-    // Store in temp directory for potential save
-    const tempDataPath = path.join(process.cwd(), 'temp-uploads', `${assessmentId}.json`);
-    const processingTimeSeconds = Math.round((Date.now() - startTime) / 1000);
-    (tempData as any).processingTimeSeconds = processingTimeSeconds;
     fs.writeFileSync(tempDataPath, JSON.stringify(tempData));
 
-    // Fire CrewAI specialist review in background (non-blocking)
-    // Result stored separately and fetched via /api/assess/crew-review/:assessmentId
-    triggerCrewReview(assessmentId, context, fullAssessment.results);
-
-    // Clean up temp files after 1 hour
-    setTimeout(() => {
-      try {
-        if (fs.existsSync(tempDataPath)) fs.unlinkSync(tempDataPath);
-        files.forEach(file => {
-          if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
-        });
-      } catch (err) {
-        console.error('Error cleaning up temp files:', err);
-      }
-    }, 3600000); // 1 hour
-
-    res.json({
+    const payload = {
       success: true,
       assessmentId,
       documentsProcessed: files.length,
@@ -210,21 +164,86 @@ router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Reque
         meets: fullAssessment.criteria_summary.meets,
         partial: fullAssessment.criteria_summary.partial,
         does_not_meet: fullAssessment.criteria_summary.does_not_meet,
-        not_assessed: fullAssessment.criteria_summary.not_assessed
+        not_assessed: fullAssessment.criteria_summary.not_assessed,
       },
       assessment_phases: fullAssessment.assessment_phases,
-      fullAssessment // Keep full object for internal use
-    });
+      fullAssessment,
+    };
+
+    assessmentCache.set(assessmentId, { status: 'done', result: payload });
+    triggerCrewReview(assessmentId, context, fullAssessment.results);
+
+    // Clean up uploaded files after 1 hour
+    setTimeout(() => {
+      try {
+        if (fs.existsSync(tempDataPath)) fs.unlinkSync(tempDataPath);
+        files.forEach(file => { if (fs.existsSync(file.path)) fs.unlinkSync(file.path); });
+      } catch { /* ignore */ }
+    }, 3_600_000);
+
+    // Clean up cache entry after 2 hours
+    setTimeout(() => assessmentCache.delete(assessmentId), 7_200_000);
 
   } catch (error) {
-    console.error('❌ Matrix assessment error:', error);
     const errMsg = error instanceof Error ? error.message : 'Unknown error';
-    sendSubmissionErrorNotification({ submissionId: 'quick-assess', errorMessage: errMsg }).catch(() => {});
-    res.status(500).json({
-      error: 'Assessment failed',
-      details: errMsg,
-    });
+    console.error(`❌ Background assessment ${assessmentId} failed:`, errMsg);
+    sendSubmissionErrorNotification({ submissionId: assessmentId, errorMessage: errMsg }).catch(() => {});
+    assessmentCache.set(assessmentId, { status: 'error', error: errMsg });
+    setTimeout(() => assessmentCache.delete(assessmentId), 7_200_000);
   }
+}
+
+// POST /api/assess — accept files, start background assessment, return 202 immediately
+router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Request, res: Response) => {
+  try {
+    const allFiles = (req.files as Express.Multer.File[]) || [];
+    const files = allFiles.filter(f => f.fieldname === 'documents');
+    const { buildingType, heightMeters, storeys, isLondon, isHRB } = req.body;
+
+    if (files.length === 0) {
+      return res.status(400).json({ error: 'No documents uploaded' });
+    }
+    if (files.length > 20) {
+      return res.status(400).json({ error: 'Maximum 20 documents per assessment' });
+    }
+
+    const assessmentId = uuidv4();
+    const context = {
+      isLondon: isLondon === 'true' || isLondon === true || false,
+      isHRB: isHRB === 'true' || isHRB === true || true,
+      buildingType: buildingType || 'residential',
+      heightMeters: heightMeters ? parseFloat(heightMeters) : null,
+      storeys: storeys ? parseInt(storeys) : null,
+    };
+
+    assessmentCache.set(assessmentId, { status: 'pending', progress: 'Starting assessment…' });
+
+    // Fire-and-forget — response is delivered via poll endpoint
+    runAssessmentBackground(assessmentId, files, context);
+
+    console.log(`📄 Assessment ${assessmentId} queued (${files.length} docs)`);
+    return res.status(202).json({ assessmentId, status: 'pending' });
+
+  } catch (error) {
+    const errMsg = error instanceof Error ? error.message : 'Unknown error';
+    return res.status(500).json({ error: 'Failed to start assessment', details: errMsg });
+  }
+});
+
+// GET /api/assess/:id/status — poll for assessment progress
+router.get('/:assessmentId/status', (req: Request, res: Response) => {
+  const entry = assessmentCache.get(String(req.params['assessmentId']));
+  if (!entry) {
+    return res.status(404).json({ error: 'Assessment not found or expired' });
+  }
+  if (entry.status === 'pending') {
+    return res.json({ status: 'pending', progress: entry.progress || 'Processing…' });
+  }
+  if (entry.status === 'error') {
+    return res.json({ status: 'error', error: entry.error });
+  }
+  // done — return full result
+  return res.json({ status: 'done', ...entry.result });
 });
 
 /**

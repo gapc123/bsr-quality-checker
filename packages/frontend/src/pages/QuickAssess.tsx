@@ -60,38 +60,38 @@ export default function QuickAssess() {
     try {
       const formData = new FormData();
       files.forEach(file => formData.append('documents', sanitizeForFormData(file)));
-
-      // Add default context (can be enhanced with form inputs)
       formData.append('buildingType', 'residential');
       formData.append('isHRB', 'true');
       formData.append('isLondon', 'false');
 
-      setProgress('Running Phase 1: Deterministic Rules (55 checks)...');
+      setProgress('Uploading documents…');
 
-      const res = await fetch('/api/assess', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!res.ok) {
-        let errorMessage = `Assessment failed (${res.status})`;
-        try {
-          const errorData = await res.json();
-          errorMessage = errorData.error || errorMessage;
-        } catch {
-          // Response wasn't JSON (e.g. rate-limit plain text, HTML error page)
-        }
+      // Start assessment — server responds 202 immediately
+      const startRes = await fetch('/api/assess', { method: 'POST', body: formData });
+      if (!startRes.ok) {
+        let errorMessage = `Upload failed (${startRes.status})`;
+        try { const d = await startRes.json(); errorMessage = d.error || errorMessage; } catch { /* ignore */ }
         throw new Error(errorMessage);
       }
+      const { assessmentId } = await startRes.json();
 
-      setProgress('Running Phase 2: LLM Enrichment...');
+      // Poll until done
+      setProgress('Running Phase 1: Deterministic Rules (55 checks)…');
+      let data: any = null;
+      for (let attempt = 0; attempt < 180; attempt++) {  // up to 15 minutes (5s intervals)
+        await new Promise(r => setTimeout(r, 5000));
+        const pollRes = await fetch(`/api/assess/${assessmentId}/status`);
+        if (!pollRes.ok) throw new Error(`Poll failed (${pollRes.status})`);
+        const poll = await pollRes.json();
+        if (poll.status === 'error') throw new Error(poll.error || 'Assessment failed');
+        if (poll.status === 'done') { data = poll; break; }
+        // Update progress label from server
+        if (poll.progress) setProgress(poll.progress);
+      }
 
-      const data = await res.json();
-      console.log('=== ASSESSMENT DATA RECEIVED ===');
-      console.log('Full data:', data);
-      console.log('Results count:', data.results?.length);
-      console.log('Results statuses:', data.results?.map((r: any) => ({ id: r.matrix_id, status: r.status })));
-      console.log('Summary:', data.summary);
+      if (!data) throw new Error('Assessment timed out — please try again');
+
+      console.log('Assessment complete:', data.results?.length, 'results');
       setAssessing(false);
       setAssessment(data);
       setProgress('');
