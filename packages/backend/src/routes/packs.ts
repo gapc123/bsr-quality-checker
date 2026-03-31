@@ -801,11 +801,11 @@ router.delete('/:id', async (req: Request, res: Response) => {
 router.post(
   '/:id/versions',
   uploadLimiter,
-  upload.array('documents', 20),
+  upload.any(),
   async (req: Request, res: Response) => {
     try {
       const id = req.params.id as string;
-      const files = req.files as Express.Multer.File[];
+      const files = ((req.files as Express.Multer.File[]) || []).filter(f => f.fieldname === 'documents');
 
       // Get pack with versions
       const pack = await prisma.pack.findUnique({

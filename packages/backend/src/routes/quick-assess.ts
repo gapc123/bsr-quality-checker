@@ -91,14 +91,20 @@ function classifyDocType(filename: string, text: string): string | null {
  *
  * Returns complete assessment results for carousel display
  */
-router.post('/', uploadLimiter, analysisLimiter, upload.array('documents', 20), async (req: Request, res: Response) => {
+router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Request, res: Response) => {
   const startTime = Date.now();
   try {
-    const files = req.files as Express.Multer.File[];
+    // Accept any field name; filter to files uploaded under 'documents'
+    const allFiles = (req.files as Express.Multer.File[]) || [];
+    const files = allFiles.filter(f => f.fieldname === 'documents');
     const { buildingType, heightMeters, storeys, isLondon, isHRB } = req.body;
 
-    if (!files || files.length === 0) {
+    if (files.length === 0) {
       return res.status(400).json({ error: 'No documents uploaded' });
+    }
+
+    if (files.length > 20) {
+      return res.status(400).json({ error: 'Maximum 20 documents per assessment' });
     }
 
     console.log(`📄 Full matrix assessment started with ${files.length} documents`);
