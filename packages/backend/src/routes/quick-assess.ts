@@ -18,13 +18,34 @@ const router = express.Router();
 // In production this would use Redis or the database
 const crewReviewCache = new Map<string, { status: 'pending' | 'done' | 'error'; result?: any; error?: string }>();
 
-// In-memory store for async assessment results
+// In-memory store for async assessment results (fast path)
 const assessmentCache = new Map<string, {
   status: 'pending' | 'done' | 'error';
   progress?: string;
   result?: any;
   error?: string;
 }>();
+
+const STATUS_DIR = path.join(process.cwd(), 'temp-uploads');
+
+function statusFilePath(id: string) {
+  return path.join(STATUS_DIR, `${id}-status.json`);
+}
+
+function writeStatusFile(id: string, data: { status: string; progress?: string; result?: any; error?: string }) {
+  try {
+    if (!fs.existsSync(STATUS_DIR)) fs.mkdirSync(STATUS_DIR, { recursive: true });
+    fs.writeFileSync(statusFilePath(id), JSON.stringify(data));
+  } catch { /* non-fatal */ }
+}
+
+function readStatusFile(id: string) {
+  try {
+    const p = statusFilePath(id);
+    if (!fs.existsSync(p)) return null;
+    return JSON.parse(fs.readFileSync(p, 'utf-8'));
+  } catch { return null; }
+}
 
 const CREW_SERVICE_URL = process.env.CREW_SERVICE_URL || 'http://localhost:8001';
 
@@ -109,7 +130,9 @@ async function runAssessmentBackground(
   const tempDataPath = path.join(process.cwd(), 'temp-uploads', `${assessmentId}.json`);
 
   const setProgress = (msg: string) => {
-    assessmentCache.set(assessmentId, { ...assessmentCache.get(assessmentId)!, progress: msg });
+    const entry = { ...assessmentCache.get(assessmentId)!, status: 'pending' as const, progress: msg };
+    assessmentCache.set(assessmentId, entry);
+    writeStatusFile(assessmentId, entry);
   };
 
   try {
@@ -171,6 +194,7 @@ async function runAssessmentBackground(
     };
 
     assessmentCache.set(assessmentId, { status: 'done', result: payload });
+    writeStatusFile(assessmentId, { status: 'done', result: payload });
     triggerCrewReview(assessmentId, context, fullAssessment.results);
 
     // Clean up uploaded files after 1 hour
@@ -181,15 +205,22 @@ async function runAssessmentBackground(
       } catch { /* ignore */ }
     }, 3_600_000);
 
-    // Clean up cache entry after 2 hours
-    setTimeout(() => assessmentCache.delete(assessmentId), 7_200_000);
+    // Clean up cache entry and status file after 2 hours
+    setTimeout(() => {
+      assessmentCache.delete(assessmentId);
+      try { if (fs.existsSync(statusFilePath(assessmentId))) fs.unlinkSync(statusFilePath(assessmentId)); } catch { /* ignore */ }
+    }, 7_200_000);
 
   } catch (error) {
     const errMsg = error instanceof Error ? error.message : 'Unknown error';
     console.error(`❌ Background assessment ${assessmentId} failed:`, errMsg);
     sendSubmissionErrorNotification({ submissionId: assessmentId, errorMessage: errMsg }).catch(() => {});
     assessmentCache.set(assessmentId, { status: 'error', error: errMsg });
-    setTimeout(() => assessmentCache.delete(assessmentId), 7_200_000);
+    writeStatusFile(assessmentId, { status: 'error', error: errMsg });
+    setTimeout(() => {
+      assessmentCache.delete(assessmentId);
+      try { if (fs.existsSync(statusFilePath(assessmentId))) fs.unlinkSync(statusFilePath(assessmentId)); } catch { /* ignore */ }
+    }, 7_200_000);
   }
 }
 
@@ -216,7 +247,9 @@ router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Reque
       storeys: storeys ? parseInt(storeys) : null,
     };
 
-    assessmentCache.set(assessmentId, { status: 'pending', progress: 'Starting assessment…' });
+    const initialEntry = { status: 'pending' as const, progress: 'Starting assessment…' };
+    assessmentCache.set(assessmentId, initialEntry);
+    writeStatusFile(assessmentId, initialEntry);
 
     // Fire-and-forget — response is delivered via poll endpoint
     runAssessmentBackground(assessmentId, files, context);
@@ -232,7 +265,13 @@ router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Reque
 
 // GET /api/assess/:id/status — poll for assessment progress
 router.get('/:assessmentId/status', (req: Request, res: Response) => {
-  const entry = assessmentCache.get(String(req.params['assessmentId']));
+  const id = String(req.params['assessmentId']);
+  // Fast path: in-memory
+  let entry = assessmentCache.get(id);
+  // Fallback: file-based (survives server restart mid-assessment)
+  if (!entry) {
+    entry = readStatusFile(id) ?? undefined;
+  }
   if (!entry) {
     return res.status(404).json({ error: 'Assessment not found or expired' });
   }
