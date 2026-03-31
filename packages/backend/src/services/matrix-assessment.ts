@@ -196,6 +196,28 @@ function validateEvidence(
   return { isValid: true, issues: [] };
 }
 
+/**
+ * Given a short quote and a collection of documents (whose text contains
+ * [PAGE N] markers injected during extraction), return the page number
+ * where the quote appears, or null if not found.
+ */
+function findPageForQuote(quote: string, documents: { extractedText: string }[]): number | null {
+  if (!quote) return null;
+  const needle = quote.slice(0, 60).toLowerCase();
+  for (const doc of documents) {
+    const text = doc.extractedText || '';
+    const idx = text.toLowerCase().indexOf(needle);
+    if (idx === -1) continue;
+    // Find the last [PAGE N] marker before the match position
+    const before = text.slice(0, idx);
+    const matches = [...before.matchAll(/\[PAGE (\d+)\]/g)];
+    if (matches.length > 0) {
+      return parseInt(matches[matches.length - 1][1]);
+    }
+  }
+  return null;
+}
+
 // Types
 interface MatrixRow {
   matrix_id: string;
@@ -1418,7 +1440,9 @@ export async function assessPackAgainstMatrix(
     pack_evidence: {
       found: dr.result.evidence.found,
       document: dr.result.evidence.document,
-      page: null,
+      page: dr.result.evidence.quote
+        ? findPageForQuote(dr.result.evidence.quote, docEvidence)
+        : null,
       quote: dr.result.evidence.quote
     },
     reference_evidence: {

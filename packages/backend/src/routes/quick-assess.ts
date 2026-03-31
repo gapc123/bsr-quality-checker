@@ -81,7 +81,24 @@ const upload = createUploadMiddleware({
 async function extractPDFText(filepath: string): Promise<string> {
   try {
     const dataBuffer = fs.readFileSync(filepath);
-    const pdfData = await pdfParse(dataBuffer);
+    let pageNumber = 0;
+
+    // Inject [PAGE N] markers so downstream LLM calls can cite exact pages.
+    // pdf-parse calls pagerender sequentially (page 1 → 2 → …) and joins
+    // results with '\n\n', so the counter reliably tracks page number.
+    const options = {
+      pagerender: (pageData: any) =>
+        pageData.getTextContent().then((textContent: any) => {
+          pageNumber++;
+          const text = (textContent.items as any[])
+            .map((item: any) => item.str)
+            .join(' ')
+            .trim();
+          return `[PAGE ${pageNumber}]\n${text}`;
+        }),
+    };
+
+    const pdfData = await pdfParse(dataBuffer, options);
     return pdfData.text.trim();
   } catch (error) {
     console.error('Error extracting PDF text:', error);

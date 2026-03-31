@@ -68,13 +68,17 @@ ${docContext}
 
 ## Your Task
 Assess whether the documents satisfy this criterion.
-Respond in JSON only:
+Respond in JSON only — include exact evidence citations:
 {
   "status": "meets" | "partial" | "does_not_meet" | "missing_information",
-  "reasoning": "Concise evidence-based explanation (1-3 sentences). Quote the document if relevant.",
+  "reasoning": "Concise evidence-based explanation (1-3 sentences). Reference the document and page.",
+  "evidence_document": "exact filename from the documents listed above, or null if no evidence found",
+  "evidence_page": page_number_integer_from_[PAGE_N]_marker_or_null,
+  "evidence_quote": "verbatim quote of up to 150 chars from the document that supports your decision, or null",
   "gaps_identified": ["specific gap 1", "specific gap 2"],
   "actions_required": [{ "action": "...", "owner": "...", "effort": "S|M|L" }]
-}`;
+}
+For evidence_page: look for [PAGE N] markers in the document text and return the page number where the key evidence appears.`;
 
   let responseText = '';
   try {
@@ -95,7 +99,12 @@ Respond in JSON only:
       severity: row.severity_if_unmet,
       reasoning: parsed.reasoning || '',
       success_definition: row.success_definition,
-      pack_evidence: { found: parsed.status === 'meets', document: null, page: null, quote: null },
+      pack_evidence: {
+        found: parsed.status === 'meets' || parsed.status === 'partial',
+        document: parsed.evidence_document || null,
+        page: typeof parsed.evidence_page === 'number' ? parsed.evidence_page : null,
+        quote: parsed.evidence_quote || null,
+      },
       reference_evidence: { found: false, doc_id: null, doc_title: null, page: null, quote: null },
       gaps_identified: parsed.gaps_identified || [],
       actions_required: parsed.actions_required || [],

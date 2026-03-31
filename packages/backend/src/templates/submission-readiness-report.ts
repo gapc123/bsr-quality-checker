@@ -180,6 +180,14 @@ function generateBlockers(blockers: AssessmentResult[]): string {
     const why = extractWhyItMatters(blocker);
     const request = extractSpecificRequest(blocker);
     const owner = formatOwnerRole(blocker.owner_type);
+    const ev = blocker.pack_evidence;
+    const evidenceCitation = ev?.found && (ev.document || ev.quote)
+      ? `<p class="evidence-citation">
+           <strong>Source:</strong>
+           ${ev.document || 'document'}${ev.page ? `, page ${ev.page}` : ''}
+           ${ev.quote ? `<br><em class="evidence-quote">"${ev.quote.slice(0, 150)}${ev.quote.length > 150 ? '…' : ''}"</em>` : ''}
+         </p>`
+      : '';
 
     return `
       <div class="blocker">
@@ -189,6 +197,7 @@ function generateBlockers(blockers: AssessmentResult[]): string {
           <p><strong>Why:</strong> ${why}</p>
           <p><strong>Request:</strong> ${request}</p>
           <p><strong>Owner:</strong> ${owner}</p>
+          ${evidenceCitation}
         </div>
       </div>
     `;
@@ -215,11 +224,14 @@ function generateReviewItems(reviewItems: AssessmentResult[]): string {
       <h4>${category}</h4>
       <ul class="review-list">
         ${items.map(item => {
-          const pageRef = item.pack_evidence.page ? ` (Page ${item.pack_evidence.page})` : '';
+          const ev = item.pack_evidence;
+          const docRef = ev?.document ? ` — ${ev.document}${ev.page ? `, p.${ev.page}` : ''}` : (ev?.page ? ` (Page ${ev.page})` : '');
+          const quote = ev?.quote ? `<br><em class="evidence-quote">"${ev.quote.slice(0, 120)}${ev.quote.length > 120 ? '…' : ''}"</em>` : '';
           const action = item.actions_required[0];
           return `
             <li>
-              ${item.gaps_identified[0] || item.reasoning.split('.')[0]}${pageRef}
+              ${item.gaps_identified[0] || item.reasoning.split('.')[0]}${docRef}
+              ${quote}
               <br>→ ${action?.action || 'Requires expert review'}
             </li>
           `;
@@ -597,6 +609,22 @@ export function generateSubmissionReadinessHTML(
       color: #475569;
       min-width: 70px;
       display: inline-block;
+    }
+
+    .evidence-citation {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #fff7ed;
+      border-left: 3px solid #f59e0b;
+      font-size: 9pt;
+      color: #92400e;
+    }
+
+    .evidence-quote {
+      display: block;
+      margin-top: 4px;
+      font-style: italic;
+      color: #78350f;
     }
 
     .review-list, .missing-list {
