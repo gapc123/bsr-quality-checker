@@ -286,25 +286,46 @@ function buildGraph() {
 export async function runLangGraphAssessment(
   criteria: MatrixRow[],
   packDocs: PackDocument[],
-  context: PackContext,
+  _context: PackContext,
   client: Anthropic
 ): Promise<AssessmentResult[]> {
-  const app = buildGraph();
+  // Plain sequential loop — bypasses LangGraph's graph/state machinery to
+  // avoid internal serialisation crashes on constrained Railway containers.
+  // Logic is identical: assess every criterion, then critique high-severity partials.
 
-  const finalState = await app.invoke({
-    criteria,
-    packDocs,
-    context,
-    client,
-    results: [],
-    critiqueUpdates: new Map(),
-  });
+  console.log(`[assess] Phase 2: ${criteria.length} criteria (sequential)`);
 
-  // Apply critique upgrades over initial results
-  const resultsMap = new Map(finalState.results.map((r: AssessmentResult) => [r.matrix_id, r]));
-  for (const [id, upgraded] of finalState.critiqueUpdates) {
-    resultsMap.set(id, upgraded);
+  // Step 1 — assess every criterion
+  const results: AssessmentResult[] = [];
+  for (const row of criteria) {
+    const result = await singleCriterionCall(row, packDocs, client, 'standard');
+    results.push(result);
   }
 
-  return [...resultsMap.values()];
+  console.log(`[assess] Phase 2 done: ${results.length} results`);
+
+  // Step 2 — critique high-severity partials
+  const toReview = results.filter(r =>
+    r.status === 'partial' &&
+    (r.severity === 'high' || r.severity === 'critical') &&
+    r._langgraph === true
+  );
+
+  if (toReview.length > 0) {
+    console.log(`[assess] Critique: re-examining ${toReview.length} high-severity partials`);
+    for (const original of toReview) {
+      const row = criteria.find(c => c.matrix_id === original.matrix_id);
+      if (!row) continue;
+      const revised = await singleCriterionCall(row, packDocs, client, 'critique');
+      if (revised.status === 'meets') {
+        const idx = results.findIndex(r => r.matrix_id === original.matrix_id);
+        if (idx >= 0) {
+          results[idx] = { ...revised, reasoning: `[Critique confirmed: meets]\n${revised.reasoning}` };
+          console.log(`[assess] Critique: ${row.matrix_id} upgraded partial → meets`);
+        }
+      }
+    }
+  }
+
+  return results;
 }
