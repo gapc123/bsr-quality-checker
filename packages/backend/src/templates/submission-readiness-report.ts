@@ -456,10 +456,11 @@ export function generateSubmissionReadinessHTML(
   const consultantRequests = generateConsultantRequests(assessment.results);
   const missingInfo = generateMissingInfo(classified.missingInfo);
 
-  // Use provided metadata or defaults
+  // Use provided metadata, or extract from assessment (project_name from document headers),
+  // or fall back to a generic title — never use buildingType as a project name
   const metadata = projectMetadata || {
     ...DEFAULT_PROJECT_METADATA,
-    projectName: assessment.pack_context?.buildingType || 'Gateway 2 Submission'
+    projectName: (assessment as any).project_name || 'Gateway 2 Submission'
   };
 
   const formatted = formatProjectMetadata(metadata);
@@ -754,7 +755,7 @@ export function generateSubmissionReadinessHTML(
   <div class="header">
     <h1>BSR GATEWAY 2 SUBMISSION READINESS REPORT</h1>
     <div class="meta">
-      Project: ${assessment.pack_context?.buildingType || 'Gateway 2 Submission'} |
+      Project: ${(assessment as any).project_name || 'Gateway 2 Submission'} |
       Generated: ${today} |
       AI-Powered Analysis
     </div>

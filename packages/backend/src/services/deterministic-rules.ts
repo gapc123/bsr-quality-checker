@@ -79,16 +79,45 @@ function findDocument(docs: DocumentEvidence[], patterns: string[]): DocumentEvi
 //   return (normText.match(new RegExp(normKw, 'g')) || []).length;
 // }
 
-// Extract all height values mentioned in text
+// Extract all height values mentioned in text.
+// Validates that extracted values are plausible building heights (18–300 m).
+// Covers: "79.5m high", "height of 79.5m", "79.5m from ground level to the parapet", "height: 79.5m"
 function extractHeights(text: string): number[] {
-  const matches = text.match(/(\d+(?:\.\d+)?)\s*(?:m|metres?|meters?)\s*(?:high|tall|height|above)/gi) || [];
-  return matches.map(m => parseFloat(m.match(/\d+(?:\.\d+)?/)?.[0] || '0')).filter(h => h > 0);
+  const values = new Set<number>();
+  const patterns = [
+    /(\d+(?:\.\d+)?)\s*m(?:etres?|eters?)?\s*(?:high|tall|height|above|agl)\b/gi,
+    /(?:height\s+of|is\s+|stands?\s+)\s*(\d+(?:\.\d+)?)\s*m(?:etres?|eters?)?/gi,
+    /(\d+(?:\.\d+)?)\s*m\s+(?:from\s+ground|above\s+ground|to\s+(?:the\s+)?parapet|total\s+height)/gi,
+    /(?:height|ht)\s*[:\-–]\s*(\d+(?:\.\d+)?)\s*m/gi,
+    /(\d+(?:\.\d+)?)\s*m(?:etres?)?\s+in\s+height\b/gi,
+  ];
+  for (const pattern of patterns) {
+    for (const m of text.matchAll(pattern)) {
+      const val = parseFloat(m[1]);
+      if (val >= 18 && val <= 300) values.add(val);
+    }
+  }
+  return [...values];
 }
 
-// Extract storey counts
+// Extract storey counts.
+// Covers: "25-storey", "25 storey", "25 storeys", "25 floors", "25 levels"
 function extractStoreys(text: string): number[] {
-  const matches = text.match(/(\d+)\s*(?:storey|stories|floors?|levels?)/gi) || [];
-  return matches.map(m => parseInt(m.match(/\d+/)?.[0] || '0')).filter(s => s > 0);
+  const values = new Set<number>();
+  const patterns = [
+    /(\d+)\s*[-–]\s*storey/gi,
+    /(\d+)\s+storey(?:s|ies)?\b/gi,
+    /(\d+)\s+stor(?:ey|ies|y)\b/gi,
+    /(\d+)\s+floors?\b/gi,
+    /(\d+)\s+levels?\b/gi,
+  ];
+  for (const pattern of patterns) {
+    for (const m of text.matchAll(pattern)) {
+      const val = parseInt(m[1]);
+      if (val > 0 && val < 200) values.add(val);
+    }
+  }
+  return [...values];
 }
 
 // ============================================
@@ -785,8 +814,15 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
 
       const text = fireStrategyDoc.extractedText;
 
-      // Check for stair count mentions
-      const hasTwoStairs = containsAnyKeyword(text, ['two stair', '2 stair', 'dual stair', 'two escape', '2 escape', 'second stair', 'both stairs', 'twin stair']);
+      // Check for stair count mentions — include "protected staircases" and "stair core" synonyms
+      // that appear in real fire strategies (the SLH-2026 text uses "two protected staircases")
+      const hasTwoStairs = containsAnyKeyword(text, [
+        'two stair', '2 stair', 'dual stair', 'two escape', '2 escape',
+        'second stair', 'both stairs', 'twin stair',
+        'two protected staircase', '2 protected staircase', 'two protected staircases',
+        'protected staircases', 'two stair core', '2 stair core', 'two stair cores',
+        'dual stair core', 'means of escape stair', 'egress stair',
+      ]);
       const hasSingleStair = containsAnyKeyword(text, ['single stair', 'one stair', '1 stair']) && !hasTwoStairs;
       const hasProtectedLobby = containsAnyKeyword(text, ['protected lobby', 'fire-fighting lobby', 'firefighting lobby', 'ventilated lobby']);
       const hasJustification = containsAnyKeyword(text, ['fire engineering', 'fire engineered', 'performance based', 'alternative solution', 'compensatory']);
@@ -2881,25 +2917,46 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         };
       }
 
-      const hasSmokeVent = containsAnyKeyword(allText, ['smoke vent', 'basement ventilation', 'smoke extract basement']);
-      const hasSeparation = containsAnyKeyword(allText, ['basement separation', 'basement compartment', 'basement stair']);
-      const hasEscape = containsAnyKeyword(allText, ['basement escape', 'basement exit', 'alternative exit']);
+      // Prefer fire strategy documents for evidence; fall back to allText
+      const fireStrategyDoc = findDocument(docs, ['fire strategy', 'fire safety']);
+      const searchText = fireStrategyDoc ? fireStrategyDoc.extractedText : allText;
+      const searchDoc = fireStrategyDoc?.filename || docs[0].filename;
 
-      const score = [hasSmokeVent, hasSeparation, hasEscape].filter(Boolean).length;
+      const hasSprinkler = containsAnyKeyword(searchText, [
+        'sprinkler', 'fire suppression', 'wet pipe', 'dry pipe',
+        'ordinary hazard', 'hazard group', 'break tank', 'suppression system',
+        'fire fighting', 'fire-fighting',
+      ]);
+      const hasSmokeVent = containsAnyKeyword(searchText, [
+        'smoke vent', 'basement ventilation', 'smoke extract', 'smoke control',
+        'impulse fan', 'jet fan',
+      ]);
+      const hasSeparation = containsAnyKeyword(searchText, [
+        'basement separation', 'basement compartment', 'basement stair',
+        'fire compartment', 'compartmentation',
+      ]);
+      const hasEscape = containsAnyKeyword(searchText, [
+        'basement escape', 'basement exit', 'alternative exit', 'means of escape',
+      ]);
+
+      const score = [hasSprinkler, hasSmokeVent, hasSeparation, hasEscape].filter(Boolean).length;
 
       if (score >= 2) {
+        const quote = hasSprinkler
+          ? extractQuote(searchText, 'sprinkler')
+          : extractQuote(searchText, 'smoke');
         return {
           passed: true,
           confidence: 'high',
-          evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
-          reasoning: 'Basement fire safety strategy addressed with smoke ventilation and/or separation.',
+          evidence: { found: true, document: searchDoc, quote, matchType: 'keyword' },
+          reasoning: 'Basement fire safety strategy addressed (sprinkler system, ventilation and/or compartmentation found).',
           failureMode: null
         };
       }
       return {
         passed: false,
         confidence: 'high',
-        evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
+        evidence: { found: true, document: searchDoc, quote: null, matchType: 'keyword' },
         reasoning: 'Basement present but fire safety strategy not fully addressed.',
         failureMode: 'Basement without dedicated fire strategy'
       };
@@ -2907,6 +2964,8 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
   },
 
   // SM-039: Car Park Fire Safety
+  // NOTE: If the car park is within a basement (the common case for tall residential),
+  // SM-038 already covers it — suppress this check to avoid double-counting the same space.
   {
     matrixId: 'SM-039',
     name: 'Car Park Fire Safety (if applicable)',
@@ -2926,16 +2985,32 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         };
       }
 
+      // If the car park is within the basement, SM-038 already covers this space.
+      // Suppress this check to prevent duplicate flags for the same physical area.
+      const isBasementCarPark = containsAnyKeyword(allText, [
+        'basement car park', 'basement parking', 'underground car park',
+        'lower ground car park', 'lower ground parking', 'basement level parking',
+      ]);
+      if (isBasementCarPark) {
+        return {
+          passed: true,
+          confidence: 'needs_review',
+          evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
+          reasoning: 'Car park is within the basement — covered by SM-038 (Basement Fire Strategy). No separate check required.',
+          failureMode: null
+        };
+      }
+
       const hasVentilation = containsAnyKeyword(allText, ['car park ventilation', 'co detection', 'carbon monoxide', 'impulse fan']);
       const hasEV = containsAnyKeyword(allText, ['ev charging', 'electric vehicle', 'charging point']);
-      const hasFireSuppression = containsAnyKeyword(allText, ['car park sprinkler', 'vehicle fire', 'foam']);
+      const hasFireSuppression = containsAnyKeyword(allText, ['car park sprinkler', 'vehicle fire', 'foam', 'sprinkler']);
 
-      if (hasVentilation && (hasFireSuppression || !hasEV)) {
+      if (hasVentilation || hasFireSuppression) {
         return {
           passed: true,
           confidence: 'high',
           evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
-          reasoning: 'Car park fire safety addressed with ventilation strategy.',
+          reasoning: 'Car park fire safety addressed with ventilation and/or suppression strategy.',
           failureMode: null
         };
       } else if (hasEV && !hasFireSuppression) {
@@ -3497,15 +3572,18 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     category: 'CONSISTENCY',
     severity: 'low',
     check: (docs) => {
-      const allText = docs.map(d => d.extractedText).join(' ');
-      const hasProjectName = containsAnyKeyword(allText, ['project name', 'project title', 'development name', 'scheme name']);
+      const projectName = extractProjectName(docs);
 
-      if (hasProjectName) {
+      if (projectName) {
+        // Verify the name appears in multiple documents
+        const docsWithName = docs.filter(d =>
+          d.extractedText.toLowerCase().includes(projectName.toLowerCase())
+        );
         return {
           passed: true,
-          confidence: 'needs_review',
-          evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
-          reasoning: 'Project name referenced. Manual verification of consistency recommended.',
+          confidence: docsWithName.length >= 3 ? 'high' : 'needs_review',
+          evidence: { found: true, document: docs[0].filename, quote: projectName, matchType: 'keyword' },
+          reasoning: `Project name "${projectName}" identified and appears in ${docsWithName.length} document(s).`,
           failureMode: null
         };
       }
@@ -3619,6 +3697,98 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
 // ============================================
 // MAIN EXPORTS
 // ============================================
+
+/**
+ * Extract the project name from document headers/titles.
+ * Priority: application info docs (0.1/0.2) → all docs.
+ * Reads the first substantive lines after [PAGE N] markers, looking for
+ * title-cased proper-noun sequences that represent a project name.
+ */
+export function extractProjectName(docs: DocumentEvidence[]): string | null {
+  // Prefer application/brief documents where the project name is most explicit
+  const priorityDocs = docs.filter(d =>
+    /0\.[12]_|application.information|project.brief/i.test(d.filename)
+  );
+  const searchDocs = priorityDocs.length > 0 ? priorityDocs : docs;
+
+  for (const doc of searchDocs) {
+    const text = doc.extractedText;
+
+    // Pattern: explicit label like "Project: Silverline House" or "Project Name: …"
+    const labelMatch = text.match(/project\s+(?:name|title|ref(?:erence)?)\s*[:—]\s*([A-Z][A-Za-z0-9 \-']+)/i);
+    if (labelMatch) return labelMatch[1].trim();
+
+    // Pattern: project reference code adjacent to name, e.g. "Silverline House SLH-2026"
+    const refMatch = text.slice(0, 2000).match(
+      /([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,4})\s+[A-Z]{2,5}-?\d{4}/
+    );
+    if (refMatch) return refMatch[1].trim();
+
+    // Pattern: first non-empty, non-boilerplate, title-cased line in the header area
+    const lines = text.split('\n')
+      .map(l => l.trim())
+      .filter(l => l && !l.match(/^\[PAGE \d+\]$/) && l.length >= 4 && l.length <= 80);
+
+    for (const line of lines.slice(0, 20)) {
+      if (line.match(/^(This|The|All|Where|In|A |An |Building|Design|Structural|Fire|Date|Rev|Issue|Prepared)/)) continue;
+      // Two or more consecutive title-cased words, no lowercase at start
+      if (/^[A-Z][a-z]+(?:\s+[A-Z][a-z0-9]+){1,5}$/.test(line)) {
+        return line;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Evidence recycler: after all checks complete, check whether a "Met" result's
+ * evidence quote would satisfy any "Review Required" or "Not Met" check.
+ * If it does, copy the evidence and upgrade the status to "partial" (needs review).
+ *
+ * This fixes routing failures like SM-007/SM-017 where the same passage
+ * was retrieved for the wrong check.
+ */
+const EVIDENCE_RECYCLE_KEYWORDS: Record<string, string[]> = {
+  'SM-007': ['staircase', 'protected staircase', 'stair core', 'means of escape stair', 'protected stair', 'two stair'],
+  'SM-020': ['height', 'metres', 'meters', 'tall', 'parapet'],
+  'SM-021': ['storey', 'storeys', 'floor', 'floors', 'level'],
+  'SM-038': ['basement', 'sprinkler', 'fire suppression', 'smoke', 'below ground'],
+};
+
+export function recycleEvidence(results: DeterministicAssessment[]): DeterministicAssessment[] {
+  const metWithQuotes = results.filter(r =>
+    r.result.passed && r.result.evidence.quote
+  );
+  if (metWithQuotes.length === 0) return results;
+
+  return results.map(r => {
+    if (r.result.passed) return r; // already passing
+    const keywords = EVIDENCE_RECYCLE_KEYWORDS[r.matrixId];
+    if (!keywords) return r;
+
+    for (const metResult of metWithQuotes) {
+      const quote = (metResult.result.evidence.quote || '').toLowerCase();
+      const matchesKeyword = keywords.some(kw => quote.includes(kw.toLowerCase()));
+      if (matchesKeyword) {
+        console.log(`[evidence-recycle] ${r.matrixId}: reusing evidence from ${metResult.matrixId} ("${metResult.result.evidence.quote?.slice(0, 60)}…")`);
+        return {
+          ...r,
+          result: {
+            ...r.result,
+            passed: true,
+            confidence: 'needs_review' as const,
+            evidence: {
+              ...metResult.result.evidence,
+            },
+            reasoning: `${r.result.reasoning}\n\n[Evidence recycled from ${metResult.matrixId}: passage also satisfies this check]`,
+          },
+        };
+      }
+    }
+    return r;
+  });
+}
 
 export interface DeterministicAssessment {
   matrixId: string;

@@ -21,6 +21,8 @@ import {
 } from './corpus-retrieval.js';
 import {
   runDeterministicChecks,
+  recycleEvidence,
+  extractProjectName,
   DeterministicAssessment,
   DocumentEvidence
 } from './deterministic-rules.js';
@@ -368,6 +370,7 @@ export interface AssessmentResult {
 }
 
 export interface FullAssessment {
+  project_name: string | null;
   pack_context: PackContext;
   reference_standards_applied: Array<{
     doc_id: string;
@@ -1418,8 +1421,13 @@ export async function assessPackAgainstMatrix(
     console.log(`    - ${doc.filename}: ${doc.extractedText?.length || 0} chars`);
   }
 
-  // Run all 55 deterministic rules
-  const deterministicResults = runDeterministicChecks(docEvidence);
+  // Extract project name from document headers before running checks
+  const projectName = extractProjectName(docEvidence);
+  console.log(`  Project name extracted: ${projectName ?? '(not found)'}`);
+
+  // Run all deterministic rules, then recycle evidence across checks
+  const rawDeterministicResults = runDeterministicChecks(docEvidence);
+  const deterministicResults = recycleEvidence(rawDeterministicResults);
 
   const deterministicPassed = deterministicResults.filter(r => r.result.passed).length;
   const deterministicFailed = deterministicResults.filter(r => !r.result.passed).length;
@@ -1589,6 +1597,7 @@ export async function assessPackAgainstMatrix(
   console.log(`  High severity issues: ${flaggedHigh}`);
 
   return {
+    project_name: projectName,
     pack_context: context,
     reference_standards_applied: referenceStandards,
     criteria_summary: {
