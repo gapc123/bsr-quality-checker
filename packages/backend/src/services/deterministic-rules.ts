@@ -47,14 +47,73 @@ function containsAnyKeyword(text: string, keywords: string[]): boolean {
   return keywords.some(kw => normText.includes(normalise(kw)));
 }
 
+// ============================================
+// BOILERPLATE FILTER
+// Prevents template/cover-page text from being cited as substantive evidence.
+// Patterns are normalised (lowercase, collapsed whitespace) before matching.
+// ============================================
+
+const BOILERPLATE_SIGNATURES: string[] = [
+  // Document metadata / revision blocks
+  'this document is confidential',
+  'all rights reserved',
+  'may not be reproduced',
+  'without the written permission',
+  'proprietary and confidential',
+  'copyright',
+  'rev a', 'rev b', 'rev c', 'revision a', 'revision b',
+  'for information only',
+  'preliminary issue',
+  'not for construction',
+  'issued for comment',
+  'draft only',
+  // Standard sign-off blocks
+  'prepared by', 'checked by', 'approved by', 'authorised by',
+  'project no', 'document no', 'drawing no', 'job no',
+  'client:', 'project:', 'date:', 'scale:',
+  // Table of contents markers
+  'table of contents', 'contents page',
+  // Generic disclaimer lines
+  'this report has been prepared',
+  'whilst every care has been taken',
+  'the information contained in this',
+  'no liability is accepted',
+  'subject to change without notice',
+];
+
+/**
+ * Returns true if the quote is dominated by boilerplate / metadata text
+ * and should not be surfaced as a substantive evidence citation.
+ */
+function isBoilerplate(quote: string): boolean {
+  if (!quote) return false;
+  const norm = normalise(quote);
+  const matchCount = BOILERPLATE_SIGNATURES.filter(sig => norm.includes(sig)).length;
+  // Flag if ≥2 boilerplate signatures hit, or if the quote is very short (likely a header)
+  if (matchCount >= 2) return true;
+  if (norm.length < 30 && matchCount >= 1) return true;
+  return false;
+}
+
 function extractQuote(text: string, keyword: string, contextChars: number = 150): string | null {
-  const normText = normalise(text);
+  // Strip [PAGE N] markers so they don't appear verbatim in citations
+  const cleanText = text.replace(/\[PAGE \d+\]\n?/g, '');
+
+  const normText = normalise(cleanText);
   const normKw = normalise(keyword);
-  const idx = normText.indexOf(normKw);
-  if (idx === -1) return null;
-  const start = Math.max(0, idx - contextChars);
-  const end = Math.min(text.length, idx + keyword.length + contextChars);
-  return '...' + text.slice(start, end).trim() + '...';
+
+  // Try each occurrence of the keyword; return the first non-boilerplate snippet
+  let searchFrom = 0;
+  while (true) {
+    const idx = normText.indexOf(normKw, searchFrom);
+    if (idx === -1) break;
+    const start = Math.max(0, idx - contextChars);
+    const end = Math.min(cleanText.length, idx + keyword.length + contextChars);
+    const snippet = '...' + cleanText.slice(start, end).trim() + '...';
+    if (!isBoilerplate(snippet)) return snippet;
+    searchFrom = idx + 1;
+  }
+  return null;
 }
 
 function findDocument(docs: DocumentEvidence[], patterns: string[]): DocumentEvidence | null {

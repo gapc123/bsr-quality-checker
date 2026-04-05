@@ -205,7 +205,10 @@ function validateEvidence(
  */
 function findPageForQuote(quote: string, documents: { extractedText: string }[]): number | null {
   if (!quote) return null;
-  const needle = quote.slice(0, 60).toLowerCase();
+  // Strip leading/trailing ellipsis added by extractQuote(), then take first 60 chars
+  const stripped = quote.replace(/^\.*\.\.\./, '').replace(/\.\.\.$/, '').trim();
+  const needle = stripped.slice(0, 60).toLowerCase();
+  if (!needle) return null;
   for (const doc of documents) {
     const text = doc.extractedText || '';
     const idx = text.toLowerCase().indexOf(needle);
@@ -1206,7 +1209,9 @@ export async function assessCriterionTwoStage(
       found: facts.evidence_found && evidenceValidation.isValid,
       document: evidenceValidation.isValid ? facts.evidence_document : null,
       page: evidenceValidation.isValid ? facts.evidence_page : null, // TASK #21: Page numbers from RAG
-      quote: evidenceValidation.isValid ? facts.evidence_quote : null
+      quote: evidenceValidation.isValid && facts.evidence_quote
+        ? facts.evidence_quote.replace(/\[PAGE \d+\]\n?/g, '').trim()
+        : null
     },
     reference_evidence: {
       found: referenceEvidence !== null,
@@ -1529,7 +1534,21 @@ export async function assessPackAgainstMatrix(
   llmResults.forEach(r => {
     if (!combined.has(r.matrix_id)) combined.set(r.matrix_id, r);
   });
-  const combinedResults = Array.from(combined.values());
+
+  // Post-process all results: strip [PAGE N] markers from quotes and fill missing pages
+  const combinedResults = Array.from(combined.values()).map(r => {
+    if (!r.pack_evidence) return r;
+    const rawQuote = r.pack_evidence.quote;
+    const cleanQuote = rawQuote
+      ? rawQuote.replace(/\[PAGE \d+\]\n?/g, '').trim() || null
+      : null;
+    const page = r.pack_evidence.page
+      ?? (cleanQuote ? findPageForQuote(cleanQuote, docEvidence) : null);
+    return {
+      ...r,
+      pack_evidence: { ...r.pack_evidence, quote: cleanQuote, page }
+    };
+  });
 
   // ============================================
   // ENRICHMENT: Add confidence tags + cost/timeline/risk metadata
