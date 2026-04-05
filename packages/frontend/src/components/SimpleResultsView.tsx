@@ -51,14 +51,23 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   const [activeReviewTab, setActiveReviewTab] = useState<keyof DomainReviews>('synthesis');
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Poll for CrewAI specialist review
+  // Poll for specialist review
   useEffect(() => {
     const assessmentId = (assessment as any).assessmentId;
     if (!assessmentId) return;
     setCrewStatus('pending');
+    let attempts = 0;
+    const MAX_ATTEMPTS = 60; // 5 min max (60 × 5s)
     pollRef.current = setInterval(async () => {
+      attempts++;
+      if (attempts > MAX_ATTEMPTS) {
+        setCrewStatus('error');
+        if (pollRef.current) clearInterval(pollRef.current);
+        return;
+      }
       try {
         const res = await fetch(`/api/assess/crew-review/${assessmentId}`);
+        if (res.status === 404) return; // not yet triggered — keep polling
         if (!res.ok) return;
         const data = await res.json();
         if (data.status === 'done') {

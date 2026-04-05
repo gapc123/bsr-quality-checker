@@ -12,6 +12,7 @@ import { sendSubmissionErrorNotification, sendNewOrgNotification } from '../serv
 import { analysisLimiter, uploadLimiter } from '../middleware/rate-limit.js';
 import { createUploadMiddleware } from '../utils/upload-config.js';
 import { classifyDocType } from '../utils/textUtils.js';
+import { runSpecialistReview } from '../services/specialist-review.js';
 
 const router = express.Router();
 
@@ -48,24 +49,15 @@ function readStatusFile(id: string) {
   } catch { return null; }
 }
 
-const CREW_SERVICE_URL = process.env.CREW_SERVICE_URL || 'http://localhost:8001';
-
 async function triggerCrewReview(assessmentId: string, context: any, results: any[]) {
   crewReviewCache.set(assessmentId, { status: 'pending' });
   try {
-    const response = await fetch(`${CREW_SERVICE_URL}/review`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ context, results }),
-      signal: AbortSignal.timeout(300_000), // 5 min timeout
-    });
-    if (!response.ok) throw new Error(`Crew service returned ${response.status}`);
-    const data = await response.json() as { domain_reviews: any };
-    crewReviewCache.set(assessmentId, { status: 'done', result: data.domain_reviews });
-    console.log(`✅ Crew review complete for ${assessmentId}`);
+    const domainReviews = await runSpecialistReview(context, results);
+    crewReviewCache.set(assessmentId, { status: 'done', result: domainReviews });
+    console.log(`✅ Specialist review complete for ${assessmentId}`);
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
-    console.error(`❌ Crew review failed for ${assessmentId}: ${msg}`);
+    console.error(`❌ Specialist review failed for ${assessmentId}: ${msg}`);
     crewReviewCache.set(assessmentId, { status: 'error', error: msg });
   }
   // Clean up after 2 hours
