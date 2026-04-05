@@ -9,6 +9,8 @@
  * 2. Content verification (does it contain required elements?)
  * 3. Quality assessment (is the content complete and specific?)
  */
+import { stripPageMarkers } from '../utils/textUtils.js';
+
 export interface DocumentEvidence {
   filename: string;
   docType: string | null;
@@ -97,7 +99,7 @@ function isBoilerplate(quote: string): boolean {
 
 function extractQuote(text: string, keyword: string, contextChars: number = 150): string | null {
   // Strip [PAGE N] markers so they don't appear verbatim in citations
-  const cleanText = text.replace(/\[PAGE \d+\]\n?/g, '');
+  const cleanText = stripPageMarkers(text);
 
   const normText = normalise(cleanText);
   const normKw = normalise(keyword);

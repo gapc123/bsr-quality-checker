@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import pdfParse from 'pdf-parse';
 import prisma from '../db/client.js';
+import { classifyDocType } from '../utils/textUtils.js';
 
 type LibraryType = 'pack' | 'baseline' | 'butler';
 
@@ -23,64 +24,7 @@ export interface DocumentInfo {
   chunks: ChunkData[];
 }
 
-// Classify document type based on filename and content keywords
-function classifyDocType(filename: string, text: string): string | null {
-  const lowerFilename = filename.toLowerCase();
-  const lowerText = text.toLowerCase().slice(0, 5000); // Check first 5000 chars
-
-  const typePatterns: { type: string; patterns: string[] }[] = [
-    {
-      type: 'fire_strategy',
-      patterns: ['fire strategy', 'fire safety strategy', 'fire engineering'],
-    },
-    {
-      type: 'drawings',
-      patterns: ['drawing', 'plan', 'elevation', 'section', 'layout'],
-    },
-    {
-      type: 'structural',
-      patterns: ['structural', 'structure', 'load', 'foundation'],
-    },
-    {
-      type: 'mep',
-      patterns: ['mechanical', 'electrical', 'plumbing', 'mep', 'hvac'],
-    },
-    {
-      type: 'specifications',
-      patterns: ['specification', 'spec', 'schedule'],
-    },
-    {
-      type: 'risk_assessment',
-      patterns: ['risk assessment', 'risk register', 'hazard'],
-    },
-    {
-      type: 'compliance',
-      patterns: ['compliance', 'building regulations', 'approved document'],
-    },
-    {
-      type: 'evacuation',
-      patterns: ['evacuation', 'egress', 'escape', 'exit'],
-    },
-    {
-      type: 'smoke_control',
-      patterns: ['smoke control', 'smoke ventilation', 'smoke extract'],
-    },
-    {
-      type: 'facade',
-      patterns: ['facade', 'cladding', 'external wall', 'curtain wall'],
-    },
-  ];
-
-  for (const { type, patterns } of typePatterns) {
-    for (const pattern of patterns) {
-      if (lowerFilename.includes(pattern) || lowerText.includes(pattern)) {
-        return type;
-      }
-    }
-  }
-
-  return null;
-}
+// classifyDocType imported from ../utils/textUtils.js (canonical 10-type version)
 
 // Split text into chunks with overlap
 function chunkText(text: string, pageRef: number): ChunkData[] {

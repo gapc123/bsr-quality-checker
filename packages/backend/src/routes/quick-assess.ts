@@ -11,6 +11,7 @@ import prisma from '../db/client.js';
 import { sendSubmissionErrorNotification, sendNewOrgNotification } from '../services/telegram.js';
 import { analysisLimiter, uploadLimiter } from '../middleware/rate-limit.js';
 import { createUploadMiddleware } from '../utils/upload-config.js';
+import { classifyDocType } from '../utils/textUtils.js';
 
 const router = express.Router();
 
@@ -106,28 +107,7 @@ async function extractPDFText(filepath: string): Promise<string> {
   }
 }
 
-function classifyDocType(filename: string, text: string): string | null {
-  const lowerFilename = filename.toLowerCase();
-  const lowerText = text.toLowerCase().slice(0, 5000);
-
-  const typePatterns: { type: string; patterns: string[] }[] = [
-    { type: 'fire_strategy', patterns: ['fire strategy', 'fire safety strategy'] },
-    { type: 'drawings', patterns: ['drawing', 'plan', 'elevation', 'section'] },
-    { type: 'structural', patterns: ['structural', 'structure'] },
-    { type: 'mep', patterns: ['mechanical', 'electrical', 'plumbing', 'mep'] },
-    { type: 'specifications', patterns: ['specification', 'spec', 'schedule'] },
-  ];
-
-  for (const { type, patterns } of typePatterns) {
-    for (const pattern of patterns) {
-      if (lowerFilename.includes(pattern) || lowerText.includes(pattern)) {
-        return type;
-      }
-    }
-  }
-
-  return null;
-}
+// classifyDocType imported from ../utils/textUtils.js (canonical 10-type version)
 
 /**
  * Full two-phase matrix assessment - no database required to run

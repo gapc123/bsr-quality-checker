@@ -11,6 +11,8 @@
  *                           for its declared type
  */
 
+import { stripPageMarkers } from '../utils/textUtils.js';
+
 export type IntegrityCheckType =
   | 'WRONG_DOCUMENT_TITLE'
   | 'REPEATED_PARAGRAPH'
@@ -31,8 +33,7 @@ export interface IntegrityIssue {
 // ============================================
 
 function normalise(text: string): string {
-  return text
-    .replace(/\[PAGE \d+\]\n?/g, '')  // strip page markers
+  return stripPageMarkers(text)
     .toLowerCase()
     .replace(/\s+/g, ' ')
     .trim();
@@ -46,7 +47,7 @@ const MIN_BLOCK_CHARS = 120;
 const MIN_CROSS_DOC_CHARS = 180; // higher bar for cross-doc comparison
 
 function extractBlocks(text: string, minChars: number = MIN_BLOCK_CHARS): string[] {
-  const clean = text.replace(/\[PAGE \d+\]\n?/g, '');
+  const clean = stripPageMarkers(text);
   return clean
     .split(/\n{2,}/)
     .map(b => b.replace(/\s+/g, ' ').trim())
@@ -139,7 +140,7 @@ function checkWrongDocumentTitle(
         `File "${filename}" is classified as "${docType}" based on its name, ` +
         `but the document header contains none of the expected keywords: ` +
         `${expectedKeywords.join(', ')}.`,
-      excerpt: extractedText.replace(/\[PAGE \d+\]\n?/g, '').slice(0, 200).trim(),
+      excerpt: stripPageMarkers(extractedText).slice(0, 200).trim(),
     };
   }
 

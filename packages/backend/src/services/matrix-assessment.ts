@@ -27,6 +27,7 @@ import {
   DocumentEvidence
 } from './deterministic-rules.js';
 import { checkDocumentIntegrity, IntegrityIssue } from '../lib/integrityChecker.js';
+import { stripPageMarkers } from '../utils/textUtils.js';
 import type { ConfidenceTag } from '../types/confidence.js';
 import { determineConfidence } from './confidence-analyzer.js';
 import type {
@@ -1212,7 +1213,7 @@ export async function assessCriterionTwoStage(
       document: evidenceValidation.isValid ? facts.evidence_document : null,
       page: evidenceValidation.isValid ? facts.evidence_page : null, // TASK #21: Page numbers from RAG
       quote: evidenceValidation.isValid && facts.evidence_quote
-        ? facts.evidence_quote.replace(/\[PAGE \d+\]\n?/g, '').trim()
+        ? stripPageMarkers(facts.evidence_quote).trim()
         : null
     },
     reference_evidence: {
@@ -1551,7 +1552,7 @@ export async function assessPackAgainstMatrix(
     if (!r.pack_evidence) return r;
     const rawQuote = r.pack_evidence.quote;
     const cleanQuote = rawQuote
-      ? rawQuote.replace(/\[PAGE \d+\]\n?/g, '').trim() || null
+      ? stripPageMarkers(rawQuote).trim() || null
       : null;
     const page = r.pack_evidence.page
       ?? (cleanQuote ? findPageForQuote(cleanQuote, docEvidence) : null);
