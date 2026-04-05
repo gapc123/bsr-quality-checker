@@ -1353,85 +1353,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     }
   },
 
-  // ============================================
-  // SM-014: Design and Access Statement
-  // Category: PACK_COMPLETENESS | Severity: MEDIUM
-  // ============================================
-  {
-    matrixId: 'SM-014',
-    name: 'Design and Access Statement Present',
-    category: 'PACK_COMPLETENESS',
-    severity: 'medium',
-    check: (docs) => {
-      const dasDoc = findDocument(docs, ['design and access', 'das', 'd&a', 'design statement']);
-
-      if (!dasDoc) {
-        return {
-          passed: false,
-          confidence: 'high',
-          evidence: { found: false, document: null, quote: null, matchType: 'absence' },
-          reasoning: 'No Design and Access Statement found in submission pack.',
-          failureMode: 'No DAS present'
-        };
-      }
-
-      const text = dasDoc.extractedText;
-      const wordCount = text.split(/\s+/).length;
-
-      // Check for substance
-      if (wordCount < 500) {
-        return {
-          passed: false,
-          confidence: 'high',
-          evidence: { found: true, document: dasDoc.filename, quote: null, matchType: 'structure' },
-          reasoning: `DAS found but appears very brief (${wordCount} words). May lack substance.`,
-          failureMode: 'DAS present but very brief or lacking substance'
-        };
-      }
-
-      const hasContext = containsAnyKeyword(text, ['context', 'site', 'surrounding', 'neighbourhood', 'location']);
-      const hasDesignRationale = containsAnyKeyword(text, ['rationale', 'design intent', 'approach', 'concept', 'principle']);
-      const hasAccess = containsAnyKeyword(text, ['access', 'entrance', 'approach', 'accessibility', 'disabled', 'mobility']);
-      const hasEmergencyAccess = containsAnyKeyword(text, ['emergency', 'fire', 'evacuation', 'fire service', 'appliance']);
-
-      const checks = [
-        { name: 'context described', passed: hasContext },
-        { name: 'design rationale', passed: hasDesignRationale },
-        { name: 'access provisions', passed: hasAccess },
-        { name: 'emergency access', passed: hasEmergencyAccess }
-      ];
-
-      const passedChecks = checks.filter(c => c.passed);
-
-      if (passedChecks.length >= 3) {
-        const quote = extractQuote(text, 'design');
-        return {
-          passed: true,
-          confidence: 'high',
-          evidence: { found: true, document: dasDoc.filename, quote, matchType: 'keyword' },
-          reasoning: `DAS complete with: ${passedChecks.map(c => c.name).join(', ')}.`,
-          failureMode: null
-        };
-      } else if (passedChecks.length >= 2) {
-        return {
-          passed: true,
-          confidence: 'needs_review',
-          evidence: { found: true, document: dasDoc.filename, quote: null, matchType: 'keyword' },
-          reasoning: `DAS present with ${passedChecks.map(c => c.name).join(', ')}. May need enhancement.`,
-          failureMode: null
-        };
-      } else {
-        const failedChecks = checks.filter(c => !c.passed);
-        return {
-          passed: false,
-          confidence: 'high',
-          evidence: { found: true, document: dasDoc.filename, quote: null, matchType: 'keyword' },
-          reasoning: `DAS lacks key content. Missing: ${failedChecks.map(c => c.name).join(', ')}.`,
-          failureMode: 'Design described but no access considerations'
-        };
-      }
-    }
-  },
+  // SM-014: Design and Access Statement — REMOVED (planning requirement, not BSR Gateway 2)
 
   // ============================================
   // SM-015: MEP Systems Specification
@@ -1982,82 +1904,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     }
   },
 
-  // ============================================
-  // SM-022: Fire Risk Assessment
-  // Category: PACK_COMPLETENESS | Severity: MEDIUM
-  // ============================================
-  {
-    matrixId: 'SM-022',
-    name: 'Fire Risk Assessment Included',
-    category: 'PACK_COMPLETENESS',
-    severity: 'medium',
-    check: (docs) => {
-      const fraDoc = findDocument(docs, ['fire risk assessment', 'fra', 'risk assessment']);
-
-      if (!fraDoc) {
-        return {
-          passed: false,
-          confidence: 'high',
-          evidence: { found: false, document: null, quote: null, matchType: 'absence' },
-          reasoning: 'No Fire Risk Assessment found in submission pack.',
-          failureMode: 'No FRA present'
-        };
-      }
-
-      const text = fraDoc.extractedText;
-
-      const hasRiskIdentification = containsAnyKeyword(text, ['hazard', 'risk identified', 'fire risk', 'ignition', 'fuel load']);
-      const hasLikelihood = containsAnyKeyword(text, ['likelihood', 'probability', 'chance', 'frequency']);
-      const hasConsequence = containsAnyKeyword(text, ['consequence', 'impact', 'severity', 'harm', 'injury']);
-      const hasMitigation = containsAnyKeyword(text, ['mitigation', 'control', 'measure', 'recommendation', 'action']);
-      const hasBuildingSpecific = containsAnyKeyword(text, ['this building', 'the building', 'proposed', 'development']);
-
-      const checks = [
-        { name: 'risk identification', passed: hasRiskIdentification },
-        { name: 'likelihood assessment', passed: hasLikelihood },
-        { name: 'consequence assessment', passed: hasConsequence },
-        { name: 'mitigation measures', passed: hasMitigation },
-        { name: 'building-specific', passed: hasBuildingSpecific }
-      ];
-
-      const passedChecks = checks.filter(c => c.passed);
-
-      if (passedChecks.length >= 4) {
-        const quote = extractQuote(text, 'risk');
-        return {
-          passed: true,
-          confidence: 'high',
-          evidence: { found: true, document: fraDoc.filename, quote, matchType: 'keyword' },
-          reasoning: `FRA complete with: ${passedChecks.map(c => c.name).join(', ')}.`,
-          failureMode: null
-        };
-      } else if (passedChecks.length >= 2) {
-        return {
-          passed: true,
-          confidence: 'needs_review',
-          evidence: { found: true, document: fraDoc.filename, quote: null, matchType: 'keyword' },
-          reasoning: `FRA present but may need enhancement. Found: ${passedChecks.map(c => c.name).join(', ')}.`,
-          failureMode: null
-        };
-      } else if (passedChecks.length >= 1) {
-        return {
-          passed: false,
-          confidence: 'high',
-          evidence: { found: true, document: fraDoc.filename, quote: null, matchType: 'keyword' },
-          reasoning: 'FRA appears generic or incomplete. May not reference the specific building.',
-          failureMode: 'FRA present but generic/template-based'
-        };
-      } else {
-        return {
-          passed: false,
-          confidence: 'needs_review',
-          evidence: { found: true, document: fraDoc.filename, quote: null, matchType: 'keyword' },
-          reasoning: 'Document may be FRA but content does not appear to be risk assessment.',
-          failureMode: "FRA doesn't reference the specific building"
-        };
-      }
-    }
-  },
+  // SM-022: Fire Risk Assessment — REMOVED (operational requirement under RRO 2005, not BSR Gateway 2)
 
   // ============================================
   // SM-023: London Fire Statement (London Only)
@@ -2069,16 +1916,17 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     category: 'LONDON_SPECIFIC',
     severity: 'high',
     check: (docs) => {
-      // First check if this is a London project
+      // Gate: only run if location positively confirmed as GLA boundary
       const allText = docs.map(d => d.extractedText).join(' ');
-      const isLondon = containsAnyKeyword(allText, ['london', 'gla', 'greater london', 'tfl', 'london borough']);
+      const isConfirmedLondon = containsAnyKeyword(allText, ['london borough', 'greater london authority', 'gla boundary', 'within the gla', 'london plan', 'greater london']);
 
-      if (!isLondon) {
+      if (!isConfirmedLondon) {
+        console.log('London Fire Statement check suppressed — project location not confirmed as GLA boundary.');
         return {
           passed: true,
           confidence: 'needs_review',
           evidence: { found: false, document: null, quote: null, matchType: 'absence' },
-          reasoning: 'Project does not appear to be in London. Fire Statement (D12) not required.',
+          reasoning: 'London Fire Statement check suppressed — project location not confirmed as GLA boundary.',
           failureMode: null
         };
       }
