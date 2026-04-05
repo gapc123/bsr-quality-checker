@@ -262,6 +262,15 @@ interface DeterministicRule {
   category: string;
   severity: 'high' | 'medium' | 'low';
   regulatoryRef?: RegulatoryRef; // Optional - uses category default if not specified
+  /**
+   * Restrict which document types this check receives.
+   * In runDeterministicChecks, docs are pre-filtered to these types before the
+   * check() function runs. Falls back to all docs if no doc matches the filter,
+   * so checks are never silently starved of input.
+   * Values must match docType values from classifyDocType() in quick-assess.ts:
+   * 'fire_strategy' | 'structural' | 'drawings' | 'mep' | 'specifications'
+   */
+  targetDocumentTypes?: string[];
   check: RuleFunction;
 }
 
@@ -280,6 +289,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Fire Strategy Report Present and Complete',
     category: 'PACK_COMPLETENESS',
     severity: 'high',
+    targetDocumentTypes: ['fire_strategy'],
     regulatoryRef: {
       source: 'Building Safety Act 2022 / Building Regulations 2010',
       section: 'Regulation 38 & Approved Document B',
@@ -799,6 +809,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Second Staircase Provision for Tall Residential',
     category: 'FIRE_SAFETY',
     severity: 'high',
+    targetDocumentTypes: ['fire_strategy'],
     check: (docs) => {
       const fireStrategyDoc = findDocument(docs, ['fire strategy', 'fire safety', 'core', 'stair']);
 
@@ -881,6 +892,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Structural Design Information Present',
     category: 'PACK_COMPLETENESS',
     severity: 'high',
+    targetDocumentTypes: ['structural'],
     check: (docs) => {
       const structuralDoc = findDocument(docs, ['structural', 'structure', 'engineer', 'foundation']);
 
@@ -2453,26 +2465,49 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Fire Door Ratings Specified',
     category: 'FIRE_SAFETY',
     severity: 'high',
+    targetDocumentTypes: ['fire_strategy', 'specifications'],
     check: (docs) => {
-      const allText = docs.map(d => d.extractedText).join(' ');
-      const hasFD30 = containsAnyKeyword(allText, ['fd30', 'fd 30', '30 minute door', '30-minute door']);
-      const hasFD60 = containsAnyKeyword(allText, ['fd60', 'fd 60', '60 minute door', '60-minute door']);
-      const hasFireDoor = containsAnyKeyword(allText, ['fire door', 'fire-rated door', 'fire rated door']);
-      const hasSchedule = containsAnyKeyword(allText, ['door schedule', 'door specification', 'ironmongery']);
+      // Search each doc individually so evidence is attributed to the correct source
+      let sourceDoc: DocumentEvidence | null = null;
+      let hasFD30 = false, hasFD60 = false, hasFireDoor = false, hasSchedule = false;
+
+      for (const doc of docs) {
+        const text = doc.extractedText;
+        const docFD30 = containsAnyKeyword(text, ['fd30', 'fd 30', '30 minute door', '30-minute door']);
+        const docFD60 = containsAnyKeyword(text, ['fd60', 'fd 60', '60 minute door', '60-minute door']);
+        const docFireDoor = containsAnyKeyword(text, ['fire door', 'fire-rated door', 'fire rated door']);
+        const docSchedule = containsAnyKeyword(text, ['door schedule', 'door specification', 'ironmongery']);
+
+        if (docFD30 || docFD60 || docFireDoor || docSchedule) {
+          if (!sourceDoc) sourceDoc = doc;
+          hasFD30 = hasFD30 || docFD30;
+          hasFD60 = hasFD60 || docFD60;
+          hasFireDoor = hasFireDoor || docFireDoor;
+          hasSchedule = hasSchedule || docSchedule;
+        }
+      }
+
+      const evidenceDoc = sourceDoc?.filename ?? null;
 
       if ((hasFD30 || hasFD60) && hasSchedule) {
+        const quote = sourceDoc
+          ? extractQuote(sourceDoc.extractedText, 'fd30') ||
+            extractQuote(sourceDoc.extractedText, 'fd60') ||
+            extractQuote(sourceDoc.extractedText, 'fire door')
+          : null;
         return {
           passed: true,
           confidence: 'high',
-          evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
+          evidence: { found: true, document: evidenceDoc, quote, matchType: 'keyword' },
           reasoning: 'Fire door ratings (FD30/FD60) specified with door schedule.',
           failureMode: null
         };
       } else if (hasFireDoor) {
+        const quote = sourceDoc ? extractQuote(sourceDoc.extractedText, 'fire door') : null;
         return {
           passed: false,
           confidence: 'high',
-          evidence: { found: true, document: docs[0].filename, quote: null, matchType: 'keyword' },
+          evidence: { found: true, document: evidenceDoc, quote, matchType: 'keyword' },
           reasoning: 'Fire doors mentioned but specific ratings (FD30/FD60) not specified.',
           failureMode: 'Fire doors mentioned without FD ratings'
         };
@@ -2751,6 +2786,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Basement Fire Safety Strategy',
     category: 'FIRE_SAFETY',
     severity: 'high',
+    targetDocumentTypes: ['fire_strategy'],
     check: (docs) => {
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasBasement = containsAnyKeyword(allText, ['basement', 'below ground', 'underground', 'lower ground']);
@@ -2819,6 +2855,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Car Park Fire Safety (if applicable)',
     category: 'FIRE_SAFETY',
     severity: 'medium',
+    targetDocumentTypes: ['fire_strategy'],
     check: (docs) => {
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasCarPark = containsAnyKeyword(allText, ['car park', 'parking', 'garage', 'vehicle storage']);
@@ -3656,7 +3693,15 @@ export function runDeterministicChecks(docs: DocumentEvidence[]): DeterministicA
   const results: DeterministicAssessment[] = [];
 
   for (const rule of DETERMINISTIC_RULES) {
-    const result = rule.check(docs);
+    // Pre-filter docs to targetDocumentTypes when specified.
+    // Falls back to all docs if no doc matches (never starves a check).
+    let ruleDocs = docs;
+    if (rule.targetDocumentTypes && rule.targetDocumentTypes.length > 0) {
+      const filtered = docs.filter(d => d.docType && rule.targetDocumentTypes!.includes(d.docType));
+      if (filtered.length > 0) ruleDocs = filtered;
+    }
+
+    const result = rule.check(ruleDocs);
     results.push({
       matrixId: rule.matrixId,
       ruleName: rule.name,
@@ -3675,7 +3720,13 @@ export function runSingleRule(matrixId: string, docs: DocumentEvidence[]): Deter
   const rule = DETERMINISTIC_RULES.find(r => r.matrixId === matrixId);
   if (!rule) return null;
 
-  const result = rule.check(docs);
+  let ruleDocs = docs;
+  if (rule.targetDocumentTypes && rule.targetDocumentTypes.length > 0) {
+    const filtered = docs.filter(d => d.docType && rule.targetDocumentTypes!.includes(d.docType));
+    if (filtered.length > 0) ruleDocs = filtered;
+  }
+
+  const result = rule.check(ruleDocs);
   return {
     matrixId: rule.matrixId,
     ruleName: rule.name,
