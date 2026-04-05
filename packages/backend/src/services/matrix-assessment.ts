@@ -26,6 +26,7 @@ import {
   DeterministicAssessment,
   DocumentEvidence
 } from './deterministic-rules.js';
+import { checkDocumentIntegrity, IntegrityIssue } from '../lib/integrityChecker.js';
 import type { ConfidenceTag } from '../types/confidence.js';
 import { determineConfidence } from './confidence-analyzer.js';
 import type {
@@ -424,6 +425,7 @@ export interface FullAssessment {
     tokens_input: number;
     tokens_output: number;
   };
+  integrity_issues: IntegrityIssue[];
 }
 
 // Load the success matrix
@@ -1430,6 +1432,15 @@ export async function assessPackAgainstMatrix(
   const projectName = extractProjectName(docEvidence);
   console.log(`  Project name extracted: ${projectName ?? '(not found)'}`);
 
+  // Run document integrity checks (title mismatches, duplication, content mismatch)
+  const integrityIssues = checkDocumentIntegrity(docEvidence);
+  if (integrityIssues.length > 0) {
+    console.log(`  ⚠ Integrity issues found: ${integrityIssues.length}`);
+    for (const issue of integrityIssues) {
+      console.log(`    [${issue.type}] ${issue.document}: ${issue.detail.slice(0, 100)}`);
+    }
+  }
+
   // Run all deterministic rules, then recycle evidence across checks
   const rawDeterministicResults = runDeterministicChecks(docEvidence);
   const deterministicResults = recycleEvidence(rawDeterministicResults);
@@ -1657,7 +1668,8 @@ export async function assessPackAgainstMatrix(
       deterministic_rule_count: deterministicResults.length,
       llm_criteria_count: llmResults.length
     },
-    api_usage: { ..._apiUsage }
+    api_usage: { ..._apiUsage },
+    integrity_issues: integrityIssues,
   };
 }
 

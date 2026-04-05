@@ -442,6 +442,43 @@ function formatTitle(title: string): string {
 }
 
 /**
+ * Generate document integrity issues section
+ */
+function generateIntegritySection(issues: import('../lib/integrityChecker.js').IntegrityIssue[]): string {
+  if (!issues || issues.length === 0) return '';
+
+  const rows = issues.map(issue => {
+    const severityColour = issue.severity === 'high' ? '#dc2626' : issue.severity === 'medium' ? '#d97706' : '#2563eb';
+    const badge = `<span style="font-size:8.5pt;font-weight:600;color:${severityColour};text-transform:uppercase;">${issue.severity}</span>`;
+    const typeLabel = issue.type.replace(/_/g, ' ');
+    const doc = issue.otherDocument
+      ? `${issue.document} ↔ ${issue.otherDocument}`
+      : issue.document;
+    const excerpt = issue.excerpt
+      ? `<div style="margin-top:6px;font-size:9pt;color:#64748b;font-style:italic;border-left:2px solid #e2e8f0;padding-left:8px;">&ldquo;${issue.excerpt.slice(0, 180)}&rdquo;</div>`
+      : '';
+    return `
+      <div style="border:1px solid #e2e8f0;border-radius:6px;padding:12px 16px;margin:8px 0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <strong style="font-size:9.5pt;">${typeLabel}</strong>
+          ${badge}
+        </div>
+        <div style="font-size:9.5pt;color:#374151;">${doc}</div>
+        <div style="font-size:9pt;color:#64748b;margin-top:4px;">${issue.detail}</div>
+        ${excerpt}
+      </div>`;
+  }).join('');
+
+  return `
+    <h3>DOCUMENT INTEGRITY WARNINGS</h3>
+    <p style="font-size:10pt;color:#64748b;margin-bottom:16px;">
+      The following structural issues were detected in the submitted documents and should be resolved before submission:
+    </p>
+    ${rows}
+  `;
+}
+
+/**
  * Generate complete HTML for submission readiness report
  * Updated (GitHub Issues #7, #8): Includes cover page and project metadata
  */
@@ -455,6 +492,7 @@ export function generateSubmissionReadinessHTML(
   const reviewItems = generateReviewItems(classified.reviewRequired);
   const consultantRequests = generateConsultantRequests(assessment.results);
   const missingInfo = generateMissingInfo(classified.missingInfo);
+  const integritySection = generateIntegritySection(assessment.integrity_issues ?? []);
 
   // Use provided metadata, or extract from assessment (project_name from document headers),
   // or fall back to a generic title — never use buildingType as a project name
@@ -766,6 +804,8 @@ export function generateSubmissionReadinessHTML(
 
   <h3>TOP BLOCKERS (must fix before submission)</h3>
   ${blockers}
+
+  ${integritySection ? `<div style="page-break-before: always;"></div>\n  ${integritySection}` : ''}
 
   <div style="page-break-before: always;"></div>
 
