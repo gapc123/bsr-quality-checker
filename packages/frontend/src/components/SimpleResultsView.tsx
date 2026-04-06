@@ -407,7 +407,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
           )}
         </div>
 
-        {/* Specialist Reviews — CrewAI domain expert second pass */}
+        {/* Specialist Reviews */}
         {crewStatus !== 'idle' && (
           <div className="border-t-2 border-indigo-100 bg-indigo-50 p-6">
             <div className="flex items-center justify-between mb-3">
@@ -416,7 +416,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
               </h3>
               {crewStatus === 'pending' && (
                 <span className="text-xs text-indigo-500 animate-pulse">
-                  ⏳ Specialist agents reviewing...
+                  ⏳ Agents working...
                 </span>
               )}
               {crewStatus === 'error' && (
@@ -455,8 +455,35 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
             )}
 
             {crewStatus === 'pending' && (
-              <div className="text-xs text-indigo-400 text-center py-4">
-                Five specialist AI agents (Fire Safety, Documentation, Regulatory, Quality, Lead Reviewer) are independently reviewing your results...
+              <div className="bg-white rounded-xl border border-indigo-100 p-5">
+                <p className="text-sm font-semibold text-indigo-900 mb-1">
+                  Your AI specialist panel is preparing their review
+                </p>
+                <p className="text-xs text-slate-500 mb-4">
+                  Four independent experts are each analysing a different part of your submission in parallel. Their findings will be compiled into a single executive summary — or you can read each specialist's view in its own tab.
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  {[
+                    { icon: '🔥', role: 'Fire Safety Engineer', focus: 'Approved Document B, BS 9991, means of escape & suppression' },
+                    { icon: '📋', role: 'Documentation Specialist', focus: 'Pack completeness, golden thread & missing mandatory documents' },
+                    { icon: '⚖️', role: 'Regulatory Consultant', focus: 'HRB dutyholder obligations, Regulation 38 & London Plan D12' },
+                    { icon: '🔍', role: 'Quality & Consistency Reviewer', focus: 'Cross-document contradictions, version mismatches & coordination gaps' },
+                  ].map(({ icon, role, focus }) => (
+                    <div key={role} className="flex gap-2 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                      <span className="text-xl leading-none mt-0.5">{icon}</span>
+                      <div>
+                        <p className="text-xs font-semibold text-indigo-800">{role}</p>
+                        <p className="text-xs text-slate-500 leading-snug mt-0.5">{focus}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2 text-xs text-indigo-400">
+                  <span className="inline-block w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+                  Once all four complete, a Lead Reviewer compiles everything into one executive summary with a clear verdict and prioritised action list.
+                </div>
               </div>
             )}
           </div>
