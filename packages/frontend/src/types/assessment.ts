@@ -120,6 +120,12 @@ export interface AssessmentResult {
   // Stage 3: Triage
   triage?: TriageAssessment;
 
+  // Confidence tier: actionability signal for UI triage
+  confidence_tier?: 'action' | 'verify' | 'advisory';
+
+  // Evidence quality
+  evidence_quality?: 'explicit' | 'implicit' | 'ambiguous' | 'absent';
+
   // Deprecated fields (kept for backward compatibility)
   confidence_old?: 'high' | 'medium' | 'low';
   cost_estimate?: { min: number; max: number; currency: string };

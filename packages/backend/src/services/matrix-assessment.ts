@@ -365,6 +365,14 @@ export interface AssessmentResult {
   // NEW: Evidence quality scoring (TASK #17)
   evidence_quality?: EvidenceQuality;
 
+  /**
+   * Confidence tier for UI triage — replaces generic severity with actionability signal:
+   *   ACTION   — strong evidence of a real gap; must fix before submission
+   *   VERIFY   — possible gap but needs human review (deterministic partial, LLM needs_review)
+   *   ADVISORY — low-confidence flag; gap description empty/generic, or very weak signal
+   */
+  confidence_tier?: 'action' | 'verify' | 'advisory';
+
   // NEW: Cost estimation for budgeting
   estimated_cost?: {
     hours: number;              // Estimated hours of work
@@ -531,6 +539,34 @@ function buildReferenceStandardsSummary(
   }
 
   return standards;
+}
+
+// ============================================
+// CONFIDENCE TIER HELPER (TASK 3)
+// ============================================
+
+/** Template/generic failure mode patterns that signal a low-quality gap description */
+const GENERIC_FAILURE_PATTERNS = [
+  /^no \w+ (document|report|information) (found|present)\.?$/i,
+  /^missing (required )?\w+ (document|information)\.?$/i,
+  /^address:/i,
+];
+
+/**
+ * Map deterministic rule confidence + failureMode to a UI confidence tier.
+ *   ACTION   — definitive/high confidence with a specific, non-empty gap description
+ *   VERIFY   — needs_review confidence, or confidence is high but gap description is generic
+ *   ADVISORY — no gap description at all (null / empty / template-only)
+ */
+function deterministicConfidenceTier(
+  confidence: 'definitive' | 'high' | 'needs_review',
+  failureMode: string | null
+): 'action' | 'verify' | 'advisory' {
+  if (!failureMode || failureMode.trim().length < 10) return 'advisory';
+  const isGeneric = GENERIC_FAILURE_PATTERNS.some(p => p.test(failureMode.trim()));
+  if (isGeneric) return 'advisory';
+  if (confidence === 'needs_review') return 'verify';
+  return 'action';
 }
 
 // ============================================
@@ -1499,7 +1535,12 @@ export async function assessPackAgainstMatrix(
     // Infer evidence quality from deterministic evidence
     evidence_quality: !dr.result.evidence.found
       ? 'absent'
-      : (dr.result.evidence.quote ? 'explicit' : 'implicit')
+      : (dr.result.evidence.quote ? 'explicit' : 'implicit'),
+    // Gap description gate (TASK 3): if the failure has no meaningful explanation,
+    // downgrade to ADVISORY so it doesn't appear as a hard blocker.
+    confidence_tier: dr.result.passed
+      ? undefined
+      : deterministicConfidenceTier(dr.result.confidence, dr.result.failureMode),
   }));
 
   // ============================================

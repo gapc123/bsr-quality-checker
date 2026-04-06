@@ -37,6 +37,104 @@ interface SimpleResultsViewProps {
   onSaveToClient?: () => void;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 5-field Issue Card component
+// ─────────────────────────────────────────────────────────────────────────────
+const TIER_STYLES = {
+  action:   { border: 'border-red-300',   bg: 'bg-red-50',   badge: 'bg-red-600 text-white',    idColor: 'text-red-500' },
+  verify:   { border: 'border-amber-300', bg: 'bg-amber-50', badge: 'bg-amber-500 text-white',  idColor: 'text-amber-600' },
+  advisory: { border: 'border-slate-200', bg: 'bg-white',    badge: 'bg-slate-400 text-white',  idColor: 'text-slate-400' },
+};
+
+interface IssueCardProps {
+  issue: import('../types/assessment').AssessmentResult;
+  tier: 'action' | 'verify' | 'advisory';
+}
+
+const IssueCard: React.FC<IssueCardProps> = ({ issue, tier }) => {
+  const [expanded, setExpanded] = useState(tier === 'action');
+  const styles = TIER_STYLES[tier];
+  const gap = issue.gaps_identified?.[0];
+  const action = issue.actions_required?.[0];
+
+  return (
+    <div className={`border rounded-lg overflow-hidden ${styles.border} ${styles.bg}`}>
+      {/* Card header — always visible */}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-start gap-3 p-4 text-left hover:bg-black/5 transition-colors"
+      >
+        <span className={`text-xs font-mono mt-0.5 w-16 shrink-0 ${styles.idColor}`}>{issue.matrix_id}</span>
+        <span className="flex-1 text-sm font-semibold text-slate-900 leading-snug">{issue.matrix_title}</span>
+        {gap && (
+          <span className="text-xs text-slate-500 max-w-xs truncate hidden sm:block">{gap}</span>
+        )}
+        <span className="text-slate-400 text-xs ml-2 shrink-0">{expanded ? '▼' : '▶'}</span>
+      </button>
+
+      {/* Expanded detail — 5 fields */}
+      {expanded && (
+        <div className="border-t border-current border-opacity-10 px-4 pb-4 pt-3 space-y-3">
+          {/* Field 1: What's wrong */}
+          {gap && (
+            <div>
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">What's Wrong</span>
+              <p className="text-sm text-slate-800 mt-0.5">{gap}</p>
+            </div>
+          )}
+
+          {/* Field 2: Reasoning */}
+          <div>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Assessment</span>
+            <p className="text-sm text-slate-700 mt-0.5">{issue.reasoning}</p>
+          </div>
+
+          {/* Field 3: Evidence source */}
+          {issue.pack_evidence?.found && (issue.pack_evidence.document || issue.pack_evidence.quote) && (
+            <div className="bg-amber-50 border-l-2 border-amber-400 pl-3 py-2 rounded-r">
+              <span className="text-xs font-semibold text-amber-800">Evidence</span>
+              <p className="text-xs text-amber-700 mt-0.5">
+                {issue.pack_evidence.document}
+                {issue.pack_evidence.page ? `, p.${issue.pack_evidence.page}` : ''}
+              </p>
+              {issue.pack_evidence.quote && (
+                <p className="text-xs text-amber-700 italic mt-1">
+                  &ldquo;{issue.pack_evidence.quote.slice(0, 180)}{issue.pack_evidence.quote.length > 180 ? '…' : ''}&rdquo;
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Field 4: Action */}
+          {action && (
+            <div className="bg-blue-50 border-l-2 border-blue-400 pl-3 py-2 rounded-r">
+              <span className="text-xs font-semibold text-blue-800">Action</span>
+              <p className="text-xs text-blue-900 mt-0.5">{action.action}</p>
+            </div>
+          )}
+
+          {/* Field 5: Owner */}
+          {action?.owner && (
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Owner</span>
+              <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-medium">{action.owner}</span>
+              {action.effort && (
+                <span className={`text-xs px-2 py-0.5 rounded font-medium ${
+                  action.effort === 'L' ? 'bg-red-100 text-red-700' :
+                  action.effort === 'M' ? 'bg-amber-100 text-amber-700' :
+                  'bg-green-100 text-green-700'
+                }`}>{action.effort === 'L' ? 'Large effort' : action.effort === 'M' ? 'Med effort' : 'Quick fix'}</span>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   assessment,
   onDownloadReport,
@@ -45,7 +143,6 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
 }) => {
   const { showToast } = useToast();
   const [isDownloading, setIsDownloading] = useState(false);
-  const [showAllDetails, setShowAllDetails] = useState(false);
   const [crewReviews, setCrewReviews] = useState<DomainReviews | null>(null);
   const [crewStatus, setCrewStatus] = useState<'idle' | 'pending' | 'done' | 'error'>('idle');
   const [activeReviewTab, setActiveReviewTab] = useState<keyof DomainReviews>('synthesis');
@@ -85,60 +182,64 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, []);
 
-  // Categorize issues
+  const [showVerify, setShowVerify] = useState(false);
+  const [showAdvisory, setShowAdvisory] = useState(false);
+
+  // Categorize issues into tiers
   const analysis = useMemo(() => {
     const allIssues = assessment.results.filter(r =>
       r.status === 'does_not_meet' || r.status === 'partial'
     );
     const passing = assessment.results.filter(r => r.status === 'meets');
 
-    // Critical blockers
-    const blockers = allIssues.filter(i =>
-      i.triage?.urgency === 'CRITICAL_BLOCKER' ||
-      i.triage?.blocks_submission
-    );
+    // Tier classification — prefer explicit confidence_tier, fall back on heuristics
+    const tierOf = (i: typeof allIssues[0]): 'action' | 'verify' | 'advisory' => {
+      if (i.confidence_tier) return i.confidence_tier;
+      // Heuristic: critical blocker or high severity with gaps → action
+      if (i.triage?.urgency === 'CRITICAL_BLOCKER' || i.triage?.blocks_submission) return 'action';
+      if (i.status === 'does_not_meet' && (i.gaps_identified?.length ?? 0) > 0) return 'action';
+      if (i.status === 'partial') return 'verify';
+      return 'advisory';
+    };
 
-    // Missing info (client needs to provide)
-    const clientActions = allIssues.filter(i => {
-      const reasoning = (i.reasoning || '').toLowerCase();
-      const gaps = (i.gaps_identified || []).join(' ').toLowerCase();
-      return (
-        reasoning.includes('missing') ||
-        reasoning.includes('not provided') ||
-        reasoning.includes('tbc') ||
-        reasoning.includes('to be confirmed') ||
-        gaps.includes('missing')
-      );
-    });
+    const actionItems  = allIssues.filter(i => tierOf(i) === 'action');
+    const verifyItems  = allIssues.filter(i => tierOf(i) === 'verify');
+    const advisoryItems = allIssues.filter(i => tierOf(i) === 'advisory');
 
-    // Internal actions (we need specialists/work)
-    const internalActions = allIssues.filter(i => !clientActions.includes(i));
+    // Category heatmap: count non-passing issues per category
+    const categoryCounts: Record<string, { action: number; verify: number; advisory: number }> = {};
+    for (const i of allIssues) {
+      const cat = i.category || 'OTHER';
+      if (!categoryCounts[cat]) categoryCounts[cat] = { action: 0, verify: 0, advisory: 0 };
+      categoryCounts[cat][tierOf(i)]++;
+    }
 
-    // Verdict
+    // Verdict — based only on ACTION items (VERIFY/ADVISORY don't block submission)
     let status: 'ready' | 'needs-work' | 'not-ready' = 'ready';
     let statusColor = '#10b981';
     let statusIcon = '✅';
     let statusText = 'Ready to Submit';
 
-    if (blockers.length > 0) {
+    if (actionItems.length > 0) {
       status = 'not-ready';
       statusColor = '#ef4444';
       statusIcon = '❌';
       statusText = 'Not Ready';
-    } else if (allIssues.length > 10) {
+    } else if (verifyItems.length > 0) {
       status = 'needs-work';
       statusColor = '#f59e0b';
       statusIcon = '⚠️';
-      statusText = 'Needs Work';
+      statusText = 'Needs Verification';
     }
 
     return {
       passing: passing.length,
       total: assessment.results.length,
-      blockers,
-      clientActions,
-      internalActions,
+      actionItems,
+      verifyItems,
+      advisoryItems,
       allIssues,
+      categoryCounts,
       status,
       statusColor,
       statusIcon,
@@ -156,16 +257,16 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
       buildingType: assessment.pack_context?.buildingType,
       isHighRiseBuilding: assessment.pack_context?.isHRB,
       isLondon: assessment.pack_context?.isLondon,
-      criticalBlockers: analysis.blockers.map(b => ({
+      actionItems: analysis.actionItems.map(b => ({
         check: b.matrix_title,
         reason: b.reasoning,
         gaps: b.gaps_identified,
       })),
-      clientActions: analysis.clientActions.map(c => ({
+      verifyItems: analysis.verifyItems.map(c => ({
         check: c.matrix_title,
         reason: c.reasoning,
       })),
-      internalActions: analysis.internalActions.map(i => ({
+      advisoryItems: analysis.advisoryItems.map(i => ({
         check: i.matrix_title,
         owner: i.actions_required?.[0]?.owner,
         reason: i.reasoning,
@@ -213,30 +314,56 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
             {analysis.statusText}
           </h2>
 
-          {analysis.blockers.length > 0 ? (
+          {analysis.actionItems.length > 0 ? (
             <p className="text-lg text-slate-700 mb-4">
-              <strong className="text-red-600">{analysis.blockers.length}</strong> critical {analysis.blockers.length === 1 ? 'item blocks' : 'items block'} submission
+              <strong className="text-red-600">{analysis.actionItems.length}</strong> {analysis.actionItems.length === 1 ? 'item requires' : 'items require'} action before submission
             </p>
           ) : (
             <p className="text-lg text-slate-700 mb-4">
               {analysis.allIssues.length === 0
                 ? 'All criteria met!'
-                : `${analysis.allIssues.length} ${analysis.allIssues.length === 1 ? 'item' : 'items'} to address before submission`
+                : `${analysis.verifyItems.length} to verify, ${analysis.advisoryItems.length} advisory only`
               }
             </p>
           )}
 
-          {/* Quick Stats Bar */}
-          <div className="flex justify-center gap-8 text-sm">
-            <div>
-              <span className="font-bold text-2xl text-emerald-600">{analysis.passing}</span>
-              <span className="text-slate-600 ml-2">passing</span>
+          {/* Tier stats bar */}
+          <div className="flex justify-center gap-6 text-sm flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
+              <span className="font-bold text-xl text-emerald-600">{analysis.passing}</span>
+              <span className="text-slate-600">passing</span>
             </div>
-            <div className="text-slate-400">•</div>
-            <div>
-              <span className="font-bold text-2xl text-orange-600">{analysis.allIssues.length}</span>
-              <span className="text-slate-600 ml-2">need attention</span>
-            </div>
+            {analysis.actionItems.length > 0 && (
+              <>
+                <div className="text-slate-400">•</div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
+                  <span className="font-bold text-xl text-red-600">{analysis.actionItems.length}</span>
+                  <span className="text-slate-600">ACTION</span>
+                </div>
+              </>
+            )}
+            {analysis.verifyItems.length > 0 && (
+              <>
+                <div className="text-slate-400">•</div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-amber-400 inline-block" />
+                  <span className="font-bold text-xl text-amber-600">{analysis.verifyItems.length}</span>
+                  <span className="text-slate-600">VERIFY</span>
+                </div>
+              </>
+            )}
+            {analysis.advisoryItems.length > 0 && (
+              <>
+                <div className="text-slate-400">•</div>
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-slate-400 inline-block" />
+                  <span className="font-bold text-xl text-slate-500">{analysis.advisoryItems.length}</span>
+                  <span className="text-slate-600">advisory</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -245,156 +372,91 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
 
           {analysis.allIssues.length > 0 ? (
             <>
-              <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center">
-                → What to Do Next
-              </h3>
-
-              <div className="grid grid-cols-2 gap-6 mb-8">
-
-                {/* LEFT: Client Actions */}
-                <div className="bg-orange-50 border-2 border-orange-300 rounded-lg p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-orange-500 text-white p-3 rounded-lg">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-orange-900">Tell Client to Provide</h4>
-                      <p className="text-xs text-orange-700">{analysis.clientActions.length} {analysis.clientActions.length === 1 ? 'item' : 'items'}</p>
-                    </div>
-                  </div>
-
-                  {analysis.clientActions.length > 0 ? (
-                    <ul className="space-y-2 text-sm">
-                      {analysis.clientActions.slice(0, 8).map((issue, idx) => (
-                        <li key={issue.matrix_id} className="flex items-start gap-2">
-                          <span className="text-orange-600 font-bold mt-0.5">{idx + 1}.</span>
-                          <span className="text-slate-800 leading-tight">{issue.matrix_title}</span>
-                        </li>
+              {/* Category Heatmap */}
+              {Object.keys(analysis.categoryCounts).length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Issues by Category</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(analysis.categoryCounts)
+                      .sort((a, b) => (b[1].action + b[1].verify) - (a[1].action + a[1].verify))
+                      .map(([cat, counts]) => (
+                        <div key={cat} className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 border ${
+                          counts.action > 0
+                            ? 'bg-red-50 border-red-300 text-red-800'
+                            : counts.verify > 0
+                              ? 'bg-amber-50 border-amber-300 text-amber-800'
+                              : 'bg-slate-50 border-slate-200 text-slate-600'
+                        }`}>
+                          <span className="font-semibold">{cat.replace(/_/g, ' ')}</span>
+                          {counts.action > 0 && <span className="bg-red-200 text-red-900 px-1.5 py-0.5 rounded text-xs">{counts.action} ACTION</span>}
+                          {counts.verify > 0 && <span className="bg-amber-200 text-amber-900 px-1.5 py-0.5 rounded text-xs">{counts.verify} VERIFY</span>}
+                          {counts.advisory > 0 && !counts.action && !counts.verify && <span className="bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-xs">{counts.advisory} advisory</span>}
+                        </div>
                       ))}
-                      {analysis.clientActions.length > 8 && (
-                        <li className="text-orange-700 italic text-xs">
-                          + {analysis.clientActions.length - 8} more items...
-                        </li>
-                      )}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-orange-700 italic">No missing information</p>
-                  )}
-                </div>
-
-                {/* RIGHT: Internal Actions */}
-                <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-blue-500 text-white p-3 rounded-lg">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-blue-900">We Need to Address</h4>
-                      <p className="text-xs text-blue-700">{analysis.internalActions.length} {analysis.internalActions.length === 1 ? 'item' : 'items'}</p>
-                    </div>
-                  </div>
-
-                  {analysis.internalActions.length > 0 ? (
-                    <ul className="space-y-2 text-sm">
-                      {analysis.internalActions.slice(0, 8).map((issue, idx) => (
-                        <li key={issue.matrix_id} className="flex items-start gap-2">
-                          <span className="text-blue-600 font-bold mt-0.5">{idx + 1}.</span>
-                          <div className="flex-1">
-                            <span className="text-slate-800 leading-tight">{issue.matrix_title}</span>
-                            {issue.actions_required?.[0]?.owner && (
-                              <span className="block text-xs text-blue-700 mt-1">
-                                → {issue.actions_required[0].owner}
-                              </span>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                      {analysis.internalActions.length > 8 && (
-                        <li className="text-blue-700 italic text-xs">
-                          + {analysis.internalActions.length - 8} more items...
-                        </li>
-                      )}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-blue-700 italic">No internal actions needed</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Critical Blockers Alert */}
-              {analysis.blockers.length > 0 && (
-                <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8">
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl">🚨</div>
-                    <div className="flex-1">
-                      <h4 className="text-lg font-bold text-red-900 mb-2">
-                        Critical Blockers ({analysis.blockers.length})
-                      </h4>
-                      <p className="text-sm text-red-800 mb-3">
-                        These items MUST be resolved before submission:
-                      </p>
-                      <ul className="space-y-1 text-sm">
-                        {analysis.blockers.map((issue) => (
-                          <li key={issue.matrix_id} className="flex items-start gap-2">
-                            <span className="text-red-600">•</span>
-                            <span className="text-red-900 font-medium">{issue.matrix_title}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
                   </div>
                 </div>
               )}
 
-              {/* Expandable Details */}
-              <button
-                onClick={() => setShowAllDetails(!showAllDetails)}
-                className="w-full text-center py-3 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors border border-slate-200 mb-6"
-              >
-                {showAllDetails ? '▼ Hide Details' : '▶ Show All Details'}
-              </button>
+              {/* ACTION items — always visible */}
+              {analysis.actionItems.length > 0 && (
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                      Action Required
+                    </span>
+                    <span className="text-sm text-slate-500">{analysis.actionItems.length} {analysis.actionItems.length === 1 ? 'issue' : 'issues'} must be fixed before submission</span>
+                  </div>
+                  <div className="space-y-3">
+                    {analysis.actionItems.map((issue) => (
+                      <IssueCard key={issue.matrix_id} issue={issue} tier="action" />
+                    ))}
+                  </div>
+                </div>
+              )}
 
-              {showAllDetails && (
-                <div className="bg-slate-50 rounded-lg p-6 space-y-3 max-h-96 overflow-y-auto">
-                  {analysis.allIssues.map((issue) => (
-                    <div key={issue.matrix_id} className="bg-white border border-slate-200 rounded p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <span className="text-xs font-mono text-slate-500">{issue.matrix_id}</span>
-                        {issue.triage?.urgency === 'CRITICAL_BLOCKER' && (
-                          <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-semibold">
-                            CRITICAL
-                          </span>
-                        )}
-                      </div>
-                      <h5 className="font-semibold text-slate-900 mb-2">{issue.matrix_title}</h5>
-                      <p className="text-sm text-slate-700 mb-2">{issue.reasoning}</p>
-                      {issue.pack_evidence?.found && (issue.pack_evidence.document || issue.pack_evidence.quote) && (
-                        <div className="text-xs bg-amber-50 border-l-2 border-amber-400 pl-3 py-2 mb-2">
-                          <span className="font-semibold text-amber-800">Source: </span>
-                          <span className="text-amber-700">
-                            {issue.pack_evidence.document}
-                            {issue.pack_evidence.page ? `, p.${issue.pack_evidence.page}` : ''}
-                          </span>
-                          {issue.pack_evidence.quote && (
-                            <p className="text-amber-700 italic mt-1">
-                              &ldquo;{issue.pack_evidence.quote.slice(0, 150)}{issue.pack_evidence.quote.length > 150 ? '…' : ''}&rdquo;
-                            </p>
-                          )}
-                        </div>
-                      )}
-                      {issue.actions_required?.[0] && (
-                        <div className="text-xs bg-blue-50 border-l-2 border-blue-500 pl-3 py-2">
-                          <strong>Action:</strong> {issue.actions_required[0].action}
-                          <br />
-                          <strong>Owner:</strong> {issue.actions_required[0].owner}
-                        </div>
-                      )}
+              {/* VERIFY items — collapsed by default */}
+              {analysis.verifyItems.length > 0 && (
+                <div className="mb-6">
+                  <button
+                    onClick={() => setShowVerify(!showVerify)}
+                    className="flex items-center gap-3 mb-3 w-full text-left"
+                  >
+                    <span className="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                      Verify
+                    </span>
+                    <span className="text-sm text-slate-500">{analysis.verifyItems.length} {analysis.verifyItems.length === 1 ? 'item' : 'items'} need human review</span>
+                    <span className="ml-auto text-slate-400 text-xs">{showVerify ? '▼ hide' : '▶ show'}</span>
+                  </button>
+                  {showVerify && (
+                    <div className="space-y-3">
+                      {analysis.verifyItems.map((issue) => (
+                        <IssueCard key={issue.matrix_id} issue={issue} tier="verify" />
+                      ))}
                     </div>
-                  ))}
+                  )}
+                </div>
+              )}
+
+              {/* ADVISORY items — collapsed by default */}
+              {analysis.advisoryItems.length > 0 && (
+                <div className="mb-6">
+                  <button
+                    onClick={() => setShowAdvisory(!showAdvisory)}
+                    className="flex items-center gap-3 mb-3 w-full text-left"
+                  >
+                    <span className="bg-slate-400 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                      Advisory
+                    </span>
+                    <span className="text-sm text-slate-500">{analysis.advisoryItems.length} low-confidence {analysis.advisoryItems.length === 1 ? 'flag' : 'flags'} for awareness only</span>
+                    <span className="ml-auto text-slate-400 text-xs">{showAdvisory ? '▼ hide' : '▶ show'}</span>
+                  </button>
+                  {showAdvisory && (
+                    <div className="space-y-3">
+                      {analysis.advisoryItems.map((issue) => (
+                        <IssueCard key={issue.matrix_id} issue={issue} tier="advisory" />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </>

@@ -329,9 +329,16 @@ interface DeterministicRule {
    * check() function runs. Falls back to all docs if no doc matches the filter,
    * so checks are never silently starved of input.
    * Values must match docType values from classifyDocType() in quick-assess.ts:
-   * 'fire_strategy' | 'structural' | 'drawings' | 'mep' | 'specifications'
+   * 'fire_strategy' | 'structural' | 'drawings' | 'mep' | 'specifications' | 'fire_door_schedule'
    */
   targetDocumentTypes?: string[];
+  /**
+   * Spatial overlap group: if multiple rules describe the SAME physical space
+   * (e.g. basement == car park), tag them with the same group string.
+   * In runDeterministicChecks, if any rule in the group passes with confidence ≥ 'high',
+   * the remaining rules in the group are auto-passed (deduplication).
+   */
+  spatial_overlap_group?: string;
   check: RuleFunction;
 }
 
@@ -2526,7 +2533,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     name: 'Fire Door Ratings Specified',
     category: 'FIRE_SAFETY',
     severity: 'high',
-    targetDocumentTypes: ['fire_strategy', 'specifications'],
+    targetDocumentTypes: ['fire_door_schedule', 'fire_strategy', 'specifications'],
     check: (docs) => {
       // Search each doc individually so evidence is attributed to the correct source
       let sourceDoc: DocumentEvidence | null = null;
@@ -2848,6 +2855,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     category: 'FIRE_SAFETY',
     severity: 'high',
     targetDocumentTypes: ['fire_strategy'],
+    spatial_overlap_group: 'basement_carpark',
     check: (docs) => {
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasBasement = containsAnyKeyword(allText, ['basement', 'below ground', 'underground', 'lower ground']);
@@ -2910,13 +2918,14 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
 
   // SM-039: Car Park Fire Safety
   // NOTE: If the car park is within a basement (the common case for tall residential),
-  // SM-038 already covers it — suppress this check to avoid double-counting the same space.
+  // SM-038 already covers it — spatial_overlap_group suppresses this check automatically.
   {
     matrixId: 'SM-039',
     name: 'Car Park Fire Safety (if applicable)',
     category: 'FIRE_SAFETY',
     severity: 'medium',
     targetDocumentTypes: ['fire_strategy'],
+    spatial_overlap_group: 'basement_carpark',
     check: (docs) => {
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasCarPark = containsAnyKeyword(allText, ['car park', 'parking', 'garage', 'vehicle storage']);
@@ -3650,6 +3659,25 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
  * Reads the first substantive lines after [PAGE N] markers, looking for
  * title-cased proper-noun sequences that represent a project name.
  */
+/**
+ * Generic building category terms that are NOT project-specific names.
+ * A title-cased line matching these should be skipped in favour of a proper noun.
+ */
+const BUILDING_CATEGORY_WORDS = new Set([
+  'residential', 'development', 'building', 'block', 'tower', 'scheme',
+  'complex', 'site', 'plot', 'phase', 'stage', 'mixed', 'commercial',
+  'industrial', 'office', 'apartment', 'flat', 'house', 'housing',
+  'construction', 'project', 'works', 'extension', 'conversion',
+  'refurbishment', 'renovation', 'redevelopment', 'infrastructure',
+  'higher', 'risk', 'hrb', 'gateway', 'application',
+]);
+
+function isBuildingCategoryPhrase(line: string): boolean {
+  const words = line.toLowerCase().split(/\s+/);
+  // Reject if ALL words are generic category words (no unique proper noun)
+  return words.every(w => BUILDING_CATEGORY_WORDS.has(w));
+}
+
 export function extractProjectName(docs: DocumentEvidence[]): string | null {
   // Prefer application/brief documents where the project name is most explicit
   const priorityDocs = docs.filter(d =>
@@ -3661,14 +3689,20 @@ export function extractProjectName(docs: DocumentEvidence[]): string | null {
     const text = doc.extractedText;
 
     // Pattern: explicit label like "Project: Silverline House" or "Project Name: …"
-    const labelMatch = text.match(/project\s+(?:name|title|ref(?:erence)?)\s*[:—]\s*([A-Z][A-Za-z0-9 \-']+)/i);
-    if (labelMatch) return labelMatch[1].trim();
+    const labelMatch = text.match(/project\s+(?:name|title|ref(?:erence)?)\s*[:—]\s*([A-Z][A-Za-z0-9 \-']+(?:\s+[A-Z]{2,5}-?\d{4})?)/i);
+    if (labelMatch) {
+      const candidate = labelMatch[1].trim();
+      if (!isBuildingCategoryPhrase(candidate)) return candidate;
+    }
 
     // Pattern: project reference code adjacent to name, e.g. "Silverline House SLH-2026"
+    // Return the FULL match (name + ref code) so the header is "Silverline House SLH-2026"
     const refMatch = text.slice(0, 2000).match(
-      /([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,4})\s+[A-Z]{2,5}-?\d{4}/
+      /([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,4})\s+([A-Z]{2,5}-?\d{4})/
     );
-    if (refMatch) return refMatch[1].trim();
+    if (refMatch && !isBuildingCategoryPhrase(refMatch[1])) {
+      return `${refMatch[1].trim()} ${refMatch[2].trim()}`;
+    }
 
     // Pattern: first non-empty, non-boilerplate, title-cased line in the header area
     const lines = text.split('\n')
@@ -3677,6 +3711,7 @@ export function extractProjectName(docs: DocumentEvidence[]): string | null {
 
     for (const line of lines.slice(0, 20)) {
       if (line.match(/^(This|The|All|Where|In|A |An |Building|Design|Structural|Fire|Date|Rev|Issue|Prepared)/)) continue;
+      if (isBuildingCategoryPhrase(line)) continue;
       // Two or more consecutive title-cased words, no lowercase at start
       if (/^[A-Z][a-z]+(?:\s+[A-Z][a-z0-9]+){1,5}$/.test(line)) {
         return line;
@@ -3690,17 +3725,31 @@ export function extractProjectName(docs: DocumentEvidence[]): string | null {
 /**
  * Evidence recycler: after all checks complete, check whether a "Met" result's
  * evidence quote would satisfy any "Review Required" or "Not Met" check.
- * If it does, copy the evidence and upgrade the status to "partial" (needs review).
+ * Uses keyword overlap scoring so strong matches resolve as "meets" (high confidence)
+ * and weak matches as "partial" (needs_review).
  *
- * This fixes routing failures like SM-007/SM-017 where the same passage
- * was retrieved for the wrong check.
+ * Score = matched_keyword_count / total_keywords_for_criterion
+ *   ≥ 0.50 → passed: true, confidence: 'high'   → status: meets
+ *   ≥ 0.20 → passed: true, confidence: 'needs_review' → status: partial
+ *   < 0.20 → no upgrade
  */
 const EVIDENCE_RECYCLE_KEYWORDS: Record<string, string[]> = {
-  'SM-007': ['staircase', 'protected staircase', 'stair core', 'means of escape stair', 'protected stair', 'two stair'],
-  'SM-020': ['height', 'metres', 'meters', 'tall', 'parapet'],
-  'SM-021': ['storey', 'storeys', 'floor', 'floors', 'level'],
-  'SM-038': ['basement', 'sprinkler', 'fire suppression', 'smoke', 'below ground'],
+  'SM-007': ['staircase', 'protected staircase', 'stair core', 'means of escape stair', 'protected stair', 'two stair', 'lobby', 'protected lobby'],
+  'SM-008': ['structural', 'load-bearing', 'loading', 'beam', 'column', 'foundation', 'slab', 'structural calculation', 'structural engineer'],
+  'SM-020': ['height', 'metres', 'meters', 'tall', 'parapet', 'above ground level', 'building height'],
+  'SM-021': ['storey', 'storeys', 'floor', 'floors', 'level', 'storey count', 'number of storeys'],
+  'SM-031': ['fire door', 'fire doors', 'door schedule', 'fd30', 'fd60', 'fire resistance', 'door set'],
+  'SM-038': ['basement', 'sprinkler', 'fire suppression', 'smoke', 'below ground', 'car park', 'underground'],
+  'SM-039': ['basement', 'car park', 'underground', 'below ground', 'automatic suppression'],
 };
+
+/** Returns the fraction of keywords that appear in `text` (0–1). */
+function computeKeywordOverlap(text: string, keywords: string[]): number {
+  if (keywords.length === 0) return 0;
+  const lower = text.toLowerCase();
+  const matched = keywords.filter(kw => lower.includes(kw.toLowerCase()));
+  return matched.length / keywords.length;
+}
 
 export function recycleEvidence(results: DeterministicAssessment[]): DeterministicAssessment[] {
   const metWithQuotes = results.filter(r =>
@@ -3713,26 +3762,32 @@ export function recycleEvidence(results: DeterministicAssessment[]): Determinist
     const keywords = EVIDENCE_RECYCLE_KEYWORDS[r.matrixId];
     if (!keywords) return r;
 
+    // Find the best-scoring Met result whose quote overlaps with this criterion's keywords
+    let bestScore = 0;
+    let bestMatch: DeterministicAssessment | null = null;
     for (const metResult of metWithQuotes) {
-      const quote = (metResult.result.evidence.quote || '').toLowerCase();
-      const matchesKeyword = keywords.some(kw => quote.includes(kw.toLowerCase()));
-      if (matchesKeyword) {
-        console.log(`[evidence-recycle] ${r.matrixId}: reusing evidence from ${metResult.matrixId} ("${metResult.result.evidence.quote?.slice(0, 60)}…")`);
-        return {
-          ...r,
-          result: {
-            ...r.result,
-            passed: true,
-            confidence: 'needs_review' as const,
-            evidence: {
-              ...metResult.result.evidence,
-            },
-            reasoning: `${r.result.reasoning}\n\n[Evidence recycled from ${metResult.matrixId}: passage also satisfies this check]`,
-          },
-        };
+      const quote = metResult.result.evidence.quote || '';
+      const score = computeKeywordOverlap(quote, keywords);
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = metResult;
       }
     }
-    return r;
+
+    if (!bestMatch || bestScore < 0.20) return r;
+
+    const confidence = bestScore >= 0.50 ? 'high' : 'needs_review';
+    console.log(`[evidence-recycle] ${r.matrixId}: score=${bestScore.toFixed(2)} confidence=${confidence} — reusing evidence from ${bestMatch.matrixId} ("${bestMatch.result.evidence.quote?.slice(0, 60)}…")`);
+    return {
+      ...r,
+      result: {
+        ...r.result,
+        passed: true,
+        confidence: confidence as 'high' | 'needs_review',
+        evidence: { ...bestMatch.result.evidence },
+        reasoning: `${r.result.reasoning}\n\n[Evidence recycled from ${bestMatch.matrixId} (overlap score ${bestScore.toFixed(2)}): passage also satisfies this check]`,
+      },
+    };
   });
 }
 
@@ -3753,6 +3808,9 @@ export interface DeterministicAssessment {
 export function runDeterministicChecks(docs: DocumentEvidence[]): DeterministicAssessment[] {
   const results: DeterministicAssessment[] = [];
 
+  // Track which spatial_overlap_groups have already been satisfied by a passing check
+  const satisfiedOverlapGroups = new Set<string>();
+
   for (const rule of DETERMINISTIC_RULES) {
     // Pre-filter docs to targetDocumentTypes when specified.
     // Falls back to all docs if no doc matches (never starves a check).
@@ -3762,7 +3820,35 @@ export function runDeterministicChecks(docs: DocumentEvidence[]): DeterministicA
       if (filtered.length > 0) ruleDocs = filtered;
     }
 
+    // Spatial deduplication: if a previous rule in the same overlap group already passed
+    // with high confidence, auto-pass this rule instead of re-running the check.
+    if (rule.spatial_overlap_group && satisfiedOverlapGroups.has(rule.spatial_overlap_group)) {
+      console.log(`[spatial-dedup] ${rule.matrixId}: suppressed — covered by earlier rule in group '${rule.spatial_overlap_group}'`);
+      results.push({
+        matrixId: rule.matrixId,
+        ruleName: rule.name,
+        category: rule.category,
+        severity: rule.severity,
+        regulatoryRef: rule.regulatoryRef || getDefaultRegulatoryRef(rule.category),
+        result: {
+          passed: true,
+          confidence: 'needs_review',
+          evidence: { found: false, document: null, quote: null, matchType: 'absence' },
+          reasoning: `Covered by overlapping spatial check in group '${rule.spatial_overlap_group}'. Not assessed separately.`,
+          failureMode: null
+        },
+        requiresLLMReview: false
+      });
+      continue;
+    }
+
     const result = rule.check(ruleDocs);
+
+    // If this rule passed at high confidence and belongs to an overlap group, mark the group satisfied
+    if (rule.spatial_overlap_group && result.passed && (result.confidence === 'high' || result.confidence === 'definitive')) {
+      satisfiedOverlapGroups.add(rule.spatial_overlap_group);
+    }
+
     results.push({
       matrixId: rule.matrixId,
       ruleName: rule.name,
@@ -3774,7 +3860,45 @@ export function runDeterministicChecks(docs: DocumentEvidence[]): DeterministicA
     });
   }
 
+  // Evidence deduplication: if the same quote is used by multiple criteria,
+  // only the first (highest-priority) rule keeps it. Others have their quote cleared
+  // so the UI doesn't show the same passage as "evidence" for unrelated checks.
+  deduplicateEvidence(results);
+
   return results;
+}
+
+/**
+ * TASK 6: Evidence deduplication
+ * Ensures no two criteria share an identical evidence quote.
+ * The first assessment that uses a quote "owns" it; subsequent ones lose the quote
+ * but retain their pass/fail status and reasoning.
+ */
+function deduplicateEvidence(results: DeterministicAssessment[]): void {
+  const seenQuotes = new Map<string, string>(); // normalizedQuote → ownerMatrixId
+
+  for (const assessment of results) {
+    const quote = assessment.result.evidence.quote;
+    if (!quote) continue;
+
+    const normalized = quote.replace(/\s+/g, ' ').trim().toLowerCase();
+    if (normalized.length < 20) continue; // too short to deduplicate meaningfully
+
+    if (seenQuotes.has(normalized)) {
+      const owner = seenQuotes.get(normalized)!;
+      console.log(`[evidence-dedup] ${assessment.matrixId}: quote already used by ${owner} — clearing duplicate`);
+      assessment.result = {
+        ...assessment.result,
+        evidence: {
+          ...assessment.result.evidence,
+          quote: null,
+        },
+        reasoning: `${assessment.result.reasoning}\n[Evidence quote shared with ${owner} — see that check for the passage]`,
+      };
+    } else {
+      seenQuotes.set(normalized, assessment.matrixId);
+    }
+  }
 }
 
 export function runSingleRule(matrixId: string, docs: DocumentEvidence[]): DeterministicAssessment | null {

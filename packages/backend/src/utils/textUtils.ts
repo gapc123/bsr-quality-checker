@@ -63,6 +63,10 @@ export function classifyDocType(filename: string, text: string): string | null {
       patterns: ['mechanical', 'electrical', 'plumbing', 'mep', 'hvac'],
     },
     {
+      type: 'fire_door_schedule',
+      patterns: ['fire door schedule', 'door schedule', 'fire door specification', 'ironmongery schedule', 'door hardware schedule'],
+    },
+    {
       type: 'specifications',
       patterns: ['specification', 'spec', 'schedule'],
     },
