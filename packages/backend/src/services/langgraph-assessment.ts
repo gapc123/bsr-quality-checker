@@ -47,7 +47,7 @@ async function singleCriterionCall(
 ): Promise<AssessmentResult> {
   const docContext = packDocs.map(d =>
     `Document: ${d.filename}\nType: ${d.docType || 'Unknown'}\n` +
-    `Content excerpt:\n${d.extractedText.slice(0, 1500)}`
+    `Content excerpt:\n${d.extractedText.slice(0, 8000)}`
   ).join('\n\n---\n\n');
 
   const critiquePrefix = mode === 'critique'
