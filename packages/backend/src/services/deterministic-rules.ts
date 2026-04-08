@@ -3833,8 +3833,13 @@ export function extractProjectName(docs: DocumentEvidence[]): string | null {
  *   < 0.20 → no upgrade
  */
 const EVIDENCE_RECYCLE_KEYWORDS: Record<string, string[]> = {
+  'SM-002': ['means of escape', 'escape route', 'protected staircase', 'travel distance'],
+  'SM-004': ['external wall', 'cladding', 'br 135', 'bs 8414', 'bba'],
   'SM-007': ['staircase', 'protected staircase', 'stair core', 'means of escape stair', 'protected stair', 'two stair', 'lobby', 'protected lobby'],
   'SM-008': ['structural', 'load-bearing', 'loading', 'beam', 'column', 'foundation', 'slab', 'structural calculation', 'structural engineer'],
+  'SM-012': ['golden thread', 'information management', 'digital record', 'as-built'],
+  'SM-017': ['fire detection', 'bs 5839', 'smoke detector', 'alarm system', 'category l'],
+  'SM-018': ['smoke control', 'aov', 'smoke ventilation', 'shaft'],
   'SM-020': ['height', 'metres', 'meters', 'tall', 'parapet', 'above ground level', 'building height'],
   'SM-021': ['storey', 'storeys', 'floor', 'floors', 'level', 'storey count', 'number of storeys'],
   'SM-031': ['fire door', 'fire doors', 'door schedule', 'fd30', 'fd60', 'fire resistance', 'door set'],
