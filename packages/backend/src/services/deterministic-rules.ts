@@ -97,25 +97,74 @@ function isBoilerplate(quote: string): boolean {
   return false;
 }
 
-function extractQuote(text: string, keyword: string, contextChars: number = 150): string | null {
+/**
+ * Extract the most relevant quote for a keyword from document text.
+ *
+ * Algorithm:
+ *   1. Collect every non-boilerplate occurrence of `keyword` in the text.
+ *   2. Score each occurrence by counting how many of the `preferKeywords`
+ *      appear within a 400-character window centred on the match.
+ *   3. Return the highest-scoring occurrence.
+ *      Tie-break: later position wins (specific sections beat boilerplate
+ *      introductions that repeat the same phrase near the top).
+ *
+ * @param preferKeywords - Optional list of co-keywords from the calling rule.
+ *   Pass the same `patterns` array used by the surrounding check so the quote
+ *   lands in the passage that has the most domain-relevant language.
+ */
+function extractQuote(
+  text: string,
+  keyword: string,
+  contextChars: number = 150,
+  preferKeywords: string[] = [],
+): string | null {
   // Strip [PAGE N] markers so they don't appear verbatim in citations
   const cleanText = stripPageMarkers(text);
+  const normText  = normalise(cleanText);
+  const normKw    = normalise(keyword);
 
-  const normText = normalise(cleanText);
-  const normKw = normalise(keyword);
+  const WINDOW = 400; // characters each side for co-keyword scoring
 
-  // Try each occurrence of the keyword; return the first non-boilerplate snippet
+  // Collect all non-boilerplate occurrences with their scores
+  type Candidate = { snippet: string; score: number; position: number };
+  const candidates: Candidate[] = [];
+
+  const normPrefer = preferKeywords.map(p => normalise(p));
+
   let searchFrom = 0;
   while (true) {
     const idx = normText.indexOf(normKw, searchFrom);
     if (idx === -1) break;
+
     const start = Math.max(0, idx - contextChars);
-    const end = Math.min(cleanText.length, idx + keyword.length + contextChars);
+    const end   = Math.min(cleanText.length, idx + keyword.length + contextChars);
     const snippet = '...' + cleanText.slice(start, end).trim() + '...';
-    if (!isBoilerplate(snippet)) return snippet;
+
+    if (!isBoilerplate(snippet)) {
+      // Score: count distinct preferKeywords present in the 400-char window
+      let score = 0;
+      if (normPrefer.length > 0) {
+        const windowStart = Math.max(0, idx - WINDOW);
+        const windowEnd   = Math.min(normText.length, idx + keyword.length + WINDOW);
+        const window      = normText.slice(windowStart, windowEnd);
+        for (const pk of normPrefer) {
+          if (window.includes(pk)) score++;
+        }
+      }
+      candidates.push({ snippet, score, position: idx });
+    }
+
     searchFrom = idx + 1;
   }
-  return null;
+
+  if (candidates.length === 0) return null;
+
+  // Pick highest score; on ties prefer the later occurrence
+  candidates.sort((a, b) =>
+    b.score !== a.score ? b.score - a.score : b.position - a.position
+  );
+
+  return candidates[0].snippet;
 }
 
 /**
