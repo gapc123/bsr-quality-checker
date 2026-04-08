@@ -118,14 +118,59 @@ function extractQuote(text: string, keyword: string, contextChars: number = 150)
   return null;
 }
 
+/**
+ * Penalised docType fragments — administrative/index documents that should
+ * never beat a substantive technical document when both match the same patterns.
+ */
+const ADMIN_DOC_TYPE_FRAGMENTS = ['index', 'schedule', 'contents', 'folder', 'application_information'];
+
+function isAdminDoc(doc: DocumentEvidence): boolean {
+  const dt = (doc.docType || '').toLowerCase();
+  const fn = normalise(doc.filename);
+  return (
+    ADMIN_DOC_TYPE_FRAGMENTS.some(f => dt.includes(f)) ||
+    // Common admin filename signals regardless of docType
+    /folder.structure|application.folder|document.index|document.register|contents.list/i.test(fn)
+  );
+}
+
+/**
+ * Find the best-matching document for a set of search patterns.
+ *
+ * Scoring per candidate (first match wins within each rule):
+ *   +2  docType contains a search pattern (strong signal — already classified)
+ *   +1  filename contains a search pattern (weaker — naming isn't always clean)
+ *   -10 document is an admin/index/schedule file (must never beat a substantive doc)
+ *
+ * Returns the highest-scoring candidate, or null if no candidates match at all.
+ */
 function findDocument(docs: DocumentEvidence[], patterns: string[]): DocumentEvidence | null {
+  const normPatterns = patterns.map(p => normalise(p));
+
+  let bestDoc: DocumentEvidence | null = null;
+  let bestScore = -Infinity;
+
   for (const doc of docs) {
-    const searchText = normalise(doc.filename + ' ' + (doc.docType || ''));
-    if (patterns.some(p => searchText.includes(normalise(p)))) {
-      return doc;
+    const normFilename = normalise(doc.filename);
+    const normDocType  = normalise(doc.docType || '');
+
+    const docTypeMatch  = normPatterns.some(p => normDocType.includes(p));
+    const filenameMatch = normPatterns.some(p => normFilename.includes(p));
+
+    if (!docTypeMatch && !filenameMatch) continue; // not a candidate
+
+    let score = 0;
+    if (docTypeMatch)  score += 2;
+    if (filenameMatch) score += 1;
+    if (isAdminDoc(doc)) score -= 10;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestDoc = doc;
     }
   }
-  return null;
+
+  return bestDoc;
 }
 
 // Unused helper - kept for potential future use
