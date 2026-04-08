@@ -81,6 +81,9 @@ export default function QuickAssess() {
       for (let attempt = 0; attempt < 180; attempt++) {  // up to 15 minutes (5s intervals)
         await new Promise(r => setTimeout(r, 5000));
         const pollRes = await fetch(`/api/assess/${assessmentId}/status`);
+        // 404 in the first 12 attempts (60s) means the job hasn't been written to DB yet
+        // (cold start / DB write race). Keep polling rather than failing.
+        if (pollRes.status === 404 && attempt < 12) continue;
         if (!pollRes.ok) throw new Error(`Poll failed (${pollRes.status})`);
         const poll = await pollRes.json();
         if (poll.status === 'error') throw new Error(poll.error || 'Assessment failed');

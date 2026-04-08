@@ -327,3 +327,18 @@ model BsrRejectionReason {
 
   @@map("bsr_rejection_reasons")
 }
+
+// Ephemeral job record for quick-assess async assessments.
+// Persists status across server restarts / Railway container cycling.
+// Expires after 2 hours (cleaned up by background job or next deploy).
+model QuickAssessJob {
+  id        String   @id // assessmentId (UUID)
+  status    String   // 'pending' | 'done' | 'error'
+  progress  String?
+  result    String?  // JSON blob of full assessment payload
+  error     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("quick_assess_jobs")
+}

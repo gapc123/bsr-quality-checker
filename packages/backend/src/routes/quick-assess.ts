@@ -20,7 +20,9 @@ const router = express.Router();
 // In production this would use Redis or the database
 const crewReviewCache = new Map<string, { status: 'pending' | 'done' | 'error'; result?: any; error?: string }>();
 
-// In-memory store for async assessment results (fast path)
+// In-memory cache for assessment status (fast path, L1 cache)
+// The authoritative store is the DB (QuickAssessJob) — this just avoids a DB
+// round-trip on every poll for recently-started assessments in the same process.
 const assessmentCache = new Map<string, {
   status: 'pending' | 'done' | 'error';
   progress?: string;
@@ -28,6 +30,36 @@ const assessmentCache = new Map<string, {
   error?: string;
 }>();
 
+// ── DB-backed status persistence ─────────────────────────────────────────────
+// Survives server restarts and Railway container cycling.
+
+async function dbWriteStatus(id: string, data: { status: string; progress?: string; result?: any; error?: string }) {
+  try {
+    const resultJson = data.result !== undefined ? JSON.stringify(data.result) : undefined;
+    await prisma.quickAssessJob.upsert({
+      where: { id },
+      create: { id, status: data.status, progress: data.progress, result: resultJson, error: data.error },
+      update: { status: data.status, progress: data.progress, result: resultJson, error: data.error },
+    });
+  } catch (e) {
+    console.warn('[quick-assess] DB status write failed (non-fatal):', e instanceof Error ? e.message : e);
+  }
+}
+
+async function dbReadStatus(id: string) {
+  try {
+    const row = await prisma.quickAssessJob.findUnique({ where: { id } });
+    if (!row) return null;
+    return {
+      status: row.status,
+      progress: row.progress ?? undefined,
+      result: row.result ? JSON.parse(row.result) : undefined,
+      error: row.error ?? undefined,
+    };
+  } catch { return null; }
+}
+
+// ── Legacy file-based fallback (belt-and-suspenders) ─────────────────────────
 const STATUS_DIR = path.join(process.cwd(), 'temp-uploads');
 
 function statusFilePath(id: string) {
@@ -130,6 +162,7 @@ async function runAssessmentBackground(
     const entry = { ...assessmentCache.get(assessmentId)!, status: 'pending' as const, progress: msg };
     assessmentCache.set(assessmentId, entry);
     writeStatusFile(assessmentId, entry);
+    dbWriteStatus(assessmentId, entry); // fire-and-forget, non-blocking
   };
 
   try {
@@ -192,6 +225,7 @@ async function runAssessmentBackground(
 
     assessmentCache.set(assessmentId, { status: 'done', result: payload });
     writeStatusFile(assessmentId, { status: 'done', result: payload });
+    await dbWriteStatus(assessmentId, { status: 'done', result: payload }); // await so it's persisted before trigger
     triggerCrewReview(assessmentId, context, fullAssessment.results);
 
     // Clean up uploaded files after 1 hour
@@ -202,10 +236,11 @@ async function runAssessmentBackground(
       } catch { /* ignore */ }
     }, 3_600_000);
 
-    // Clean up cache entry and status file after 2 hours
+    // Clean up cache entry, status file, and DB row after 2 hours
     setTimeout(() => {
       assessmentCache.delete(assessmentId);
       try { if (fs.existsSync(statusFilePath(assessmentId))) fs.unlinkSync(statusFilePath(assessmentId)); } catch { /* ignore */ }
+      prisma.quickAssessJob.delete({ where: { id: assessmentId } }).catch(() => {});
     }, 7_200_000);
 
   } catch (error) {
@@ -214,9 +249,11 @@ async function runAssessmentBackground(
     sendSubmissionErrorNotification({ submissionId: assessmentId, errorMessage: errMsg }).catch(() => {});
     assessmentCache.set(assessmentId, { status: 'error', error: errMsg });
     writeStatusFile(assessmentId, { status: 'error', error: errMsg });
+    await dbWriteStatus(assessmentId, { status: 'error', error: errMsg });
     setTimeout(() => {
       assessmentCache.delete(assessmentId);
       try { if (fs.existsSync(statusFilePath(assessmentId))) fs.unlinkSync(statusFilePath(assessmentId)); } catch { /* ignore */ }
+      prisma.quickAssessJob.delete({ where: { id: assessmentId } }).catch(() => {});
     }, 7_200_000);
   }
 }
@@ -247,6 +284,7 @@ router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Reque
     const initialEntry = { status: 'pending' as const, progress: 'Starting assessment…' };
     assessmentCache.set(assessmentId, initialEntry);
     writeStatusFile(assessmentId, initialEntry);
+    await dbWriteStatus(assessmentId, initialEntry); // persist before 202 so first poll never 404s
 
     // Fire-and-forget — response is delivered via poll endpoint
     runAssessmentBackground(assessmentId, files, context);
@@ -261,14 +299,29 @@ router.post('/', uploadLimiter, analysisLimiter, upload.any(), async (req: Reque
 });
 
 // GET /api/assess/:id/status — poll for assessment progress
-router.get('/:assessmentId/status', (req: Request, res: Response) => {
+router.get('/:assessmentId/status', async (req: Request, res: Response) => {
   const id = String(req.params['assessmentId']);
-  // Fast path: in-memory
-  let entry = assessmentCache.get(id);
-  // Fallback: file-based (survives server restart mid-assessment)
+
+  // L1: in-memory (same process)
+  let entry: { status: string; progress?: string; result?: any; error?: string } | undefined =
+    assessmentCache.get(id);
+
+  // L2: file-based (same container, survived restart)
   if (!entry) {
     entry = readStatusFile(id) ?? undefined;
+    if (entry) assessmentCache.set(id, entry as any); // warm L1
   }
+
+  // L3: DB (survives full container restart / multi-instance Railway)
+  if (!entry) {
+    const dbEntry = await dbReadStatus(id);
+    if (dbEntry) {
+      entry = dbEntry;
+      assessmentCache.set(id, dbEntry as any); // warm L1 + L2
+      writeStatusFile(id, dbEntry);
+    }
+  }
+
   if (!entry) {
     return res.status(404).json({ error: 'Assessment not found or expired' });
   }
