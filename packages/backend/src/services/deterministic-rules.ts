@@ -81,6 +81,11 @@ const BOILERPLATE_SIGNATURES: string[] = [
   'the information contained in this',
   'no liability is accepted',
   'subject to change without notice',
+  // Standards/compliance boilerplate (SM-012, SM-004, SM-002 false positives)
+  'bs en 1990',
+  'where proprietary systems or products are specified',
+  'all design work described in this document has been carried out by suitably qualified',
+  'in accordance with the clc guidance suite',
 ];
 
 /**
