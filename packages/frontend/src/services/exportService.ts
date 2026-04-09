@@ -25,7 +25,7 @@ interface ExportSettings {
 export async function exportComplianceReport(
   packId: string,
   versionId: string,
-  assessment: FullAssessment
+  assessment: FullAssessment & { specialist_reviews?: any }
 ): Promise<void> {
   try {
     const response = await fetch(
@@ -35,7 +35,7 @@ export async function exportComplianceReport(
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ assessment })
+        body: JSON.stringify({ assessment, specialist_reviews: (assessment as any).specialist_reviews })
       }
     );
 

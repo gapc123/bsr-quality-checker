@@ -478,13 +478,109 @@ function generateIntegritySection(issues: import('../lib/integrityChecker.js').I
   `;
 }
 
+interface DomainReviews {
+  fire_safety: string;
+  documentation: string;
+  regulatory: string;
+  quality: string;
+  synthesis: string;
+}
+
+// Which assessment categories belong to each specialist domain
+const DOMAIN_CATEGORIES: Record<keyof Omit<DomainReviews, 'synthesis'>, string[]> = {
+  fire_safety:   ['FIRE_SAFETY', 'VENTILATION'],
+  documentation: ['PACK_COMPLETENESS', 'GOLDEN_THREAD', 'TRACEABILITY'],
+  regulatory:    ['HRB_DUTIES', 'LONDON_SPECIFIC'],
+  quality:       ['CONSISTENCY'],
+};
+
+const AGENT_CONFIG: Record<keyof Omit<DomainReviews, 'synthesis'>, { icon: string; title: string; role: string }> = {
+  fire_safety:   { icon: '🔥', title: 'Fire Safety Engineer', role: 'Chartered Fire Engineer · Approved Document B · BS 9991' },
+  documentation: { icon: '📋', title: 'Documentation Specialist', role: 'Principal Designer · Building Safety Act 2022 · Golden Thread' },
+  regulatory:    { icon: '⚖️', title: 'Regulatory Consultant', role: 'BSR Specialist · HRB Duties · Regulation 38 · London Plan D12' },
+  quality:       { icon: '🔍', title: 'Quality & Consistency Reviewer', role: 'Technical Auditor · Cross-document coordination' },
+};
+
+function generateSpecialistReviewSection(reviews: DomainReviews, results: AssessmentResult[]): string {
+  // Build category-grouped failing items for each domain
+  function domainIssues(categories: string[]): AssessmentResult[] {
+    return results.filter(r =>
+      categories.includes(r.category) &&
+      (r.status === 'does_not_meet' || r.status === 'partial')
+    );
+  }
+
+  // Executive synthesis block
+  const synthesisHtml = `
+    <div style="background:#eef2ff;border-left:4px solid #4f46e5;padding:20px 24px;margin:0 0 28px 0;border-radius:0 6px 6px 0;">
+      <div style="font-size:10pt;font-weight:700;color:#4f46e5;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">
+        🏛️ Lead BSR Consultant — Executive Summary
+      </div>
+      <div style="font-size:10pt;color:#1e1b4b;white-space:pre-wrap;line-height:1.7;">${reviews.synthesis}</div>
+    </div>`;
+
+  // Individual agent blocks
+  const agentBlocks = (Object.keys(DOMAIN_CATEGORIES) as Array<keyof typeof DOMAIN_CATEGORIES>).map(domain => {
+    const cfg = AGENT_CONFIG[domain];
+    const issues = domainIssues(DOMAIN_CATEGORIES[domain]);
+    const reviewText = reviews[domain];
+
+    const issueRows = issues.length > 0
+      ? `<div style="margin-top:14px;">
+          <div style="font-size:8.5pt;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">
+            Criteria flagged in this domain (${issues.length})
+          </div>
+          ${issues.map(r => {
+            const statusColour = r.status === 'does_not_meet' ? '#dc2626' : '#d97706';
+            const statusLabel  = r.status === 'does_not_meet' ? 'NOT MET' : 'PARTIAL';
+            const gap = r.gaps_identified?.[0] || r.reasoning?.slice(0, 100) || '';
+            return `<div style="display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px solid #f1f5f9;">
+              <span style="font-size:8pt;font-weight:700;color:${statusColour};min-width:52px;">${statusLabel}</span>
+              <span style="font-size:8.5pt;font-weight:600;color:#1e293b;min-width:60px;">${r.matrix_id}</span>
+              <span style="font-size:8.5pt;color:#374151;flex:1;">${r.matrix_title}${gap ? ` — <span style="color:#6b7280;font-style:italic;">${gap.slice(0, 120)}</span>` : ''}</span>
+            </div>`;
+          }).join('')}
+        </div>`
+      : `<div style="margin-top:10px;font-size:9pt;color:#16a34a;font-style:italic;">✓ No issues found in this domain</div>`;
+
+    return `
+      <div style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:20px;page-break-inside:avoid;">
+        <div style="background:#f8fafc;padding:14px 18px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18pt;line-height:1;">${cfg.icon}</span>
+          <div>
+            <div style="font-size:10.5pt;font-weight:700;color:#1e293b;">${cfg.title}</div>
+            <div style="font-size:8.5pt;color:#64748b;margin-top:2px;">${cfg.role}</div>
+          </div>
+        </div>
+        <div style="padding:16px 18px;">
+          <div style="font-size:10pt;color:#374151;white-space:pre-wrap;line-height:1.7;">${reviewText}</div>
+          ${issueRows}
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+    <h3>SPECIALIST PANEL REVIEW</h3>
+    <p style="font-size:10pt;color:#64748b;margin-bottom:20px;">
+      Four AI specialist agents independently reviewed different domains of this submission.
+      Their findings are compiled below, followed by an executive synthesis.
+    </p>
+    ${agentBlocks}
+    <h4 style="font-size:11pt;font-weight:700;color:#4f46e5;margin:28px 0 12px 0;padding-top:20px;border-top:2px solid #e0e7ff;">
+      🏛️ Executive Synthesis
+    </h4>
+    ${synthesisHtml}
+  `;
+}
+
 /**
  * Generate complete HTML for submission readiness report
  * Updated (GitHub Issues #7, #8): Includes cover page and project metadata
  */
 export function generateSubmissionReadinessHTML(
   assessment: FullAssessment,
-  projectMetadata?: ProjectMetadata
+  projectMetadata?: ProjectMetadata,
+  specialistReviews?: DomainReviews
 ): string {
   const classified = classifyResults(assessment.results);
   const verdict = generateVerdict(classified);
@@ -493,6 +589,9 @@ export function generateSubmissionReadinessHTML(
   const consultantRequests = generateConsultantRequests(assessment.results);
   const missingInfo = generateMissingInfo(classified.missingInfo);
   const integritySection = generateIntegritySection(assessment.integrity_issues ?? []);
+  const specialistSection = specialistReviews
+    ? generateSpecialistReviewSection(specialistReviews, assessment.results)
+    : '';
 
   // Use provided metadata, or extract from assessment (project_name from document headers),
   // or fall back to a generic title — never use buildingType as a project name
@@ -824,6 +923,8 @@ export function generateSubmissionReadinessHTML(
 
   <h3>MISSING INFORMATION (not mentioned in documents)</h3>
   ${missingInfo}
+
+  ${specialistSection ? `<div style="page-break-before: always;"></div>\n  ${specialistSection}` : ''}
 
   <div style="page-break-before: always;"></div>
 

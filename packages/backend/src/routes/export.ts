@@ -34,7 +34,7 @@ router.post(
   '/packs/:packId/versions/:versionId/submission-readiness/download',
   async (req: Request, res: Response) => {
     try {
-      const { assessment } = req.body;
+      const { assessment, specialist_reviews } = req.body;
 
       if (!assessment) {
         res.status(400).json({ error: 'Assessment data required' });
@@ -44,7 +44,7 @@ router.post(
       console.log('[Export] Generating Submission Readiness Report...');
 
       // Generate HTML from new template
-      const html = generateSubmissionReadinessHTML(assessment);
+      const html = generateSubmissionReadinessHTML(assessment, undefined, specialist_reviews);
 
       // Generate PDF using utility
       const tempFile = await generatePDFFromHTML(html, 'submission-readiness');

@@ -35,6 +35,7 @@ interface SimpleResultsViewProps {
   onDownloadReport: () => void | Promise<void>;
   onClose?: () => void;
   onSaveToClient?: () => void;
+  onSpecialistReviewDone?: (reviews: DomainReviews) => void;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -139,7 +140,8 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   assessment,
   onDownloadReport,
   onClose,
-  onSaveToClient
+  onSaveToClient,
+  onSpecialistReviewDone,
 }) => {
   const { showToast } = useToast();
   const [isDownloading, setIsDownloading] = useState(false);
@@ -170,6 +172,7 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
         if (data.status === 'done') {
           setCrewReviews(data.domain_reviews);
           setCrewStatus('done');
+          if (onSpecialistReviewDone) onSpecialistReviewDone(data.domain_reviews);
           if (pollRef.current) clearInterval(pollRef.current);
         } else if (data.status === 'error') {
           setCrewStatus('error');
@@ -472,13 +475,14 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
         {/* Specialist Reviews */}
         {crewStatus !== 'idle' && (
           <div className="border-t-2 border-indigo-100 bg-indigo-50 p-6">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-indigo-900 text-sm tracking-wide uppercase">
-                Specialist Review
+                AI Specialist Panel
               </h3>
               {crewStatus === 'pending' && (
-                <span className="text-xs text-indigo-500 animate-pulse">
-                  ⏳ Agents working...
+                <span className="text-xs text-indigo-500 animate-pulse flex items-center gap-1.5">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                  Specialists working…
                 </span>
               )}
               {crewStatus === 'error' && (
@@ -491,16 +495,16 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
                 {/* Tab nav */}
                 <div className="flex gap-1 mb-4 flex-wrap">
                   {([
-                    ['synthesis',     '🏛 Executive Summary'],
-                    ['fire_safety',   '🔥 Fire Safety'],
-                    ['documentation', '📋 Documentation'],
-                    ['regulatory',    '⚖️ Regulatory'],
-                    ['quality',       '🔍 Consistency'],
+                    ['synthesis',     '🏛️ Executive Summary'],
+                    ['fire_safety',   '🔥 Fire Safety Engineer'],
+                    ['documentation', '📋 Documentation Specialist'],
+                    ['regulatory',    '⚖️ Regulatory Consultant'],
+                    ['quality',       '🔍 Quality Reviewer'],
                   ] as [keyof DomainReviews, string][]).map(([key, label]) => (
                     <button
                       key={key}
                       onClick={() => setActiveReviewTab(key)}
-                      className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                      className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                         activeReviewTab === key
                           ? 'bg-indigo-600 text-white'
                           : 'bg-white text-indigo-700 border border-indigo-200 hover:bg-indigo-100'
@@ -510,9 +514,38 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
                     </button>
                   ))}
                 </div>
-                <div className="bg-white rounded-lg p-4 text-sm text-slate-700 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto border border-indigo-100">
-                  {crewReviews[activeReviewTab]}
-                </div>
+
+                {/* Active tab content — each agent gets a role header */}
+                {(() => {
+                  const AGENT_META: Record<keyof DomainReviews, { icon: string; title: string; role: string; domains: string }> = {
+                    synthesis:     { icon: '🏛️', title: 'Executive Summary', role: 'Lead BSR Consultant', domains: 'All domains' },
+                    fire_safety:   { icon: '🔥', title: 'Fire Safety Review', role: 'Chartered Fire Engineer', domains: 'Approved Document B · BS 9991 · Means of escape · Suppression' },
+                    documentation: { icon: '📋', title: 'Documentation Review', role: 'Principal Designer / Documentation Specialist', domains: 'Pack completeness · Golden thread · Traceability · BSA 2022' },
+                    regulatory:    { icon: '⚖️', title: 'Regulatory Compliance Review', role: 'BSR Regulatory Consultant', domains: 'HRB dutyholder duties · Regulation 38 · London Plan D12' },
+                    quality:       { icon: '🔍', title: 'Quality & Consistency Review', role: 'Technical Auditor', domains: 'Cross-document contradictions · Version mismatches · Coordination gaps' },
+                  };
+                  const meta = AGENT_META[activeReviewTab];
+                  return (
+                    <div className="bg-white rounded-xl border border-indigo-100 overflow-hidden">
+                      {/* Agent header */}
+                      <div className="px-5 py-4 border-b border-indigo-50 flex items-start gap-3 bg-indigo-50/60">
+                        <span className="text-2xl leading-none mt-0.5">{meta.icon}</span>
+                        <div>
+                          <p className="font-semibold text-indigo-900 text-sm">{meta.title}</p>
+                          <p className="text-xs text-indigo-700 mt-0.5">{meta.role}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">{meta.domains}</p>
+                        </div>
+                        {activeReviewTab === 'synthesis' && (
+                          <span className="ml-auto text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium">Master report</span>
+                        )}
+                      </div>
+                      {/* Review text */}
+                      <div className="px-5 py-4 text-sm text-slate-700 whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto">
+                        {crewReviews[activeReviewTab]}
+                      </div>
+                    </div>
+                  );
+                })()}
               </>
             )}
 

@@ -42,6 +42,11 @@ export default function QuickAssess() {
   const [clientCompany, setClientCompany] = useState('');
   const [saving, setSaving] = useState(false);
 
+  // Specialist review — captured when agents complete so it can be included in PDF export
+  const [specialistReviews, setSpecialistReviews] = useState<{
+    fire_safety: string; documentation: string; regulatory: string; quality: string; synthesis: string;
+  } | null>(null);
+
   // Document generation state
   const [generatingDocs, setGeneratingDocs] = useState(false);
   const [docsGenerated, setDocsGenerated] = useState(false);
@@ -160,7 +165,7 @@ export default function QuickAssess() {
     try {
       console.log('[QuickAssess] Converting to FullAssessment format...');
       // Convert QuickAssessment to FullAssessment format for export
-      const fullAssessment: FullAssessment = {
+      const fullAssessment: FullAssessment & { specialist_reviews?: typeof specialistReviews } = {
         pack_id: 'quick-assess',
         version_id: assessment.assessmentId,
         pack_context: {
@@ -173,6 +178,7 @@ export default function QuickAssess() {
         readiness_score: 0,
         results: assessment.results,
         generated_at: new Date().toISOString(),
+        specialist_reviews: specialistReviews || undefined,
         criteria_summary: {
           total_applicable: assessment.summary.total,
           assessed: assessment.summary.total,
@@ -417,6 +423,7 @@ export default function QuickAssess() {
                 setAssessment(null);
                 setFiles([]);
               }}
+              onSpecialistReviewDone={setSpecialistReviews}
             />
           )}
 
