@@ -370,15 +370,15 @@ export default function Landing() {
                       Submit your Gateway 2 pack securely
                     </h3>
                     <p style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.8, marginBottom: '32px' }}>
-                      Upload your complete submission pack through our SOC 2 compliant platform. We accept all standard Gateway 2 documents including fire strategies, structural reports, MEP specifications, and architectural drawings.
+                      Upload your complete submission pack securely. We accept all standard Gateway 2 documents including fire strategies, structural reports, MEP specifications, and architectural drawings. Documents are processed via Anthropic's SOC 2 Type II certified infrastructure.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                         <span style={{ color: 'var(--flame)', fontSize: '20px', marginTop: '2px' }}>✓</span>
                         <div>
-                          <strong style={{ color: 'var(--type-hi)', fontSize: '15px', fontWeight: 500 }}>SOC 2 Type II certified</strong>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '15px', fontWeight: 500 }}>Processed on SOC 2 Type II infrastructure</strong>
                           <p style={{ fontSize: '14px', color: 'var(--type-mid)', marginTop: '4px' }}>
-                            Your documents are protected by enterprise-grade security with independent audits
+                            Your documents are processed via Anthropic's independently audited, enterprise-grade platform
                           </p>
                         </div>
                       </div>
