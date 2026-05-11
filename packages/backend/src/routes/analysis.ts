@@ -492,6 +492,16 @@ router.get(
         return;
       }
 
+      // Find the immediately preceding assessed version for diff
+      const previousVersion = await prisma.packVersion.findFirst({
+        where: {
+          packId: packVersion.packId,
+          createdAt: { lt: packVersion.createdAt },
+          matrixAssessment: { not: null },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+
       // Transform to FullAssessment format expected by frontend
       const fullAssessment = {
         pack_id: packId,
@@ -501,6 +511,10 @@ router.get(
         reference_standards_applied: assessment.reference_standards_applied,
         results: assessment.results,
         generated_at: (assessment as any).generated_at || new Date().toISOString(),
+        // Diff support — null when no prior assessment exists
+        previous_assessment: previousVersion?.matrixAssessment ?? null,
+        previous_version_id: previousVersion?.id ?? null,
+        previous_version_created_at: previousVersion?.createdAt ?? null,
       };
 
       res.json(fullAssessment);
