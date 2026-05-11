@@ -86,6 +86,10 @@ export default function Results() {
         const assessmentData = await res.json();
         const fullAssessment: FullAssessment = transformAssessmentData(assessmentData);
         setAssessment(fullAssessment);
+        if (assessmentData.previous_assessment) {
+          setPreviousAssessment(assessmentData.previous_assessment);
+          setPreviousVersionCreatedAt(assessmentData.previous_version_created_at ?? null);
+        }
 
         try {
           const gateRes = await fetch(`/api/packs/${packId}/versions/${versionId}/submission-gate`);
