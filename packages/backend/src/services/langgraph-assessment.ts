@@ -140,6 +140,10 @@ export type ProgressEvent = {
   phase: 'deterministic' | 'llm';
   total: number;
   current: number;
+  /** 'checking' = LLM call in progress; otherwise the actual result status */
+  status?: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed' | 'checking';
+  /** Short finding summary, populated when status is not 'meets' */
+  finding?: string;
 };
 
 export async function runLangGraphAssessment(
@@ -154,15 +158,31 @@ export async function runLangGraphAssessment(
   const results: AssessmentResult[] = [];
   for (let i = 0; i < criteria.length; i++) {
     const row = criteria[i];
+    // Emit "checking" before the LLM call so the UI can show what's in progress
+    onProgress?.({
+      criterionId: row.matrix_id,
+      criterionName: row.matrix_title,
+      phase: 'llm',
+      total: criteria.length,
+      current: i,
+      status: 'checking',
+    });
+    const result = await singleCriterionCall(row, packDocs, client, 'standard');
+    results.push(result);
+    // Emit result after the call completes
+    const finding =
+      result.status !== 'meets'
+        ? (result.gaps_identified?.[0] || result.reasoning || '').slice(0, 150)
+        : undefined;
     onProgress?.({
       criterionId: row.matrix_id,
       criterionName: row.matrix_title,
       phase: 'llm',
       total: criteria.length,
       current: i + 1,
+      status: result.status as ProgressEvent['status'],
+      finding,
     });
-    const result = await singleCriterionCall(row, packDocs, client, 'standard');
-    results.push(result);
   }
 
   console.log(`[assess] Phase 2 done: ${results.length} results`);

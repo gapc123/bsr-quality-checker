@@ -1500,6 +1500,8 @@ export async function assessPackAgainstMatrix(
         phase: 'deterministic',
         total: deterministicResults.length,
         current: i + 1,
+        status: dr.result.passed ? 'meets' : 'does_not_meet',
+        finding: !dr.result.passed ? dr.result.reasoning?.slice(0, 150) : undefined,
       });
     }
   }

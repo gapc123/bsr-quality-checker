@@ -17,6 +17,7 @@ import type { FullAssessment, SubmissionGate, AssessmentResult } from '../types/
 import * as exportService from '../services/exportService';
 import { GatewayReadinessBar } from '../components/GatewayReadinessBar';
 import { computeDiff, diffSummary } from '../lib/assessmentDiff';
+import AssessmentProgressScreen, { CriterionResult } from '../components/AssessmentProgressScreen';
 
 export default function Results() {
   const { packId, versionId } = useParams<{ packId: string; versionId: string }>();
@@ -30,13 +31,14 @@ export default function Results() {
   const [assessmentStatus, setAssessmentStatus] = useState<'loading' | 'running' | 'complete' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
-  const [currentCriterion, setCurrentCriterion] = useState<{
-    criterionId: string;
-    criterionName: string;
-    phase: string;
-    total: number;
-    current: number;
-  } | null>(null);
+  // Progress tracking for the live assessment screen
+  const [completedCriteria, setCompletedCriteria] = useState<CriterionResult[]>([]);
+  const [pendingCriterion, setPendingCriterion] = useState<{ criterionId: string; criterionName: string } | null>(null);
+  const [progressPhase, setProgressPhase] = useState<'deterministic' | 'llm' | null>(null);
+  const [deterministicTotal, setDeterministicTotal] = useState(0);
+  const [deterministicDone, setDeterministicDone] = useState(0);
+  const [llmTotal, setLlmTotal] = useState(0);
+  const [llmDone, setLlmDone] = useState(0);
   const [previousAssessment, setPreviousAssessment] = useState<{ results?: any[] } | null>(null);
   const [previousVersionCreatedAt, setPreviousVersionCreatedAt] = useState<string | null>(null);
   const [showDiff, setShowDiff] = useState(false);
@@ -137,8 +139,43 @@ export default function Results() {
         const event = JSON.parse(e.data);
         if (event.done) {
           source.close();
+          return;
+        }
+
+        setProgressPhase(event.phase);
+
+        if (event.status === 'checking') {
+          // LLM call in progress — show as pending
+          setPendingCriterion({ criterionId: event.criterionId, criterionName: event.criterionName });
+        } else if (event.status) {
+          // Completed criterion — add to feed
+          setPendingCriterion(null);
+          setCompletedCriteria(prev => [
+            ...prev,
+            {
+              criterionId: event.criterionId,
+              criterionName: event.criterionName,
+              phase: event.phase,
+              status: event.status,
+              finding: event.finding,
+            } as CriterionResult,
+          ]);
+          if (event.phase === 'deterministic') {
+            setDeterministicTotal(event.total);
+            setDeterministicDone(event.current);
+          } else {
+            setLlmTotal(event.total);
+            setLlmDone(event.current);
+          }
         } else {
-          setCurrentCriterion(event);
+          // Legacy event without status — update phase totals only
+          if (event.phase === 'deterministic') {
+            setDeterministicTotal(event.total);
+            setDeterministicDone(event.current);
+          } else {
+            setLlmTotal(event.total);
+            setLlmDone(event.current);
+          }
         }
       } catch {
         // ignore malformed events
@@ -329,53 +366,18 @@ export default function Results() {
     );
   }
 
-  // Assessment running (job exists but not yet complete)
+  // Assessment running — rich live-feed screen
   if (assessmentStatus === 'running') {
-    const progressPct = currentCriterion
-      ? Math.round((currentCriterion.current / currentCriterion.total) * 100)
-      : 0;
-
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <div className="max-w-lg w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
-            <h2 className="text-xl font-bold text-slate-900">Assessment in progress</h2>
-          </div>
-
-          {currentCriterion ? (
-            <>
-              <div className="mb-4">
-                <div className="flex items-center justify-between text-sm text-slate-500 mb-1">
-                  <span className="uppercase tracking-wide text-xs font-semibold">
-                    {currentCriterion.phase === 'deterministic' ? 'Phase 1: Rules' : 'Phase 2: AI Analysis'}
-                  </span>
-                  <span>{currentCriterion.current} / {currentCriterion.total}</span>
-                </div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-indigo-500 rounded-full transition-all duration-300"
-                    style={{ width: `${progressPct}%` }}
-                  />
-                </div>
-              </div>
-              <div className="bg-slate-50 rounded-lg px-4 py-3 mb-4">
-                <p className="text-xs text-slate-400 font-mono mb-0.5">{currentCriterion.criterionId}</p>
-                <p className="text-sm text-slate-700 font-medium leading-snug">{currentCriterion.criterionName}</p>
-              </div>
-            </>
-          ) : (
-            <div className="h-20 flex items-center justify-center text-slate-400 text-sm mb-4">
-              Starting assessment…
-            </div>
-          )}
-
-          <p className="text-sm text-slate-500 text-center">
-            Checking 55 regulatory criteria across your documents.
-            This typically takes 5–10 minutes. You can leave this tab open.
-          </p>
-        </div>
-      </div>
+      <AssessmentProgressScreen
+        completed={completedCriteria}
+        pending={pendingCriterion}
+        phase={progressPhase}
+        deterministicTotal={deterministicTotal}
+        deterministicDone={deterministicDone}
+        llmTotal={llmTotal}
+        llmDone={llmDone}
+      />
     );
   }
 
