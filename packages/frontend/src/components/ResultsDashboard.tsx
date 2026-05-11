@@ -38,7 +38,63 @@ interface ResultsDashboardProps {
   onViewIssue?: (issue: AssessmentResult) => void;
 }
 
-type FilterType = 'all' | 'blockers' | 'quick_wins' | 'specialist';
+type FilterType = 'all' | 'blockers' | 'quick_wins' | 'specialist' | 'action_groups';
+
+type ActionGroup = 'missing_document' | 'appointment_needed' | 'update_required' | 'consistency';
+
+function classifyFailure(r: AssessmentResult): ActionGroup {
+  const id = r.matrix_id;
+  const gaps = (r.gaps_identified || []).join(' ').toLowerCase();
+
+  if (
+    r.category === 'CONSISTENCY' ||
+    ['SM-020', 'SM-021'].includes(id)
+  ) return 'consistency';
+
+  if (
+    ['SM-010', 'SM-011'].includes(id) ||
+    gaps.includes('not appointed') ||
+    gaps.includes('tbc') ||
+    gaps.includes('competence')
+  ) return 'appointment_needed';
+
+  if (
+    (gaps.includes('no ') && gaps.includes('found')) ||
+    gaps.includes('not submitted') ||
+    gaps.includes('absent') ||
+    ['SM-000', 'SM-012', 'SM-014', 'SM-022', 'SM-045', 'SM-046'].includes(id) ||
+    r.triage?.action_type === 'DOCUMENT_MISSING'
+  ) return 'missing_document';
+
+  return 'update_required';
+}
+
+const ACTION_GROUP_META: Record<ActionGroup, { title: string; description: string; icon: string; color: string }> = {
+  missing_document: {
+    title: 'Documents to create',
+    description: 'Require a new document to be produced or commissioned',
+    icon: '📄',
+    color: 'red',
+  },
+  appointment_needed: {
+    title: 'Appointments to confirm',
+    description: 'A role or person needs to be formally appointed and evidenced',
+    icon: '👤',
+    color: 'amber',
+  },
+  update_required: {
+    title: 'Documents to update',
+    description: 'Existing documents need additional content to meet requirements',
+    icon: '✏️',
+    color: 'blue',
+  },
+  consistency: {
+    title: 'Consistency issues',
+    description: 'Information conflicts or is missing across multiple documents',
+    icon: '⚠️',
+    color: 'orange',
+  },
+};
 
 type ViewTab = 'overview' | 'by-consultant' | 'revisions' | 'human-review' | 'action-tracker';
 
@@ -121,6 +177,26 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
         return failedResults;
     }
   }, [activeFilter, blockers, quickWins, failedResults]);
+
+  // Group by action type (for 'action_groups' filter view)
+  const groupOrder: ActionGroup[] = ['missing_document', 'appointment_needed', 'update_required', 'consistency'];
+  const groupedByAction = useMemo(() => {
+    const grouped: Partial<Record<ActionGroup, AssessmentResult[]>> = {};
+    for (const r of failedResults) {
+      const g = classifyFailure(r);
+      if (!grouped[g]) grouped[g] = [];
+      grouped[g]!.push(r);
+    }
+    // Within each group, sort CRITICAL/HIGH first
+    for (const key of groupOrder) {
+      grouped[key]?.sort((a, b) => {
+        const severityRank = { critical: 0, high: 1, medium: 2, low: 3 };
+        return (severityRank[a.severity as keyof typeof severityRank] ?? 2) -
+               (severityRank[b.severity as keyof typeof severityRank] ?? 2);
+      });
+    }
+    return grouped;
+  }, [failedResults]);
 
   // Handlers
   const handleAcceptAllQuickWins = async () => {
@@ -785,36 +861,75 @@ Best regards`;
                 >
                   Specialists
                 </button>
+                <button
+                  onClick={() => setActiveFilter('action_groups')}
+                  className={`px-4 py-2 text-sm font-semibold rounded transition-colors ${
+                    activeFilter === 'action_groups'
+                      ? 'bg-slate-900 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  By Action
+                </button>
               </div>
             </div>
           </div>
 
           {/* Table + Detail Panel Layout */}
-          <div className="flex">
-            {/* Issues Table */}
-            <div className={`${showDetailPanel ? 'w-2/3' : 'w-full'} transition-all duration-300`}>
-              <IssuesTable
-                issues={filteredResults}
-                onRowClick={handleRowClick}
-                onSelectionChange={handleSelectionChange}
-                selectedIds={selectedIssueIds}
-              />
+          {activeFilter === 'action_groups' ? (
+            <div className="divide-y divide-slate-200">
+              {groupOrder.map(group => {
+                const items = groupedByAction[group];
+                if (!items?.length) return null;
+                const meta = ACTION_GROUP_META[group];
+                return (
+                  <section key={group} className="p-4">
+                    <div className="flex items-start gap-3 mb-3">
+                      <span className="text-2xl leading-none">{meta.icon}</span>
+                      <div>
+                        <h3 className="font-semibold text-slate-900">
+                          {meta.title} ({items.length})
+                        </h3>
+                        <p className="text-sm text-slate-500">{meta.description}</p>
+                      </div>
+                    </div>
+                    <IssuesTable
+                      issues={items}
+                      onRowClick={handleRowClick}
+                      onSelectionChange={handleSelectionChange}
+                      selectedIds={selectedIssueIds}
+                    />
+                  </section>
+                );
+              })}
             </div>
-
-            {/* Detail Panel (slides in from right) */}
-            {showDetailPanel && (
-              <div className="w-1/3 min-w-[400px] h-[600px] overflow-hidden">
-                <IssueDetailPanel
-                  issue={viewedIssue}
-                  onClose={handleCloseDetailPanel}
-                  onNext={handleNextIssue}
-                  onPrevious={handlePreviousIssue}
-                  hasNext={hasNextIssue}
-                  hasPrevious={hasPreviousIssue}
+          ) : (
+            <div className="flex">
+              {/* Issues Table */}
+              <div className={`${showDetailPanel ? 'w-2/3' : 'w-full'} transition-all duration-300`}>
+                <IssuesTable
+                  issues={filteredResults}
+                  onRowClick={handleRowClick}
+                  onSelectionChange={handleSelectionChange}
+                  selectedIds={selectedIssueIds}
                 />
               </div>
-            )}
-          </div>
+
+              {/* Detail Panel (slides in from right) */}
+              {showDetailPanel && (
+                <div className="w-1/3 min-w-[400px] h-[600px] overflow-hidden">
+                  <IssueDetailPanel
+                    issue={viewedIssue}
+                    onClose={handleCloseDetailPanel}
+                    onNext={handleNextIssue}
+                    onPrevious={handlePreviousIssue}
+                    hasNext={hasNextIssue}
+                    hasPrevious={hasPreviousIssue}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

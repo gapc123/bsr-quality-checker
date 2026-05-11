@@ -339,15 +339,21 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
               const isBlocker = issue.triage?.blocks_submission;
               const isQuickWin = issue.triage?.quick_win;
 
+              const severityBorder = (issue.severity as string) === 'critical'
+                ? 'border-l-4 border-l-red-600'
+                : issue.severity === 'high'
+                  ? 'border-l-4 border-l-amber-500'
+                  : issue.severity === 'medium'
+                    ? 'border-l-4 border-l-blue-400'
+                    : 'border-l-4 border-l-slate-300';
+
               return (
                 <tr
                   key={issue.matrix_id}
                   onClick={() => onRowClick?.(issue)}
                   className={`transition-colors cursor-pointer ${
-                    isSelected
-                      ? 'bg-indigo-50'
-                      : 'hover:bg-slate-50'
-                  } ${isBlocker ? 'border-l-4 border-l-red-500' : ''}`}
+                    isSelected ? 'bg-indigo-50' : 'hover:bg-slate-50'
+                  } ${severityBorder}`}
                 >
                   {/* Checkbox */}
                   {onSelectionChange && (
@@ -386,15 +392,34 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
                     </div>
                   </td>
 
-                  {/* Title */}
+                  {/* Title + Evidence Quote */}
                   <td className="px-4 py-3">
-                    <div className="max-w-md">
-                      <div className="text-sm font-medium text-slate-900 truncate">
+                    <div className="max-w-lg">
+                      <div className="text-sm font-semibold text-slate-900 mb-2">
                         {issue.matrix_title}
                       </div>
-                      {issue.gaps_identified.length > 0 && (
-                        <div className="text-xs text-slate-600 truncate mt-1">
-                          {issue.gaps_identified[0]}
+                      {issue.pack_evidence?.quote ? (
+                        <div className={`rounded px-3 py-2 text-sm border-l-2 ${
+                          (issue.severity as string) === 'critical' || issue.severity === 'high'
+                            ? 'bg-amber-50 border-l-amber-400'
+                            : 'bg-slate-50 border-l-slate-300'
+                        }`}>
+                          <p className="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">
+                            {issue.pack_evidence.document ?? 'Submission document'}
+                            {issue.pack_evidence.page ? ` · p.${issue.pack_evidence.page}` : ''}
+                          </p>
+                          <blockquote className="text-slate-700 italic leading-snug">
+                            "{issue.pack_evidence.quote}"
+                          </blockquote>
+                        </div>
+                      ) : (
+                        <div className="rounded px-3 py-2 bg-red-50 border-l-2 border-l-red-300 text-sm">
+                          <p className="text-xs text-red-500 uppercase tracking-wide font-semibold mb-0.5">
+                            No content found
+                          </p>
+                          <p className="text-red-700 italic text-xs">
+                            This requirement was not addressed in any submitted document.
+                          </p>
                         </div>
                       )}
                     </div>

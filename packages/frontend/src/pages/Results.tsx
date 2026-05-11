@@ -15,6 +15,7 @@ import { useResponsive } from '../components/ResponsiveContainer';
 import { useA11y } from '../components/AccessibilityEnhancements';
 import type { FullAssessment, SubmissionGate, AssessmentResult } from '../types/assessment';
 import * as exportService from '../services/exportService';
+import { GatewayReadinessBar } from '../components/GatewayReadinessBar';
 
 export default function Results() {
   const { packId, versionId } = useParams<{ packId: string; versionId: string }>();
@@ -28,6 +29,13 @@ export default function Results() {
   const [assessmentStatus, setAssessmentStatus] = useState<'loading' | 'running' | 'complete' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [currentCriterion, setCurrentCriterion] = useState<{
+    criterionId: string;
+    criterionName: string;
+    phase: string;
+    total: number;
+    current: number;
+  } | null>(null);
 
   const POLL_INTERVAL_MS = 8000;
   const POLL_TIMEOUT_MS = 15 * 60 * 1000;
@@ -105,6 +113,34 @@ export default function Results() {
     poll();
     return () => { cancelled = true; };
   }, [packId, versionId]);
+
+  // SSE ticker — connect when assessment is running, disconnect when done
+  useEffect(() => {
+    if (assessmentStatus !== 'running') return;
+
+    if (typeof EventSource === 'undefined') return; // SSE not supported — polling fallback handles it
+
+    const source = new EventSource(
+      `/api/packs/${packId}/versions/${versionId}/assessment-progress`
+    );
+
+    source.onmessage = (e) => {
+      try {
+        const event = JSON.parse(e.data);
+        if (event.done) {
+          source.close();
+        } else {
+          setCurrentCriterion(event);
+        }
+      } catch {
+        // ignore malformed events
+      }
+    };
+
+    source.onerror = () => source.close();
+
+    return () => source.close();
+  }, [assessmentStatus, packId, versionId]);
 
   const transformAssessmentData = (data: any): FullAssessment => {
     // If data is already in correct format, return it
@@ -287,13 +323,47 @@ export default function Results() {
 
   // Assessment running (job exists but not yet complete)
   if (assessmentStatus === 'running') {
+    const progressPct = currentCriterion
+      ? Math.round((currentCriterion.current / currentCriterion.total) * 100)
+      : 0;
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-        <div className="text-center max-w-md">
-          <div className="w-20 h-20 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Assessment in progress</h2>
-          <p className="text-slate-600">
-            Checking 55 regulatory criteria across your documents.<br />
+        <div className="max-w-lg w-full bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
+            <h2 className="text-xl font-bold text-slate-900">Assessment in progress</h2>
+          </div>
+
+          {currentCriterion ? (
+            <>
+              <div className="mb-4">
+                <div className="flex items-center justify-between text-sm text-slate-500 mb-1">
+                  <span className="uppercase tracking-wide text-xs font-semibold">
+                    {currentCriterion.phase === 'deterministic' ? 'Phase 1: Rules' : 'Phase 2: AI Analysis'}
+                  </span>
+                  <span>{currentCriterion.current} / {currentCriterion.total}</span>
+                </div>
+                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-indigo-500 rounded-full transition-all duration-300"
+                    style={{ width: `${progressPct}%` }}
+                  />
+                </div>
+              </div>
+              <div className="bg-slate-50 rounded-lg px-4 py-3 mb-4">
+                <p className="text-xs text-slate-400 font-mono mb-0.5">{currentCriterion.criterionId}</p>
+                <p className="text-sm text-slate-700 font-medium leading-snug">{currentCriterion.criterionName}</p>
+              </div>
+            </>
+          ) : (
+            <div className="h-20 flex items-center justify-center text-slate-400 text-sm mb-4">
+              Starting assessment…
+            </div>
+          )}
+
+          <p className="text-sm text-slate-500 text-center">
+            Checking 55 regulatory criteria across your documents.
             This typically takes 5–10 minutes. You can leave this tab open.
           </p>
         </div>
@@ -398,6 +468,9 @@ export default function Results() {
                 </div>
               </div>
             </div>
+
+            {/* Gateway Readiness Bar */}
+            <GatewayReadinessBar results={assessment.results} />
 
             {/* Project Metadata Card */}
             <div className="mb-6">

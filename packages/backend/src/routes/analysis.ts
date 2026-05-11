@@ -317,7 +317,7 @@ router.get(
 router.get(
   '/packs/:packId/versions/:versionId/assessment-progress',
   (req: Request, res: Response) => {
-    const { versionId } = req.params;
+    const versionId = req.params.versionId as string;
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -363,9 +363,11 @@ router.post(
       res.json({ status: 'running', versionId, type: 'matrix' });
 
       // Run matrix assessment (don't await)
-      runMatrixAssessment(versionId)
+      runMatrixAssessment(versionId, (event) => broadcastProgress(versionId, event))
         .then(() => {
           analysisStatus.set(versionId, { status: 'completed' });
+          broadcastProgress(versionId, { done: true });
+          progressStreams.delete(versionId);
         })
         .catch((error) => {
           console.error('Matrix assessment failed:', error);
