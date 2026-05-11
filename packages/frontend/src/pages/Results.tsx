@@ -16,6 +16,7 @@ import { useA11y } from '../components/AccessibilityEnhancements';
 import type { FullAssessment, SubmissionGate, AssessmentResult } from '../types/assessment';
 import * as exportService from '../services/exportService';
 import { GatewayReadinessBar } from '../components/GatewayReadinessBar';
+import { computeDiff, diffSummary } from '../lib/assessmentDiff';
 
 export default function Results() {
   const { packId, versionId } = useParams<{ packId: string; versionId: string }>();
@@ -36,6 +37,9 @@ export default function Results() {
     total: number;
     current: number;
   } | null>(null);
+  const [previousAssessment, setPreviousAssessment] = useState<{ results?: any[] } | null>(null);
+  const [previousVersionCreatedAt, setPreviousVersionCreatedAt] = useState<string | null>(null);
+  const [showDiff, setShowDiff] = useState(false);
 
   const POLL_INTERVAL_MS = 8000;
   const POLL_TIMEOUT_MS = 15 * 60 * 1000;
@@ -476,6 +480,39 @@ export default function Results() {
             {/* Gateway Readiness Bar */}
             <GatewayReadinessBar results={assessment.results} />
 
+            {/* Version diff toggle — only shown when a previous assessment exists */}
+            {previousAssessment && (() => {
+              const deltaMap = computeDiff(assessment.results, previousAssessment);
+              const summary = diffSummary(deltaMap);
+              const prevDate = previousVersionCreatedAt
+                ? new Date(previousVersionCreatedAt).toLocaleDateString('en-GB', {
+                    day: 'numeric', month: 'short', year: 'numeric',
+                  })
+                : 'previous version';
+              return (
+                <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-4">
+                  <label className="flex items-center gap-2 text-sm cursor-pointer text-slate-700">
+                    <input
+                      type="checkbox"
+                      checked={showDiff}
+                      onChange={e => setShowDiff(e.target.checked)}
+                      className="rounded border-slate-300 text-indigo-600"
+                    />
+                    Compare with {prevDate}
+                  </label>
+                  {showDiff && (
+                    <span className="text-sm">
+                      <span className="text-green-600 font-medium">{summary.fixed} fixed</span>
+                      {' · '}
+                      <span className="text-red-600 font-medium">{summary.regressed} regressed</span>
+                      {' · '}
+                      <span className="text-amber-600 font-medium">{summary.stillFailing} still failing</span>
+                    </span>
+                  )}
+                </div>
+              );
+            })()}
+
             {/* Project Metadata Card */}
             <div className="mb-6">
               <ProjectMetadataCard
@@ -493,6 +530,9 @@ export default function Results() {
               onGenerateBrief={handleGenerateBrief}
               onExportReport={handleExportReport}
               onViewIssue={handleViewIssue}
+              deltaMap={showDiff && previousAssessment
+                ? computeDiff(assessment.results, previousAssessment)
+                : undefined}
             />
           </div>
         )}

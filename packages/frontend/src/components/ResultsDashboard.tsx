@@ -27,6 +27,8 @@ import HumanReviewTable from './HumanReviewTable';
 import ByConsultantView from './ByConsultantView';
 import { useToast } from './Toast';
 import { BarChartIcon, CircleDotIcon, ZapIcon, TargetIcon, PencilIcon, AlertCircleIcon, CheckIcon, ClipboardIcon, FileTextIcon } from './Icons';
+import { ScoreBenchmarkBar } from './ScoreBenchmarkBar';
+import type { CriterionDelta } from '../lib/assessmentDiff';
 import type { AssessmentResult, SubmissionGate, FullAssessment, EngagementBrief } from '../types/assessment';
 import * as exportService from '../services/exportService';
 
@@ -36,6 +38,7 @@ interface ResultsDashboardProps {
   onGenerateBrief?: (specialist: string, issues: AssessmentResult[]) => void;
   onExportReport?: () => void;
   onViewIssue?: (issue: AssessmentResult) => void;
+  deltaMap?: Map<string, CriterionDelta>;
 }
 
 type FilterType = 'all' | 'blockers' | 'quick_wins' | 'specialist' | 'action_groups';
@@ -103,7 +106,8 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   submissionGate,
   onGenerateBrief,
   onExportReport: _onExportReport,
-  onViewIssue
+  onViewIssue,
+  deltaMap,
 }) => {
   const { showToast } = useToast();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
@@ -555,6 +559,7 @@ Best regards`;
                   {assessment.readiness_score}/100
                 </div>
                 <div className="text-sm text-slate-600">Readiness Score</div>
+                <ScoreBenchmarkBar score={assessment.readiness_score} />
               </div>
               <div className="pt-2 border-t border-slate-300">
                 <div className="flex items-baseline gap-2">
@@ -898,6 +903,7 @@ Best regards`;
                       onRowClick={handleRowClick}
                       onSelectionChange={handleSelectionChange}
                       selectedIds={selectedIssueIds}
+                      deltaMap={deltaMap}
                     />
                   </section>
                 );
@@ -912,6 +918,7 @@ Best regards`;
                   onRowClick={handleRowClick}
                   onSelectionChange={handleSelectionChange}
                   selectedIds={selectedIssueIds}
+                  deltaMap={deltaMap}
                 />
               </div>
 

@@ -12,12 +12,15 @@
 
 import React, { useState, useMemo } from 'react';
 import type { AssessmentResult } from '../types/assessment';
+import type { CriterionDelta } from '../lib/assessmentDiff';
+import { DeltaBadge } from './DeltaBadge';
 
 interface IssuesTableProps {
   issues: AssessmentResult[];
   onRowClick?: (issue: AssessmentResult) => void;
   onSelectionChange?: (selectedIds: string[]) => void;
   selectedIds?: string[];
+  deltaMap?: Map<string, CriterionDelta>;
 }
 
 type SortField = 'priority' | 'id' | 'title' | 'effort' | 'category';
@@ -27,7 +30,8 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
   issues,
   onRowClick,
   onSelectionChange,
-  selectedIds = []
+  selectedIds = [],
+  deltaMap,
 }) => {
   const [sortField, setSortField] = useState<SortField>('priority');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -375,7 +379,8 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
 
                   {/* ID */}
                   <td className="px-4 py-3 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
                       <span className="text-xs font-mono px-2 py-1 bg-slate-100 text-slate-700 rounded">
                         {issue.matrix_id}
                       </span>
@@ -389,6 +394,12 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
                           ⚡
                         </span>
                       )}
+                    </div>
+                    {deltaMap?.has(issue.matrix_id) && (
+                      <div className="mt-1">
+                        <DeltaBadge delta={deltaMap.get(issue.matrix_id)!.delta} />
+                      </div>
+                    )}
                     </div>
                   </td>
 
