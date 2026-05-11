@@ -25,52 +25,86 @@ export default function Results() {
 
   const [assessment, setAssessment] = useState<FullAssessment | null>(null);
   const [submissionGate, setSubmissionGate] = useState<SubmissionGate | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [assessmentStatus, setAssessmentStatus] = useState<'loading' | 'running' | 'complete' | 'error'>('loading');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
-  useEffect(() => {
-    fetchResults();
-  }, [packId, versionId]);
+  const POLL_INTERVAL_MS = 8000;
+  const POLL_TIMEOUT_MS = 15 * 60 * 1000;
 
-  const fetchResults = async () => {
+  const handleRerunAssessment = async () => {
+    setAssessmentStatus('loading');
+    setErrorMessage(null);
     try {
-      setLoading(true);
-      setError(null);
-
-      // Fetch assessment results
-      const assessmentRes = await fetch(`/api/packs/${packId}/versions/${versionId}/assessment`);
-      if (!assessmentRes.ok) {
-        throw new Error(`Failed to fetch assessment: ${assessmentRes.statusText}`);
-      }
-      const assessmentData = await assessmentRes.json();
-
-      // Transform to FullAssessment format if needed
-      const fullAssessment: FullAssessment = transformAssessmentData(assessmentData);
-      setAssessment(fullAssessment);
-
-      // Fetch submission gate analysis
-      try {
-        const gateRes = await fetch(`/api/packs/${packId}/versions/${versionId}/submission-gate`);
-        if (gateRes.ok) {
-          const gateData = await gateRes.json();
-          setSubmissionGate(gateData);
-        }
-      } catch (err) {
-        console.warn('Submission gate not available:', err);
-        // Generate basic gate from assessment data
-        const generatedGate = generateSubmissionGate(fullAssessment);
-        setSubmissionGate(generatedGate);
-      }
-
-      announce('Assessment results loaded', 'polite');
-    } catch (err: any) {
-      setError(err.message || 'Failed to load assessment results');
-      announce('Failed to load assessment results', 'assertive');
-      console.error('Error fetching results:', err);
-    } finally {
-      setLoading(false);
+      await fetch(`/api/packs/${packId}/versions/${versionId}/matrix-assess`, { method: 'POST' });
+    } catch (err) {
+      console.error('Failed to start re-run:', err);
     }
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    const startTime = Date.now();
+
+    async function poll() {
+      if (cancelled) return;
+
+      if (Date.now() - startTime > POLL_TIMEOUT_MS) {
+        setAssessmentStatus('error');
+        setErrorMessage('Assessment timed out after 15 minutes. Please try re-running.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/packs/${packId}/versions/${versionId}/assessment`);
+
+        if (res.status === 401 || res.status === 403) {
+          window.location.href = `/sign-in?redirect_url=${encodeURIComponent(window.location.pathname)}`;
+          return;
+        }
+
+        if (res.status === 404) {
+          setAssessmentStatus('running');
+          setTimeout(poll, POLL_INTERVAL_MS);
+          return;
+        }
+
+        if (!res.ok) {
+          setAssessmentStatus('error');
+          setErrorMessage(`Assessment failed (${res.status}). Please try re-running.`);
+          return;
+        }
+
+        const assessmentData = await res.json();
+        const fullAssessment: FullAssessment = transformAssessmentData(assessmentData);
+        setAssessment(fullAssessment);
+
+        try {
+          const gateRes = await fetch(`/api/packs/${packId}/versions/${versionId}/submission-gate`);
+          if (gateRes.ok) {
+            setSubmissionGate(await gateRes.json());
+          } else {
+            setSubmissionGate(generateSubmissionGate(fullAssessment));
+          }
+        } catch {
+          setSubmissionGate(generateSubmissionGate(fullAssessment));
+        }
+
+        setAssessmentStatus('complete');
+        announce('Assessment results loaded', 'polite');
+
+      } catch (err) {
+        if (!cancelled) {
+          setAssessmentStatus('error');
+          setErrorMessage('Network error. Check your connection and try again.');
+          announce('Failed to load assessment results', 'assertive');
+        }
+      }
+    }
+
+    poll();
+    return () => { cancelled = true; };
+  }, [packId, versionId]);
 
   const transformAssessmentData = (data: any): FullAssessment => {
     // If data is already in correct format, return it
@@ -209,9 +243,8 @@ export default function Results() {
 
   const handleExportReport = async () => {
     if (!assessment) return;
-
+    setExporting(true);
     try {
-      // Quick export for mobile - just export PDF directly
       await exportService.exportAssessmentPDF(
         packId || '',
         versionId || '',
@@ -223,6 +256,8 @@ export default function Results() {
       console.error('Export failed:', error);
       announce('Failed to export report', 'assertive');
       showToast('Failed to export report. Please try again.', 'error');
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -231,8 +266,8 @@ export default function Results() {
     // Detail panel handles this
   };
 
-  // Loading state
-  if (loading) {
+  // Initial loading state
+  if (assessmentStatus === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
         <div className="text-center">
@@ -250,22 +285,38 @@ export default function Results() {
     );
   }
 
+  // Assessment running (job exists but not yet complete)
+  if (assessmentStatus === 'running') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <div className="w-20 h-20 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Assessment in progress</h2>
+          <p className="text-slate-600">
+            Checking 55 regulatory criteria across your documents.<br />
+            This typically takes 5–10 minutes. You can leave this tab open.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Error state
-  if (error) {
+  if (assessmentStatus === 'error') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center border-2 border-red-200">
           <div className="text-6xl mb-4">⚠️</div>
           <h2 className="text-2xl font-bold text-slate-900 mb-3">
-            Error Loading Results
+            Assessment Error
           </h2>
-          <p className="text-slate-600 mb-6">{error}</p>
+          <p className="text-slate-600 mb-6">{errorMessage || 'Something went wrong. Please try again.'}</p>
           <div className="flex gap-3 justify-center">
             <button
-              onClick={fetchResults}
+              onClick={handleRerunAssessment}
               className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
             >
-              Try Again
+              Re-run Assessment
             </button>
             <button
               onClick={() => navigate(`/packs/${packId}`)}
@@ -323,12 +374,28 @@ export default function Results() {
                     Assessment Results
                   </h1>
                 </div>
-                <button
-                  onClick={() => navigate(`/packs/${packId}`)}
-                  className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-2"
-                >
-                  ← Back to Pack
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleExportReport}
+                    disabled={exporting}
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    {exporting ? (
+                      <>
+                        <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Exporting…
+                      </>
+                    ) : (
+                      'Export Results'
+                    )}
+                  </button>
+                  <button
+                    onClick={() => navigate(`/packs/${packId}`)}
+                    className="px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    ← Back to Pack
+                  </button>
+                </div>
               </div>
             </div>
 

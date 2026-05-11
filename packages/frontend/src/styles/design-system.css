@@ -1,13 +1,40 @@
 /* Attlee Design System */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,300&family=Inter:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --navy:  #0F1923;
-  --cream: #F2F1EE;
-  --beige: #E8E4DC;
-  --gold:  #C4A882;
-  --muted: #8a8a82;
-  --white: #ffffff;
+  /* Dark ink palette */
+  --ink-0: #0A0B0D;
+  --ink-1: #111216;
+  --ink-2: #171920;
+  --ink-3: #22252E;
+  --ink-4: #2E323D;
+
+  /* Paper/cream — used for light text on dark */
+  --fog-0: #F4F1EC;
+  --fog-1: #E8E3DB;
+  --fog-2: #D3CDC2;
+
+  /* Brand accent */
+  --flame: #E85C2C;
+  --flame-soft: #F5A57E;
+
+  /* Semantic text */
+  --type-hi: #F4F1EC;
+  --type-mid: #B6B1A6;
+  --type-lo: #6B6860;
+
+  /* Fonts */
+  --font-display: "Instrument Serif", "Times New Roman", serif;
+  --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Legacy aliases — kept for components that reference old vars */
+  --navy:  #0A0B0D;
+  --cream: #F4F1EC;
+  --beige: #22252E;
+  --gold:  #E85C2C;
+  --muted: #B6B1A6;
+  --white: #171920;
 }
 
 * {
@@ -17,44 +44,56 @@
 }
 
 body {
-  background: var(--cream);
-  color: var(--navy);
-  font-family: 'Inter', sans-serif;
+  background: var(--ink-1);
+  color: var(--type-hi);
+  font-family: var(--font-sans);
   font-size: 18px;
   line-height: 1.7;
   font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+::selection { background: var(--flame); color: var(--ink-0); }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 200;
   letter-spacing: -0.02em;
+  color: var(--type-hi);
 }
 
 .eyebrow {
-  font-size: 13px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--flame);
+  font-weight: 500;
+}
+
+.serif-italic {
+  font-family: var(--font-display);
+  font-style: italic;
   font-weight: 400;
 }
 
 /* Buttons */
 .btn-primary {
-  background: var(--navy);
-  color: var(--cream);
-  padding: 20px 40px;
-  font-size: 15px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
+  background: var(--flame);
+  color: var(--ink-0);
+  padding: 18px 32px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  font-family: var(--font-sans);
+  font-weight: 500;
   border: none;
   cursor: pointer;
   transition: opacity 0.2s;
   display: inline-block;
+  border-radius: 999px;
+  text-decoration: none;
 }
 
 .btn-primary:hover {
@@ -62,19 +101,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-ghost {
-  color: var(--navy);
-  font-size: 15px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  color: var(--type-hi);
+  font-size: 14px;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  opacity: 0.5;
+  opacity: 0.6;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: opacity 0.2s;
   background: transparent;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.18);
   cursor: pointer;
+  padding: 18px 32px;
+  border-radius: 999px;
 }
 
 .btn-ghost:hover {
@@ -88,35 +128,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-eyebrow {
-  font-size: 13px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--flame);
   margin-bottom: 16px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .section-title {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 200;
   font-size: clamp(36px, 5vw, 58px);
   letter-spacing: -0.02em;
   line-height: 1.1;
   max-width: 1100px;
   margin-bottom: 24px;
+  color: var(--type-hi);
 }
 
 /* Backgrounds */
-.bg-navy { background: var(--navy); }
-.bg-cream { background: var(--cream); }
-.bg-beige { background: var(--beige); }
-.bg-white { background: var(--white); }
+.bg-navy { background: var(--ink-0); }
+.bg-cream { background: var(--ink-1); }
+.bg-beige { background: var(--ink-2); }
+.bg-white { background: var(--ink-2); }
 
 /* Text colors */
-.text-navy { color: var(--navy); }
-.text-cream { color: var(--cream); }
-.text-gold { color: var(--gold); }
-.text-muted { color: var(--muted); }
+.text-navy { color: var(--type-hi); }
+.text-cream { color: var(--fog-0); }
+.text-gold  { color: var(--flame); }
+.text-muted { color: var(--type-mid); }
 
 /* Pills */
 .pill {
@@ -126,8 +168,9 @@ h1, h2, h3, h4, h5, h6 {
   padding: 4px 10px;
   font-weight: 400;
   display: inline-block;
+  border-radius: 4px;
 }
 
-.pill.pass { background: #e8f2e8; color: #2d6a2d; }
-.pill.fail { background: #fdf0ee; color: #a04040; }
-.pill.warn { background: #fdf6ee; color: var(--gold); }
+.pill.pass { background: rgba(45,106,45,0.25);   color: #7ec87e; }
+.pill.fail { background: rgba(160,64,64,0.25);   color: #e08080; }
+.pill.warn { background: rgba(232,92,44,0.2);    color: var(--flame-soft); }

@@ -179,6 +179,7 @@ model PackVersion {
   // Optional user inputs
   projectName  String?
   borough      String?
+  isLondon     Boolean  @default(false)
   buildingType String?
   height       String?
   storeys      String?

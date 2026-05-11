@@ -24,6 +24,16 @@ const analysisStatus = new Map<
   { status: 'pending' | 'running' | 'completed' | 'failed'; error?: string }
 >();
 
+// SSE streams for live assessment progress
+const progressStreams = new Map<string, Response>();
+
+function broadcastProgress(versionId: string, event: object) {
+  const stream = progressStreams.get(versionId);
+  if (stream) {
+    stream.write(`data: ${JSON.stringify(event)}\n\n`);
+  }
+}
+
 // POST /api/packs/:packId/versions/:versionId/analyze - Run analysis
 router.post(
   '/packs/:packId/versions/:versionId/analyze',
@@ -302,6 +312,25 @@ router.get(
 // ============================================
 // MATRIX-BASED ASSESSMENT ENDPOINTS
 // ============================================
+
+// GET /api/packs/:packId/versions/:versionId/assessment-progress - SSE stream for live ticker
+router.get(
+  '/packs/:packId/versions/:versionId/assessment-progress',
+  (req: Request, res: Response) => {
+    const { versionId } = req.params;
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    progressStreams.set(versionId, res);
+
+    req.on('close', () => {
+      progressStreams.delete(versionId);
+    });
+  }
+);
 
 // POST /api/packs/:packId/versions/:versionId/matrix-assess - Run matrix assessment
 router.post(

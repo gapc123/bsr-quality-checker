@@ -134,16 +134,33 @@ For evidence_page: look for [PAGE N] markers in the document text and return the
   }
 }
 
+export type ProgressEvent = {
+  criterionId: string;
+  criterionName: string;
+  phase: 'deterministic' | 'llm';
+  total: number;
+  current: number;
+};
+
 export async function runLangGraphAssessment(
   criteria: MatrixRow[],
   packDocs: PackDocument[],
   _context: PackContext,
-  client: Anthropic
+  client: Anthropic,
+  onProgress?: (event: ProgressEvent) => void
 ): Promise<AssessmentResult[]> {
   console.log(`[assess] Phase 2: ${criteria.length} criteria (sequential)`);
 
   const results: AssessmentResult[] = [];
-  for (const row of criteria) {
+  for (let i = 0; i < criteria.length; i++) {
+    const row = criteria[i];
+    onProgress?.({
+      criterionId: row.matrix_id,
+      criterionName: row.matrix_title,
+      phase: 'llm',
+      total: criteria.length,
+      current: i + 1,
+    });
     const result = await singleCriterionCall(row, packDocs, client, 'standard');
     results.push(result);
   }

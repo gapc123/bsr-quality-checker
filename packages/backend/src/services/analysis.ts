@@ -15,6 +15,7 @@ import {
   determinePackContext,
   FullAssessment,
 } from './matrix-assessment.js';
+import { ProgressEvent } from './langgraph-assessment.js';
 import {
   FieldExtractionResponseSchema,
   IssueGenerationResponseSchema,
@@ -387,7 +388,7 @@ async function generateIssues(
 /**
  * Run matrix-based assessment on a pack version
  */
-export async function runMatrixAssessment(packVersionId: string): Promise<FullAssessment> {
+export async function runMatrixAssessment(packVersionId: string, onProgress?: (event: ProgressEvent) => void): Promise<FullAssessment> {
   const packVersion = await prisma.packVersion.findUnique({
     where: { id: packVersionId },
     include: {
@@ -435,14 +436,15 @@ export async function runMatrixAssessment(packVersionId: string): Promise<FullAs
     packVersion.borough,
     packVersion.buildingType,
     heightForContext,
-    storeysForContext
+    storeysForContext,
+    packVersion.isLondon
   );
 
   console.log(`[Matrix Assessment] Starting assessment for pack version ${packVersionId}`);
   console.log(`[Matrix Assessment] Context: London=${context.isLondon}, HRB=${context.isHRB}`);
 
   // Run the matrix assessment
-  const assessment = await assessPackAgainstMatrix(packDocs, context);
+  const assessment = await assessPackAgainstMatrix(packDocs, context, onProgress);
 
   // Store assessment results in database
   await prisma.packVersion.update({

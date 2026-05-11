@@ -368,7 +368,7 @@ export default function QuickAssess() {
             </div>
             <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(255, 215, 0, 0.1)', border: '1px solid var(--gold)' }}>
               <p style={{ fontSize: '13px', color: 'var(--navy)', fontWeight: 600 }}>
-                💡 Traditional consultancies charge £500-1,000 for compliance matrices built over days. Our AI generates them in minutes.
+                💡 Traditional consultancies charge £5,000-10,000 for compliance matrices built over weeks. Our AI generates them in minutes.
               </p>
             </div>
           </div>
@@ -476,7 +476,7 @@ export default function QuickAssess() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, color: 'var(--navy)', fontSize: '18px', marginBottom: '4px' }}>📊 Compliance Matrix (AI-Generated Excel)</div>
                     <div style={{ fontSize: '14px', color: 'var(--muted)' }}>
-                      AI-mapped traceability matrix (worth £500-1,000) • Color-coded status • Auto-linked evidence • Generated in seconds vs hours of manual work
+                      AI-mapped traceability matrix (worth £5,000-10,000) • Color-coded status • Auto-linked evidence • Generated in minutes vs weeks of manual work
                     </div>
                   </div>
                 </div>

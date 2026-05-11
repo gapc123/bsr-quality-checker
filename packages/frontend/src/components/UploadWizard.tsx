@@ -138,16 +138,10 @@ export const UploadWizard: React.FC<UploadWizardProps> = ({
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!projectContext) return;
-
     setIsSubmitting(true);
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
     onComplete?.(projectContext, documents);
-    setIsSubmitting(false);
   };
 
   // Calculate overall progress
@@ -298,7 +292,7 @@ export const UploadWizard: React.FC<UploadWizardProps> = ({
               </div>
 
               <div className="pt-4 border-t border-slate-300">
-                <h4 className="font-semibold text-slate-900 mb-2">📎 Documents ({documents.length})</h4>
+                <h4 className="font-semibold text-slate-900 mb-2">📎 Documents ({documents?.length ?? 0})</h4>
                 <div className="space-y-1 text-sm text-slate-700">
                   {documents.slice(0, 5).map(doc => (
                     <div key={doc.id} className="flex items-center gap-2">

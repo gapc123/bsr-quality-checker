@@ -52,6 +52,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   const { showToast } = useToast();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeTab, setActiveTab] = useState<ViewTab>('overview');
+  const [showPassing, setShowPassing] = useState(false);
   const [_acceptedQuickWins, setAcceptedQuickWins] = useState<Set<string>>(new Set());
   const [selectedIssueIds, setSelectedIssueIds] = useState<string[]>([]);
   const [viewedIssue, setViewedIssue] = useState<AssessmentResult | null>(null);
@@ -816,6 +817,41 @@ Best regards`;
           </div>
         </div>
       </div>
+
+        {/* Passing Criteria — collapsible */}
+        {passingResults.length > 0 && (
+          <div className="rounded-lg border-2 border-green-300 bg-green-50 shadow-sm overflow-hidden">
+            <button
+              onClick={() => setShowPassing(p => !p)}
+              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-green-100 transition-colors"
+            >
+              <span className="font-semibold text-green-900 flex items-center gap-2">
+                <CheckIcon size={18} color="#16a34a" />
+                {showPassing ? 'Hide' : 'Show'} passing criteria ({passingResults.length})
+              </span>
+              <span className="text-green-700 text-sm">{showPassing ? '▲' : '▼'}</span>
+            </button>
+
+            {showPassing && (
+              <div className="border-t border-green-300 divide-y divide-green-200">
+                {passingResults.map(c => (
+                  <div key={c.matrix_id} className="px-6 py-3 flex items-start gap-3">
+                    <span className="text-xs font-mono text-green-700 mt-0.5 w-16 shrink-0">{c.matrix_id}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm font-semibold text-green-900">{c.matrix_title}</span>
+                      {c.pack_evidence?.quote && (
+                        <blockquote className="mt-1 text-xs text-green-700 italic border-l-2 border-green-400 pl-2">
+                          "{c.pack_evidence.quote}"
+                        </blockquote>
+                      )}
+                    </div>
+                    <span className="text-xs font-semibold text-green-700 bg-green-200 px-2 py-0.5 rounded shrink-0">✓ Pass</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         </>
       )}
 

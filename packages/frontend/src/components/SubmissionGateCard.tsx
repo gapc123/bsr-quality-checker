@@ -148,9 +148,12 @@ export const SubmissionGateCard: React.FC<SubmissionGateCardProps> = ({
       {/* Help Text */}
       {gate.gate_status === 'RED' && (
         <div className="mt-4 pt-4 border-t border-red-300">
+          <p className="text-sm text-red-700 font-semibold mb-1">
+            {gate.blockers_count + gate.high_priority_count} issue{(gate.blockers_count + gate.high_priority_count) !== 1 ? 's' : ''} must be resolved before submission
+          </p>
           <p className="text-sm text-red-700">
-            <strong>What this means:</strong> Submitting now will result in immediate BSR rejection.
-            Fix critical blockers before proceeding with submission.
+            Resolve all CRITICAL and HIGH findings below, then re-run the assessment.
+            Submitting now will result in immediate BSR rejection.
           </p>
         </div>
       )}

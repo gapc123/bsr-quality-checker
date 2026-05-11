@@ -163,7 +163,7 @@ export default function PackDetail() {
       return;
     }
     try {
-      const res = await fetch(`/api/packs/${packId}/versions/${versionId}/analyze`, {
+      const res = await fetch(`/api/packs/${packId}/versions/${versionId}/matrix-assess`, {
         method: 'POST',
       });
       if (!res.ok) {

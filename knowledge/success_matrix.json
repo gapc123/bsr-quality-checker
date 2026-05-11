@@ -4,6 +4,28 @@
   "description": "Regulatory Success Matrix for Gateway 2 Submissions - Proprietary assessment framework synthesised from BSR corpus",
   "matrix": [
     {
+      "matrix_id": "SM-000",
+      "matrix_title": "Safety Case Report Present and Substantive",
+      "matrix_description": "The Building Safety Act 2022 Schedule 6(3) requires a Safety Case Report to accompany every Gateway 2 application. It must identify all building safety risks and explain how those risks are managed throughout design and construction.",
+      "success_definition": "A Safety Case Report is present in the submission pack, explicitly named as such, and contains: identification of building safety risks, explanation of risk management approach, and reference to the accountable person or principal designer.",
+      "failure_modes": [
+        "No Safety Case Report submitted",
+        "Safety Case Report present but does not address building safety risks",
+        "Document labelled as Safety Case but content is a Fire Risk Assessment only",
+        "Safety Case Report references are incomplete or generic"
+      ],
+      "applicability_rules": {
+        "geography": "all",
+        "building_types": ["all"],
+        "hrb_only": true,
+        "height_threshold": null
+      },
+      "reference_sources": ["bsa_2022_schedule_6", "bsr_gateway_2_guidance"],
+      "evidence_expected": ["Safety Case Report", "Safety Case"],
+      "category": "PACK_COMPLETENESS",
+      "severity_if_unmet": "critical"
+    },
+    {
       "matrix_id": "SM-001",
       "matrix_title": "Fire Strategy Report Present and Complete",
       "matrix_description": "A comprehensive fire strategy is fundamental to demonstrating compliance with Requirements B1-B5. BSR expects this as a core Gateway 2 document.",

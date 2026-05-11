@@ -8,7 +8,7 @@ type HowTab = 'overview' | 'upload' | 'analysis' | 'delivery';
 export default function Landing() {
   const [activeHowTab, setActiveHowTab] = useState<HowTab>('overview');
   return (
-    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--ink-1)', minHeight: '100vh' }}>
       {/* Fixed Nav */}
       <nav style={{
         position: 'fixed',
@@ -16,8 +16,10 @@ export default function Landing() {
         left: 0,
         right: 0,
         zIndex: 100,
-        background: 'var(--cream)',
-        borderBottom: '1px solid var(--beige)',
+        background: 'rgba(17,18,22,0.9)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        borderBottom: '1px solid var(--ink-3)',
         padding: '0 48px',
         height: '64px',
         display: 'flex',
@@ -25,7 +27,7 @@ export default function Landing() {
         justifyContent: 'space-between'
       }}>
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <AttleeLogo size={32} showWordmark={true} color="#0F1923" />
+          <AttleeLogo size={32} showWordmark={true} color="var(--type-hi)" />
         </Link>
 
         <ul style={{
@@ -37,9 +39,9 @@ export default function Landing() {
           <li><a href="#how" style={navLinkStyle}>How it works</a></li>
           <li><Link to="/security" style={navLinkStyle}>Security</Link></li>
           <SignedIn>
-            <li><Link to="/clients" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '12px 24px', fontSize: '15px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Dashboard</Link></li>
+            <li><Link to="/clients" style={{...navLinkStyle, background: 'var(--flame)', color: 'var(--ink-0)', opacity: 1, padding: '10px 22px', fontSize: '13px', letterSpacing: '0.02em', borderRadius: '999px', textTransform: 'none' as const}}>Dashboard</Link></li>
           </SignedIn>
-          <li><a href="mailto:george@attlee.ai" style={{...navLinkStyle, background: 'var(--navy)', color: 'var(--cream)', opacity: 1, padding: '12px 24px', fontSize: '15px', letterSpacing: '0.08em', textTransform: 'uppercase'}}>Request access</a></li>
+          <li><a href="mailto:george@attlee.ai" style={{...navLinkStyle, background: 'var(--flame)', color: 'var(--ink-0)', opacity: 1, padding: '10px 22px', fontSize: '13px', letterSpacing: '0.02em', borderRadius: '999px', textTransform: 'none' as const}}>Request access</a></li>
         </ul>
       </nav>
 
@@ -57,21 +59,21 @@ export default function Landing() {
           Expert Gateway 2 Review · AI + Proprietary Deterministic Rules
         </p>
         <h1 style={{
-          fontFamily: 'DM Sans, sans-serif',
+          fontFamily: 'var(--font-sans)',
           fontWeight: 200,
           fontSize: 'clamp(52px, 7vw, 96px)',
           lineHeight: 1.05,
           letterSpacing: '-0.03em',
-          color: 'var(--navy)',
+          color: 'var(--type-hi)',
           maxWidth: '1200px',
           marginBottom: '32px'
         }}>
-          Expert consultants review your pack<br />in <em style={{ fontStyle: 'italic', fontWeight: 300, color: 'var(--gold)' }}>1 week,</em> not 4 weeks.
+          Expert consultants review your pack<br />in <em style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 400, color: 'var(--flame-soft)' }}>1 week,</em> not 4 weeks.
         </h1>
         <p style={{
           fontSize: '22px',
           fontWeight: 300,
-          color: 'var(--muted)',
+          color: 'var(--type-mid)',
           maxWidth: '900px',
           lineHeight: 1.7,
           marginBottom: '48px'
@@ -99,25 +101,25 @@ export default function Landing() {
       </div>
 
       {/* Why Deterministic Rules */}
-      <div style={{ padding: '100px 5%', background: 'var(--white)' }}>
+      <div style={{ padding: '100px 5%', background: 'var(--ink-2)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <p className="section-eyebrow" style={{ textAlign: 'center' }}>Why Deterministic Rules Matter</p>
           <p style={{
             textAlign: 'center',
             fontSize: '17px',
-            color: 'var(--muted)',
+            color: 'var(--type-mid)',
             marginBottom: '20px',
             fontWeight: 300
           }}>
             Speed of AI, certainty of deterministic rules
           </p>
           <h2 className="section-title" style={{ textAlign: 'center', margin: '0 auto 16px', maxWidth: '900px' }}>
-            You can't be <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>probably</em> compliant.
+            You can't be <em style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--flame-soft)' }}>probably</em> compliant.
           </h2>
           <p style={{
             textAlign: 'center',
             fontSize: '20px',
-            color: 'var(--navy)',
+            color: 'var(--type-hi)',
             marginBottom: '48px',
             fontWeight: 300,
             maxWidth: '800px',
@@ -127,53 +129,51 @@ export default function Landing() {
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '48px', marginBottom: '64px' }}>
-            <div style={{ padding: '40px', background: '#FDF0EE', border: '2px solid #a04040' }}>
+            <div style={{ padding: '40px', background: 'rgba(160,64,64,0.12)', border: '1px solid rgba(160,64,64,0.4)' }}>
               <h3 style={{
-                fontFamily: 'DM Sans, sans-serif',
                 fontWeight: 300,
                 fontSize: '24px',
-                color: '#a04040',
+                color: '#e08080',
                 marginBottom: '16px'
               }}>
                 ❌ Pure AI Approach (ChatGPT/Claude)
               </h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>Probabilistic outputs:</strong> Same input can produce different answers each time
                 </li>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>Hallucinations:</strong> Invents BSR requirements that don't exist
                 </li>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>No traceability:</strong> Can't cite specific regulation clauses
                 </li>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>Legally indefensible:</strong> BSR won't accept "AI said so"
                 </li>
               </ul>
             </div>
 
-            <div style={{ padding: '40px', background: '#e8f2e8', border: '2px solid #2d6a2d' }}>
+            <div style={{ padding: '40px', background: 'rgba(45,106,45,0.12)', border: '1px solid rgba(45,106,45,0.4)' }}>
               <h3 style={{
-                fontFamily: 'DM Sans, sans-serif',
                 fontWeight: 300,
                 fontSize: '24px',
-                color: '#2d6a2d',
+                color: '#7ec87e',
                 marginBottom: '16px'
               }}>
                 ✓ Attlee's Approach: Deterministic Rules + AI
               </h3>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>AI drafts findings:</strong> Rapid analysis across documents in closed-tenancy architecture
                 </li>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>Proprietary rules validate:</strong> 55 deterministic checks layered over AI ensure consistency
                 </li>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>Expert verification:</strong> Every finding reviewed by qualified consultants
                 </li>
-                <li style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.6 }}>
+                <li style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.6 }}>
                   <strong>Traceable & defensible:</strong> Every gap linked to specific BSR regulation
                 </li>
               </ul>
@@ -181,28 +181,27 @@ export default function Landing() {
           </div>
 
           <div style={{
-            background: 'var(--navy)',
+            background: 'var(--ink-0)',
             padding: '40px',
             textAlign: 'center',
-            border: '2px solid var(--gold)'
+            border: '1px solid var(--flame)'
           }}>
             <p style={{
               fontSize: '20px',
-              fontFamily: 'DM Sans, sans-serif',
               fontWeight: 300,
-              color: 'var(--cream)',
+              color: 'var(--type-hi)',
               lineHeight: 1.6,
               maxWidth: '900px',
               margin: '0 auto'
             }}>
-              <strong style={{ color: 'var(--gold)' }}>What this means:</strong> AI models are inherently probabilistic — they generate responses based on statistical patterns, not fixed logic. For BSR compliance, you need deterministic outcomes. AI drafts findings across your documents at speed within our closed-tenancy system, then our proprietary deterministic rules validate every output for consistency and accuracy. We've built an architecture where AI does the first draft and deterministic logic ensures reliability.
+              <strong style={{ color: 'var(--flame)' }}>What this means:</strong> AI models are inherently probabilistic — they generate responses based on statistical patterns, not fixed logic. For BSR compliance, you need deterministic outcomes. AI drafts findings across your documents at speed within our closed-tenancy system, then our proprietary deterministic rules validate every output for consistency and accuracy. We've built an architecture where AI does the first draft and deterministic logic ensures reliability.
             </p>
           </div>
         </div>
       </div>
 
       {/* How It Works - Interactive Tabbed Section */}
-      <div id="how" style={{ padding: '100px 5%', background: 'var(--white)' }}>
+      <div id="how" style={{ padding: '100px 5%', background: 'var(--ink-1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <p className="section-eyebrow" style={{ textAlign: 'center' }}>How it works</p>
           <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '48px' }}>
@@ -248,18 +247,17 @@ export default function Landing() {
 
           {/* Tab Content */}
           <div style={{
-            background: 'var(--cream)',
-            border: '2px solid var(--beige)',
+            background: 'var(--ink-2)',
+            border: '1px solid var(--ink-3)',
             padding: '48px',
             minHeight: '400px'
           }}>
             {activeHowTab === 'overview' && (
               <div>
                 <h3 style={{
-                  fontFamily: 'DM Sans, sans-serif',
                   fontSize: '28px',
                   fontWeight: 200,
-                  color: 'var(--navy)',
+                  color: 'var(--type-hi)',
                   marginBottom: '24px',
                   letterSpacing: '-0.02em'
                 }}>
@@ -271,75 +269,75 @@ export default function Landing() {
                   gap: '32px',
                   marginTop: '40px'
                 }}>
-                  <div style={{ padding: '32px', background: 'var(--white)', border: '1px solid var(--beige)' }}>
+                  <div style={{ padding: '32px', background: 'var(--ink-1)', border: '1px solid var(--ink-3)' }}>
                     <div style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: '14px',
-                      letterSpacing: '0.15em',
-                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.14em',
+                      color: 'var(--flame)',
                       marginBottom: '16px',
-                      fontWeight: 400
+                      fontWeight: 500,
+                      textTransform: 'uppercase'
                     }}>
-                      01 — UPLOAD
+                      01 — Upload
                     </div>
                     <h4 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '20px',
                       fontWeight: 300,
-                      color: 'var(--navy)',
+                      color: 'var(--type-hi)',
                       marginBottom: '12px'
                     }}>
                       You submit your pack
                     </h4>
-                    <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7 }}>
+                    <p style={{ fontSize: '15px', color: 'var(--type-mid)', lineHeight: 1.7 }}>
                       Secure upload of your full Gateway 2 submission — fire strategy, structural reports, MEP specs, drawings.
                     </p>
                   </div>
-                  <div style={{ padding: '32px', background: 'var(--navy)', border: '1px solid var(--navy)' }}>
+                  <div style={{ padding: '32px', background: 'var(--ink-0)', border: '1px solid var(--flame)' }}>
                     <div style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: '14px',
-                      letterSpacing: '0.15em',
-                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.14em',
+                      color: 'var(--flame)',
                       marginBottom: '16px',
-                      fontWeight: 400
+                      fontWeight: 500,
+                      textTransform: 'uppercase'
                     }}>
-                      02 — ANALYSIS
+                      02 — Analysis
                     </div>
                     <h4 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '20px',
                       fontWeight: 300,
-                      color: 'var(--cream)',
+                      color: 'var(--type-hi)',
                       marginBottom: '12px'
                     }}>
                       AI + expert review
                     </h4>
-                    <p style={{ fontSize: '15px', color: 'rgba(242,241,238,0.7)', lineHeight: 1.7 }}>
+                    <p style={{ fontSize: '15px', color: 'var(--type-mid)', lineHeight: 1.7 }}>
                       AI drafts findings in 5 minutes within our closed-tenancy system. 55+ proprietary deterministic rules validate outputs. Expert consultants verify every finding.
                     </p>
                   </div>
-                  <div style={{ padding: '32px', background: 'var(--white)', border: '1px solid var(--beige)' }}>
+                  <div style={{ padding: '32px', background: 'var(--ink-1)', border: '1px solid var(--ink-3)' }}>
                     <div style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: '14px',
-                      letterSpacing: '0.15em',
-                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.14em',
+                      color: 'var(--flame)',
                       marginBottom: '16px',
-                      fontWeight: 400
+                      fontWeight: 500,
+                      textTransform: 'uppercase'
                     }}>
-                      03 — DELIVERY
+                      03 — Delivery
                     </div>
                     <h4 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '20px',
                       fontWeight: 300,
-                      color: 'var(--navy)',
+                      color: 'var(--type-hi)',
                       marginBottom: '12px'
                     }}>
                       1-week turnaround
                     </h4>
-                    <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.7 }}>
+                    <p style={{ fontSize: '15px', color: 'var(--type-mid)', lineHeight: 1.7 }}>
                       Expert-signed report with actionable amendments. Professional consultancy accelerated by AI.
                     </p>
                   </div>
@@ -352,52 +350,52 @@ export default function Landing() {
                 <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: '14px',
-                      letterSpacing: '0.15em',
-                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.14em',
+                      color: 'var(--flame)',
                       marginBottom: '16px',
-                      fontWeight: 400
+                      fontWeight: 500,
+                      textTransform: 'uppercase'
                     }}>
                       STEP 01 — SECURE UPLOAD
                     </div>
                     <h3 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '32px',
                       fontWeight: 200,
-                      color: 'var(--navy)',
+                      color: 'var(--type-hi)',
                       marginBottom: '24px',
                       letterSpacing: '-0.02em'
                     }}>
                       Submit your Gateway 2 pack securely
                     </h3>
-                    <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
+                    <p style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.8, marginBottom: '32px' }}>
                       Upload your complete submission pack through our SOC 2 compliant platform. We accept all standard Gateway 2 documents including fire strategies, structural reports, MEP specifications, and architectural drawings.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                        <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                        <span style={{ color: 'var(--flame)', fontSize: '20px', marginTop: '2px' }}>✓</span>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>SOC 2 Type II certified</strong>
-                          <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '15px', fontWeight: 500 }}>SOC 2 Type II certified</strong>
+                          <p style={{ fontSize: '14px', color: 'var(--type-mid)', marginTop: '4px' }}>
                             Your documents are protected by enterprise-grade security with independent audits
                           </p>
                         </div>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                        <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                        <span style={{ color: 'var(--flame)', fontSize: '20px', marginTop: '2px' }}>✓</span>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>UK data residency</strong>
-                          <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '15px', fontWeight: 500 }}>UK data residency</strong>
+                          <p style={{ fontSize: '14px', color: 'var(--type-mid)', marginTop: '4px' }}>
                             All data processed and stored within the UK, fully GDPR compliant
                           </p>
                         </div>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                        <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                        <span style={{ color: 'var(--flame)', fontSize: '20px', marginTop: '2px' }}>✓</span>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>Encrypted transmission</strong>
-                          <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '15px', fontWeight: 500 }}>Encrypted transmission</strong>
+                          <p style={{ fontSize: '14px', color: 'var(--type-mid)', marginTop: '4px' }}>
                             TLS 1.3 encryption for all file transfers, encrypted storage at rest
                           </p>
                         </div>
@@ -406,15 +404,14 @@ export default function Landing() {
                   </div>
                   <div style={{
                     flex: 1,
-                    background: 'var(--navy)',
+                    background: 'var(--ink-0)',
                     padding: '40px',
-                    border: '1px solid var(--gold)'
+                    border: '1px solid var(--ink-3)'
                   }}>
                     <h4 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '18px',
                       fontWeight: 300,
-                      color: 'var(--cream)',
+                      color: 'var(--type-hi)',
                       marginBottom: '20px'
                     }}>
                       Typical submission includes:
@@ -439,7 +436,7 @@ export default function Landing() {
                           <span style={{
                             position: 'absolute',
                             left: 0,
-                            color: 'var(--gold)'
+                            color: 'var(--flame)'
                           }}>→</span>
                           {item}
                         </li>
@@ -455,55 +452,54 @@ export default function Landing() {
                 <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: '14px',
-                      letterSpacing: '0.15em',
-                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.14em',
+                      color: 'var(--flame)',
                       marginBottom: '16px',
-                      fontWeight: 400
+                      fontWeight: 500,
+                      textTransform: 'uppercase'
                     }}>
                       STEP 02 — AI + EXPERT ANALYSIS
                     </div>
                     <h3 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '32px',
                       fontWeight: 200,
-                      color: 'var(--navy)',
+                      color: 'var(--type-hi)',
                       marginBottom: '24px',
                       letterSpacing: '-0.02em'
                     }}>
                       AI drafts → Proprietary rules validate → Expert verification
                     </h3>
-                    <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
+                    <p style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.8, marginBottom: '32px' }}>
                       Our closed-tenancy system combines three layers: AI drafts findings across your 500+ page pack in minutes, 55+ proprietary deterministic rules validate every output for consistency, then expert consultants verify each finding by hand. Not raw AI output — AI validated by deterministic rules and expert review.
                     </p>
 
-                    <div style={{ background: 'var(--beige)', padding: '24px', marginBottom: '24px', border: '1px solid var(--gold)' }}>
+                    <div style={{ background: 'var(--ink-3)', padding: '24px', marginBottom: '24px', border: '1px solid var(--ink-4)' }}>
                       <h4 style={{
-                        fontFamily: 'DM Sans, sans-serif',
                         fontSize: '16px',
                         fontWeight: 400,
-                        color: 'var(--navy)',
+                        color: 'var(--type-hi)',
                         marginBottom: '16px'
                       }}>
                         Why this three-layer approach?
                       </h4>
                       <div style={{ display: 'grid', gap: '16px' }}>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 1: AI Drafting (Closed Tenancy)</strong>
-                          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '14px' }}>Layer 1: AI Drafting (Closed Tenancy)</strong>
+                          <p style={{ fontSize: '13px', color: 'var(--type-mid)', marginTop: '4px', lineHeight: 1.6 }}>
                             AI analyzes your documents and drafts findings at speed within our secure closed-tenancy architecture.
                           </p>
                         </div>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 2: Proprietary Deterministic Validation</strong>
-                          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '14px' }}>Layer 2: Proprietary Deterministic Validation</strong>
+                          <p style={{ fontSize: '13px', color: 'var(--type-mid)', marginTop: '4px', lineHeight: 1.6 }}>
                             55+ proprietary fixed rules validate AI outputs for consistency. Same input = same result, every time.
                           </p>
                         </div>
                         <div>
-                          <strong style={{ color: 'var(--navy)', fontSize: '14px' }}>Layer 3: Expert Verification</strong>
-                          <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '4px', lineHeight: 1.6 }}>
+                          <strong style={{ color: 'var(--type-hi)', fontSize: '14px' }}>Layer 3: Expert Verification</strong>
+                          <p style={{ fontSize: '13px', color: 'var(--type-mid)', marginTop: '4px', lineHeight: 1.6 }}>
                             Qualified consultants review every finding, draft amendments, and sign off the report.
                           </p>
                         </div>
@@ -511,24 +507,24 @@ export default function Landing() {
                     </div>
 
                     <div style={{ display: 'flex', gap: '16px' }}>
-                      <div style={{ flex: 1, background: 'var(--white)', padding: '20px', border: '1px solid var(--beige)' }}>
-                        <div style={{ fontSize: '32px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--navy)', marginBottom: '8px' }}>
+                      <div style={{ flex: 1, background: 'var(--ink-3)', padding: '20px', border: '1px solid var(--ink-4)' }}>
+                        <div style={{ fontSize: '32px', fontWeight: 200, color: 'var(--type-hi)', marginBottom: '8px' }}>
                           55+
                         </div>
                         <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
                           Proprietary BSR checks
                         </div>
                       </div>
-                      <div style={{ flex: 1, background: 'var(--white)', padding: '20px', border: '1px solid var(--beige)' }}>
-                        <div style={{ fontSize: '32px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--navy)', marginBottom: '8px' }}>
+                      <div style={{ flex: 1, background: 'var(--ink-3)', padding: '20px', border: '1px solid var(--ink-4)' }}>
+                        <div style={{ fontSize: '32px', fontWeight: 200, color: 'var(--type-hi)', marginBottom: '8px' }}>
                           5min
                         </div>
                         <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
                           AI analysis time
                         </div>
                       </div>
-                      <div style={{ flex: 1, background: 'var(--white)', padding: '20px', border: '1px solid var(--beige)' }}>
-                        <div style={{ fontSize: '32px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--navy)', marginBottom: '8px' }}>
+                      <div style={{ flex: 1, background: 'var(--ink-3)', padding: '20px', border: '1px solid var(--ink-4)' }}>
+                        <div style={{ fontSize: '32px', fontWeight: 200, color: 'var(--type-hi)', marginBottom: '8px' }}>
                           100%
                         </div>
                         <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
@@ -546,35 +542,34 @@ export default function Landing() {
                 <div style={{ display: 'flex', gap: '48px', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: '14px',
-                      letterSpacing: '0.15em',
-                      color: 'var(--gold)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '11px',
+                      letterSpacing: '0.14em',
+                      color: 'var(--flame)',
                       marginBottom: '16px',
-                      fontWeight: 400
+                      fontWeight: 500,
+                      textTransform: 'uppercase'
                     }}>
                       STEP 03 — 1-WEEK DELIVERY
                     </div>
                     <h3 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '32px',
                       fontWeight: 200,
-                      color: 'var(--navy)',
+                      color: 'var(--type-hi)',
                       marginBottom: '24px',
                       letterSpacing: '-0.02em'
                     }}>
                       Expert-signed readiness report in 1 week
                     </h3>
-                    <p style={{ fontSize: '17px', color: 'var(--muted)', lineHeight: 1.8, marginBottom: '32px' }}>
+                    <p style={{ fontSize: '17px', color: 'var(--type-mid)', lineHeight: 1.8, marginBottom: '32px' }}>
                       You receive a comprehensive, expert-signed report that identifies every gap, provides actionable amendments, and traces every finding to the specific BSR regulation. This isn't ChatGPT output — it's professional consultancy, accelerated by AI.
                     </p>
 
                     <div style={{ marginBottom: '32px' }}>
                       <h4 style={{
-                        fontFamily: 'DM Sans, sans-serif',
                         fontSize: '18px',
                         fontWeight: 300,
-                        color: 'var(--navy)',
+                        color: 'var(--type-hi)',
                         marginBottom: '20px'
                       }}>
                         Your report includes:
@@ -588,10 +583,10 @@ export default function Landing() {
                           { title: 'Expert sign-off', desc: 'Report signed by qualified consultant — legally defensible documentation' }
                         ].map((item, i) => (
                           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                            <span style={{ color: 'var(--gold)', fontSize: '20px', marginTop: '2px' }}>✓</span>
+                            <span style={{ color: 'var(--flame)', fontSize: '20px', marginTop: '2px' }}>✓</span>
                             <div>
-                              <strong style={{ color: 'var(--navy)', fontSize: '15px', fontWeight: 500 }}>{item.title}</strong>
-                              <p style={{ fontSize: '14px', color: 'var(--muted)', marginTop: '4px' }}>
+                              <strong style={{ color: 'var(--type-hi)', fontSize: '15px', fontWeight: 500 }}>{item.title}</strong>
+                              <p style={{ fontSize: '14px', color: 'var(--type-mid)', marginTop: '4px' }}>
                                 {item.desc}
                               </p>
                             </div>
@@ -602,15 +597,14 @@ export default function Landing() {
                   </div>
                   <div style={{
                     flex: 1,
-                    background: 'var(--navy)',
+                    background: 'var(--ink-0)',
                     padding: '40px',
-                    border: '1px solid var(--gold)'
+                    border: '1px solid var(--ink-3)'
                   }}>
                     <h4 style={{
-                      fontFamily: 'DM Sans, sans-serif',
                       fontSize: '18px',
                       fontWeight: 300,
-                      color: 'var(--cream)',
+                      color: 'var(--type-hi)',
                       marginBottom: '20px'
                     }}>
                       Timeline comparison
@@ -619,7 +613,7 @@ export default function Landing() {
                       <div style={{ fontSize: '13px', color: 'rgba(242,241,238,0.5)', marginBottom: '8px', letterSpacing: '0.08em' }}>
                         TRADITIONAL CONSULTANTS
                       </div>
-                      <div style={{ fontSize: '36px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'rgba(242,241,238,0.4)', marginBottom: '8px' }}>
+                      <div style={{ fontSize: '36px', fontWeight: 200, color: 'var(--type-lo)', marginBottom: '8px' }}>
                         2–4 weeks
                       </div>
                       <div style={{ fontSize: '14px', color: 'rgba(242,241,238,0.5)' }}>
@@ -627,10 +621,10 @@ export default function Landing() {
                       </div>
                     </div>
                     <div style={{ borderTop: '1px solid rgba(242,241,238,0.2)', paddingTop: '32px' }}>
-                      <div style={{ fontSize: '13px', color: 'var(--gold)', marginBottom: '8px', letterSpacing: '0.08em' }}>
+                      <div style={{ fontSize: '13px', color: 'var(--flame)', marginBottom: '8px', letterSpacing: '0.08em' }}>
                         ATTLEE
                       </div>
-                      <div style={{ fontSize: '48px', fontFamily: 'DM Sans, sans-serif', fontWeight: 200, color: 'var(--cream)', marginBottom: '8px' }}>
+                      <div style={{ fontSize: '48px', fontWeight: 200, color: 'var(--type-hi)', marginBottom: '8px' }}>
                         1 week
                       </div>
                       <div style={{ fontSize: '14px', color: 'rgba(242,241,238,0.8)' }}>
@@ -646,7 +640,7 @@ export default function Landing() {
       </div>
 
       {/* Score Visual */}
-      <div style={{ background: 'var(--beige)', padding: '100px 5%' }}>
+      <div style={{ background: 'var(--ink-2)', padding: '100px 5%' }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
@@ -659,7 +653,7 @@ export default function Landing() {
             <h2 className="section-title">Professional consultant reports — delivered in 1 week, not 4.</h2>
             <p style={{
               fontSize: '15px',
-              color: 'var(--muted)',
+              color: 'var(--type-mid)',
               lineHeight: 1.8,
               fontWeight: 300,
               marginBottom: '32px'
@@ -672,9 +666,9 @@ export default function Landing() {
       </div>
 
       {/* Who It's For */}
-      <div id="who" style={{ background: 'var(--navy)', padding: '100px 5%' }}>
+      <div id="who" style={{ background: 'var(--ink-0)', padding: '100px 5%' }}>
         <p className="section-eyebrow">Who it's for</p>
-        <h2 className="section-title" style={{ color: 'var(--cream)', marginBottom: '56px' }}>
+        <h2 className="section-title" style={{ color: 'var(--type-hi)', marginBottom: '56px' }}>
           Built for everyone with skin in the game.
         </h2>
         <div style={{
@@ -701,7 +695,7 @@ export default function Landing() {
       </div>
 
       {/* Service Options */}
-      <div style={{ padding: '100px 5%', background: 'var(--beige)' }}>
+      <div style={{ padding: '100px 5%', background: 'var(--ink-1)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
           <p className="section-eyebrow" style={{ textAlign: 'center' }}>How to work with us</p>
           <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '64px' }}>
@@ -715,28 +709,27 @@ export default function Landing() {
           }}>
             {/* Gap Analysis Only */}
             <div style={{
-              background: 'var(--white)',
+              background: 'var(--ink-2)',
               padding: '40px',
-              border: '1px solid var(--beige)',
+              border: '1px solid var(--ink-3)',
               display: 'flex',
               flexDirection: 'column'
             }}>
               <div style={{
-                fontFamily: 'DM Sans, sans-serif',
-                fontSize: '14px',
-                letterSpacing: '0.15em',
-                color: 'var(--gold)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.14em',
+                color: 'var(--flame)',
                 marginBottom: '16px',
-                fontWeight: 400,
+                fontWeight: 500,
                 textTransform: 'uppercase'
               }}>
                 One-time
               </div>
               <h3 style={{
-                fontFamily: 'DM Sans, sans-serif',
                 fontSize: '28px',
                 fontWeight: 200,
-                color: 'var(--navy)',
+                color: 'var(--type-hi)',
                 marginBottom: '16px',
                 letterSpacing: '-0.02em'
               }}>
@@ -744,7 +737,7 @@ export default function Landing() {
               </h3>
               <p style={{
                 fontSize: '15px',
-                color: 'var(--muted)',
+                color: 'var(--type-mid)',
                 lineHeight: 1.7,
                 marginBottom: '24px',
                 flex: 1
@@ -759,16 +752,16 @@ export default function Landing() {
                 flexDirection: 'column',
                 gap: '12px'
               }}>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>55+ BSR checks</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Expert-verified findings</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Gap report only</span>
                 </li>
               </ul>
@@ -779,9 +772,9 @@ export default function Landing() {
 
             {/* Full Service */}
             <div style={{
-              background: 'var(--navy)',
+              background: 'var(--ink-0)',
               padding: '40px',
-              border: '2px solid var(--gold)',
+              border: '1px solid var(--flame)',
               display: 'flex',
               flexDirection: 'column',
               position: 'relative'
@@ -791,32 +784,32 @@ export default function Landing() {
                 top: '-12px',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                background: 'var(--gold)',
-                color: 'var(--navy)',
+                background: 'var(--flame)',
+                color: 'var(--ink-0)',
                 padding: '4px 16px',
                 fontSize: '11px',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                borderRadius: '999px'
               }}>
                 Most Popular
               </div>
               <div style={{
-                fontFamily: 'DM Sans, sans-serif',
-                fontSize: '14px',
-                letterSpacing: '0.15em',
-                color: 'var(--gold)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.14em',
+                color: 'var(--flame)',
                 marginBottom: '16px',
-                fontWeight: 400,
+                fontWeight: 500,
                 textTransform: 'uppercase'
               }}>
                 One-time
               </div>
               <h3 style={{
-                fontFamily: 'DM Sans, sans-serif',
                 fontSize: '28px',
                 fontWeight: 200,
-                color: 'var(--cream)',
+                color: 'var(--type-hi)',
                 marginBottom: '16px',
                 letterSpacing: '-0.02em'
               }}>
@@ -824,7 +817,7 @@ export default function Landing() {
               </h3>
               <p style={{
                 fontSize: '15px',
-                color: 'rgba(242,241,238,0.7)',
+                color: 'var(--type-mid)',
                 lineHeight: 1.7,
                 marginBottom: '24px',
                 flex: 1
@@ -839,56 +832,55 @@ export default function Landing() {
                 flexDirection: 'column',
                 gap: '12px'
               }}>
-                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>55+ BSR checks</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Expert-verified findings</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Drafted amendments</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Expert-signed report</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--cream)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>1-week turnaround</span>
                 </li>
               </ul>
-              <a href="mailto:george@attlee.ai?subject=Full Service Enquiry" className="btn-primary" style={{ width: '100%', textAlign: 'center', background: 'var(--gold)', color: 'var(--navy)' }}>
+              <a href="mailto:george@attlee.ai?subject=Full Service Enquiry" className="btn-primary" style={{ width: '100%', textAlign: 'center' }}>
                 Request quote
               </a>
             </div>
 
             {/* Monthly Retainer */}
             <div style={{
-              background: 'var(--white)',
+              background: 'var(--ink-2)',
               padding: '40px',
-              border: '1px solid var(--beige)',
+              border: '1px solid var(--ink-3)',
               display: 'flex',
               flexDirection: 'column'
             }}>
               <div style={{
-                fontFamily: 'DM Sans, sans-serif',
-                fontSize: '14px',
-                letterSpacing: '0.15em',
-                color: 'var(--gold)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                letterSpacing: '0.14em',
+                color: 'var(--flame)',
                 marginBottom: '16px',
-                fontWeight: 400,
+                fontWeight: 500,
                 textTransform: 'uppercase'
               }}>
                 Ongoing
               </div>
               <h3 style={{
-                fontFamily: 'DM Sans, sans-serif',
                 fontSize: '28px',
                 fontWeight: 200,
-                color: 'var(--navy)',
+                color: 'var(--type-hi)',
                 marginBottom: '16px',
                 letterSpacing: '-0.02em'
               }}>
@@ -896,7 +888,7 @@ export default function Landing() {
               </h3>
               <p style={{
                 fontSize: '15px',
-                color: 'var(--muted)',
+                color: 'var(--type-mid)',
                 lineHeight: 1.7,
                 marginBottom: '24px',
                 flex: 1
@@ -911,20 +903,20 @@ export default function Landing() {
                 flexDirection: 'column',
                 gap: '12px'
               }}>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Up to 2 reports/month</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Full service per report</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Pay for extras on top</span>
                 </li>
-                <li style={{ fontSize: '14px', color: 'var(--navy)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                  <span style={{ color: 'var(--gold)' }}>✓</span>
+                <li style={{ fontSize: '14px', color: 'var(--type-hi)', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <span style={{ color: 'var(--flame)' }}>✓</span>
                   <span>Priority turnaround</span>
                 </li>
               </ul>
@@ -942,18 +934,17 @@ export default function Landing() {
         textAlign: 'center'
       }}>
         <h2 style={{
-          fontFamily: 'DM Sans, sans-serif',
           fontWeight: 200,
           fontSize: 'clamp(32px, 5vw, 58px)',
           letterSpacing: '-0.03em',
           lineHeight: 1.1,
           marginBottom: '24px',
-          color: 'var(--navy)'
+          color: 'var(--type-hi)'
         }}>
-          Ready to stop guessing<br />and start <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>knowing?</em>
+          Ready to stop guessing<br />and start <em style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 400, color: 'var(--flame-soft)' }}>knowing?</em>
         </h2>
         <p style={{
-          color: 'var(--muted)',
+          color: 'var(--type-mid)',
           fontSize: '16px',
           fontWeight: 300,
           marginBottom: '40px',
@@ -987,11 +978,11 @@ export default function Landing() {
 
 // Styles
 const navLinkStyle: React.CSSProperties = {
-  fontSize: '16px',
-  letterSpacing: '0.04em',
-  color: 'var(--navy)',
+  fontSize: '14px',
+  letterSpacing: '0.02em',
+  color: 'var(--type-hi)',
   textDecoration: 'none',
-  opacity: 0.6,
+  opacity: 0.55,
   transition: 'opacity 0.2s'
 };
 
@@ -1007,9 +998,9 @@ function HowTabButton({ active, onClick, number, children }: {
       onClick={onClick}
       style={{
         padding: '16px 32px',
-        background: active ? 'var(--navy)' : 'var(--white)',
-        color: active ? 'var(--cream)' : 'var(--navy)',
-        border: active ? '2px solid var(--gold)' : '1px solid var(--beige)',
+        background: active ? 'var(--flame)' : 'var(--ink-3)',
+        color: active ? 'var(--ink-0)' : 'var(--type-hi)',
+        border: active ? 'none' : '1px solid var(--ink-4)',
         fontSize: '14px',
         fontWeight: active ? 500 : 400,
         letterSpacing: '0.04em',
@@ -1019,18 +1010,18 @@ function HowTabButton({ active, onClick, number, children }: {
       }}
       onMouseEnter={(e) => {
         if (!active) {
-          e.currentTarget.style.background = 'var(--beige)';
+          e.currentTarget.style.background = 'var(--ink-4)';
         }
       }}
       onMouseLeave={(e) => {
         if (!active) {
-          e.currentTarget.style.background = 'var(--white)';
+          e.currentTarget.style.background = 'var(--ink-3)';
         }
       }}
     >
       {number && (
         <span style={{
-          color: 'var(--gold)',
+          color: 'var(--flame)',
           marginRight: '8px',
           fontSize: '12px',
           letterSpacing: '0.1em'
@@ -1052,15 +1043,14 @@ function StatItem({ num, unit, label }: { num: string; unit: string; label: stri
       borderRight: '1px solid rgba(255,255,255,0.08)'
     }}>
       <div style={{
-        fontFamily: 'DM Sans, sans-serif',
         fontWeight: 200,
         fontSize: '54px',
-        color: 'var(--cream)',
+        color: 'var(--type-hi)',
         letterSpacing: '-0.03em',
         lineHeight: 1,
         marginBottom: '6px'
       }}>
-        {num}<span style={{ color: 'var(--gold)' }}>{unit}</span>
+        {num}<span style={{ color: 'var(--flame)' }}>{unit}</span>
       </div>
       <div style={{
         fontSize: '14px',
@@ -1078,7 +1068,8 @@ function StatItem({ num, unit, label }: { num: string; unit: string; label: stri
 function ScoreCard() {
   return (
     <div style={{
-      background: 'var(--white)',
+      background: 'var(--ink-1)',
+      border: '1px solid var(--ink-3)',
       padding: '48px'
     }}>
       <div style={{
@@ -1089,26 +1080,26 @@ function ScoreCard() {
       }}>
         <div>
           <div style={{
+            fontFamily: 'var(--font-mono)',
             fontSize: '11px',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            color: 'var(--muted)'
+            color: 'var(--type-lo)'
           }}>
             Readiness Score
           </div>
-          <div style={{ fontSize: '11px', color: '#bbb', marginTop: '4px' }}>
+          <div style={{ fontSize: '11px', color: 'var(--type-lo)', marginTop: '4px' }}>
             Riverside Tower — GW2 Pack v3
           </div>
         </div>
         <div style={{
-          fontFamily: 'DM Sans, sans-serif',
           fontWeight: 200,
           fontSize: '52px',
-          color: 'var(--navy)',
+          color: 'var(--type-hi)',
           letterSpacing: '-0.04em',
           lineHeight: 1
         }}>
-          75<span style={{ color: 'var(--gold)', fontSize: '24px' }}>%</span>
+          75<span style={{ color: 'var(--flame)', fontSize: '24px' }}>%</span>
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1134,11 +1125,11 @@ function CheckRow({ name, status, muted }: {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '12px 0',
-      borderBottom: '1px solid var(--beige)',
+      borderBottom: '1px solid var(--ink-3)',
       fontSize: '13px'
     }}>
       <span style={{
-        color: muted ? 'var(--muted)' : 'var(--navy)',
+        color: muted ? 'var(--type-lo)' : 'var(--type-hi)',
         fontWeight: muted ? 300 : 400
       }}>
         {name}
@@ -1157,18 +1148,17 @@ function WhoCard({ icon, title, description }: {
 }) {
   return (
     <div style={{
-      background: 'rgba(255,255,255,0.04)',
+      background: 'rgba(255,255,255,0.03)',
       padding: '36px 32px',
-      border: '1px solid rgba(255,255,255,0.06)'
+      border: '1px solid var(--ink-3)'
     }}>
       <div style={{ width: '36px', height: '36px', marginBottom: '24px' }}>
         {icon}
       </div>
       <h4 style={{
-        fontFamily: 'DM Sans, sans-serif',
         fontWeight: 300,
         fontSize: '18px',
-        color: 'var(--cream)',
+        color: 'var(--type-hi)',
         marginBottom: '10px',
         letterSpacing: '-0.01em'
       }}>
@@ -1176,7 +1166,7 @@ function WhoCard({ icon, title, description }: {
       </h4>
       <p style={{
         fontSize: '13px',
-        color: 'rgba(242,241,238,0.4)',
+        color: 'var(--type-mid)',
         lineHeight: 1.7,
         fontWeight: 300
       }}>
@@ -1190,8 +1180,8 @@ function WhoCard({ icon, title, description }: {
 function DesignerIcon() {
   return (
     <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
-      <rect x="4" y="10" width="28" height="22" stroke="#C4A882" strokeWidth="2" fill="none"/>
-      <polyline points="4,10 18,2 32,10" stroke="#C4A882" strokeWidth="2" fill="none"/>
+      <rect x="4" y="10" width="28" height="22" stroke="var(--flame)" strokeWidth="2" fill="none"/>
+      <polyline points="4,10 18,2 32,10" stroke="var(--flame)" strokeWidth="2" fill="none"/>
     </svg>
   );
 }
@@ -1199,8 +1189,8 @@ function DesignerIcon() {
 function HousingIcon() {
   return (
     <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
-      <circle cx="18" cy="18" r="14" stroke="#C4A882" strokeWidth="2" fill="none"/>
-      <polyline points="11,18 16,23 25,13" stroke="#C4A882" strokeWidth="2" fill="none" strokeLinecap="square"/>
+      <circle cx="18" cy="18" r="14" stroke="var(--flame)" strokeWidth="2" fill="none"/>
+      <polyline points="11,18 16,23 25,13" stroke="var(--flame)" strokeWidth="2" fill="none" strokeLinecap="square"/>
     </svg>
   );
 }
@@ -1208,9 +1198,9 @@ function HousingIcon() {
 function ConsultantIcon() {
   return (
     <svg viewBox="0 0 36 36" fill="none" width="36" height="36">
-      <rect x="2" y="8" width="32" height="24" stroke="#C4A882" strokeWidth="2" fill="none"/>
-      <line x1="9" y1="16" x2="27" y2="16" stroke="#C4A882" strokeWidth="2"/>
-      <line x1="9" y1="22" x2="20" y2="22" stroke="#C4A882" strokeWidth="2"/>
+      <rect x="2" y="8" width="32" height="24" stroke="var(--flame)" strokeWidth="2" fill="none"/>
+      <line x1="9" y1="16" x2="27" y2="16" stroke="var(--flame)" strokeWidth="2"/>
+      <line x1="9" y1="22" x2="20" y2="22" stroke="var(--flame)" strokeWidth="2"/>
     </svg>
   );
 }

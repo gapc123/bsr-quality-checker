@@ -831,6 +831,7 @@ router.post(
       const metadata = {
         projectName: req.body.projectName || null,
         borough: req.body.borough || null,
+        isLondon: req.body.isLondon === 'true',
         buildingType: req.body.buildingType || null,
         height: req.body.height || null,
         storeys: req.body.storeys || null,

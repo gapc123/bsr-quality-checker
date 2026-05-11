@@ -11,7 +11,7 @@
 import fs from 'fs';
 import path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
-import { runLangGraphAssessment } from './langgraph-assessment.js';
+import { runLangGraphAssessment, ProgressEvent } from './langgraph-assessment.js';
 import {
   searchCorpus,
   // getObligations, // Unused import
@@ -1431,7 +1431,8 @@ export function enrichCriterionWithMetadata(criterion: AssessmentResult): Assess
  */
 export async function assessPackAgainstMatrix(
   packDocs: PackDocument[],
-  context: PackContext
+  context: PackContext,
+  onProgress?: (event: ProgressEvent) => void
 ): Promise<FullAssessment> {
   const client = new Anthropic();
   // Reset module-level token accumulator for this assessment run
@@ -1488,6 +1489,20 @@ export async function assessPackAgainstMatrix(
 
   console.log(`  ✓ Ran ${deterministicResults.length} deterministic rules`);
   console.log(`  ✓ Passed: ${deterministicPassed}, Failed: ${deterministicFailed}, Needs Review: ${deterministicNeedsReview}`);
+
+  // Broadcast deterministic results one by one so the ticker can show progress
+  if (onProgress) {
+    for (let i = 0; i < deterministicResults.length; i++) {
+      const dr = deterministicResults[i];
+      onProgress({
+        criterionId: dr.matrixId,
+        criterionName: dr.ruleName,
+        phase: 'deterministic',
+        total: deterministicResults.length,
+        current: i + 1,
+      });
+    }
+  }
 
   // Convert deterministic results to AssessmentResult format
   const deterministicAssessmentResults: AssessmentResult[] = deterministicResults.map(dr => ({
@@ -1570,7 +1585,7 @@ export async function assessPackAgainstMatrix(
   }
 
   console.log(`  [LangGraph] Starting parallel assessment (${applicableCriteria.length} criteria across categories)`);
-  const llmResults: AssessmentResult[] = await runLangGraphAssessment(applicableCriteria, packDocs, context, client);
+  const llmResults: AssessmentResult[] = await runLangGraphAssessment(applicableCriteria, packDocs, context, client, onProgress);
   console.log(`  ✓ Completed ${llmResults.length} LLM assessments (LangGraph parallel + critique)`);
 
   // ============================================
@@ -1722,9 +1737,11 @@ export function determinePackContext(
   borough: string | null,
   buildingType: string | null,
   height: string | null,
-  storeys: string | null
+  storeys: string | null,
+  explicitIsLondon?: boolean
 ): PackContext {
-  // Check if London
+  // Check if London — use the explicit flag if provided (from wizard user input),
+  // falling back to borough inference for backwards compatibility with existing records.
   const londonBoroughs = [
     'westminster', 'camden', 'islington', 'hackney', 'tower hamlets',
     'greenwich', 'lewisham', 'southwark', 'lambeth', 'wandsworth',
@@ -1735,9 +1752,9 @@ export function determinePackContext(
     'richmond', 'sutton', 'waltham forest'
   ];
 
-  const isLondon = borough
-    ? londonBoroughs.some(b => borough.toLowerCase().includes(b))
-    : false;
+  const isLondon = explicitIsLondon !== undefined
+    ? explicitIsLondon
+    : (borough ? londonBoroughs.some(b => borough.toLowerCase().includes(b)) : false);
 
   // Parse height
   let heightMeters: number | null = null;

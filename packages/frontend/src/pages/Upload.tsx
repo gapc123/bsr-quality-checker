@@ -63,6 +63,9 @@ export default function Upload() {
 
       if (res.ok) {
         const version = await res.json();
+        // Kick off the matrix assessment (runs in background, Results page polls for it)
+        fetch(`/api/packs/${packId}/versions/${version.id}/matrix-assess`, { method: 'POST' })
+          .catch(err => console.error('Failed to start assessment:', err));
         navigate(`/packs/${packId}/versions/${version.id}/results`);
       } else {
         showToast('Failed to upload documents', 'error');

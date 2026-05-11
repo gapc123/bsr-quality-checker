@@ -448,6 +448,77 @@ interface DeterministicRule {
 export const DETERMINISTIC_RULES: DeterministicRule[] = [
 
   // ============================================
+  // SM-000: Safety Case Report Present and Substantive
+  // Category: PACK_COMPLETENESS | Severity: CRITICAL
+  // ============================================
+  {
+    matrixId: 'SM-000',
+    name: 'Safety Case Report Present and Substantive',
+    category: 'PACK_COMPLETENESS',
+    severity: 'high',
+    regulatoryRef: {
+      source: 'BSA 2022',
+      section: 'Schedule 6(3)',
+      requirement: 'Applicant must provide a Safety Case Report with the Gateway 2 application',
+    },
+    check: (docs) => {
+      const safetyDoc = findDocument(docs, [
+        'safety case', 'safety case report', 'scr'
+      ]);
+
+      if (!safetyDoc) {
+        return {
+          passed: false,
+          confidence: 'definitive',
+          evidence: { found: false, document: null, quote: null, matchType: 'absence' },
+          reasoning: 'No Safety Case Report found in the submission pack. This is a mandatory document under BSA 2022 Schedule 6(3) and its absence will result in automatic rejection.',
+          failureMode: 'No Safety Case Report submitted',
+        };
+      }
+
+      const text = safetyDoc.extractedText;
+      const hasRiskIdentification = containsAnyKeyword(text, [
+        'building safety risk', 'safety risk', 'risk identification', 'hazard',
+        'risk management', 'risks identified',
+      ]);
+      const hasBSAReference = containsAnyKeyword(text, [
+        'building safety act', 'bsa 2022', 'schedule 6', 'gateway 2',
+        'accountable person', 'principal designer',
+      ]);
+      const hasManagementApproach = containsAnyKeyword(text, [
+        'manage', 'mitigate', 'control', 'monitor', 'review', 'responsible',
+      ]);
+
+      if (hasRiskIdentification && hasBSAReference && hasManagementApproach) {
+        const quote = extractQuote(text, 'safety risk') || extractQuote(text, 'building safety');
+        return {
+          passed: true,
+          confidence: 'high',
+          evidence: { found: true, document: safetyDoc.filename, quote, matchType: 'keyword' },
+          reasoning: 'Safety Case Report present with risk identification, BSA 2022 references, and management approach.',
+          failureMode: null,
+        };
+      } else if (hasRiskIdentification || hasBSAReference) {
+        return {
+          passed: false,
+          confidence: 'needs_review',
+          evidence: { found: true, document: safetyDoc.filename, quote: null, matchType: 'keyword' },
+          reasoning: `Safety Case Report present but may be incomplete. Found: ${[hasRiskIdentification && 'risk identification', hasBSAReference && 'BSA reference', hasManagementApproach && 'management approach'].filter(Boolean).join(', ')}.`,
+          failureMode: 'Safety Case Report present but does not address building safety risks',
+        };
+      } else {
+        return {
+          passed: false,
+          confidence: 'needs_review',
+          evidence: { found: true, document: safetyDoc.filename, quote: null, matchType: 'keyword' },
+          reasoning: 'A document appears to be a Safety Case Report but the required content (risk identification, BSA 2022 references, management approach) is not evident.',
+          failureMode: 'Document labelled as Safety Case but content is insufficient',
+        };
+      }
+    },
+  },
+
+  // ============================================
   // SM-001: Fire Strategy Report Present and Complete
   // Category: PACK_COMPLETENESS | Severity: HIGH
   // ============================================
@@ -1005,8 +1076,9 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       const hasProtectedLobby = containsAnyKeyword(text, ['protected lobby', 'fire-fighting lobby', 'firefighting lobby', 'ventilated lobby']);
       const hasJustification = containsAnyKeyword(text, ['fire engineering', 'fire engineered', 'performance based', 'alternative solution', 'compensatory']);
 
+      const stairPreferKeywords = ['protected staircase', 'two staircases', 'stair core', 'protected lobby', 'egress stair'];
       if (hasTwoStairs && hasProtectedLobby) {
-        const quote = extractQuote(text, 'stair');
+        const quote = extractQuote(text, 'stair', 150, stairPreferKeywords);
         return {
           passed: true,
           confidence: 'high',
@@ -1018,7 +1090,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         return {
           passed: true,
           confidence: 'needs_review',
-          evidence: { found: true, document: fireStrategyDoc.filename, quote: extractQuote(text, 'stair'), matchType: 'keyword' },
+          evidence: { found: true, document: fireStrategyDoc.filename, quote: extractQuote(text, 'stair', 150, stairPreferKeywords), matchType: 'keyword' },
           reasoning: 'Two stairs indicated but protected lobby approach not confirmed.',
           failureMode: null
         };
@@ -1026,7 +1098,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         return {
           passed: true,
           confidence: 'needs_review',
-          evidence: { found: true, document: fireStrategyDoc.filename, quote: extractQuote(text, 'single stair'), matchType: 'keyword' },
+          evidence: { found: true, document: fireStrategyDoc.filename, quote: extractQuote(text, 'single stair', 150, stairPreferKeywords), matchType: 'keyword' },
           reasoning: 'Single stair proposed with fire engineering justification. Requires BSR review.',
           failureMode: null
         };
@@ -1034,7 +1106,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         return {
           passed: false,
           confidence: 'high',
-          evidence: { found: true, document: fireStrategyDoc.filename, quote: extractQuote(text, 'single stair'), matchType: 'keyword' },
+          evidence: { found: true, document: fireStrategyDoc.filename, quote: extractQuote(text, 'single stair', 150, stairPreferKeywords), matchType: 'keyword' },
           reasoning: 'Single stair proposed without fire engineering justification for 18m+ residential.',
           failureMode: 'Single stair proposed without fire engineering justification'
         };
@@ -1738,8 +1810,9 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
 
       const passedChecks = checks.filter(c => c.passed);
 
+      const alarmPreferKeywords = ['bs 5839', 'fire detection', 'smoke detector', 'category l', 'category m', 'fire alarm system'];
       if (passedChecks.length >= 3) {
-        const quote = extractQuote(text, 'alarm') || extractQuote(text, 'detection');
+        const quote = extractQuote(text, 'alarm', 150, alarmPreferKeywords) || extractQuote(text, 'detection', 150, alarmPreferKeywords);
         return {
           passed: true,
           confidence: 'high',
@@ -1751,7 +1824,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         return {
           passed: false,
           confidence: 'high',
-          evidence: { found: true, document: fireDoc.filename, quote: extractQuote(text, 'alarm'), matchType: 'pattern' },
+          evidence: { found: true, document: fireDoc.filename, quote: extractQuote(text, 'alarm', 150, alarmPreferKeywords), matchType: 'pattern' },
           reasoning: `Fire alarm mentioned but incomplete. Found: ${passedChecks.map(c => c.name).join(', ')}.`,
           failureMode: hasCategory ? 'Category stated but coverage unclear' : 'Generic "fire alarm system" without category'
         };
@@ -1759,7 +1832,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
         return {
           passed: false,
           confidence: 'needs_review',
-          evidence: { found: true, document: fireDoc.filename, quote: extractQuote(text, 'alarm'), matchType: 'keyword' },
+          evidence: { found: true, document: fireDoc.filename, quote: extractQuote(text, 'alarm', 150, alarmPreferKeywords), matchType: 'keyword' },
           reasoning: 'Fire alarm referenced but specification details missing.',
           failureMode: 'Generic "fire alarm system" without category'
         };
@@ -1969,17 +2042,21 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       }
 
       if (allHeights.length === 1) {
+        // Height found in too few documents — this is an under-documentation issue,
+        // not a contradiction. Use a clear message so users don't look for a conflict.
+        const h = allHeights[0].heights[0] ?? 'unknown';
         return {
-          passed: true,
+          passed: false,
           confidence: 'needs_review',
           evidence: { found: true, document: allHeights[0].doc, quote: null, matchType: 'pattern' },
-          reasoning: `Height found in ${allHeights[0].doc} only. Cannot verify cross-document consistency.`,
-          failureMode: null
+          reasoning: `Building height (${h} m) is stated in only 1 document. It should be confirmed in both the fire strategy and at least one structural document.`,
+          failureMode: 'Height not confirmed across structural and fire safety documents'
         };
       }
 
       // Compare heights across documents
       const allHeightValues = allHeights.flatMap(h => h.heights);
+      const uniqueHeights = [...new Set(allHeightValues.map(v => Math.round(v)))];
       const maxHeight = Math.max(...allHeightValues);
       const minHeight = Math.min(...allHeightValues);
       const variance = maxHeight - minHeight;
@@ -2001,12 +2078,13 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
           failureMode: null
         };
       } else {
+        // Genuine contradiction — different numeric values across documents
         return {
           passed: false,
           confidence: 'high',
           evidence: { found: true, document: allHeights[0].doc, quote: null, matchType: 'pattern' },
-          reasoning: `Significant height discrepancy: ${minHeight}m to ${maxHeight}m (${variance}m variance) across documents.`,
-          failureMode: 'Different heights in different documents'
+          reasoning: `Conflicting building heights found across documents: ${uniqueHeights.join(', ')} m. All documents must quote the same height figure.`,
+          failureMode: 'Conflicting height values across documents'
         };
       }
     }
@@ -2179,7 +2257,16 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     severity: 'medium',
     check: (docs) => {
       const allText = docs.map(d => d.extractedText).join(' ');
-      const isLondon = containsAnyKeyword(allText, ['london', 'gla', 'greater london']);
+      // Use the same conservative GLA-boundary predicates as SM-023.
+      // 'london' alone is not sufficient — 'London Clay' is a geological term.
+      const isLondon = containsAnyKeyword(allText, [
+        'london borough',
+        'greater london authority',
+        'gla boundary',
+        'within the gla',
+        'london plan',
+        'greater london',
+      ]);
       const isResidential = containsAnyKeyword(allText, ['residential', 'dwelling', 'flat', 'apartment', 'housing']);
 
       if (!isLondon || !isResidential) {
