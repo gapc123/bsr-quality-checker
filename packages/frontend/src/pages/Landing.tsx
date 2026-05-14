@@ -1,8 +1,22 @@
+import { useEffect, useRef, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignedIn } from '@clerk/clerk-react';
 import AttleeLogo from '../components/AttleeLogo';
 
 export default function Landing() {
+  const [scrollY, setScrollY] = useState(0);
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      setScrollY(-rect.top);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div style={{ background: 'var(--ink-1)', minHeight: '100vh' }}>
 
@@ -41,7 +55,7 @@ export default function Landing() {
       </nav>
 
       {/* ── HERO — cinematic full-bleed ────────────────────────────────── */}
-      <section className="noise" style={{
+      <section ref={heroRef} className="noise" style={{
         position: 'relative', height: '100vh', minHeight: 720, overflow: 'hidden',
       }}>
         {/* Sky gradient */}
@@ -49,18 +63,33 @@ export default function Landing() {
           position: 'absolute', inset: 0,
           background: 'radial-gradient(120% 80% at 50% 120%, #1a1d27 0%, #0A0B0D 60%)',
         }}/>
-        {/* Sun disc */}
+        {/* Sun disc — parallaxes upward on scroll */}
         <div style={{
-          position: 'absolute', left: '50%', top: '52%',
-          transform: 'translate(-50%, 0)',
-          width: 520, height: 520, borderRadius: '50%',
-          background: 'radial-gradient(circle, #E85C2C 0%, #B53F18 38%, transparent 68%)',
-          filter: 'blur(3px)', opacity: 0.55,
+          position: 'absolute', left: '50%', top: '54%',
+          transform: `translate(-50%, ${scrollY * -0.15}px)`,
+          width: 480, height: 480, borderRadius: '50%',
+          background: 'radial-gradient(circle, #E85C2C 0%, #B53F18 40%, transparent 70%)',
+          filter: 'blur(2px)', opacity: 0.7,
         }}/>
+        {/* Far skyline — slow parallax */}
+        <div style={{
+          position: 'absolute', left: 0, right: 0, bottom: 0, height: '55%',
+          transform: `translateY(${scrollY * 0.08}px)`,
+          opacity: 0.55,
+        }}>
+          <Skyline tone="#0A0B0D" height={520} seed={3} />
+        </div>
+        {/* Near skyline — faster parallax */}
+        <div style={{
+          position: 'absolute', left: 0, right: 0, bottom: 0, height: '40%',
+          transform: `translateY(${scrollY * 0.18}px)`,
+        }}>
+          <Skyline tone="#05060a" height={440} seed={11} />
+        </div>
         {/* Fog overlay */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 35%, rgba(10,11,13,0.65) 72%, #111216 100%)',
+          background: 'linear-gradient(to bottom, transparent 40%, rgba(10,11,13,0.6) 75%, var(--ink-1) 100%)',
         }}/>
 
         {/* Copy — bottom-left */}
@@ -446,16 +475,13 @@ export default function Landing() {
         position: 'relative', height: 520, overflow: 'hidden',
         borderTop: '1px solid var(--ink-3)',
       }}>
-        {/* Sun echo */}
-        <div style={{
-          position: 'absolute', left: '50%', top: '60%',
-          transform: 'translate(-50%, -50%)',
-          width: 600, height: 600, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(232,92,44,0.18) 0%, transparent 65%)',
-        }}/>
+        {/* Skyline background */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.4 }}>
+          <Skyline tone="#050609" height={520} seed={7} />
+        </div>
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, var(--ink-1) 0%, transparent 25%, transparent 75%, var(--ink-1) 100%)',
+          background: 'linear-gradient(to bottom, var(--ink-1) 0%, transparent 30%, transparent 70%, var(--ink-1) 100%)',
         }}/>
         <div style={{
           position: 'relative', zIndex: 2, height: '100%',
@@ -511,6 +537,60 @@ const navLinkStyle: React.CSSProperties = {
 };
 
 // ── Components ─────────────────────────────────────────────────────────────
+
+// ── Skyline — procedural SVG city silhouette (ported from shared.jsx) ──────
+
+interface Building { x: number; w: number; h: number; windows: boolean; roof: number; }
+
+function Skyline({ tone = '#0A0B0D', height = 520, seed = 1 }: { tone?: string; height?: number; seed?: number }) {
+  const buildings = useMemo<Building[]>(() => {
+    let s = seed * 9301 + 49297;
+    const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    const out: Building[] = [];
+    let x = 0;
+    while (x < 2400) {
+      const w = 28 + rnd() * 90;
+      const h = 90 + rnd() * (height - 80);
+      const windows = rnd() > 0.3;
+      const roof = rnd();
+      out.push({ x, w, h, windows, roof });
+      x += w + (2 + rnd() * 4);
+    }
+    return out;
+  }, [seed, height]);
+
+  return (
+    <svg viewBox={`0 0 2400 ${height}`} preserveAspectRatio="xMidYMax slice"
+         style={{ display: 'block', width: '100%', height: '100%' }}>
+      {buildings.map((b, i) => {
+        const top = height - b.h;
+        return (
+          <g key={i}>
+            <rect x={b.x} y={top} width={b.w} height={b.h} fill={tone} />
+            {b.roof > 0.8 && (
+              <rect x={b.x + b.w * 0.3} y={top - 24} width={b.w * 0.12} height={24} fill={tone} />
+            )}
+            {b.roof > 0.92 && (
+              <rect x={b.x + b.w * 0.5} y={top - 60} width={3} height={60} fill={tone} />
+            )}
+            {b.windows && Array.from({ length: Math.floor(b.h / 14) }).map((_, r) =>
+              Array.from({ length: Math.floor(b.w / 10) }).map((_, c) => {
+                const on = ((r * 13 + c * 7 + i) % 11) < 3;
+                if (!on) return null;
+                return (
+                  <rect key={`${r}-${c}`}
+                    x={b.x + 4 + c * 10} y={top + 8 + r * 14}
+                    width={3} height={5}
+                    fill="rgba(255,225,160,0.55)" />
+                );
+              })
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
 
 function Ticker() {
   const items = [
