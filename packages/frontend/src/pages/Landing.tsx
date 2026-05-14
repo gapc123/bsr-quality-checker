@@ -58,38 +58,42 @@ export default function Landing() {
       <section ref={heroRef} className="noise" style={{
         position: 'relative', height: '100vh', minHeight: 720, overflow: 'hidden',
       }}>
-        {/* Sky gradient */}
+        {/* Sky gradient — dark at top, warm amber glow at horizon */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'radial-gradient(120% 80% at 50% 120%, #1a1d27 0%, #0A0B0D 60%)',
+          background: 'linear-gradient(to bottom, #0A0B0D 0%, #0f1118 35%, #1a1020 55%, #2a1508 80%, #1a0d04 100%)',
         }}/>
         {/* Sun disc — parallaxes upward on scroll */}
         <div style={{
-          position: 'absolute', left: '50%', top: '54%',
+          position: 'absolute', left: '50%', top: '58%',
           transform: `translate(-50%, ${scrollY * -0.15}px)`,
-          width: 480, height: 480, borderRadius: '50%',
-          background: 'radial-gradient(circle, #E85C2C 0%, #B53F18 40%, transparent 70%)',
-          filter: 'blur(2px)', opacity: 0.7,
+          width: 520, height: 520, borderRadius: '50%',
+          background: 'radial-gradient(circle, #ff8c40 0%, #E85C2C 30%, #6b2a00 60%, transparent 75%)',
+          filter: 'blur(4px)', opacity: 0.85,
+        }}/>
+        {/* Horizon glow — warm band at ground level */}
+        <div style={{
+          position: 'absolute', left: 0, right: 0, bottom: 0, height: '50%',
+          background: 'linear-gradient(to top, #1a0d04 0%, #2a1508 20%, transparent 100%)',
         }}/>
         {/* Far skyline — slow parallax */}
         <div style={{
           position: 'absolute', left: 0, right: 0, bottom: 0, height: '55%',
           transform: `translateY(${scrollY * 0.08}px)`,
-          opacity: 0.55,
         }}>
-          <Skyline tone="#0A0B0D" height={520} seed={3} />
+          <Skyline tone="#0d0f14" height={520} seed={3} />
         </div>
         {/* Near skyline — faster parallax */}
         <div style={{
           position: 'absolute', left: 0, right: 0, bottom: 0, height: '40%',
           transform: `translateY(${scrollY * 0.18}px)`,
         }}>
-          <Skyline tone="#05060a" height={440} seed={11} />
+          <Skyline tone="#080a0e" height={440} seed={11} />
         </div>
-        {/* Fog overlay */}
+        {/* Ground fade — fades bottom to page background */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, transparent 40%, rgba(10,11,13,0.6) 75%, var(--ink-1) 100%)',
+          background: 'linear-gradient(to bottom, transparent 60%, rgba(10,11,13,0.4) 85%, var(--ink-1) 100%)',
         }}/>
 
         {/* Copy — bottom-left */}
