@@ -41,7 +41,7 @@ export default function Landing() {
       </nav>
 
       {/* ── HERO — cinematic full-bleed ────────────────────────────────── */}
-      <section style={{
+      <section className="noise" style={{
         position: 'relative', height: '100vh', minHeight: 720, overflow: 'hidden',
       }}>
         {/* Sky gradient */}
@@ -108,6 +108,8 @@ export default function Landing() {
           background: 'rgba(10,11,13,0.55)',
           backdropFilter: 'blur(6px)',
           overflow: 'hidden', whiteSpace: 'nowrap',
+          maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
         }}>
           <Ticker />
         </div>
@@ -115,15 +117,13 @@ export default function Landing() {
 
       {/* ── STAT BAR ──────────────────────────────────────────────────── */}
       <div style={{
-        background: 'var(--ink-3)',
-        padding: '40px 56px',
-        display: 'flex', gap: 0, justifyContent: 'center',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+        borderTop: '1px solid var(--ink-3)', borderBottom: '1px solid var(--ink-3)',
       }}>
-        <StatItem num="75" unit="%" label="of submissions rejected first time" />
-        <StatItem num="22" unit="wk" label="average BSR review time" />
-        <StatItem num="5" unit="min" label="Attlee full pack analysis" />
-        <StatItem num="55" unit="+" label="proprietary BSR checks" />
+        <StatItem num="1.5M" label="homes pledged this Parliament" />
+        <StatItem num="33 wks" label="avg. Gateway 2 wait in 2025" />
+        <StatItem num="12 wks" label="statutory Gateway 2 target" />
+        <StatItem num="~70%" label="Gateway 2 rejection rate" accent />
       </div>
 
       {/* ── 01 — THESIS ───────────────────────────────────────────────── */}
@@ -442,7 +442,7 @@ export default function Landing() {
       </div>
 
       {/* ── CTA BANNER ────────────────────────────────────────────────── */}
-      <section style={{
+      <section className="noise" style={{
         position: 'relative', height: 520, overflow: 'hidden',
         borderTop: '1px solid var(--ink-3)',
       }}>
@@ -535,24 +535,20 @@ function Ticker() {
   );
 }
 
-function StatItem({ num, unit, label }: { num: string; unit: string; label: string }) {
+function StatItem({ num, label, accent }: { num: string; label: string; accent?: boolean }) {
   return (
     <div style={{
-      flex: 1, maxWidth: '260px',
-      padding: '0 40px',
-      borderRight: '1px solid rgba(255,255,255,0.08)',
+      padding: '48px 40px',
+      borderRight: '1px solid var(--ink-3)',
     }}>
+      <div className="eyebrow" style={{ color: 'var(--type-lo)', marginBottom: 20 }}>{label}</div>
       <div style={{
-        fontWeight: 200, fontSize: '52px',
-        color: 'var(--type-hi)', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: '6px',
+        fontFamily: 'var(--font-display)',
+        fontSize: 'clamp(40px, 4.5vw, 64px)',
+        letterSpacing: '-0.025em', lineHeight: 1,
+        color: accent ? 'var(--flame-soft)' : 'var(--type-hi)',
       }}>
-        {num}<span style={{ color: 'var(--flame)' }}>{unit}</span>
-      </div>
-      <div style={{
-        fontSize: '12px', letterSpacing: '0.1em',
-        textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 400,
-      }}>
-        {label}
+        {num}
       </div>
     </div>
   );

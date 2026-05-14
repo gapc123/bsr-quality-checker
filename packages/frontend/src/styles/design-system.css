@@ -28,6 +28,19 @@
   --font-sans: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
+  /* Light-surface text (for any light-on-paper panels) */
+  --type-hi-light:  #0A0B0D;
+  --type-mid-light: #4A4840;
+  --type-lo-light:  #8A877E;
+
+  /* Extended brand palette */
+  --moss: #B8C28F;
+  --sky:  #A8C6DE;
+
+  /* Motion easing */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
   /* Legacy aliases — kept for components that reference old vars */
   --navy:  #0A0B0D;
   --cream: #F4F1EC;
@@ -52,6 +65,7 @@ body {
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
 }
 
 ::selection { background: var(--flame); color: var(--ink-0); }
@@ -77,6 +91,26 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 400;
+}
+
+.serif {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* Film-grain noise overlay — apply to full-bleed sections */
+.noise {
+  position: relative;
+}
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
 /* Buttons */
