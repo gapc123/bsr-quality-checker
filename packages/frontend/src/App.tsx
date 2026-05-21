@@ -10,6 +10,7 @@ import ButlerLibrary from './pages/ButlerLibrary';
 import ClientsList from './pages/ClientsList';
 import ClientDetail from './pages/ClientDetail';
 import QuickAssess from './pages/QuickAssess';
+import QuickAssessResults from './pages/QuickAssessResults';
 import SignInPage from './pages/SignIn';
 import Landing from './pages/Landing';
 import Problem from './pages/Problem';
@@ -185,6 +186,14 @@ function AppContent() {
               element={
                 <ProtectedRoute>
                   <QuickAssess />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/assess/results"
+              element={
+                <ProtectedRoute>
+                  <QuickAssessResults />
                 </ProtectedRoute>
               }
             />
