@@ -76,7 +76,7 @@ const PassingRow: React.FC<{ issue: AssessmentResult }> = ({ issue }) => (
     <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#9ca3af', minWidth: '56px' }}>{issue.matrix_id}</span>
     <span style={{ fontSize: '12px', color: '#374151', flex: 1 }}>{issue.matrix_title}</span>
     {issue.pack_evidence?.document && (
-      <span style={{ fontSize: '10px', color: '#9ca3af', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{issue.pack_evidence[0].document}</span>
+      <span style={{ fontSize: '10px', color: '#9ca3af', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{issue.pack_evidence.document}</span>
     )}
   </div>
 );
