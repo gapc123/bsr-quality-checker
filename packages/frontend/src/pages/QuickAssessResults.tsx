@@ -43,7 +43,7 @@ const IssueCard: React.FC<{ issue: AssessmentResult; tier: 'action' | 'verify'; 
   const s = TIER_STYLES[tier];
   const gap = issue.gaps_identified?.[0];
   const action = issue.actions_required?.[0];
-  const evidence = issue.pack_evidence?.[0];
+  const evidence = issue.pack_evidence;
   return (
     <div style={{ borderLeft: s.borderLeft, background: s.bg, borderRadius: '6px', marginBottom: '8px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.06)' }}>
       <button onClick={() => setExpanded(!expanded)}
@@ -75,7 +75,7 @@ const PassingRow: React.FC<{ issue: AssessmentResult }> = ({ issue }) => (
     <span style={{ color: '#16a34a', fontSize: '13px', flexShrink: 0 }}>✓</span>
     <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#9ca3af', minWidth: '56px' }}>{issue.matrix_id}</span>
     <span style={{ fontSize: '12px', color: '#374151', flex: 1 }}>{issue.matrix_title}</span>
-    {issue.pack_evidence?.[0]?.document && (
+    {issue.pack_evidence?.document && (
       <span style={{ fontSize: '10px', color: '#9ca3af', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{issue.pack_evidence[0].document}</span>
     )}
   </div>

@@ -1,32 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '../components/Toast';
 import FileUpload from '../components/FileUpload';
 import { sanitizeForFormData } from '../utils/fileUtils';
 
-interface QuickAssessment {
-  success: boolean;
-  assessmentId: string;
-  documentsProcessed: number;
-  context: {
-    isLondon: boolean;
-    isHRB: boolean;
-    buildingType: string;
-    heightMeters: number | null;
-    storeys: number | null;
-  };
-  results: any[];
-  summary: {
-    total: number;
-    meets: number;
-    partial: number;
-    does_not_meet: number;
-    not_assessed: number;
-  };
-}
-
 export default function QuickAssess() {
-  const { showToast } = useToast();
   const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
   const [assessing, setAssessing] = useState(false);
