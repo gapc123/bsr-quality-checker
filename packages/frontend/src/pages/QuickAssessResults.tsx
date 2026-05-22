@@ -169,19 +169,21 @@ export default function QuickAssessResults() {
 
   if (!assessment || !analysis) return null;
 
+  const buildFA = (): FullAssessment => ({
+    pack_id: 'quick-assess', version_id: assessment!.assessmentId,
+    pack_context: { isLondon: assessment!.context.isLondon, isHRB: assessment!.context.isHRB, buildingType: assessment!.context.buildingType, heightMeters: assessment!.context.heightMeters, storeys: assessment!.context.storeys },
+    readiness_score: 0, results: assessment!.results, generated_at: new Date().toISOString(),
+    criteria_summary: { total_applicable: assessment!.summary.total, assessed: assessment!.summary.total, not_assessed: assessment!.summary.not_assessed, meets: assessment!.summary.meets, partial: assessment!.summary.partial, does_not_meet: assessment!.summary.does_not_meet },
+  });
+
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      const fa: FullAssessment = {
-        pack_id: 'quick-assess', version_id: assessment.assessmentId,
-        pack_context: { isLondon: assessment.context.isLondon, isHRB: assessment.context.isHRB, buildingType: assessment.context.buildingType, heightMeters: assessment.context.heightMeters, storeys: assessment.context.storeys },
-        readiness_score: 0, results: assessment.results, generated_at: new Date().toISOString(),
-        criteria_summary: { total_applicable: assessment.summary.total, assessed: assessment.summary.total, not_assessed: assessment.summary.not_assessed, meets: assessment.summary.meets, partial: assessment.summary.partial, does_not_meet: assessment.summary.does_not_meet },
-      };
-      await exportService.exportClientGapAnalysis('quick-assess', assessment.assessmentId, fa);
-      await exportService.exportConsultantActionPlan('quick-assess', assessment.assessmentId, fa);
-      await exportService.exportComplianceMatrixExcel('quick-assess', assessment.assessmentId, fa, 'BSR Submission');
-      showToast('Three documents downloaded', 'success');
+      const fa = buildFA();
+      await exportService.exportClientGapAnalysis('quick-assess', assessment!.assessmentId, fa);
+      await exportService.exportConsultantActionPlan('quick-assess', assessment!.assessmentId, fa);
+      await exportService.exportComplianceMatrixExcel('quick-assess', assessment!.assessmentId, fa, 'BSR Submission');
+      showToast('All 3 reports downloaded', 'success');
     } catch (err) {
       showToast(`Download failed: ${err instanceof Error ? err.message : 'Unknown error'}`, 'error');
     } finally { setIsDownloading(false); }
@@ -204,55 +206,58 @@ export default function QuickAssessResults() {
   return (
     <div style={{ display: 'flex', minHeight: 'calc(100vh - 120px)', background: 'var(--cream)' }}>
 
-      {/* SIDEBAR */}
-      <aside style={{ width: '248px', flexShrink: 0, background: 'var(--white)', borderRight: '1px solid var(--beige)', padding: '24px 18px', display: 'flex', flexDirection: 'column', gap: '18px', position: 'sticky', top: '0', alignSelf: 'flex-start', minHeight: 'calc(100vh - 120px)' }}>
+      {/* SIDEBAR — dark navy surface, light text throughout */}
+      <aside style={{ width: '264px', flexShrink: 0, background: '#0f1117', borderRight: '1px solid rgba(255,255,255,0.08)', padding: '24px 18px', display: 'flex', flexDirection: 'column', gap: '20px', position: 'sticky', top: '0', alignSelf: 'flex-start', minHeight: 'calc(100vh - 120px)' }}>
 
         {/* Verdict */}
-        <div style={{ background: analysis.statusBg, borderRadius: '8px', padding: '16px', textAlign: 'center', border: `1px solid ${analysis.statusColor}33` }}>
+        <div style={{ background: analysis.statusColor === '#16a34a' ? 'rgba(22,163,74,0.15)' : analysis.statusColor === '#d97706' ? 'rgba(217,119,6,0.15)' : 'rgba(220,38,38,0.15)', borderRadius: '6px', padding: '16px', textAlign: 'center', border: `1px solid ${analysis.statusColor}55` }}>
           <div style={{ fontSize: '22px', marginBottom: '6px' }}>{analysis.statusColor === '#16a34a' ? '✅' : analysis.statusColor === '#d97706' ? '⚠️' : '✕'}</div>
-          <div style={{ fontSize: '15px', fontWeight: 700, color: analysis.statusColor }}>{analysis.statusText}</div>
-          {analysis.actionItems.length > 0 && <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '3px' }}>{analysis.actionItems.length} items require action</div>}
+          <div style={{ fontSize: '15px', fontWeight: 700, color: analysis.statusColor === '#16a34a' ? '#4ade80' : analysis.statusColor === '#d97706' ? '#fbbf24' : '#f87171' }}>{analysis.statusText}</div>
+          {analysis.actionItems.length > 0 && <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', marginTop: '3px' }}>{analysis.actionItems.length} items require action</div>}
         </div>
 
         {/* Score pills */}
         <div>
-          {[{ dot: '#16a34a', label: 'Passing', count: analysis.passing }, { dot: '#dc2626', label: 'Action required', count: analysis.actionItems.length }, { dot: '#d97706', label: 'Verify', count: analysis.verifyItems.length }].map(({ dot, label, count }) => (
-            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 0', borderBottom: '1px solid #f0f0f0' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '7px', fontSize: '12px', color: '#6b7280' }}>
+          {[{ dot: '#4ade80', label: 'Passing', count: analysis.passing }, { dot: '#f87171', label: 'Action required', count: analysis.actionItems.length }, { dot: '#fbbf24', label: 'Verify', count: analysis.verifyItems.length }].map(({ dot, label, count }) => (
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '7px', fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
                 <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: dot, flexShrink: 0 }} />{label}
               </span>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a2e' }}>{count}</span>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#f4f1ec' }}>{count}</span>
             </div>
           ))}
         </div>
 
         {/* Category breakdown */}
-        <div>
-          <p style={{ fontSize: '10px', fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>By category</p>
-          {Object.entries(analysis.categoryCounts).map(([cat, counts]) => (
-            <div key={cat} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0' }}>
-              <span style={{ fontSize: '11px', color: '#6b7280' }}>{CAT_LABELS[cat] ?? cat}</span>
-              <div style={{ display: 'flex', gap: '4px' }}>
-                {counts.action > 0 && <span style={{ fontSize: '10px', padding: '1px 6px', borderRadius: '10px', background: '#fee2e2', color: '#b91c1c', fontWeight: 600 }}>{counts.action}A</span>}
-                {counts.verify > 0 && <span style={{ fontSize: '10px', padding: '1px 6px', borderRadius: '10px', background: '#fef3c7', color: '#92400e', fontWeight: 600 }}>{counts.verify}V</span>}
+        {Object.keys(analysis.categoryCounts).length > 0 && (
+          <div>
+            <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>By category</p>
+            {Object.entries(analysis.categoryCounts).map(([cat, counts]) => (
+              <div key={cat} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0' }}>
+                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)' }}>{CAT_LABELS[cat] ?? cat}</span>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  {counts.action > 0 && <span style={{ fontSize: '10px', padding: '1px 6px', borderRadius: '10px', background: 'rgba(220,38,38,0.25)', color: '#fca5a5', fontWeight: 600 }}>{counts.action}A</span>}
+                  {counts.verify > 0 && <span style={{ fontSize: '10px', padding: '1px 6px', borderRadius: '10px', background: 'rgba(217,119,6,0.25)', color: '#fcd34d', fontWeight: 600 }}>{counts.verify}V</span>}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        {/* Export CTAs — always visible, never scroll out of view */}
+        {/* Actions */}
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <p style={{ fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '2px' }}>Download reports</p>
           <button onClick={handleDownload} disabled={isDownloading}
-            style={{ background: isDownloading ? '#f3f4f6' : 'var(--navy)', color: isDownloading ? '#9ca3af' : 'var(--white)', border: 'none', borderRadius: '6px', padding: '11px 14px', cursor: isDownloading ? 'not-allowed' : 'pointer', textAlign: 'left', width: '100%' }}>
-            <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '2px' }}>{isDownloading ? 'Generating…' : '↓ Download reports'}</div>
-            <div style={{ fontSize: '10px', opacity: 0.7 }}>Gap analysis + compliance matrix</div>
+            style={{ background: isDownloading ? 'rgba(255,255,255,0.08)' : 'var(--gold)', color: isDownloading ? 'rgba(255,255,255,0.4)' : '#fff', border: 'none', borderRadius: '6px', padding: '11px 14px', cursor: isDownloading ? 'not-allowed' : 'pointer', textAlign: 'left', width: '100%' }}>
+            <div style={{ fontSize: '12px', fontWeight: 700, marginBottom: '2px' }}>{isDownloading ? 'Generating…' : '↓ All 3 reports'}</div>
+            <div style={{ fontSize: '10px', opacity: 0.8 }}>Gap analysis · Action plan · Matrix</div>
           </button>
           <button onClick={() => setShowSaveDialog(true)}
-            style={{ background: '#dbeafe', color: '#1d4ed8', border: 'none', borderRadius: '6px', padding: '10px 14px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}>
+            style={{ background: 'rgba(255,255,255,0.08)', color: '#f4f1ec', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '6px', padding: '10px 14px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}>
             Save to client
           </button>
           <button onClick={() => navigate('/assess')}
-            style={{ background: 'transparent', color: '#9ca3af', border: '1px solid #e5e7eb', borderRadius: '6px', padding: '8px 14px', cursor: 'pointer', fontSize: '11px' }}>
+            style={{ background: 'transparent', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', padding: '8px 14px', cursor: 'pointer', fontSize: '11px' }}>
             ← New assessment
           </button>
         </div>
@@ -261,8 +266,23 @@ export default function QuickAssessResults() {
       {/* MAIN CONTENT */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
 
+        {/* Download banner — always visible above tabs */}
+        <div style={{ background: '#1a1a2e', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginRight: '4px' }}>Download:</span>
+          {[
+            { label: 'Gap Analysis (PDF)', fn: async () => { const fa = buildFA(); await exportService.exportClientGapAnalysis('quick-assess', assessment.assessmentId, fa); } },
+            { label: 'Action Plan (PDF)', fn: async () => { const fa = buildFA(); await exportService.exportConsultantActionPlan('quick-assess', assessment.assessmentId, fa); } },
+            { label: 'Compliance Matrix (Excel)', fn: async () => { const fa = buildFA(); await exportService.exportComplianceMatrixExcel('quick-assess', assessment.assessmentId, fa, 'BSR Submission'); } },
+          ].map(({ label, fn }) => (
+            <button key={label} disabled={isDownloading} onClick={async () => { setIsDownloading(true); try { await fn(); showToast(`${label} downloaded`, 'success'); } catch (e) { showToast(`Download failed: ${e instanceof Error ? e.message : 'error'}`, 'error'); } finally { setIsDownloading(false); } }}
+              style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 600, background: isDownloading ? 'rgba(255,255,255,0.05)' : 'rgba(232,92,44,0.15)', color: isDownloading ? 'rgba(255,255,255,0.3)' : 'var(--gold)', border: '1px solid rgba(232,92,44,0.3)', borderRadius: '4px', cursor: isDownloading ? 'not-allowed' : 'pointer' }}>
+              ↓ {label}
+            </button>
+          ))}
+        </div>
+
         {/* Tab bar */}
-        <div style={{ display: 'flex', borderBottom: '1px solid var(--beige)', background: 'var(--white)', padding: '0 24px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb', background: '#ffffff', padding: '0 24px', flexShrink: 0 }}>
           {([
             { id: 'action'  as TabId, label: 'Action required', count: analysis.actionItems.length, cBg: '#fee2e2', cFg: '#b91c1c' },
             { id: 'verify'  as TabId, label: 'Verify',           count: analysis.verifyItems.length, cBg: '#fef3c7', cFg: '#92400e' },
@@ -270,7 +290,7 @@ export default function QuickAssessResults() {
             { id: 'ai'      as TabId, label: 'AI analysis',      count: null,                        cBg: '',        cFg: '' },
           ]).map(({ id, label, count, cBg, cFg }) => (
             <button key={id} onClick={() => setActiveTab(id)}
-              style={{ padding: '14px 16px', fontSize: '13px', fontWeight: activeTab === id ? 600 : 400, color: activeTab === id ? 'var(--navy)' : '#6b7280', background: 'transparent', border: 'none', borderBottom: activeTab === id ? '2px solid var(--navy)' : '2px solid transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              style={{ padding: '14px 16px', fontSize: '13px', fontWeight: activeTab === id ? 600 : 400, color: activeTab === id ? '#0f1117' : '#6b7280', background: 'transparent', border: 'none', borderBottom: activeTab === id ? '2px solid #0f1117' : '2px solid transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
               {label}
               {count !== null && <span style={{ fontSize: '11px', padding: '1px 7px', borderRadius: '10px', background: activeTab === id ? cBg : '#f3f4f6', color: activeTab === id ? cFg : '#9ca3af', fontWeight: 600 }}>{count}</span>}
               {id === 'ai' && crewStatus === 'pending' && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#818cf8' }} />}
@@ -304,7 +324,7 @@ export default function QuickAssessResults() {
               <div style={{ fontSize: '12px', color: '#15803d', marginBottom: '14px', padding: '10px 14px', background: '#f0fdf4', borderRadius: '6px', border: '1px solid #bbf7d0' }}>
                 {analysis.passing} criteria already satisfied — these do not need further action.
               </div>
-              <div style={{ background: 'var(--white)', borderRadius: '8px', border: '1px solid var(--beige)', overflow: 'hidden' }}>
+              <div style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
                 {analysis.passItems.map(i => <PassingRow key={i.matrix_id} issue={i} />)}
               </div>
             </div>
@@ -313,7 +333,7 @@ export default function QuickAssessResults() {
           {activeTab === 'ai' && (
             <div>
               {crewStatus === 'pending' && (
-                <div style={{ background: 'var(--white)', borderRadius: '8px', border: '1px solid #e0e7ff', padding: '24px' }}>
+                <div style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid #e0e7ff', padding: '24px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
                     <span style={{ fontWeight: 700, color: '#3730a3', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>AI Specialist Panel</span>
                     <span style={{ fontSize: '11px', color: '#6366f1', display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -325,11 +345,11 @@ export default function QuickAssessResults() {
                     {[{ icon: '🔥', role: 'Fire Safety Engineer', focus: 'Approved Document B, BS 9991, means of escape & suppression' }, { icon: '📋', role: 'Documentation Specialist', focus: 'Pack completeness, golden thread & missing mandatory documents' }, { icon: '⚖️', role: 'Regulatory Consultant', focus: 'HRB dutyholder obligations, Regulation 38 & London Plan D12' }, { icon: '🔍', role: 'Quality & Consistency Reviewer', focus: 'Cross-document contradictions, version mismatches & coordination' }].map(({ icon, role, focus }) => (
                       <div key={role} style={{ display: 'flex', gap: '10px', padding: '12px', background: '#eef2ff', borderRadius: '8px', border: '1px solid #c7d2fe' }}>
                         <span style={{ fontSize: '18px', flexShrink: 0 }}>{icon}</span>
-                        <div><p style={{ fontSize: '12px', fontWeight: 600, color: '#3730a3' }}>{role}</p><p style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px', lineHeight: 1.4 }}>{focus}</p></div>
+                        <div><p style={{ fontSize: '12px', fontWeight: 600, color: '#3730a3' }}>{role}</p><p style={{ fontSize: '11px', color: '#4b5563', marginTop: '2px', lineHeight: 1.4 }}>{focus}</p></div>
                       </div>
                     ))}
                   </div>
-                  <p style={{ fontSize: '11px', color: '#818cf8' }}>Results appear here automatically when the panel completes.</p>
+                  <p style={{ fontSize: '11px', color: '#6366f1' }}>Results appear here automatically when the panel completes.</p>
                 </div>
               )}
 
@@ -342,22 +362,22 @@ export default function QuickAssessResults() {
                   <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
                     {(Object.keys(AGENT_META) as (keyof typeof AGENT_META)[]).map(key => (
                       <button key={key} onClick={() => setActiveReviewTab(key)}
-                        style={{ padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', background: activeReviewTab === key ? '#4f46e5' : 'var(--white)', color: activeReviewTab === key ? 'var(--white)' : '#4f46e5', border: activeReviewTab === key ? 'none' : '1px solid #c7d2fe' }}>
+                        style={{ padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', background: activeReviewTab === key ? '#4f46e5' : '#ffffff', color: activeReviewTab === key ? '#ffffff' : '#4f46e5', border: activeReviewTab === key ? '1px solid #4f46e5' : '1px solid #c7d2fe' }}>
                         {AGENT_META[key].icon} {AGENT_META[key].title}
                       </button>
                     ))}
                   </div>
-                  <div style={{ background: 'var(--white)', borderRadius: '8px', border: '1px solid #e0e7ff', overflow: 'hidden' }}>
+                  <div style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid #e0e7ff', overflow: 'hidden' }}>
                     <div style={{ padding: '16px 20px', background: '#eef2ff', borderBottom: '1px solid #e0e7ff', display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                       <span style={{ fontSize: '22px', lineHeight: 1, marginTop: '2px' }}>{AGENT_META[activeReviewTab].icon}</span>
                       <div style={{ flex: 1 }}>
                         <p style={{ fontSize: '14px', fontWeight: 600, color: '#1e1b4b' }}>{AGENT_META[activeReviewTab].title}</p>
                         <p style={{ fontSize: '11px', color: '#4338ca', marginTop: '2px' }}>{AGENT_META[activeReviewTab].role}</p>
-                        <p style={{ fontSize: '10px', color: '#6b7280', marginTop: '2px' }}>{AGENT_META[activeReviewTab].domains}</p>
+                        <p style={{ fontSize: '10px', color: '#4b5563', marginTop: '2px' }}>{AGENT_META[activeReviewTab].domains}</p>
                       </div>
                       {activeReviewTab === 'synthesis' && <span style={{ fontSize: '10px', background: '#c7d2fe', color: '#3730a3', padding: '2px 8px', borderRadius: '10px', fontWeight: 600 }}>Master report</span>}
                     </div>
-                    <div style={{ padding: '20px', fontSize: '13px', color: '#374151', whiteSpace: 'pre-wrap', lineHeight: 1.7, maxHeight: '540px', overflowY: 'auto' }}>
+                    <div style={{ padding: '20px', fontSize: '13px', color: '#1f2937', whiteSpace: 'pre-wrap', lineHeight: 1.7, maxHeight: '540px', overflowY: 'auto', background: '#ffffff' }}>
                       {crewReviews[activeReviewTab]}
                     </div>
                   </div>
