@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from './Icons';
 import type { AssessmentResult } from '../types/assessment';
 import PDFViewerModal from './PDFViewerModal';
+import { resolveRef } from '../lib/regulationRefs';
 
 interface IssueDetailPanelProps {
   issue: AssessmentResult | null;
@@ -179,6 +180,38 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
             </span>
           </div>
         </section>
+
+        {/* Regulatory Basis */}
+        {issue.matrix_references && issue.matrix_references.length > 0 && (
+          <section>
+            <h3 className="text-sm font-semibold text-slate-900 mb-2 uppercase tracking-wide">Regulatory Basis</h3>
+            <div className="flex flex-wrap gap-2">
+              {issue.matrix_references.map(refId => {
+                const ref = resolveRef(refId);
+                return ref.url ? (
+                  <a
+                    key={refId}
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 rounded hover:bg-blue-100 transition-colors"
+                    title={ref.label}
+                  >
+                    {ref.shortLabel} ↗
+                  </a>
+                ) : (
+                  <span
+                    key={refId}
+                    className="inline-flex items-center px-2.5 py-1 text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 rounded"
+                    title={ref.label}
+                  >
+                    {ref.shortLabel}
+                  </span>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Reasoning */}
         <section>
