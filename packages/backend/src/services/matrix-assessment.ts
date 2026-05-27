@@ -303,6 +303,7 @@ export interface AssessmentResult {
     quote: string | null;
   };
   pack_evidence_document_id?: string | null;
+  matrix_references?: string[];
   reference_evidence: {
     found: boolean;
     doc_id: string | null;
@@ -1258,6 +1259,7 @@ export async function assessCriterionTwoStage(
     pack_evidence_document_id: (facts.evidence_found && evidenceValidation.isValid && facts.evidence_document)
       ? (packDocs.find(d => d.filename === facts.evidence_document)?.id ?? null)
       : null,
+    matrix_references: row.reference_sources,
     reference_evidence: {
       found: referenceEvidence !== null,
       doc_id: referenceEvidence?.doc_id || null,
@@ -1533,6 +1535,7 @@ export async function assessPackAgainstMatrix(
     pack_evidence_document_id: (dr.result.evidence.found && dr.result.evidence.document)
       ? (docEvidence.find(d => d.filename === dr.result.evidence.document)?.id ?? null)
       : null,
+    matrix_references: [dr.regulatoryRef.source],
     reference_evidence: {
       found: true,
       doc_id: dr.matrixId,
