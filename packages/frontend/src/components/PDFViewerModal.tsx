@@ -77,7 +77,7 @@ export default function PDFViewerModal({ documentId, documentName, page, quote, 
         <div ref={containerRef} className="flex-1 overflow-auto bg-slate-100 flex justify-center p-4">
           <Document
             file={pdfUrl}
-            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            onLoadSuccess={({ numPages }: { numPages: number }) => setNumPages(numPages)}
             loading={<div className="flex items-center justify-center h-full text-slate-500 text-sm">Loading PDF…</div>}
             error={<div className="flex items-center justify-center h-full text-red-500 text-sm">Could not load PDF.</div>}
           >

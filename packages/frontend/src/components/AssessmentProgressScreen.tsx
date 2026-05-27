@@ -5,7 +5,7 @@
  * Displays a scrolling log of criteria results as they stream in via SSE.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface CriterionResult {
   criterionId: string;
@@ -26,6 +26,10 @@ interface Props {
   deterministicDone: number;
   llmTotal: number;
   llmDone: number;
+  /** True when the SSE stream signals the assessment is complete */
+  isComplete?: boolean;
+  /** Called when the user clicks "View Results" after completion */
+  onViewResults?: () => void;
 }
 
 const STATUS_CONFIG = {
@@ -67,8 +71,17 @@ export default function AssessmentProgressScreen({
   deterministicDone,
   llmTotal,
   llmDone,
+  isComplete = false,
+  onViewResults,
 }: Props) {
   const feedRef = useRef<HTMLDivElement>(null);
+  // Show a manual escape button after 3 minutes in case SSE never fires done
+  const [showFallbackButton, setShowFallbackButton] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowFallbackButton(true), 3 * 60 * 1000);
+    return () => clearTimeout(t);
+  }, []);
 
   // Auto-scroll the feed to the bottom as new items arrive
   useEffect(() => {
@@ -237,10 +250,31 @@ export default function AssessmentProgressScreen({
           </div>
         )}
 
-        {/* Footer hint */}
-        <p className="text-center text-xs text-slate-600 mt-6">
-          This typically takes 5–10 minutes. You can leave this tab open — results will appear automatically.
-        </p>
+        {/* Footer — shows "View Results" when done or after timeout */}
+        {(isComplete || showFallbackButton) ? (
+          <div className="mt-6 text-center">
+            {isComplete && (
+              <p className="text-emerald-400 text-sm font-semibold mb-3">
+                ✓ Assessment complete — loading results…
+              </p>
+            )}
+            {!isComplete && showFallbackButton && (
+              <p className="text-slate-400 text-sm mb-3">
+                Taking longer than expected?
+              </p>
+            )}
+            <button
+              onClick={onViewResults}
+              className="px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-colors shadow-lg text-base"
+            >
+              View Results & Download PDFs →
+            </button>
+          </div>
+        ) : (
+          <p className="text-center text-xs text-slate-600 mt-6">
+            This typically takes 5–10 minutes. You can leave this tab open — results will appear automatically.
+          </p>
+        )}
       </div>
     </div>
   );
