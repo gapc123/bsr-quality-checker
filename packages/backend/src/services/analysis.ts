@@ -407,6 +407,7 @@ export async function runMatrixAssessment(packVersionId: string, onProgress?: (e
   // Prepare pack documents for assessment (sorted alphabetically for determinism)
   const packDocs = packVersion.documents
     .map(doc => ({
+      id: doc.id,
       filename: doc.filename,
       docType: doc.docType,
       extractedText: doc.chunks

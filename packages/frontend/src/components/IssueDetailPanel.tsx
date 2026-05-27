@@ -6,9 +6,10 @@
  * Replaces modal-based carousel detail view
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from './Icons';
 import type { AssessmentResult } from '../types/assessment';
+import PDFViewerModal from './PDFViewerModal';
 
 interface IssueDetailPanelProps {
   issue: AssessmentResult | null;
@@ -27,6 +28,13 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
   hasNext,
   hasPrevious
 }) => {
+  const [pdfViewer, setPdfViewer] = useState<{
+    documentId: string;
+    documentName: string;
+    page: number;
+    quote: string | null;
+  } | null>(null);
+
   if (!issue) {
     return (
       <div className="h-full flex items-center justify-center text-slate-500">
@@ -118,6 +126,9 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
             <h2 className={`text-xl font-bold ${styles.text}`}>
               {issue.matrix_title}
             </h2>
+            {issue.regulatory_clause && (
+              <p className="text-xs italic text-slate-400 mt-1">{issue.regulatory_clause}</p>
+            )}
             <p className="text-sm text-slate-600 mt-1">
               {issue.category}
             </p>
@@ -350,9 +361,24 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
                   <span className="text-slate-900 ml-2">{issue.pack_evidence.document}</span>
                 </div>
                 {issue.pack_evidence.page && (
-                  <div>
-                    <span className="text-slate-600 font-medium">Page:</span>
-                    <span className="text-slate-900 ml-2">{issue.pack_evidence.page}</span>
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <span className="text-slate-600 font-medium">Page:</span>
+                      <span className="text-slate-900 ml-2">{issue.pack_evidence.page}</span>
+                    </div>
+                    {issue.pack_evidence_document_id && (
+                      <button
+                        onClick={() => setPdfViewer({
+                          documentId: issue.pack_evidence_document_id!,
+                          documentName: issue.pack_evidence.document ?? 'Document',
+                          page: issue.pack_evidence.page!,
+                          quote: issue.pack_evidence.quote,
+                        })}
+                        className="text-xs text-indigo-600 hover:text-indigo-800 underline transition-colors"
+                      >
+                        View in document →
+                      </button>
+                    )}
                   </div>
                 )}
                 {issue.pack_evidence.quote && (
@@ -365,6 +391,15 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
                 )}
               </div>
             </div>
+            {pdfViewer && (
+              <PDFViewerModal
+                documentId={pdfViewer.documentId}
+                documentName={pdfViewer.documentName}
+                page={pdfViewer.page}
+                quote={pdfViewer.quote}
+                onClose={() => setPdfViewer(null)}
+              />
+            )}
           </section>
         )}
 

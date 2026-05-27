@@ -12,6 +12,7 @@
 import { stripPageMarkers } from '../utils/textUtils.js';
 
 export interface DocumentEvidence {
+  id?: string;
   filename: string;
   docType: string | null;
   extractedText: string;
@@ -242,14 +243,22 @@ function findDocument(docs: DocumentEvidence[], patterns: string[]): DocumentEvi
 // Extract all height values mentioned in text.
 // Validates that extracted values are plausible building heights (18–300 m).
 // Covers: "79.5m high", "height of 79.5m", "79.5m from ground level to the parapet", "height: 79.5m"
+//
+// IMPORTANT: patterns use (?![m/\d²]) negative lookahead to avoid matching mm, m/s, m2, kN/m, etc.
+// After extraction a 3× median outlier filter is applied (NEW-02) to discard structural load
+// table values that happen to fall in the 18–300 m range.
 function extractHeights(text: string): number[] {
   const values = new Set<number>();
+  // Negative lookahead: the 'm' must NOT be followed by another m (mm), a slash (m/s, kN/m2),
+  // a digit (m2), or superscript ² — all of which indicate a non-height unit.
+  const M = 'm(?:etres?|eters?)?(?![m\\/\\d²])';
   const patterns = [
-    /(\d+(?:\.\d+)?)\s*m(?:etres?|eters?)?\s*(?:high|tall|height|above|agl)\b/gi,
-    /(?:height\s+of|is\s+|stands?\s+)\s*(\d+(?:\.\d+)?)\s*m(?:etres?|eters?)?/gi,
-    /(\d+(?:\.\d+)?)\s*m\s+(?:from\s+ground|above\s+ground|to\s+(?:the\s+)?parapet|total\s+height)/gi,
-    /(?:height|ht)\s*[:\-–]\s*(\d+(?:\.\d+)?)\s*m/gi,
-    /(\d+(?:\.\d+)?)\s*m(?:etres?)?\s+in\s+height\b/gi,
+    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*${M}\\s*(?:high|tall|above ground level?|agl)\\b`, 'gi'),
+    new RegExp(`(?:building\\s+height|total\\s+height|height\\s+of|stands?\\s+)\\s*(\\d+(?:\\.\\d+)?)\\s*${M}`, 'gi'),
+    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*${M}\\s+(?:from\\s+ground|above\\s+ground|to\\s+(?:the\\s+)?parapet|total\\s+height)`, 'gi'),
+    new RegExp(`(?:height|ht)\\s*[:\\-\\u2013]\\s*(\\d+(?:\\.\\d+)?)\\s*${M}`, 'gi'),
+    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*${M}\\s+in\\s+height\\b`, 'gi'),
+    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*${M}\\s+above\\s+ordnance\\s+datum`, 'gi'),
   ];
   for (const pattern of patterns) {
     for (const m of text.matchAll(pattern)) {
@@ -257,7 +266,17 @@ function extractHeights(text: string): number[] {
       if (val >= 18 && val <= 300) values.add(val);
     }
   }
-  return [...values];
+  const raw = [...values];
+  if (raw.length < 2) return raw;
+
+  // Outlier filter: discard any value > 3× the median (NEW-02).
+  // This removes structural load table values that happen to be ≥ 18.
+  const sorted = [...raw].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  const median = sorted.length % 2 === 0
+    ? (sorted[mid - 1] + sorted[mid]) / 2
+    : sorted[mid];
+  return raw.filter(v => v <= median * 3);
 }
 
 // Extract storey counts.

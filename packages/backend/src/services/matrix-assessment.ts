@@ -39,6 +39,7 @@ import { analyzeImpacts } from './impact-analyzer.js';
 import type { TriageAssessment } from '../types/triage.js';
 import { analyzeTriageForIssue } from './triage-analyzer.js';
 import { vectorStore } from './vector-store.js';
+import { getRegulatoryContext } from '../constants/regulatory-context.js';
 
 // Module-level API usage accumulator (reset per assessment run)
 const _apiUsage = { api_calls_made: 0, tokens_input: 0, tokens_output: 0 };
@@ -262,6 +263,7 @@ interface PackContext {
 }
 
 interface PackDocument {
+  id?: string;
   filename: string;
   docType: string | null;
   extractedText: string;
@@ -300,6 +302,7 @@ export interface AssessmentResult {
     page: number | null;
     quote: string | null;
   };
+  pack_evidence_document_id?: string | null;
   reference_evidence: {
     found: boolean;
     doc_id: string | null;
@@ -1252,6 +1255,9 @@ export async function assessCriterionTwoStage(
         ? stripPageMarkers(facts.evidence_quote).trim()
         : null
     },
+    pack_evidence_document_id: (facts.evidence_found && evidenceValidation.isValid && facts.evidence_document)
+      ? (packDocs.find(d => d.filename === facts.evidence_document)?.id ?? null)
+      : null,
     reference_evidence: {
       found: referenceEvidence !== null,
       doc_id: referenceEvidence?.doc_id || null,
@@ -1455,6 +1461,7 @@ export async function assessPackAgainstMatrix(
 
   // Convert packDocs to DocumentEvidence format for deterministic rules
   const docEvidence: DocumentEvidence[] = packDocs.map(d => ({
+    id: d.id,
     filename: d.filename,
     docType: d.docType,
     extractedText: d.extractedText
@@ -1523,6 +1530,9 @@ export async function assessPackAgainstMatrix(
         : null,
       quote: dr.result.evidence.quote
     },
+    pack_evidence_document_id: (dr.result.evidence.found && dr.result.evidence.document)
+      ? (docEvidence.find(d => d.filename === dr.result.evidence.document)?.id ?? null)
+      : null,
     reference_evidence: {
       found: true,
       doc_id: dr.matrixId,
@@ -1648,6 +1658,25 @@ export async function assessPackAgainstMatrix(
   console.log(`  ✓ Enriched ${allResults.length} results with confidence levels`);
 
   console.log(`  ✓ Enriched ${allResults.length} results with cost/timeline/risk data`);
+
+  // Promote statutory requirements to 'critical' severity (NEW-01).
+  // These IDs map to legal obligations under CDM 2015 and BSA 2022 —
+  // the BSR cannot accept a submission that is missing any of them.
+  const CRITICAL_IDS = new Set([
+    'SM-010', // No Principal Designer appointed
+    'SM-011', // No Principal Contractor appointed
+    'SM-022', // No Fire Risk Assessment
+    'SM-014', // Missing Design & Access Statement
+    'SM-012', // No Golden Thread / information management strategy
+  ]);
+  for (const r of allResults) {
+    if (CRITICAL_IDS.has(r.matrix_id) && r.status !== 'meets') {
+      (r as any).severity = 'critical';
+    }
+    // Attach regulatory clause reference for display in UI and reports (NEW-03)
+    const ctx = getRegulatoryContext(r.matrix_id, r.category);
+    (r as any).regulatory_clause = ctx.clause;
+  }
 
   // Calculate summary statistics
   const assessed = allResults.filter(r => r.status !== 'not_assessed').length;

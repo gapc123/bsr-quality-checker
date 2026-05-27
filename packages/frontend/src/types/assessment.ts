@@ -74,7 +74,7 @@ export interface AssessmentResult {
   matrix_title: string;
   category: string;
   status: 'meets' | 'partial' | 'does_not_meet' | 'not_assessed';
-  severity: 'high' | 'medium' | 'low';
+  severity: 'critical' | 'high' | 'medium' | 'low';
   reasoning: string;
   success_definition: string;
 
@@ -87,6 +87,7 @@ export interface AssessmentResult {
     quote: string | null;
     text_evidence?: string | null;
   };
+  pack_evidence_document_id?: string | null;
   matrix_references?: string[];
 
   reference_evidence: {
@@ -125,6 +126,9 @@ export interface AssessmentResult {
 
   // Evidence quality
   evidence_quality?: 'explicit' | 'implicit' | 'ambiguous' | 'absent';
+
+  // Regulatory clause reference (e.g. "BSA 2022 s.36 · CDM 2015 reg.5") — NEW-03
+  regulatory_clause?: string;
 
   // Deprecated fields (kept for backward compatibility)
   confidence_old?: 'high' | 'medium' | 'low';
