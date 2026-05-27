@@ -9,6 +9,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import ResultsDashboard from '../components/ResultsDashboard';
+import AIAnalysisPanel from '../components/AIAnalysisPanel';
+import ChatPanel from '../components/ChatPanel';
 import MobileDashboardView from '../components/MobileDashboardView';
 import ProjectMetadataCard from '../components/ProjectMetadataCard';
 import { useResponsive } from '../components/ResponsiveContainer';
@@ -42,8 +44,10 @@ export default function Results() {
   const [previousAssessment, setPreviousAssessment] = useState<{ results?: any[] } | null>(null);
   const [previousVersionCreatedAt, setPreviousVersionCreatedAt] = useState<string | null>(null);
   const [showDiff, setShowDiff] = useState(false);
+  // Set to true when SSE signals assessment is done — shows "View Results" button on progress screen
+  const [sseComplete, setSseComplete] = useState(false);
 
-  const POLL_INTERVAL_MS = 8000;
+  const POLL_INTERVAL_MS = 3000;   // 3s — fast enough to pick up completion without hammering
   const POLL_TIMEOUT_MS = 15 * 60 * 1000;
 
   const handleRerunAssessment = async () => {
@@ -80,6 +84,15 @@ export default function Results() {
         if (res.status === 404) {
           setAssessmentStatus('running');
           setTimeout(poll, POLL_INTERVAL_MS);
+          return;
+        }
+
+        if (res.status === 503) {
+          // Backend signals the assessment itself failed
+          let msg = 'Assessment failed on the server. Please try re-running.';
+          try { const d = await res.json(); msg = d.error || msg; } catch { /* ignore */ }
+          setAssessmentStatus('error');
+          setErrorMessage(msg);
           return;
         }
 
@@ -139,6 +152,15 @@ export default function Results() {
         const event = JSON.parse(e.data);
         if (event.done) {
           source.close();
+          setSseComplete(true);
+          // Reload the page — the polling loop will immediately get a 200 and show the dashboard
+          setTimeout(() => window.location.reload(), 1500);
+          return;
+        }
+        if (event.error) {
+          source.close();
+          setAssessmentStatus('error');
+          setErrorMessage(event.message || 'Assessment failed on the server. Please re-run.');
           return;
         }
 
@@ -377,6 +399,8 @@ export default function Results() {
         deterministicDone={deterministicDone}
         llmTotal={llmTotal}
         llmDone={llmDone}
+        isComplete={sseComplete}
+        onViewResults={() => window.location.reload()}
       />
     );
   }
@@ -525,6 +549,9 @@ export default function Results() {
               />
             </div>
 
+            {/* AI Analysis */}
+            <AIAnalysisPanel packId={packId!} versionId={versionId!} />
+
             {/* Dashboard */}
             <ResultsDashboard
               assessment={assessment}
@@ -536,6 +563,9 @@ export default function Results() {
                 ? computeDiff(assessment.results, previousAssessment)
                 : undefined}
             />
+
+            {/* Floating chat */}
+            <ChatPanel packId={packId!} versionId={versionId!} />
           </div>
         )}
       </main>

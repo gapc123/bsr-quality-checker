@@ -15,6 +15,8 @@ import {
   generateMatrixJSONExport,
 } from '../services/report.js';
 import { analysisLimiter, exportLimiter } from '../middleware/rate-limit.js';
+import { chat, chatStream, AssessmentContext } from '../services/chat-service.js';
+import { generateAIAnalysis } from '../services/ai-analysis-service.js';
 
 const router = Router();
 
@@ -31,6 +33,8 @@ function broadcastProgress(versionId: string, event: object) {
   const stream = progressStreams.get(versionId);
   if (stream) {
     stream.write(`data: ${JSON.stringify(event)}\n\n`);
+    // Flush immediately — Railway/nginx may buffer otherwise and events never reach the client
+    (stream as any).flush?.();
   }
 }
 
@@ -375,6 +379,9 @@ router.post(
             status: 'failed',
             error: error.message,
           });
+          // Notify the frontend immediately so it shows an error instead of spinning forever
+          broadcastProgress(versionId, { error: true, message: error.message });
+          progressStreams.delete(versionId);
           sendSubmissionErrorNotification({
             submissionId: versionId,
             errorMessage: error.message,
@@ -470,6 +477,14 @@ router.get(
     try {
       const packId = req.params.packId as string;
       const versionId = req.params.versionId as string;
+
+      // If assessment failed on the backend, surface the error immediately
+      // rather than returning 404 forever and leaving the frontend spinning
+      const runStatus = analysisStatus.get(versionId);
+      if (runStatus?.status === 'failed') {
+        res.status(503).json({ error: runStatus.error || 'Assessment failed. Please re-run.' });
+        return;
+      }
 
       // Get matrix assessment data
       const { assessment } = await getMatrixReportContent(versionId);
@@ -588,5 +603,62 @@ router.get(
     }
   }
 );
+
+async function loadAssessmentContext(packId: string, versionId: string): Promise<AssessmentContext | null> {
+  const version = await prisma.packVersion.findFirst({
+    where: { id: versionId, packId },
+  });
+  if (!version || !version.matrixAssessment) return null;
+  const data = JSON.parse(version.matrixAssessment as string);
+  return {
+    pack_id: packId,
+    version_id: versionId,
+    project_name: version.projectName,
+    building_type: version.buildingType,
+    height_meters: version.height ? parseFloat(version.height) : null,
+    storeys: version.storeys ? parseFloat(version.storeys) : null,
+    readiness_score: data.readiness_score,
+    criteria_summary: data.criteria_summary,
+    flagged_by_severity: data.flagged_by_severity,
+    results: data.results ?? [],
+  };
+}
+
+router.get('/packs/:packId/versions/:versionId/ai-analysis', async (req: Request, res: Response) => {
+  try {
+    const packId = req.params.packId as string;
+    const versionId = req.params.versionId as string;
+    const context = await loadAssessmentContext(packId, versionId);
+    if (!context) return res.status(404).json({ error: 'No assessment found. Run matrix-assess first.' });
+    const analysis = await generateAIAnalysis(context);
+    res.json(analysis);
+  } catch (err) {
+    console.error('AI analysis error:', err);
+    res.status(500).json({ error: 'Failed to generate AI analysis' });
+  }
+});
+
+router.post('/packs/:packId/versions/:versionId/chat', async (req: Request, res: Response) => {
+  try {
+    const packId = req.params.packId as string;
+    const versionId = req.params.versionId as string;
+    const { messages } = req.body as { messages: Array<{ role: 'user' | 'assistant'; content: string }> };
+    if (!messages || !Array.isArray(messages) || messages.length === 0) return res.status(400).json({ error: 'messages array is required' });
+    const context = await loadAssessmentContext(packId, versionId);
+    if (!context) return res.status(404).json({ error: 'No assessment found. Run matrix-assess first.' });
+    if (req.headers.accept === 'text/event-stream') {
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+      await chatStream(context, messages, (chunk) => res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`), () => { res.write(`data: ${JSON.stringify({ done: true })}\n\n`); res.end(); });
+    } else {
+      const reply = await chat(context, messages);
+      res.json({ reply });
+    }
+  } catch (err) {
+    console.error('Chat error:', err);
+    res.status(500).json({ error: 'Failed to process chat message' });
+  }
+});
 
 export default router;
