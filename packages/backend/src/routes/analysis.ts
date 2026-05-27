@@ -604,6 +604,26 @@ router.get(
   }
 );
 
+async function serveDocumentFile(req: Request, res: Response) {
+  try {
+    const documentId = req.params.documentId as string;
+    const document = await prisma.document.findUnique({ where: { id: documentId } });
+    if (!document || !document.filepath) return res.status(404).json({ error: 'Document not found' });
+    if (!fs.existsSync(document.filepath)) return res.status(404).json({ error: 'File not found on disk' });
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${document.filename}"`);
+    fs.createReadStream(document.filepath).pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to serve file' });
+  }
+}
+
+// GET /api/packs/:packId/versions/:versionId/documents/:documentId/file
+router.get('/packs/:packId/versions/:versionId/documents/:documentId/file', serveDocumentFile);
+
+// GET /api/documents/:documentId/file  (simpler alias used by PDFViewerModal)
+router.get('/documents/:documentId/file', serveDocumentFile);
+
 async function loadAssessmentContext(packId: string, versionId: string): Promise<AssessmentContext | null> {
   const version = await prisma.packVersion.findFirst({
     where: { id: versionId, packId },
