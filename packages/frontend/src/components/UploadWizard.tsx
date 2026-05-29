@@ -48,48 +48,11 @@ export const UploadWizard: React.FC<UploadWizardProps> = ({
       name: file.name,
       size: file.size,
       type: file.type,
-      status: 'pending' as const
+      status: 'complete' as const,
+      uploadProgress: 100,
+      documentType: detectDocumentType(file.name)
     }));
-
     setDocuments(prev => [...prev, ...newDocuments]);
-
-    // Simulate upload with progress
-    newDocuments.forEach((doc, idx) => {
-      setTimeout(() => {
-        setDocuments(prev =>
-          prev.map(d =>
-            d.id === doc.id ? { ...d, status: 'uploading' as const, uploadProgress: 0 } : d
-          )
-        );
-
-        // Simulate progress
-        let progress = 0;
-        const interval = setInterval(() => {
-          progress += 10;
-          setDocuments(prev =>
-            prev.map(d =>
-              d.id === doc.id ? { ...d, uploadProgress: Math.min(progress, 100) } : d
-            )
-          );
-
-          if (progress >= 100) {
-            clearInterval(interval);
-            setDocuments(prev =>
-              prev.map(d =>
-                d.id === doc.id
-                  ? {
-                      ...d,
-                      status: 'complete' as const,
-                      uploadProgress: 100,
-                      documentType: detectDocumentType(d.name)
-                    }
-                  : d
-              )
-            );
-          }
-        }, 200);
-      }, idx * 500);
-    });
   };
 
   // Simple document type detection
@@ -292,7 +255,7 @@ export const UploadWizard: React.FC<UploadWizardProps> = ({
               </div>
 
               <div className="pt-4 border-t border-slate-300">
-                <h4 className="font-semibold text-slate-900 mb-2">📎 Documents ({documents?.length ?? 0})</h4>
+                <h4 className="font-semibold text-slate-900 mb-2">📎 Documents ({documents.length})</h4>
                 <div className="space-y-1 text-sm text-slate-700">
                   {documents.slice(0, 5).map(doc => (
                     <div key={doc.id} className="flex items-center gap-2">

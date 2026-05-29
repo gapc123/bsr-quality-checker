@@ -186,7 +186,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── 02 — WHAT ATTLEE DOES (three pillars) ─────────────────────── */}
+      {/* ── 02 — WHAT ATTLEE DOES (three capability pillars) ──────────── */}
       <section id="platform" style={{
         padding: '140px 56px',
         borderBottom: '1px solid var(--ink-3)',
@@ -202,18 +202,18 @@ export default function Landing() {
             {[
               {
                 n: 'I.',
-                t: 'Read',
-                d: 'Ingests your full Gateway 2 pack — fire strategies, structural reports, MEP specs, architectural drawings. Maps every document to the BSR clauses that govern it.',
+                t: 'Regulatory intelligence',
+                d: 'Attlee holds the full BSR regulatory corpus — Approved Documents A–R, CLC Guidance Suite, Building Safety Act secondary legislation, and Gateway 2 rejection data. It knows what the BSR looks for, and where applicants fail.',
               },
               {
                 n: 'II.',
-                t: 'Check',
-                d: '55+ proprietary deterministic rules test your pack against every relevant clause. Flags risk before it reaches the approved inspector. Same input, same result — every time.',
+                t: 'Contradiction detection',
+                d: 'Most Gateway 2 rejections come from inconsistencies between documents — a height in the fire strategy that disagrees with the structural report, or a sprinkler spec that contradicts the MEP drawings. Attlee finds them all before submission.',
               },
               {
                 n: 'III.',
-                t: 'Evidence',
-                d: 'Generates the audit trail the Building Safety Act demands. Expert-signed, versioned, every gap linked to the specific regulation — ready for Gateway submission.',
+                t: 'Golden thread output',
+                d: 'The Building Safety Act demands a documented, versioned evidence trail for every compliance decision. Attlee generates it automatically — every gap traced to its source regulation, expert-reviewed, and ready to submit.',
               },
             ].map((p, i) => (
               <div key={i} style={{
@@ -228,8 +228,8 @@ export default function Landing() {
                 <div>
                   <div style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 44, letterSpacing: '-0.02em', marginBottom: 20,
-                    color: 'var(--type-hi)',
+                    fontSize: 36, letterSpacing: '-0.02em', marginBottom: 20,
+                    color: 'var(--type-hi)', lineHeight: 1.1,
                   }}>{p.t}</div>
                   <div style={{
                     fontSize: 15, lineHeight: 1.6,
@@ -485,7 +485,7 @@ export default function Landing() {
         </div>
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, var(--ink-1) 0%, transparent 30%, transparent 70%, var(--ink-1) 100%)',
+          background: 'linear-gradient(to bottom, var(--ink-1) 0%, rgba(10,11,13,0.7) 30%, rgba(10,11,13,0.7) 70%, var(--ink-1) 100%)',
         }}/>
         <div style={{
           position: 'relative', zIndex: 2, height: '100%',

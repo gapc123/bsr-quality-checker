@@ -15,12 +15,16 @@ import type { AssessmentResult } from '../types/assessment';
 import type { CriterionDelta } from '../lib/assessmentDiff';
 import { DeltaBadge } from './DeltaBadge';
 
+export type ResolutionStatus = 'open' | 'in-progress' | 'resolved';
+
 interface IssuesTableProps {
   issues: AssessmentResult[];
   onRowClick?: (issue: AssessmentResult) => void;
   onSelectionChange?: (selectedIds: string[]) => void;
   selectedIds?: string[];
   deltaMap?: Map<string, CriterionDelta>;
+  resolutionStatuses?: Record<string, ResolutionStatus>;
+  onStatusChange?: (issueId: string, status: ResolutionStatus) => void;
 }
 
 type SortField = 'priority' | 'id' | 'title' | 'effort' | 'category';
@@ -32,6 +36,8 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
   onSelectionChange,
   selectedIds = [],
   deltaMap,
+  resolutionStatuses = {},
+  onStatusChange,
 }) => {
   const [sortField, setSortField] = useState<SortField>('priority');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -199,34 +205,34 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
     }
   };
 
-  // Get resolution status badge
-  const getResolutionStatus = (_issue: AssessmentResult) => {
-    // TODO: Connect to backend resolution tracking (UI Fix 5)
-    // For now, all issues show as "Open"
-    type ResolutionStatus = 'open' | 'resolved' | 'in-progress';
-    const status: ResolutionStatus = 'open' as ResolutionStatus; // Future: issue.resolution_status
+  const STATUS_STYLES: Record<ResolutionStatus, string> = {
+    open: 'bg-amber-50 text-amber-800 border-amber-300',
+    'in-progress': 'bg-blue-50 text-blue-800 border-blue-300',
+    resolved: 'bg-green-50 text-green-800 border-green-300',
+  };
 
-    if (status === 'resolved') {
-      return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-800 border border-green-300">
-          ✓ Resolved
-        </span>
-      );
-    }
+  const STATUS_LABELS: Record<ResolutionStatus, string> = {
+    open: 'Open',
+    'in-progress': 'In Progress',
+    resolved: 'Resolved',
+  };
 
-    if (status === 'in-progress') {
-      return (
-        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-800 border border-blue-300">
-          ⟳ In Progress
-        </span>
-      );
-    }
-
-    // default: 'open'
+  const ResolutionDropdown = ({ issue }: { issue: AssessmentResult }) => {
+    const current: ResolutionStatus = resolutionStatuses[issue.matrix_id] ?? 'open';
     return (
-      <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded bg-amber-100 text-amber-800 border border-amber-300">
-        ◌ Open
-      </span>
+      <select
+        value={current}
+        onClick={(e) => e.stopPropagation()}
+        onChange={(e) => {
+          e.stopPropagation();
+          onStatusChange?.(issue.matrix_id, e.target.value as ResolutionStatus);
+        }}
+        className={`text-xs font-semibold rounded border px-2 py-1 cursor-pointer focus:outline-none ${STATUS_STYLES[current]}`}
+      >
+        {(Object.keys(STATUS_LABELS) as ResolutionStatus[]).map(s => (
+          <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+        ))}
+      </select>
     );
   };
 
@@ -406,9 +412,12 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
                   {/* Title + Evidence Quote */}
                   <td className="px-4 py-3">
                     <div className="max-w-lg">
-                      <div className="text-sm font-semibold text-slate-900 mb-2">
+                      <div className="text-sm font-semibold text-slate-900 mb-1">
                         {issue.matrix_title}
                       </div>
+                      {issue.regulatory_clause && (
+                        <div className="text-xs italic text-slate-400 mb-2">{issue.regulatory_clause}</div>
+                      )}
                       {issue.pack_evidence?.quote ? (
                         <div className={`rounded px-3 py-2 text-sm border-l-2 ${
                           (issue.severity as string) === 'critical' || issue.severity === 'high'
@@ -455,7 +464,7 @@ export const IssuesTable: React.FC<IssuesTableProps> = ({
 
                   {/* Status */}
                   <td className="px-4 py-3 whitespace-nowrap">
-                    {getResolutionStatus(issue)}
+                    <ResolutionDropdown issue={issue} />
                   </td>
                 </tr>
               );

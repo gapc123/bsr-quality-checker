@@ -127,6 +127,7 @@ export const BRAND_LAYOUT = {
       requirement: 50,
       category: 15,
       status: 12,
+      severity: 10,
       priority: 10,
       whatsWrong: 40,
       whyItMatters: 40,

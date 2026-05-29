@@ -184,6 +184,7 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
     { header: 'Requirement', key: 'requirement', width: BRAND_LAYOUT.excel.columnWidths.requirement },
     { header: 'Category', key: 'category', width: BRAND_LAYOUT.excel.columnWidths.category },
     { header: 'Status', key: 'status', width: BRAND_LAYOUT.excel.columnWidths.status },
+    { header: 'Severity', key: 'severity', width: BRAND_LAYOUT.excel.columnWidths.severity },
     { header: 'Priority', key: 'priority', width: BRAND_LAYOUT.excel.columnWidths.priority },
     { header: "What's Wrong", key: 'whatsWrong', width: BRAND_LAYOUT.excel.columnWidths.whatsWrong },
     { header: 'Why It Matters', key: 'whyItMatters', width: BRAND_LAYOUT.excel.columnWidths.whyItMatters },
@@ -224,6 +225,7 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
       requirement: row.requirement,
       category: row.category,
       status: row.status,
+      severity: row.severity ? row.severity.charAt(0).toUpperCase() + row.severity.slice(1) : '',
       priority: row.priority || '',
       whatsWrong: row.whatsWrong || '',
       whyItMatters: row.whyItMatters || '',
@@ -274,6 +276,23 @@ function addDataTable(worksheet: ExcelJS.Worksheet, matrix: ComplianceMatrix) {
           fgColor: { argb: 'FFF8D7DA' } // Light red
         };
         statusCell.font = { color: { argb: 'FF721C24' }, bold: true };
+        break;
+    }
+
+    // Color code by severity (NEW-01)
+    const severityCell = excelRow.getCell('severity');
+    switch (row.severity) {
+      case 'critical':
+        severityCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFC0392B' } };
+        severityCell.font = { color: { argb: 'FFFFFFFF' }, bold: true };
+        break;
+      case 'high':
+        severityCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE67E22' } };
+        severityCell.font = { color: { argb: 'FFFFFFFF' }, bold: true };
+        break;
+      case 'medium':
+        severityCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2980B9' } };
+        severityCell.font = { color: { argb: 'FFFFFFFF' }, bold: true };
         break;
     }
 

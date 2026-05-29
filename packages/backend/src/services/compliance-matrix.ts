@@ -18,6 +18,7 @@ export interface ComplianceMatrixRow {
   requirement: string;
   category: string;
   status: 'Blocker' | 'Review Required' | 'Missing Info' | 'Met';
+  severity?: 'critical' | 'high' | 'medium' | 'low';
   priority?: string;
   whatsWrong?: string;
   whyItMatters?: string;
@@ -77,15 +78,15 @@ export function generateComplianceMatrix(
     const evidenceQuality = result.evidence_quality ?
       formatEvidenceQuality(result.evidence_quality) : undefined;
 
-    // Owner: Format using centralized config (GitHub Issue #3)
-    const ownerType = result.owner_type || action?.owner_type || result.triage?.owner_type;
-    const formattedOwner = formatOwnerRole(ownerType);
+    // Owner: Resolve with category fallback (P1B)
+    const formattedOwner = resolveOwner(result, action);
 
     const row: ComplianceMatrixRow = {
       requirementId: result.matrix_id || '',
       requirement: result.matrix_title || result.requirement || '',
       category: result.category || determineCategory(result.matrix_id),
       status,
+      severity: result.severity as ComplianceMatrixRow['severity'] || undefined,
       priority: determinePriority(result),
       whatsWrong,
       whyItMatters,
@@ -125,32 +126,55 @@ export function generateComplianceMatrix(
  *
  * FIXED (GitHub Issue #1): Properly promotes partial status with explicit evidence to "Met"
  */
+/**
+ * Resolve the display owner for an assessment result.
+ * Uses owner_type if set to something specific; falls back to inferring
+ * from the result category so we never show "Project Team" for issues
+ * that have a clear specialist owner.
+ */
+function resolveOwner(result: any, action?: any): string {
+  const ownerType = result.owner_type || action?.owner_type || result.triage?.owner_type;
+  const formatted = formatOwnerRole(ownerType);
+
+  if (formatted !== 'Project Team') return formatted;
+
+  // Category-based fallback
+  const category = (result.category || determineCategory(result.matrix_id) || '').toLowerCase();
+  if (category.includes('fire')) return 'Fire Engineer';
+  if (category.includes('struct')) return 'Structural Engineer';
+  if (category.includes('mep') || category.includes('ventil') || category.includes('mechanical') || category.includes('electrical')) return 'MEP Consultant';
+  if (category.includes('golden thread') || category.includes('hrb') || category.includes('submission')) return 'Principal Designer';
+  if (category.includes('design') || category.includes('access') || category.includes('architect')) return 'Architect';
+
+  return formatted; // Project Team as last resort
+}
+
 function mapStatus(result: any): 'Blocker' | 'Review Required' | 'Missing Info' | 'Met' {
   const status = result.status?.toLowerCase();
   const severity = result.severity?.toLowerCase();
   const evidenceQuality = result.evidence_quality;
 
-  // Blocker: High severity failures
-  if (status === 'does_not_meet' && severity === 'high') {
-    return 'Blocker';
+  // Met: Check passing status first — before any evidence quality checks.
+  // A result that meets the requirement is Met regardless of whether an
+  // evidence quote was extracted. Partial with explicit evidence also qualifies.
+  if (status === 'meets') {
+    return 'Met';
   }
-
-  // Missing Info: Missing information or absent evidence
-  if (status === 'missing_information' || evidenceQuality === 'absent') {
-    return 'Missing Info';
-  }
-
-  // Review Required: Ambiguous or implicit evidence
-  if (evidenceQuality === 'ambiguous' || evidenceQuality === 'implicit') {
-    return 'Review Required';
-  }
-
-  // Met: Fully met, or partial with explicit evidence
-  if (status === 'meets' || (status === 'partial' && evidenceQuality === 'explicit')) {
+  if (status === 'partial' && evidenceQuality === 'explicit') {
     return 'Met';
   }
 
-  // Default to Review Required for partial/unclear cases
+  // Blocker: Failures on high-severity requirements
+  if (status === 'does_not_meet' && (severity === 'high' || !severity)) {
+    return 'Blocker';
+  }
+
+  // Missing Info: Missing information declared explicitly
+  if (status === 'missing_information') {
+    return 'Missing Info';
+  }
+
+  // Review Required: Everything else — partial, ambiguous, medium/low failures
   return 'Review Required';
 }
 

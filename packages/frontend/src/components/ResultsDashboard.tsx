@@ -11,10 +11,11 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SubmissionGateCard from './SubmissionGateCard';
 import QuickWinsSection from './QuickWinsSection';
 import SpecialistActionsCard from './SpecialistActionsCard';
-import IssuesTable from './IssuesTable';
+import IssuesTable, { type ResolutionStatus } from './IssuesTable';
 import IssueDetailPanel from './IssueDetailPanel';
 import BulkActionsToolbar from './BulkActionsToolbar';
 import EngagementBriefGenerator from './EngagementBriefGenerator';
@@ -41,65 +42,49 @@ interface ResultsDashboardProps {
   deltaMap?: Map<string, CriterionDelta>;
 }
 
-type FilterType = 'all' | 'blockers' | 'quick_wins' | 'specialist' | 'action_groups';
+type FilterType = 'all' | 'blockers' | 'quick_wins' | 'specialist' | 'severity_groups';
 
-type ActionGroup = 'missing_document' | 'appointment_needed' | 'update_required' | 'consistency';
 
-function classifyFailure(r: AssessmentResult): ActionGroup {
-  const id = r.matrix_id;
-  const gaps = (r.gaps_identified || []).join(' ').toLowerCase();
+type SeverityGroup = 'critical' | 'high' | 'medium';
 
-  if (
-    r.category === 'CONSISTENCY' ||
-    ['SM-020', 'SM-021'].includes(id)
-  ) return 'consistency';
-
-  if (
-    ['SM-010', 'SM-011'].includes(id) ||
-    gaps.includes('not appointed') ||
-    gaps.includes('tbc') ||
-    gaps.includes('competence')
-  ) return 'appointment_needed';
-
-  if (
-    (gaps.includes('no ') && gaps.includes('found')) ||
-    gaps.includes('not submitted') ||
-    gaps.includes('absent') ||
-    ['SM-000', 'SM-012', 'SM-014', 'SM-022', 'SM-045', 'SM-046'].includes(id) ||
-    r.triage?.action_type === 'DOCUMENT_MISSING'
-  ) return 'missing_document';
-
-  return 'update_required';
-}
-
-const ACTION_GROUP_META: Record<ActionGroup, { title: string; description: string; icon: string; color: string }> = {
-  missing_document: {
-    title: 'Documents to create',
-    description: 'Require a new document to be produced or commissioned',
-    icon: '📄',
-    color: 'red',
+const SEVERITY_GROUP_META: Record<SeverityGroup, { title: string; description: string; borderColor: string; bgColor: string; labelColor: string }> = {
+  critical: {
+    title: 'Critical — legal requirement',
+    description: 'Breaches CDM 2015 or BSA 2022 — the BSR cannot process the application without these.',
+    borderColor: '#C0392B',
+    bgColor: '#fef2f2',
+    labelColor: '#C0392B',
   },
-  appointment_needed: {
-    title: 'Appointments to confirm',
-    description: 'A role or person needs to be formally appointed and evidenced',
-    icon: '👤',
-    color: 'amber',
+  high: {
+    title: 'High — blocks submission',
+    description: 'Significant compliance gaps that will result in rejection if unresolved.',
+    borderColor: '#E67E22',
+    bgColor: '#fffbf5',
+    labelColor: '#E67E22',
   },
-  update_required: {
-    title: 'Documents to update',
-    description: 'Existing documents need additional content to meet requirements',
-    icon: '✏️',
-    color: 'blue',
-  },
-  consistency: {
-    title: 'Consistency issues',
-    description: 'Information conflicts or is missing across multiple documents',
-    icon: '⚠️',
-    color: 'orange',
+  medium: {
+    title: 'Medium — fix before resubmission',
+    description: 'Issues that should be resolved to demonstrate a complete, compliant pack.',
+    borderColor: '#2980B9',
+    bgColor: '#f0f7ff',
+    labelColor: '#2980B9',
   },
 };
 
-type ViewTab = 'overview' | 'by-consultant' | 'revisions' | 'human-review' | 'action-tracker';
+
+type ViewTab = 'overview' | 'by-consultant' | 'revisions' | 'human-review' | 'action-tracker' | 'audit-log';
+
+interface AuditEntry {
+  id: string;
+  timestamp: string;
+  issueId: string;
+  issueTitle: string;
+  severity: string;
+  eventType: 'identified' | 'status_change';
+  previousStatus?: string;
+  newStatus?: string;
+  note?: string;
+}
 
 export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   assessment,
@@ -109,6 +94,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   onViewIssue,
   deltaMap,
 }) => {
+  const navigate = useNavigate();
   const { showToast } = useToast();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeTab, setActiveTab] = useState<ViewTab>('overview');
@@ -117,6 +103,43 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   const [selectedIssueIds, setSelectedIssueIds] = useState<string[]>([]);
   const [viewedIssue, setViewedIssue] = useState<AssessmentResult | null>(null);
   const [showDetailPanel, setShowDetailPanel] = useState(false);
+  const [resolutionStatuses, setResolutionStatuses] = useState<Record<string, ResolutionStatus>>({});
+
+  // Audit log — pre-seeded with "identified" entry for every failed issue
+  const [auditLog, setAuditLog] = useState<AuditEntry[]>(() => {
+    const identifiedAt = new Date().toISOString();
+    return results
+      .filter(r => r.status === 'does_not_meet' || r.status === 'partial')
+      .map(r => ({
+        id: `identified-${r.matrix_id}`,
+        timestamp: identifiedAt,
+        issueId: r.matrix_id,
+        issueTitle: r.matrix_title,
+        severity: r.triage?.urgency ?? 'MEDIUM_PRIORITY',
+        eventType: 'identified' as const,
+        note: r.status === 'does_not_meet' ? 'Does not meet requirement' : 'Partially meets requirement',
+      }));
+  });
+
+  const handleStatusChange = (issueId: string, status: ResolutionStatus) => {
+    const previousStatus = resolutionStatuses[issueId] ?? 'open';
+    if (previousStatus === status) return;
+    setResolutionStatuses(prev => ({ ...prev, [issueId]: status }));
+    const issue = results.find(r => r.matrix_id === issueId);
+    setAuditLog(prev => [
+      ...prev,
+      {
+        id: `change-${issueId}-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        issueId,
+        issueTitle: issue?.matrix_title ?? issueId,
+        severity: issue?.triage?.urgency ?? 'MEDIUM_PRIORITY',
+        eventType: 'status_change',
+        previousStatus,
+        newStatus: status,
+      },
+    ]);
+  };
 
   // Stage 4: Action-oriented outputs state
   const [showExportModal, setShowExportModal] = useState(false);
@@ -177,30 +200,26 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
         return quickWins;
       case 'specialist':
         return failedResults.filter(r => r.triage?.engagement_type === 'SPECIALIST_REQUIRED');
+      case 'severity_groups':
+        return failedResults; // rendered grouped, not flat
       default:
         return failedResults;
     }
   }, [activeFilter, blockers, quickWins, failedResults]);
 
-  // Group by action type (for 'action_groups' filter view)
-  const groupOrder: ActionGroup[] = ['missing_document', 'appointment_needed', 'update_required', 'consistency'];
-  const groupedByAction = useMemo(() => {
-    const grouped: Partial<Record<ActionGroup, AssessmentResult[]>> = {};
+  // Group by severity (for 'severity_groups' filter view)
+  const groupedBySeverity = useMemo(() => {
+    const grouped: Partial<Record<SeverityGroup, AssessmentResult[]>> = {};
     for (const r of failedResults) {
-      const g = classifyFailure(r);
-      if (!grouped[g]) grouped[g] = [];
-      grouped[g]!.push(r);
-    }
-    // Within each group, sort CRITICAL/HIGH first
-    for (const key of groupOrder) {
-      grouped[key]?.sort((a, b) => {
-        const severityRank = { critical: 0, high: 1, medium: 2, low: 3 };
-        return (severityRank[a.severity as keyof typeof severityRank] ?? 2) -
-               (severityRank[b.severity as keyof typeof severityRank] ?? 2);
-      });
+      const s = (r.severity === 'critical' || r.severity === 'high' || r.severity === 'medium')
+        ? r.severity
+        : 'medium'; // treat low as medium for display
+      if (!grouped[s]) grouped[s] = [];
+      grouped[s]!.push(r);
     }
     return grouped;
   }, [failedResults]);
+
 
   // Handlers
   const handleAcceptAllQuickWins = async () => {
@@ -256,9 +275,11 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
 
   // Table handlers
   const handleRowClick = (issue: AssessmentResult) => {
-    setViewedIssue(issue);
-    setShowDetailPanel(true);
     onViewIssue?.(issue);
+    navigate(
+      `/packs/${assessment.pack_id}/versions/${assessment.version_id}/results/criterion/${issue.matrix_id}`,
+      { state: { criterion: issue, scrollY: window.scrollY } }
+    );
   };
 
   const handleSelectionChange = (selectedIds: string[]) => {
@@ -689,6 +710,22 @@ Best regards`;
               <CheckIcon size={18} color={activeTab === 'action-tracker' ? '#4f46e5' : '#64748b'} />
               Action Tracker
             </button>
+            <button
+              onClick={() => setActiveTab('audit-log')}
+              className={`px-6 py-3 font-semibold transition-all flex items-center gap-2 border-b-4 ${
+                activeTab === 'audit-log'
+                  ? 'border-amber-600 text-amber-900 bg-amber-50'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <ClipboardIcon size={18} color={activeTab === 'audit-log' ? '#d97706' : '#64748b'} />
+              Audit Log
+              {auditLog.filter(e => e.eventType === 'status_change').length > 0 && (
+                <span className="ml-1 text-xs font-bold bg-amber-200 text-amber-800 rounded-full px-1.5 py-0.5">
+                  {auditLog.filter(e => e.eventType === 'status_change').length}
+                </span>
+              )}
+            </button>
             <div className="flex-1"></div>
             {/* Explicit Download Buttons */}
             <div className="flex gap-2 my-1 mr-1">
@@ -765,6 +802,122 @@ Best regards`;
           issues={failedResults}
           onExport={() => setShowExportModal(true)}
         />
+      )}
+
+      {activeTab === 'audit-log' && (
+        <div className="rounded-lg border-2 border-slate-300 bg-white shadow-sm overflow-hidden">
+          <div className="bg-white border-b-2 border-slate-300 px-6 py-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <ClipboardIcon size={24} color="var(--navy)" />
+                AUDIT LOG
+              </h2>
+              <p className="text-sm text-slate-500 mt-1">
+                Chronological record of all identified issues and remediation actions
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                const rows = [
+                  ['Timestamp', 'Issue ID', 'Issue Title', 'Severity', 'Event', 'Previous Status', 'New Status', 'Note'],
+                  ...auditLog.map(e => [
+                    new Date(e.timestamp).toLocaleString('en-GB'),
+                    e.issueId,
+                    `"${e.issueTitle.replace(/"/g, '""')}"`,
+                    e.severity,
+                    e.eventType === 'identified' ? 'Issue Identified' : 'Status Changed',
+                    e.previousStatus ?? '',
+                    e.newStatus ?? '',
+                    e.note ?? '',
+                  ]),
+                ];
+                const csv = rows.map(r => r.join(',')).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `audit-log-${assessment.pack_id}-${new Date().toISOString().slice(0,10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg flex items-center gap-2"
+            >
+              <FileTextIcon size={16} color="white" />
+              Export CSV
+            </button>
+          </div>
+
+          {auditLog.length === 0 ? (
+            <div className="p-12 text-center text-slate-400">No audit entries yet.</div>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {[...auditLog].reverse().map(entry => {
+                const severityColors: Record<string, string> = {
+                  CRITICAL_BLOCKER: 'text-red-700 bg-red-50 border-red-200',
+                  HIGH_PRIORITY: 'text-amber-700 bg-amber-50 border-amber-200',
+                  MEDIUM_PRIORITY: 'text-blue-700 bg-blue-50 border-blue-200',
+                  LOW_PRIORITY: 'text-slate-600 bg-slate-50 border-slate-200',
+                };
+                const sevColor = severityColors[entry.severity] ?? severityColors.MEDIUM_PRIORITY;
+
+                const statusLabel: Record<string, string> = {
+                  open: 'Open',
+                  'in-progress': 'In Progress',
+                  resolved: 'Resolved',
+                };
+
+                return (
+                  <div key={entry.id} className="px-6 py-4 flex items-start gap-4 hover:bg-slate-50">
+                    {/* Timeline dot */}
+                    <div className="flex flex-col items-center mt-1 flex-shrink-0">
+                      <div className={`w-3 h-3 rounded-full border-2 ${
+                        entry.eventType === 'identified'
+                          ? 'bg-slate-400 border-slate-400'
+                          : entry.newStatus === 'resolved'
+                          ? 'bg-green-500 border-green-500'
+                          : entry.newStatus === 'in-progress'
+                          ? 'bg-blue-500 border-blue-500'
+                          : 'bg-amber-500 border-amber-500'
+                      }`} />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                        <span className="text-xs font-mono text-slate-500">{entry.issueId}</span>
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded border ${sevColor}`}>
+                          {entry.severity.replace('_', ' ')}
+                        </span>
+                        {entry.eventType === 'status_change' && (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-50 border border-indigo-200 text-indigo-700">
+                            {statusLabel[entry.previousStatus ?? ''] ?? entry.previousStatus} → {statusLabel[entry.newStatus ?? ''] ?? entry.newStatus}
+                          </span>
+                        )}
+                        {entry.eventType === 'identified' && (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-600">
+                            Issue Identified
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm font-semibold text-slate-900 truncate">{entry.issueTitle}</p>
+                      {entry.note && (
+                        <p className="text-xs text-slate-500 mt-0.5">{entry.note}</p>
+                      )}
+                    </div>
+
+                    {/* Timestamp */}
+                    <div className="text-xs text-slate-400 flex-shrink-0 text-right">
+                      {new Date(entry.timestamp).toLocaleString('en-GB', {
+                        day: 'numeric', month: 'short', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit',
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
       )}
 
       {activeTab === 'human-review' && (
@@ -867,36 +1020,33 @@ Best regards`;
                   Specialists
                 </button>
                 <button
-                  onClick={() => setActiveFilter('action_groups')}
+                  onClick={() => setActiveFilter('severity_groups')}
                   className={`px-4 py-2 text-sm font-semibold rounded transition-colors ${
-                    activeFilter === 'action_groups'
+                    activeFilter === 'severity_groups'
                       ? 'bg-slate-900 text-white'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
-                  By Action
+                  By Severity
                 </button>
               </div>
             </div>
           </div>
 
           {/* Table + Detail Panel Layout */}
-          {activeFilter === 'action_groups' ? (
+          {activeFilter === 'severity_groups' ? (
             <div className="divide-y divide-slate-200">
-              {groupOrder.map(group => {
-                const items = groupedByAction[group];
+              {(['critical', 'high', 'medium'] as SeverityGroup[]).map(sev => {
+                const items = groupedBySeverity[sev];
                 if (!items?.length) return null;
-                const meta = ACTION_GROUP_META[group];
+                const meta = SEVERITY_GROUP_META[sev];
                 return (
-                  <section key={group} className="p-4">
-                    <div className="flex items-start gap-3 mb-3">
-                      <span className="text-2xl leading-none">{meta.icon}</span>
-                      <div>
-                        <h3 className="font-semibold text-slate-900">
-                          {meta.title} ({items.length})
-                        </h3>
-                        <p className="text-sm text-slate-500">{meta.description}</p>
-                      </div>
+                  <section key={sev} style={{ borderLeft: `4px solid ${meta.borderColor}`, background: meta.bgColor }} className="p-4">
+                    <div className="mb-3">
+                      <h3 className="font-semibold" style={{ color: meta.labelColor }}>
+                        {meta.title} ({items.length})
+                      </h3>
+                      <p className="text-sm text-slate-500">{meta.description}</p>
                     </div>
                     <IssuesTable
                       issues={items}
@@ -904,6 +1054,8 @@ Best regards`;
                       onSelectionChange={handleSelectionChange}
                       selectedIds={selectedIssueIds}
                       deltaMap={deltaMap}
+                      resolutionStatuses={resolutionStatuses}
+                      onStatusChange={handleStatusChange}
                     />
                   </section>
                 );
@@ -919,6 +1071,8 @@ Best regards`;
                   onSelectionChange={handleSelectionChange}
                   selectedIds={selectedIssueIds}
                   deltaMap={deltaMap}
+                  resolutionStatuses={resolutionStatuses}
+                  onStatusChange={handleStatusChange}
                 />
               </div>
 

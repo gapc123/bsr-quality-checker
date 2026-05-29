@@ -16,6 +16,8 @@
 
 import type { FullAssessment, AssessmentResult } from '../services/matrix-assessment.js';
 import { formatOwnerRole, mapOwnerToConsultantGroup } from '../config/owner-roles.js';
+import { enrichWhyItMatters, enrichRequestText } from '../services/compliance-enrichment.js';
+import { getRegulatoryContext } from '../constants/regulatory-context.js';
 import {
   getPDFStyles,
   formatProjectMetadata,
@@ -180,6 +182,7 @@ function generateBlockers(blockers: AssessmentResult[]): string {
     const why = extractWhyItMatters(blocker);
     const request = extractSpecificRequest(blocker);
     const owner = formatOwnerRole(blocker.owner_type);
+    const regCtx = getRegulatoryContext(blocker.matrix_id, blocker.category);
     const ev = blocker.pack_evidence;
     const evidenceCitation = ev?.found && (ev.document || ev.quote)
       ? `<p class="evidence-citation">
@@ -192,6 +195,7 @@ function generateBlockers(blockers: AssessmentResult[]): string {
     return `
       <div class="blocker">
         <h4>${index + 1}. ${formatTitle(blocker.matrix_title)}</h4>
+        <p style="font-style:italic;font-size:9pt;color:#94a3b8;margin:0 0 8px 0;">${regCtx.clause}</p>
         <div class="blocker-details">
           <p><strong>What:</strong> ${what}</p>
           <p><strong>Why:</strong> ${why}</p>
@@ -385,47 +389,17 @@ function groupRequestsByOwner(results: AssessmentResult[]): ConsultantGroup[] {
 // REMOVED: mapOwnerToGroup - now using centralized config (GitHub Issue #3)
 
 /**
- * Extract specific request from assessment result
+ * Extract specific request — delegates to enrichment service for actionable instructions
  */
 function extractSpecificRequest(result: AssessmentResult): string {
-  const action = result.actions_required[0];
-  if (!action) return result.matrix_title;
-
-  // If action is already specific, use it
-  if (action.action.length > 30 && !action.action.toLowerCase().includes('provide documentation')) {
-    return action.action;
-  }
-
-  // Otherwise, construct from gaps and title
-  const gaps = result.gaps_identified.slice(0, 2).join(', ');
-  if (gaps) {
-    return `${result.matrix_title}: ${gaps}`;
-  }
-
-  return result.matrix_title;
+  return enrichRequestText(result);
 }
 
 /**
- * Extract why it matters
+ * Extract why it matters — delegates to enrichment service for category-specific regulatory context
  */
 function extractWhyItMatters(result: AssessmentResult): string {
-  // Look for regulatory reference in reasoning
-  const reasoning = result.reasoning.toLowerCase();
-
-  if (reasoning.includes('gateway 2')) {
-    return 'Gateway 2 application requirement';
-  }
-  if (reasoning.includes('bsr') || reasoning.includes('building safety regulator')) {
-    return 'BSR regulatory requirement';
-  }
-  if (reasoning.includes('hrb') || reasoning.includes('higher-risk')) {
-    return 'Higher-Risk Building requirement';
-  }
-  if (reasoning.includes('approved document')) {
-    return 'Building Regulations compliance';
-  }
-
-  return `${result.category} compliance requirement`;
+  return enrichWhyItMatters(result);
 }
 
 // REMOVED: formatOwner - now using centralized config (GitHub Issue #3)

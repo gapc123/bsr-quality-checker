@@ -17,32 +17,21 @@
 
 import { detectSpecialistRoles } from '../config/owner-roles.js';
 import { generateGapDescription } from '../services/compliance-enrichment.js';
+import { getRegulatoryContext } from '../constants/regulatory-context.js';
 
 export function generateClientGapAnalysisHTML(assessment: any): string {
   const allIssues = assessment.results.filter((r: any) =>
     r.status === 'does_not_meet' || r.status === 'partial'
   );
 
-  // Extract missing information
-  const missingInfo = allIssues.filter((i: any) => {
-    const reasoning = (i.reasoning || '').toLowerCase();
-    const gaps = (i.gaps_identified || []).join(' ').toLowerCase();
-    return (
-      reasoning.includes('missing') ||
-      reasoning.includes('not provided') ||
-      reasoning.includes('tbc') ||
-      reasoning.includes('to be confirmed') ||
-      gaps.includes('missing')
-    );
-  });
-
-  // Group gaps with detailed descriptions (GitHub Issue #6)
+  // Group ALL failing issues with detailed descriptions — not just keyword-matched ones (P2A fix)
   interface DetailedGap {
     title: string;
     whatWasFound: string;
     whatIsMissing: string;
     whatIsNeeded: string;
     priority: string;
+    clause: string;
   }
 
   const documentsNeeded: DetailedGap[] = [];
@@ -50,26 +39,31 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
   const informationNeeded: DetailedGap[] = [];
   const specialistsNeeded: Set<string> = new Set();
 
-  missingInfo.forEach((issue: any) => {
-    const reasoning = issue.reasoning || '';
+  allIssues.forEach((issue: any) => {
+    const category = (issue.category || '').toLowerCase();
     const title = issue.matrix_title;
     const priority = issue.triage?.urgency || 'MEDIUM_PRIORITY';
 
-    // Generate detailed gap description (GitHub Issue #6)
     const gapDescription = generateGapDescription(issue);
+    const regCtx = getRegulatoryContext(issue.matrix_id, issue.category || '');
 
     const detailedGap: DetailedGap = {
       title,
       whatWasFound: gapDescription.whatWasFound,
       whatIsMissing: gapDescription.whatIsMissing,
       whatIsNeeded: gapDescription.whatIsNeeded,
-      priority: priority.replace(/_/g, ' ')
+      priority: priority.replace(/_/g, ' '),
+      clause: regCtx.clause,
     };
 
-    // Categorize what's needed
-    if (reasoning.includes('certificate') || reasoning.includes('certification')) {
+    // Categorise by issue category rather than keyword-scanning reasoning text
+    if (category.includes('fire') || category.includes('struct') || category.includes('mep') || category.includes('acoustic')) {
       certificationsNeeded.push(detailedGap);
-    } else if (reasoning.includes('document') || title.includes('Document')) {
+    } else if (
+      issue.status === 'missing_information' ||
+      issue.triage?.action_type === 'DOCUMENT_MISSING' ||
+      category.includes('submission') || category.includes('design & access')
+    ) {
       documentsNeeded.push(detailedGap);
     } else {
       informationNeeded.push(detailedGap);
@@ -274,8 +268,9 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
         <div style="margin-left: 32px; font-size: 14px; color: #475569;">
           <p style="margin: 6px 0;"><strong>Found:</strong> ${gap.whatWasFound}</p>
           <p style="margin: 6px 0;"><strong>Missing:</strong> ${gap.whatIsMissing}</p>
-          <p style="margin: 6px 0;"><strong>Action needed:</strong> ${gap.whatIsNeeded}</p>
-          <p style="margin: 6px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+          <p style="margin: 6px 0;"><strong>Required:</strong> ${gap.whatIsNeeded}</p>
+          <p style="margin: 6px 0 2px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+          <p style="margin: 4px 0 0 0; font-style: italic; font-size: 11px; color: #94a3b8;">${gap.clause}</p>
         </div>
       </div>
     `).join('')}
@@ -294,8 +289,9 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
         <div style="margin-left: 32px; font-size: 14px; color: #475569;">
           <p style="margin: 6px 0;"><strong>Found:</strong> ${gap.whatWasFound}</p>
           <p style="margin: 6px 0;"><strong>Missing:</strong> ${gap.whatIsMissing}</p>
-          <p style="margin: 6px 0;"><strong>Action needed:</strong> ${gap.whatIsNeeded}</p>
-          <p style="margin: 6px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+          <p style="margin: 6px 0;"><strong>Required:</strong> ${gap.whatIsNeeded}</p>
+          <p style="margin: 6px 0 2px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+          <p style="margin: 4px 0 0 0; font-style: italic; font-size: 11px; color: #94a3b8;">${gap.clause}</p>
         </div>
       </div>
     `).join('')}
@@ -317,8 +313,9 @@ export function generateClientGapAnalysisHTML(assessment: any): string {
         <div style="margin-left: 32px; font-size: 14px; color: #475569;">
           <p style="margin: 6px 0;"><strong>Found:</strong> ${gap.whatWasFound}</p>
           <p style="margin: 6px 0;"><strong>Missing:</strong> ${gap.whatIsMissing}</p>
-          <p style="margin: 6px 0;"><strong>Action needed:</strong> ${gap.whatIsNeeded}</p>
-          <p style="margin: 6px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+          <p style="margin: 6px 0;"><strong>Required:</strong> ${gap.whatIsNeeded}</p>
+          <p style="margin: 6px 0 2px 0;"><span style="background: ${gap.priority.includes('CRITICAL') ? '#fee2e2' : '#fef3c7'}; color: ${gap.priority.includes('CRITICAL') ? '#991b1b' : '#92400e'}; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600;">${gap.priority}</span></p>
+          <p style="margin: 4px 0 0 0; font-style: italic; font-size: 11px; color: #94a3b8;">${gap.clause}</p>
         </div>
       </div>
     `).join('')}

@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '../components/Toast';
 import ResultsDashboard from '../components/ResultsDashboard';
 import AIAnalysisPanel from '../components/AIAnalysisPanel';
@@ -24,6 +24,7 @@ import AssessmentProgressScreen, { CriterionResult } from '../components/Assessm
 export default function Results() {
   const { packId, versionId } = useParams<{ packId: string; versionId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isMobile } = useResponsive();
   const { announce } = useA11y();
   const { showToast } = useToast();
@@ -47,8 +48,16 @@ export default function Results() {
   // Set to true when SSE signals assessment is done — shows "View Results" button on progress screen
   const [sseComplete, setSseComplete] = useState(false);
 
-  const POLL_INTERVAL_MS = 3000;   // 3s — fast enough to pick up completion without hammering
+  const POLL_INTERVAL_MS = 3000;
   const POLL_TIMEOUT_MS = 15 * 60 * 1000;
+
+  // Restore scroll position when returning from CriterionDetailPage
+  useEffect(() => {
+    const scrollY = (location.state as any)?.restoreScrollY;
+    if (scrollY != null && assessmentStatus === 'complete') {
+      window.scrollTo(0, scrollY);
+    }
+  }, [assessmentStatus, location.state]);
 
   const handleRerunAssessment = async () => {
     setAssessmentStatus('loading');

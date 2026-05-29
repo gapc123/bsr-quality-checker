@@ -6,6 +6,7 @@ import PacksList from './pages/PacksList';
 import PackDetail from './pages/PackDetail';
 import Upload from './pages/Upload';
 import Results from './pages/Results';
+import CriterionDetailPage from './pages/CriterionDetailPage';
 import ButlerLibrary from './pages/ButlerLibrary';
 import ClientsList from './pages/ClientsList';
 import ClientDetail from './pages/ClientDetail';
@@ -234,6 +235,14 @@ function AppContent() {
               element={
                 <ProtectedRoute>
                   <Upload />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/packs/:packId/versions/:versionId/results/criterion/:criterionId"
+              element={
+                <ProtectedRoute>
+                  <CriterionDetailPage />
                 </ProtectedRoute>
               }
             />
