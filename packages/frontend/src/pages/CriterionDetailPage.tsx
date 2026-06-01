@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from '../components/Icons';
-import PDFViewerModal from '../components/PDFViewerModal';
+import { lazy, Suspense } from 'react';
+const PDFViewerModal = lazy(() => import('../components/PDFViewerModal'));
 import { resolveRef } from '../lib/regulationRefs';
 import type { AssessmentResult } from '../types/assessment';
 
@@ -363,13 +364,15 @@ export default function CriterionDetailPage() {
       </div>
 
       {pdfViewer && (
-        <PDFViewerModal
-          documentId={pdfViewer.documentId}
-          documentName={pdfViewer.documentName}
-          page={pdfViewer.page}
-          quote={pdfViewer.quote}
-          onClose={() => setPdfViewer(null)}
-        />
+        <Suspense fallback={null}>
+          <PDFViewerModal
+            documentId={pdfViewer.documentId}
+            documentName={pdfViewer.documentName}
+            page={pdfViewer.page}
+            quote={pdfViewer.quote}
+            onClose={() => setPdfViewer(null)}
+          />
+        </Suspense>
       )}
     </div>
   );

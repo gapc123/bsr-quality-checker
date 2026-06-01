@@ -9,7 +9,8 @@
 import React, { useState } from 'react';
 import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from './Icons';
 import type { AssessmentResult } from '../types/assessment';
-import PDFViewerModal from './PDFViewerModal';
+import { lazy, Suspense } from 'react';
+const PDFViewerModal = lazy(() => import('./PDFViewerModal'));
 import { resolveRef } from '../lib/regulationRefs';
 
 interface IssueDetailPanelProps {
@@ -425,13 +426,15 @@ export const IssueDetailPanel: React.FC<IssueDetailPanelProps> = ({
               </div>
             </div>
             {pdfViewer && (
-              <PDFViewerModal
-                documentId={pdfViewer.documentId}
-                documentName={pdfViewer.documentName}
-                page={pdfViewer.page}
-                quote={pdfViewer.quote}
-                onClose={() => setPdfViewer(null)}
-              />
+              <Suspense fallback={null}>
+                <PDFViewerModal
+                  documentId={pdfViewer.documentId}
+                  documentName={pdfViewer.documentName}
+                  page={pdfViewer.page}
+                  quote={pdfViewer.quote}
+                  onClose={() => setPdfViewer(null)}
+                />
+              </Suspense>
             )}
           </section>
         )}
