@@ -6,12 +6,12 @@
  * Replaces modal-based carousel detail view
  */
 
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from './Icons';
 import type { AssessmentResult } from '../types/assessment';
-import { lazy, Suspense } from 'react';
-const PDFViewerModal = lazy(() => import('./PDFViewerModal'));
 import { resolveRef } from '../lib/regulationRefs';
+
+const PDFViewerModal = lazy(() => import('./PDFViewerModal'));
 
 interface IssueDetailPanelProps {
   issue: AssessmentResult | null;

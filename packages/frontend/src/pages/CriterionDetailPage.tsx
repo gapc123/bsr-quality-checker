@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CircleDotIcon, ZapIcon, XCircleIcon, CheckIcon, XIcon, AlertCircleIcon } from '../components/Icons';
-import { lazy, Suspense } from 'react';
-const PDFViewerModal = lazy(() => import('../components/PDFViewerModal'));
 import { resolveRef } from '../lib/regulationRefs';
 import type { AssessmentResult } from '../types/assessment';
+
+const PDFViewerModal = lazy(() => import('../components/PDFViewerModal'));
 
 export default function CriterionDetailPage() {
   const { packId, versionId, criterionId } = useParams<{
