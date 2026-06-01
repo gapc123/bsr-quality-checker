@@ -339,7 +339,7 @@ export default function PacksList() {
               <select
                 value={filterClientId || ''}
                 onChange={(e) => setFilterClientId(e.target.value || null)}
-                style={{ border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none' }}
+                style={{ border: '1px solid var(--beige)', padding: '8px 12px', fontSize: '14px', outline: 'none', color: 'var(--navy)' }}
               >
                 <option value="">All Clients</option>
                 {clients.map((client) => (

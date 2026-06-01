@@ -30,6 +30,9 @@ const nodeFetchBrowserStub = {
 export default defineConfig({
   plugins: [nodeFetchBrowserStub, react()],
   optimizeDeps: {
+    // zod is a peer dep of @copilotkit/react-core — force pre-bundle to avoid
+    // Rollup TDZ errors in production builds caused by unresolved bare specifiers.
+    include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
     exclude: ['node-fetch', '@segment/analytics-node'],
   },
   server: {

@@ -148,7 +148,7 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
           type="text"
           value={context.projectReference}
           onChange={(e) => handleChange('projectReference', e.target.value)}
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900"
           placeholder="e.g., RT-2024-001"
         />
       </div>
