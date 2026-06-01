@@ -1,10 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// @copilotkit/shared → @segment/analytics-node → node-fetch pulls in Node.js
-// built-ins (https, http, stream…) that Vite can't bundle for the browser.
-// This pre-plugin stubs node-fetch with browser-native fetch before Rollup's
-// CommonJS resolver can process the real package.
 const nodeFetchBrowserStub = {
   name: 'node-fetch-browser-stub',
   enforce: 'pre' as const,
@@ -30,8 +26,6 @@ const nodeFetchBrowserStub = {
 export default defineConfig({
   plugins: [nodeFetchBrowserStub, react()],
   optimizeDeps: {
-    // zod is a peer dep of @copilotkit/react-core — force pre-bundle to avoid
-    // Rollup TDZ errors in production builds caused by unresolved bare specifiers.
     include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
     exclude: ['node-fetch', '@segment/analytics-node'],
   },
