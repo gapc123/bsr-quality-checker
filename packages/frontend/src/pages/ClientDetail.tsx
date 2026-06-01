@@ -435,7 +435,7 @@ export default function ClientDetail() {
               value={newPackName}
               onChange={(e) => setNewPackName(e.target.value)}
               placeholder="e.g., Riverside Tower - Gateway 2"
-              style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none' }}
+              style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', color: 'var(--navy)' }}
               autoFocus
               onKeyDown={(e) => e.key === 'Enter' && createPack()}
             />

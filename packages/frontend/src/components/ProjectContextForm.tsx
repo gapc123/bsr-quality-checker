@@ -128,7 +128,7 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
           value={context.projectName}
           onChange={(e) => handleChange('projectName', e.target.value)}
           onBlur={() => handleBlur('projectName')}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 ${
             showError('projectName') ? 'border-red-500' : 'border-slate-300'
           }`}
           placeholder="e.g., Riverside Tower"
@@ -163,7 +163,7 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
           value={context.buildingType}
           onChange={(e) => handleChange('buildingType', e.target.value)}
           onBlur={() => handleBlur('buildingType')}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 ${
             showError('buildingType') ? 'border-red-500' : 'border-slate-300'
           }`}
         >
@@ -194,7 +194,7 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
             value={context.heightMeters ?? ''}
             onChange={(e) => handleChange('heightMeters', e.target.value ? parseFloat(e.target.value) : null)}
             onBlur={() => handleBlur('heightMeters')}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 ${
               showError('heightMeters') ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="e.g., 25.5"
@@ -222,7 +222,7 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
             value={context.storeys ?? ''}
             onChange={(e) => handleChange('storeys', e.target.value ? parseInt(e.target.value, 10) : null)}
             onBlur={() => handleBlur('storeys')}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-900 ${
               showError('storeys') ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="e.g., 8"

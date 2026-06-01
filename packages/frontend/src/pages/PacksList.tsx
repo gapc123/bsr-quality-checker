@@ -484,7 +484,7 @@ export default function PacksList() {
                   value={newPackName}
                   onChange={(e) => setNewPackName(e.target.value)}
                   placeholder="e.g., Riverside Tower - Gateway 2"
-                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none' }}
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', color: 'var(--navy)' }}
                   autoFocus
                   onKeyDown={(e) => e.key === 'Enter' && createPack()}
                 />
@@ -496,7 +496,7 @@ export default function PacksList() {
                 <select
                   value={selectedClientId}
                   onChange={(e) => setSelectedClientId(e.target.value)}
-                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none' }}
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', color: 'var(--navy)' }}
                 >
                   <option value="">No client assigned</option>
                   {clients.map((client) => (
@@ -516,7 +516,7 @@ export default function PacksList() {
                 <select
                   value={selectedServicePackage}
                   onChange={(e) => setSelectedServicePackage(e.target.value)}
-                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none' }}
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', color: 'var(--navy)' }}
                 >
                   <option value="">Select service type...</option>
                   {SERVICE_PACKAGES.map((pkg) => (
@@ -535,7 +535,7 @@ export default function PacksList() {
                   onChange={(e) => setRequirements(e.target.value)}
                   placeholder="Brief description of the project, key requirements, target dates, etc."
                   rows={3}
-                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', resize: 'none' }}
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', resize: 'none', color: 'var(--navy)' }}
                 />
               </div>
 
@@ -547,7 +547,7 @@ export default function PacksList() {
                 <select
                   value={selectedTemplate}
                   onChange={(e) => setSelectedTemplate(e.target.value)}
-                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none' }}
+                  style={{ width: '100%', border: '1px solid var(--beige)', padding: '10px 16px', outline: 'none', color: 'var(--navy)' }}
                 >
                   <option value="">No template (create empty pack)</option>
                   {templates.map((template) => (

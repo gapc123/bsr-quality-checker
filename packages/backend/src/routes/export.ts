@@ -242,4 +242,51 @@ router.get(
   }
 );
 
+/**
+ * GET /api/packs/:packId/versions/:versionId/export/pdf
+ *
+ * Download the saved assessment as a Submission Readiness Report PDF.
+ * Loads the assessment from the database — no request body required.
+ * Used by the Results page export button and the CriterionDetailPage download link.
+ */
+router.get(
+  '/packs/:packId/versions/:versionId/export/pdf',
+  async (req: Request, res: Response) => {
+    try {
+      const packId = req.params.packId as string;
+      const versionId = req.params.versionId as string;
+
+      const version = await prisma.packVersion.findUnique({
+        where: { id: versionId },
+        include: { pack: { select: { name: true } } }
+      });
+
+      if (!version) {
+        res.status(404).json({ error: 'Version not found' });
+        return;
+      }
+
+      if (!version.matrixAssessment) {
+        res.status(404).json({ error: 'No saved assessment found for this version' });
+        return;
+      }
+
+      const assessment = typeof version.matrixAssessment === 'string'
+        ? JSON.parse(version.matrixAssessment)
+        : version.matrixAssessment;
+
+      const html = generateSubmissionReadinessHTML(assessment);
+      const tempFile = await generatePDFFromHTML(html, 'submission-readiness');
+      const filename = `assessment-${packId}-${new Date().toISOString().split('T')[0]}.pdf`;
+      streamPDFToResponse(tempFile, res, filename);
+    } catch (error) {
+      console.error('[Export] Error generating export/pdf:', error);
+      res.status(500).json({
+        error: 'Failed to generate PDF',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+);
+
 export default router;

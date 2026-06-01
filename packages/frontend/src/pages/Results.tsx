@@ -16,7 +16,6 @@ import ProjectMetadataCard from '../components/ProjectMetadataCard';
 import { useResponsive } from '../components/ResponsiveContainer';
 import { useA11y } from '../components/AccessibilityEnhancements';
 import type { FullAssessment, SubmissionGate, AssessmentResult } from '../types/assessment';
-import * as exportService from '../services/exportService';
 import { GatewayReadinessBar } from '../components/GatewayReadinessBar';
 import { computeDiff, diffSummary } from '../lib/assessmentDiff';
 import AssessmentProgressScreen, { CriterionResult } from '../components/AssessmentProgressScreen';
@@ -354,20 +353,32 @@ export default function Results() {
   };
 
   const handleExportReport = async () => {
-    if (!assessment) return;
     setExporting(true);
     try {
-      await exportService.exportAssessmentPDF(
-        packId || '',
-        versionId || '',
-        assessment,
-        submissionGate || undefined
+      const res = await fetch(
+        `/api/packs/${packId}/versions/${versionId}/export/pdf`,
+        { credentials: 'include' }
       );
-      announce('Assessment report exported', 'polite');
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `assessment-${packId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        announce('Assessment report exported', 'polite');
+      } else {
+        console.error('Export failed:', res.status);
+        showToast('Failed to export report. Please try again.', 'error');
+        announce('Failed to export report', 'assertive');
+      }
     } catch (error) {
       console.error('Export failed:', error);
-      announce('Failed to export report', 'assertive');
       showToast('Failed to export report. Please try again.', 'error');
+      announce('Failed to export report', 'assertive');
     } finally {
       setExporting(false);
     }
