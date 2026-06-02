@@ -27,15 +27,15 @@ export default defineConfig({
   plugins: [nodeFetchBrowserStub, react()],
   resolve: {
     alias: {
+      // zod-to-json-schema (CopilotKit dep) imports 'zod/v3' which only exists in zod v4.
+      // This alias ensures it always resolves to whatever zod is installed,
+      // preventing Rollup from creating an uninitialised binding → TDZ crash.
       'zod/v3': 'zod',
     },
   },
   optimizeDeps: {
     include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
     exclude: ['node-fetch', '@segment/analytics-node'],
-  },
-  build: {
-    sourcemap: true,
   },
   server: {
     port: 5173,
