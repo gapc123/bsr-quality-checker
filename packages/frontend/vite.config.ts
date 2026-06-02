@@ -23,19 +23,27 @@ const nodeFetchBrowserStub = {
   },
 };
 
-export default defineConfig({
-  plugins: [nodeFetchBrowserStub, react()],
-  resolve: {
-    alias: {
-      // zod-to-json-schema (CopilotKit dep) imports 'zod/v3' which only exists in zod v4.
-      // This alias ensures it always resolves to whatever zod is installed,
-      // preventing Rollup from creating an uninitialised binding → TDZ crash.
-      'zod/v3': 'zod',
-    },
+// zod-to-json-schema (a CopilotKit dep) imports 'zod/v3' which only exists in zod v4.
+// With zod v3 installed, Rollup can't resolve it and creates an uninitialised binding
+// (TDZ crash). This plugin intercepts the import and redirects it to plain 'zod'.
+const zodV3Stub = {
+  name: 'zod-v3-redirect',
+  enforce: 'pre' as const,
+  resolveId(id: string) {
+    if (id === 'zod/v3') {
+      return { id: 'zod', external: false };
+    }
   },
+};
+
+export default defineConfig({
+  plugins: [zodV3Stub, nodeFetchBrowserStub, react()],
   optimizeDeps: {
     include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
     exclude: ['node-fetch', '@segment/analytics-node'],
+  },
+  build: {
+    sourcemap: true,
   },
   server: {
     port: 5173,
