@@ -29,6 +29,15 @@ export default defineConfig({
     include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
     exclude: ['node-fetch', '@segment/analytics-node'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          copilotkit: ['@copilotkit/react-core', '@copilotkit/react-ui'],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {
