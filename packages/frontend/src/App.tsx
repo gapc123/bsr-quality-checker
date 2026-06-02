@@ -1,32 +1,34 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { CopilotKit } from '@copilotkit/react-core';
 import '@copilotkit/react-ui/styles.css';
-import PacksList from './pages/PacksList';
-import PackDetail from './pages/PackDetail';
-import Upload from './pages/Upload';
-import Results from './pages/Results';
-import CriterionDetailPage from './pages/CriterionDetailPage';
-import ButlerLibrary from './pages/ButlerLibrary';
-import ClientsList from './pages/ClientsList';
-import ClientDetail from './pages/ClientDetail';
-import QuickAssess from './pages/QuickAssess';
-import QuickAssessResults from './pages/QuickAssessResults';
-import SignInPage from './pages/SignIn';
-import Landing from './pages/Landing';
-import Problem from './pages/Problem';
-import System from './pages/System';
-import Approach from './pages/Approach';
-import Security from './pages/Security';
-import AdminLogin from './pages/AdminLogin';
-import AdminOperations from './pages/AdminOperations';
-import AdminShowcase from './pages/AdminShowcase';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AttleeLogo from './components/AttleeLogo';
 import { ResponsiveContainer } from './components/ResponsiveContainer';
 import { A11yProvider, SkipLinks } from './components/AccessibilityEnhancements';
 import { ToastProvider } from './components/Toast';
+
+// Lazy-load all pages to break static import chains and prevent TDZ errors in production bundle
+const PacksList = lazy(() => import('./pages/PacksList'));
+const PackDetail = lazy(() => import('./pages/PackDetail'));
+const Upload = lazy(() => import('./pages/Upload'));
+const Results = lazy(() => import('./pages/Results'));
+const ButlerLibrary = lazy(() => import('./pages/ButlerLibrary'));
+const ClientsList = lazy(() => import('./pages/ClientsList'));
+const ClientDetail = lazy(() => import('./pages/ClientDetail'));
+const QuickAssess = lazy(() => import('./pages/QuickAssess'));
+const QuickAssessResults = lazy(() => import('./pages/QuickAssessResults'));
+const SignInPage = lazy(() => import('./pages/SignIn'));
+const Landing = lazy(() => import('./pages/Landing'));
+const Problem = lazy(() => import('./pages/Problem'));
+const System = lazy(() => import('./pages/System'));
+const Approach = lazy(() => import('./pages/Approach'));
+const Security = lazy(() => import('./pages/Security'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const AdminOperations = lazy(() => import('./pages/AdminOperations'));
+const AdminShowcase = lazy(() => import('./pages/AdminShowcase'));
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -72,34 +74,38 @@ function AppContent() {
   // Admin pages have their own layout (no Clerk, no main nav)
   if (isAdminPage) {
     return (
-      <Routes>
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/showcase" element={<AdminShowcase />} />
-        <Route path="/admin" element={<AdminOperations />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/showcase" element={<AdminShowcase />} />
+          <Route path="/admin" element={<AdminOperations />} />
+        </Routes>
+      </Suspense>
     );
   }
 
   // Public pages (landing, problem, system, approach, security) and sign-in have their own layouts
   if (isPublicPage || isSignInPage) {
     return (
-      <Routes>
-        <Route path="/" element={
-          <>
-            <SignedOut>
-              <Landing />
-            </SignedOut>
-            <SignedIn>
-              <Navigate to="/assess" replace />
-            </SignedIn>
-          </>
-        } />
-        <Route path="/problem" element={<Problem />} />
-        <Route path="/system" element={<System />} />
-        <Route path="/approach" element={<Approach />} />
-        <Route path="/security" element={<Security />} />
-        <Route path="/sign-in/*" element={<SignInPage />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <SignedOut>
+                <Landing />
+              </SignedOut>
+              <SignedIn>
+                <Navigate to="/assess" replace />
+              </SignedIn>
+            </>
+          } />
+          <Route path="/problem" element={<Problem />} />
+          <Route path="/system" element={<System />} />
+          <Route path="/approach" element={<Approach />} />
+          <Route path="/security" element={<Security />} />
+          <Route path="/sign-in/*" element={<SignInPage />} />
+        </Routes>
+      </Suspense>
     );
   }
 
@@ -179,90 +185,84 @@ function AppContent() {
       {/* Main Content */}
       <main style={{ flex: 1, background: 'var(--cream)' }}>
         <div style={{ maxWidth: '1800px', width: '100%', margin: '0 auto', padding: '24px 5% 48px' }}>
-          <Routes>
+          <Suspense fallback={null}>
+            <Routes>
 
-            {/* Protected routes */}
-            <Route
-              path="/assess"
-              element={
-                <ProtectedRoute>
-                  <QuickAssess />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/assess/results"
-              element={
-                <ProtectedRoute>
-                  <QuickAssessResults />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/clients"
-              element={
-                <ProtectedRoute>
-                  <ClientsList />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/clients/:clientId"
-              element={
-                <ProtectedRoute>
-                  <ClientDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <PacksList />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/packs/:packId"
-              element={
-                <ProtectedRoute>
-                  <PackDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/packs/:packId/upload"
-              element={
-                <ProtectedRoute>
-                  <Upload />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/packs/:packId/versions/:versionId/results/criterion/:criterionId"
-              element={
-                <ProtectedRoute>
-                  <CriterionDetailPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/packs/:packId/versions/:versionId/results"
-              element={
-                <ProtectedRoute>
-                  <Results />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/butler"
-              element={
-                <ProtectedRoute>
-                  <ButlerLibrary />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
+              {/* Protected routes */}
+              <Route
+                path="/assess"
+                element={
+                  <ProtectedRoute>
+                    <QuickAssess />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/assess/results"
+                element={
+                  <ProtectedRoute>
+                    <QuickAssessResults />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/clients"
+                element={
+                  <ProtectedRoute>
+                    <ClientsList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/clients/:clientId"
+                element={
+                  <ProtectedRoute>
+                    <ClientDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <PacksList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/packs/:packId"
+                element={
+                  <ProtectedRoute>
+                    <PackDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/packs/:packId/upload"
+                element={
+                  <ProtectedRoute>
+                    <Upload />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/packs/:packId/versions/:versionId/results"
+                element={
+                  <ProtectedRoute>
+                    <Results />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/butler"
+                element={
+                  <ProtectedRoute>
+                    <ButlerLibrary />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Suspense>
         </div>
       </main>
 
