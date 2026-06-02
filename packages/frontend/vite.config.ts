@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 const nodeFetchBrowserStub = {
   name: 'node-fetch-browser-stub',
@@ -26,10 +27,10 @@ const nodeFetchBrowserStub = {
 export default defineConfig({
   plugins: [nodeFetchBrowserStub, react()],
   resolve: {
-    // zod-to-json-schema (CopilotKit dep) imports 'zod/v3' which only exists in zod v4.
-    // With zod v3 installed we alias it to plain 'zod' so Vite resolves it via node_modules.
     alias: {
-      'zod/v3': 'zod',
+      // Redirect zod/v3 to our shim (re-exports from installed zod v3).
+      // Fixes TDZ crash caused by zod-to-json-schema importing a non-existent subpath.
+      'zod/v3': path.resolve(__dirname, 'src/lib/zod-v3-shim.ts'),
     },
   },
   optimizeDeps: {
