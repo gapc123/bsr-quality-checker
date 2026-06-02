@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { CopilotKit } from '@copilotkit/react-core';
@@ -29,6 +29,29 @@ const Security = lazy(() => import('./pages/Security'));
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const AdminOperations = lazy(() => import('./pages/AdminOperations'));
 const AdminShowcase = lazy(() => import('./pages/AdminShowcase'));
+
+
+class CopilotKitErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error: Error) {
+    console.warn('[CopilotKit] Caught error, AI features disabled:', error.message);
+  }
+  render() {
+    if (this.state.hasError) return <>{this.props.children}</>;
+    return (
+      <CopilotKitErrorBoundary>
+        {this.props.children}
+      </CopilotKitErrorBoundary>
+    );
+  }
+}
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
