@@ -44,12 +44,7 @@ class CopilotKitErrorBoundary extends React.Component<
     console.warn('[CopilotKit] Caught error, AI features disabled:', error.message);
   }
   render() {
-    if (this.state.hasError) return <>{this.props.children}</>;
-    return (
-      <CopilotKitErrorBoundary>
-        {this.props.children}
-      </CopilotKitErrorBoundary>
-    );
+    return <>{this.props.children}</>;
   }
 }
 
@@ -333,18 +328,20 @@ function AppContent() {
 
 function App() {
   return (
-    <CopilotKit runtimeUrl="/api/copilotkit">
-      <BrowserRouter>
-        <ToastProvider>
-          <A11yProvider>
-            <ResponsiveContainer>
-              <SkipLinks />
-              <AppContent />
-            </ResponsiveContainer>
-          </A11yProvider>
-        </ToastProvider>
-      </BrowserRouter>
-    </CopilotKit>
+    <CopilotKitErrorBoundary>
+      <CopilotKit runtimeUrl="/api/copilotkit">
+        <BrowserRouter>
+          <ToastProvider>
+            <A11yProvider>
+              <ResponsiveContainer>
+                <SkipLinks />
+                <AppContent />
+              </ResponsiveContainer>
+            </A11yProvider>
+          </ToastProvider>
+        </BrowserRouter>
+      </CopilotKit>
+    </CopilotKitErrorBoundary>
   );
 }
 
