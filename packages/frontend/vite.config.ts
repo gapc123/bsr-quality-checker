@@ -26,7 +26,7 @@ const nodeFetchBrowserStub = {
 export default defineConfig({
   plugins: [nodeFetchBrowserStub, react()],
   optimizeDeps: {
-    include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
+    include: ['zod', 'zod/v3', '@copilotkit/react-core', '@copilotkit/react-ui'],
     exclude: ['node-fetch', '@segment/analytics-node'],
   },
   build: {
