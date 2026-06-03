@@ -11,8 +11,6 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useToast } from './Toast';
 import type { AssessmentResult } from '../types/assessment';
-import { useCopilotReadable } from '@copilotkit/react-core';
-import { CopilotPopup } from '@copilotkit/react-ui';
 
 interface DomainReviews {
   fire_safety: string;
@@ -251,31 +249,6 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
   }, [assessment.results]);
 
   // Give the copilot full awareness of the assessment results
-  useCopilotReadable({
-    description: 'BSR compliance assessment results for this building',
-    value: {
-      verdict: analysis.statusText,
-      totalChecks: analysis.total,
-      passing: analysis.passing,
-      buildingType: assessment.pack_context?.buildingType,
-      isHighRiseBuilding: assessment.pack_context?.isHRB,
-      isLondon: assessment.pack_context?.isLondon,
-      actionItems: analysis.actionItems.map(b => ({
-        check: b.matrix_title,
-        reason: b.reasoning,
-        gaps: b.gaps_identified,
-      })),
-      verifyItems: analysis.verifyItems.map(c => ({
-        check: c.matrix_title,
-        reason: c.reasoning,
-      })),
-      advisoryItems: analysis.advisoryItems.map(i => ({
-        check: i.matrix_title,
-        owner: i.actions_required?.[0]?.owner,
-        reason: i.reasoning,
-      })),
-    },
-  });
 
   const handleDownload = async () => {
     setIsDownloading(true);
@@ -631,25 +604,6 @@ export const SimpleResultsView: React.FC<SimpleResultsViewProps> = ({
     </div>
 
     {/* AI Copilot — ask questions about your assessment results */}
-    <CopilotPopup
-      instructions={`You are an expert BSR (Building Safety Regulator) compliance advisor embedded in Attlee AI's assessment tool.
-You have full visibility of the assessment results for this building, including critical blockers, client actions required, and internal specialist actions.
-
-Your role is to help housing association staff and consultants understand:
-- What the blockers mean in plain English
-- What they need to do to pass, and in what order
-- Which consultant disciplines need to be involved
-- How serious each issue is and typical remediation timescales
-
-Be concise, practical, and action-oriented. Reference specific checks from the results when relevant.
-Do not speculate beyond the evidence in the assessment.`}
-      defaultOpen={false}
-      clickOutsideToClose={true}
-      labels={{
-        title: 'Attlee AI Assistant',
-        initial: 'Ask me anything about these results — what to fix, who to call, or what the blockers mean.',
-      }}
-    />
     </>
   );
 };
