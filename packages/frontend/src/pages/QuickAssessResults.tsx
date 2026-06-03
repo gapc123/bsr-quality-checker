@@ -13,8 +13,6 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useToast } from '../components/Toast';
-import { useCopilotReadable } from '@copilotkit/react-core';
-import { CopilotPopup } from '@copilotkit/react-ui';
 import type { AssessmentResult, FullAssessment } from '../types/assessment';
 import * as exportService from '../services/exportService';
 
@@ -164,8 +162,6 @@ export default function QuickAssessResults() {
     else if (verifyItems.length > 0) { statusColor = '#d97706'; statusText = 'Needs verification'; statusBg = '#fffbeb'; }
     return { passing: passItems.length, passItems, total: assessment.results.length, actionItems, verifyItems, categoryCounts, statusColor, statusText, statusBg };
   }, [assessment]);
-
-  useCopilotReadable({ description: 'BSR compliance assessment results', value: analysis ? { verdict: analysis.statusText, totalChecks: analysis.total, passing: analysis.passing, actionItems: analysis.actionItems.map(b => ({ check: b.matrix_title, reason: b.reasoning, gaps: b.gaps_identified })), verifyItems: analysis.verifyItems.map(c => ({ check: c.matrix_title, reason: c.reasoning })) } : null });
 
   if (!assessment || !analysis) return null;
 
@@ -411,11 +407,6 @@ export default function QuickAssessResults() {
           </div>
         </div>
       )}
-
-      <CopilotPopup
-        instructions="You are an expert BSR Gateway 2 compliance assistant. Help the user understand what the issues mean, who should fix them, and what the regulatory consequences are. Be concise and practical."
-        labels={{ title: 'Attlee AI Assistant', initial: 'Ask me anything about these results — what to fix, who to call, or what the blockers mean.' }}
-      />
     </div>
   );
 }
