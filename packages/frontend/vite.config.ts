@@ -34,19 +34,11 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['zod', '@copilotkit/react-core', '@copilotkit/react-ui'],
+    include: ['zod'],
     exclude: ['node-fetch', '@segment/analytics-node'],
   },
   build: {
     sourcemap: true,
-    rollupOptions: {
-      output: {
-        // Isolate CopilotKit into its own chunk to break circular-dependency
-        // TDZ crashes that occur when it's co-bundled with app code.
-        manualChunks: {
-          copilotkit: ['@copilotkit/react-core', '@copilotkit/react-ui'],
-        },
-      },
     },
   },
   server: {
