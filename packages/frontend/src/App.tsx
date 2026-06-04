@@ -1,8 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
-import { CopilotKit } from '@copilotkit/react-core';
-import '@copilotkit/react-ui/styles.css';
 import Disclaimer from './components/Disclaimer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AttleeLogo from './components/AttleeLogo';
@@ -31,22 +29,6 @@ const AdminOperations = lazy(() => import('./pages/AdminOperations'));
 const AdminShowcase = lazy(() => import('./pages/AdminShowcase'));
 
 
-class CopilotKitErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch(error: Error) {
-    console.warn('[CopilotKit] Caught error, AI features disabled:', error.message);
-  }
-  render() {
-    return <>{this.props.children}</>;
-  }
-}
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
   const location = useLocation();
@@ -328,8 +310,6 @@ function AppContent() {
 
 function App() {
   return (
-    <CopilotKitErrorBoundary>
-      <CopilotKit runtimeUrl="/api/copilotkit">
         <BrowserRouter>
           <ToastProvider>
             <A11yProvider>
@@ -340,8 +320,6 @@ function App() {
             </A11yProvider>
           </ToastProvider>
         </BrowserRouter>
-      </CopilotKit>
-    </CopilotKitErrorBoundary>
   );
 }
 
