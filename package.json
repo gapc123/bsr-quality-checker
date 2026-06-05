@@ -21,7 +21,6 @@
     "pptxgenjs": "^4.0.1"
   },
   "dependencies": {
-    "openai": "^6.27.0",
-    "zod": "^3"
+    "openai": "^6.27.0"
   }
 }

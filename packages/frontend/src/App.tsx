@@ -13,7 +13,6 @@ const PacksList = lazy(() => import('./pages/PacksList'));
 const PackDetail = lazy(() => import('./pages/PackDetail'));
 const Upload = lazy(() => import('./pages/Upload'));
 const Results = lazy(() => import('./pages/Results'));
-const ButlerLibrary = lazy(() => import('./pages/ButlerLibrary'));
 const ClientsList = lazy(() => import('./pages/ClientsList'));
 const ClientDetail = lazy(() => import('./pages/ClientDetail'));
 const QuickAssess = lazy(() => import('./pages/QuickAssess'));
@@ -136,7 +135,6 @@ function AppContent() {
                   <NavLink to="/assess">Assessment</NavLink>
                   <NavLink to="/clients">Clients</NavLink>
                   <NavLink to="/dashboard">Packs</NavLink>
-                  <NavLink to="/butler">Reference Library</NavLink>
                 </nav>
                 <div style={{
                   marginLeft: '16px',
@@ -250,14 +248,6 @@ function AppContent() {
                 element={
                   <ProtectedRoute>
                     <Results />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/butler"
-                element={
-                  <ProtectedRoute>
-                    <ButlerLibrary />
                   </ProtectedRoute>
                 }
               />

@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import passport from 'passport';
-import { CopilotRuntime, AnthropicAdapter, copilotRuntimeNodeExpressEndpoint } from '@copilotkit/runtime';
 import path from 'path';
 import fs from 'fs';
 import packsRouter from './routes/packs.js';
@@ -139,15 +138,6 @@ app.get('/api-docs.json', (_req, res) => {
 
 console.log('📚 API Documentation available at /api-docs');
 
-// CopilotKit runtime endpoint — powers the AI copilot on the results screen.
-// Mounted at '/api/copilotkit'; Express strips the prefix so req.url becomes
-// '/', which matches endpoint: '/'. Do NOT mount without a path prefix —
-// that causes Hono to intercept all requests and return 404 for non-matching routes.
-app.use('/api/copilotkit', copilotRuntimeNodeExpressEndpoint({
-  runtime: new CopilotRuntime(),
-  serviceAdapter: new AnthropicAdapter({ model: 'claude-sonnet-4-6' } as any),
-  endpoint: '/',
-}));
 
 // Admin routes (session-based auth, separate from Clerk)
 app.use('/api/admin', adminRouter);
