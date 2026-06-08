@@ -96,6 +96,10 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+
+  // Destructure results early — used in lazy useState initializer below (must precede it to avoid TDZ)
+  const { results } = assessment;
+
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeTab, setActiveTab] = useState<ViewTab>('overview');
   const [showPassing, setShowPassing] = useState(false);
@@ -154,8 +158,6 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   const [revisionIssues, setRevisionIssues] = useState<AssessmentResult[]>([]);
 
   // Calculate metrics
-  const { results } = assessment;
-
   const failedResults = useMemo(() =>
     results.filter(r => r.status === 'does_not_meet' || r.status === 'partial'),
     [results]
