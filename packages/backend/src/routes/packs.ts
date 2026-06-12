@@ -12,6 +12,7 @@ const router = Router();
 // Configure multer for pack uploads with filename sanitization
 const upload = createUploadMiddleware({
   directory: 'uploads',
+  dynamicSubdir: (req) => req.params.id as string,
   sanitizeFilename: true,
 });
 
