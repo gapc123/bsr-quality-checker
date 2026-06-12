@@ -13,6 +13,7 @@ import { analysisLimiter, uploadLimiter } from '../middleware/rate-limit.js';
 import { createUploadMiddleware } from '../utils/upload-config.js';
 import { classifyDocType } from '../utils/textUtils.js';
 import { runSpecialistReview } from '../services/specialist-review.js';
+import { processPDF } from '../services/ingestion.js';
 
 const router = express.Router();
 
@@ -199,7 +200,7 @@ async function runAssessmentBackground(
     const processingTimeSeconds = Math.round((Date.now() - startTime) / 1000);
     const tempData = {
       assessmentId,
-      packDocs: packDocs.map(d => ({ filename: d.filename, docType: d.docType, filepath: d.filepath })),
+      packDocs: packDocs.map(d => ({ filename: d.filename, docType: d.docType, filepath: d.filepath, extractedText: d.extractedText })),
       context,
       results: fullAssessment,
       processingTimeSeconds,
@@ -519,25 +520,108 @@ router.post('/save', async (req: Request, res: Response) => {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
 
-    // Create document records
+    // Phase 1: filesystem operations (must run outside a DB transaction).
+    // Every submitted document is resolved to a final path + chunk records here.
+    // Scanned/image PDFs produce zero chunks and are flagged for gap-item injection.
+    type DocToSave = {
+      filename: string;
+      filepath: string;
+      docType: string | null;
+      chunkRecords: { text: string; pageRef: number; chunkIndex: number }[];
+    };
+    const docsToSave: DocToSave[] = [];
+    const unprocessableDocs: string[] = [];
+
     for (const doc of tempData.packDocs) {
+      let finalPath: string = doc.filepath;
+      let chunkRecords: { text: string; pageRef: number; chunkIndex: number }[];
+
       if (fs.existsSync(doc.filepath)) {
         const newPath = path.join(uploadsDir, doc.filename);
         fs.copyFileSync(doc.filepath, newPath);
-
-        await prisma.document.create({
-          data: {
-            packVersionId: version.id,
-            libraryType: 'pack',
-            filename: doc.filename,
-            filepath: newPath,
-            docType: doc.docType
+        finalPath = newPath;
+        // Use processPDF so every chunk carries the correct page number
+        const docInfo = await processPDF(doc.filepath);
+        chunkRecords = docInfo.chunks;
+      } else {
+        // File is gone — fall back to text-only chunking; page citations will not be
+        // accurate but content is preserved so re-runs are not blocked.
+        console.warn(`[Save] ${doc.filename}: original file gone, falling back to single-page chunks — page citations will not be accurate`);
+        const text: string = doc.extractedText || '';
+        const CHUNK_SIZE = 1000;
+        const CHUNK_OVERLAP = 200;
+        const advance = CHUNK_SIZE - CHUNK_OVERLAP; // guard: loop only runs when advance > 0
+        chunkRecords = [];
+        let charIdx = 0;
+        let chunkIdx = 0;
+        while (advance > 0 && charIdx < text.length) {
+          const slice = text.slice(charIdx, charIdx + CHUNK_SIZE).trim();
+          if (slice.length > 0) {
+            chunkRecords.push({ text: slice, pageRef: 1, chunkIndex: chunkIdx++ });
           }
+          charIdx += advance;
+        }
+      }
+
+      if (chunkRecords.length === 0) {
+        console.warn(`[Save] ${doc.filename} yielded no extractable text (scanned/image PDF) — saved to pack without chunks; gap item will appear in assessment.`);
+        unprocessableDocs.push(doc.filename);
+      }
+
+      docsToSave.push({ filename: doc.filename, filepath: finalPath, docType: doc.docType, chunkRecords });
+    }
+
+    console.log(`✓ Processed ${docsToSave.length}/${tempData.packDocs.length} documents${unprocessableDocs.length > 0 ? ` (${unprocessableDocs.length} not chunked — scanned PDF)` : ''}`);
+
+    // Phase 2: inject gap items into the in-memory assessment before any DB write,
+    // so the transaction below stores a consistent, fully-annotated result.
+    if (unprocessableDocs.length > 0) {
+      for (const filename of unprocessableDocs) {
+        (tempData.results.results as any[]).push({
+          matrix_id: `UNPROCESSED_DOC_${filename.replace(/[^a-zA-Z0-9]/g, '_')}`,
+          matrix_title: `Unprocessed Document: ${filename}`,
+          category: 'Document Processing',
+          status: 'not_assessed',
+          severity: 'high',
+          reasoning:
+            `"${filename}" was submitted but could not be processed — it appears to be a scanned ` +
+            `or image-only PDF with no text layer. Its contents were not evaluated in this assessment.`,
+          success_definition: 'Document is a searchable PDF with fully extractable text.',
+          pack_evidence: { found: false, document: filename, page: null, quote: null },
+          reference_evidence: { found: false, doc_id: null, doc_title: null, page: null, quote: null },
+          gaps_identified: [`"${filename}" has no text layer — content could not be extracted or assessed.`],
+          actions_required: [{
+            action: `Re-upload "${filename}" as a searchable (text-layer) PDF.`,
+            owner: 'Principal Designer',
+            effort: 'S' as const,
+            expected_benefit: 'Document content will be included in the assessment.',
+          }],
         });
       }
     }
 
-    console.log(`✓ Saved ${tempData.packDocs.length} documents`);
+    // Phase 3: single atomic transaction — all document records + amended assessment
+    // are written together so a partial failure can never leave the DB inconsistent.
+    await prisma.$transaction(async (tx) => {
+      for (const doc of docsToSave) {
+        await tx.document.create({
+          data: {
+            packVersionId: version.id,
+            libraryType: 'pack',
+            filename: doc.filename,
+            filepath: doc.filepath,
+            docType: doc.docType,
+            chunks: { create: doc.chunkRecords },
+          },
+        });
+      }
+      if (unprocessableDocs.length > 0) {
+        await tx.packVersion.update({
+          where: { id: version.id },
+          data: { matrixAssessment: JSON.stringify(tempData.results) },
+        });
+      }
+    });
 
     // ── Admin instrumentation: create Organisation + Submission ──────────────
     try {

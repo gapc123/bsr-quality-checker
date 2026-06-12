@@ -1,7 +1,8 @@
+import fs from 'fs';
 import prisma from '../db/client.js';
 import { sendAssessmentCompleteNotification } from './telegram.js';
 import { extractValidatedJSON } from './claude.js';
-import { searchChunks } from './ingestion.js';
+import { searchChunks, processPDF } from './ingestion.js';
 import {
   FIELD_EXTRACTION_SYSTEM_PROMPT,
   FIELD_EXTRACTION_USER_PROMPT,
@@ -404,6 +405,43 @@ export async function runMatrixAssessment(packVersionId: string, onProgress?: (e
     throw new Error(`Pack version not found: ${packVersionId}`);
   }
 
+  // Self-heal: documents saved from Quick-Assess before this fix had no chunks.
+  // On first re-run, re-ingest from filepath so the assessment has real content.
+  for (const doc of packVersion.documents) {
+    if (doc.chunks.length === 0 && doc.filepath && fs.existsSync(doc.filepath)) {
+      console.log(`[Matrix Assessment] Re-ingesting ${doc.filename} (no chunks in DB)`);
+      try {
+        const docInfo = await processPDF(doc.filepath);
+        await prisma.chunk.createMany({
+          data: docInfo.chunks.map(c => ({
+            documentId: doc.id,
+            text: c.text,
+            pageRef: c.pageRef,
+            chunkIndex: c.chunkIndex,
+          })),
+        });
+        // Populate the in-memory array so packDocs below uses the fresh chunks
+        doc.chunks = docInfo.chunks.map((c, i) => ({
+          id: `temp-${i}`,
+          documentId: doc.id,
+          text: c.text,
+          pageRef: c.pageRef,
+          chunkIndex: c.chunkIndex,
+          createdAt: new Date(),
+        }));
+      } catch (err) {
+        console.warn(`[Matrix Assessment] Re-ingest failed for ${doc.filename}:`, err);
+      }
+      // Re-ingest ran but produced nothing (scanned/image PDF or parse error)
+      if (doc.chunks.length === 0) {
+        console.warn(
+          `[Matrix Assessment] ${doc.filename} could not be re-ingested and will be excluded from this assessment. ` +
+          `Check whether it is a scanned/image PDF with no text layer.`
+        );
+      }
+    }
+  }
+
   // Prepare pack documents for assessment (sorted alphabetically for determinism)
   const packDocs = packVersion.documents
     .map(doc => ({
@@ -417,6 +455,18 @@ export async function runMatrixAssessment(packVersionId: string, onProgress?: (e
         .slice(0, 30000) // Limit per document
     }))
     .sort((a, b) => a.filename.localeCompare(b.filename)); // Double-ensure sorting
+
+  // Guard: fail loudly if all documents have empty content after self-heal attempt.
+  // Silently running the assessment on blank strings would produce fake-pass results.
+  const docsWithContent = packDocs.filter(d => d.extractedText.trim().length > 0);
+  if (docsWithContent.length === 0) {
+    throw new Error(
+      `No document content available for assessment of version ${packVersionId}. ` +
+      `All ${packVersion.documents.length} document(s) yielded empty text — ` +
+      `they may be scanned/image PDFs with no text layer, or the original files were not retained after Quick-Assess. ` +
+      `Please re-upload text-layer PDFs to run a new assessment.`
+    );
+  }
 
   // Determine pack context from version metadata
   // Auto-detect height/storeys from document content when DB metadata is absent
@@ -444,8 +494,36 @@ export async function runMatrixAssessment(packVersionId: string, onProgress?: (e
   console.log(`[Matrix Assessment] Starting assessment for pack version ${packVersionId}`);
   console.log(`[Matrix Assessment] Context: London=${context.isLondon}, HRB=${context.isHRB}`);
 
-  // Run the matrix assessment
-  const assessment = await assessPackAgainstMatrix(packDocs, context, onProgress);
+  // Only pass documents with content to the engine — empty-text docs would contribute
+  // nothing and may confuse evidence scoring.
+  const emptyDocs = packDocs.filter(d => d.extractedText.trim().length === 0);
+  const assessment = await assessPackAgainstMatrix(docsWithContent, context, onProgress);
+
+  // Surface every submitted document that yielded no content as an explicit gap item.
+  // This ensures the report never silently omits a file the user submitted.
+  for (const doc of emptyDocs) {
+    assessment.results.push({
+      matrix_id: `UNPROCESSED_DOC_${doc.filename.replace(/[^a-zA-Z0-9]/g, '_')}`,
+      matrix_title: `Unprocessed Document: ${doc.filename}`,
+      category: 'Document Processing',
+      status: 'not_assessed',
+      severity: 'high',
+      reasoning:
+        `"${doc.filename}" was submitted but contributed no content to this assessment. ` +
+        `It is likely a scanned or image-only PDF with no text layer, or a file that could not ` +
+        `be re-ingested. Re-upload as a searchable PDF to include it in future assessments.`,
+      success_definition: 'Document is a searchable PDF with fully extractable text.',
+      pack_evidence: { found: false, document: doc.filename, page: null, quote: null },
+      reference_evidence: { found: false, doc_id: null, doc_title: null, page: null, quote: null },
+      gaps_identified: [`"${doc.filename}" has no text layer — content could not be extracted or assessed.`],
+      actions_required: [{
+        action: `Re-upload "${doc.filename}" as a searchable (text-layer) PDF.`,
+        owner: 'Principal Designer',
+        effort: 'S' as const,
+        expected_benefit: 'Document content will be included in the assessment.',
+      }],
+    });
+  }
 
   // Store assessment results in database
   await prisma.packVersion.update({
