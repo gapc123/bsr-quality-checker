@@ -360,6 +360,20 @@ router.post(
         return;
       }
 
+      // Guard: if no chunks exist for any document in this version, the pack was saved
+      // before chunk persistence was introduced. The engine has nothing to read — return
+      // 422 immediately rather than calling the LLM on empty content.
+      const chunkCount = await prisma.chunk.count({
+        where: { document: { packVersionId: versionId } },
+      });
+      if (chunkCount === 0) {
+        res.status(422).json({
+          error: 'no_chunks',
+          message: 'Documents from this pack could not be re-processed — they were saved before document storage was enabled. Please start a new assessment.',
+        });
+        return;
+      }
+
       // Set status to running
       analysisStatus.set(versionId, { status: 'running' });
 

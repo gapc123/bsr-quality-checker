@@ -32,6 +32,7 @@ export default function Results() {
   const [submissionGate, setSubmissionGate] = useState<SubmissionGate | null>(null);
   const [assessmentStatus, setAssessmentStatus] = useState<'loading' | 'running' | 'complete' | 'error'>('loading');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   // Progress tracking for the live assessment screen
   const [completedCriteria, setCompletedCriteria] = useState<CriterionResult[]>([]);
@@ -61,10 +62,23 @@ export default function Results() {
   const handleRerunAssessment = async () => {
     setAssessmentStatus('loading');
     setErrorMessage(null);
+    setErrorCode(null);
     try {
-      await fetch(`/api/packs/${packId}/versions/${versionId}/matrix-assess`, { method: 'POST' });
+      const res = await fetch(`/api/packs/${packId}/versions/${versionId}/matrix-assess`, { method: 'POST' });
+      if (!res.ok) {
+        let msg = `Failed to start assessment (${res.status}). Please try again.`;
+        let code: string | null = null;
+        try { const d = await res.json(); msg = d.message || msg; code = d.error || null; } catch { /* ignore */ }
+        setAssessmentStatus('error');
+        setErrorMessage(msg);
+        setErrorCode(code);
+        return;
+      }
+      setAssessmentStatus('running');
     } catch (err) {
       console.error('Failed to start re-run:', err);
+      setAssessmentStatus('error');
+      setErrorMessage('Network error. Could not start assessment. Please try again.');
     }
   };
 
@@ -436,12 +450,14 @@ export default function Results() {
           </h2>
           <p className="text-slate-600 mb-6">{errorMessage || 'Something went wrong. Please try again.'}</p>
           <div className="flex gap-3 justify-center">
-            <button
-              onClick={handleRerunAssessment}
-              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
-            >
-              Re-run Assessment
-            </button>
+            {errorCode !== 'no_chunks' && (
+              <button
+                onClick={handleRerunAssessment}
+                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-sm"
+              >
+                Re-run Assessment
+              </button>
+            )}
             <button
               onClick={() => navigate(`/packs/${packId}`)}
               className="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-900 font-semibold rounded-lg transition-colors"
