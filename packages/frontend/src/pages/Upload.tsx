@@ -68,7 +68,9 @@ export default function Upload() {
           .catch(err => console.error('Failed to start assessment:', err));
         navigate(`/packs/${packId}/versions/${version.id}/results`);
       } else {
-        showToast('Failed to upload documents', 'error');
+        const errorData = await res.json().catch(() => ({}));
+        const reason = errorData.failed_reasons?.[0] ?? 'Failed to upload documents';
+        showToast(reason, 'error');
       }
     } catch (error) {
       console.error('Error uploading:', error);

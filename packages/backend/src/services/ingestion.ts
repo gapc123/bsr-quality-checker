@@ -1,7 +1,25 @@
 import fs from 'fs';
 import path from 'path';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
 import pdfParse from 'pdf-parse';
 import prisma from '../db/client.js';
+
+const execFileAsync = promisify(execFile);
+
+/**
+ * Use pdftotext (poppler) to extract text from a PDF.
+ * Returns null if pdftotext is not available (e.g. local dev without poppler).
+ * Handles all standard PDF encodings including FlateDecode and ASCII85.
+ */
+async function extractTextViaPdftotext(filepath: string): Promise<string | null> {
+  try {
+    const { stdout } = await execFileAsync('pdftotext', ['-q', filepath, '-']);
+    return stdout;
+  } catch {
+    return null;
+  }
+}
 import { classifyDocType } from '../utils/textUtils.js';
 
 type LibraryType = 'pack' | 'baseline' | 'butler';
@@ -93,20 +111,42 @@ export async function processPDF(filepath: string): Promise<DocumentInfo> {
   const filename = path.basename(filepath);
   const dataBuffer = fs.readFileSync(filepath);
 
-  const pdfData = await pdfParse(dataBuffer);
+  let text: string;
+  let pageCount = 1;
 
-  const text = pdfData.text.trim();
-  const isScanned = text.length < 100; // Very little text = likely scanned
+  // pdftotext (poppler) handles all standard encodings incl. FlateDecode/ASCII85.
+  // Falls back to pdf-parse in environments where poppler is not installed (local dev).
+  const pdftotextOutput = await extractTextViaPdftotext(filepath);
+  if (pdftotextOutput !== null) {
+    text = pdftotextOutput.trim();
+    try {
+      const meta = await pdfParse(dataBuffer, { max: 0 });
+      pageCount = meta.numpages;
+    } catch { /* page count unavailable — not critical */ }
+  } else {
+    const pdfData = await pdfParse(dataBuffer);
+    text = pdfData.text.trim();
+    pageCount = pdfData.numpages;
+  }
 
-  const chunks = isScanned ? [] : processTextByPage(pdfData);
+  if (text.length < 100) {
+    const err = new Error(
+      'This PDF appears to be image-only (e.g. a scanned document). ' +
+      'Please provide a searchable PDF, or use OCR software to add a text layer before uploading.'
+    ) as NodeJS.ErrnoException;
+    err.code = 'SCANNED_PDF';
+    throw err;
+  }
+
+  const chunks = processTextByPage({ text, numpages: pageCount } as pdfParse.Result);
   const docType = classifyDocType(filename, text);
 
   return {
     filename,
     filepath,
     docType,
-    isScanned,
-    pageCount: pdfData.numpages,
+    isScanned: false,
+    pageCount,
     chunks,
   };
 }

@@ -78,13 +78,8 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
       }
     }
 
-    // Auto-determine storeys from height (rough estimate)
-    if (context.heightMeters !== null && context.storeys === null && context.heightMeters > 0) {
-      const estimatedStoreys = Math.floor(context.heightMeters / 3.5);
-      if (estimatedStoreys >= 1) {
-        setContext(prev => ({ ...prev, storeys: estimatedStoreys }));
-      }
-    }
+    // Note: storeys are NOT auto-filled from height — doing so pre-populates the input
+    // and causes users to accidentally produce concatenated values (e.g. "1618" instead of "18").
 
     setErrors(newErrors);
 
@@ -229,6 +224,11 @@ export const ProjectContextForm: React.FC<ProjectContextFormProps> = ({
           />
           {showError('storeys') && (
             <p className="mt-1 text-sm text-red-600">{errors.storeys}</p>
+          )}
+          {context.heightMeters !== null && context.storeys === null && context.heightMeters > 0 && (
+            <p className="mt-1 text-xs text-slate-500">
+              Estimated ~{Math.floor(context.heightMeters / 3.5)} storeys based on height
+            </p>
           )}
         </div>
       </div>

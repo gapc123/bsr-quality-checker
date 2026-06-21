@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     python3 \
     python3-pip \
+    poppler-utils \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 

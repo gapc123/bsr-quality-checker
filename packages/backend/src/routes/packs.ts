@@ -844,6 +844,7 @@ router.post(
       // Phase 1: Validate and process all files BEFORE creating database records
       const processedDocs: DocumentInfo[] = [];
       const failedFiles: string[] = [];
+      const failedReasons: string[] = [];
 
       for (const file of files || []) {
         try {
@@ -852,6 +853,7 @@ router.post(
           if (!isPdfFile(fileBuffer)) {
             console.error(`File ${file.originalname} failed PDF validation`);
             failedFiles.push(file.originalname);
+            failedReasons.push(`${file.originalname}: not a valid PDF file`);
             await fs.promises.unlink(file.path);
             continue;
           }
@@ -860,8 +862,18 @@ router.post(
           const { processPDF } = await import('../services/ingestion.js');
           const docInfo = await processPDF(file.path);
           processedDocs.push(docInfo);
-        } catch (error) {
-          console.error(`Error processing ${file.originalname}:`, error);
+        } catch (error: any) {
+          if (error.code === 'SCANNED_PDF') {
+            console.error(`File ${file.originalname} is image-only (scanned)`);
+            failedReasons.push(
+              `${file.originalname}: image-only PDF — please provide a searchable PDF or run OCR to add a text layer first`
+            );
+          } else {
+            console.error(`Error processing ${file.originalname}:`, error);
+            failedReasons.push(
+              `${file.originalname}: could not extract text — the file may use an unsupported encoding; try re-exporting from Word or Adobe Acrobat`
+            );
+          }
           failedFiles.push(file.originalname);
           // Clean up failed upload
           try {
@@ -876,7 +888,8 @@ router.post(
       if (processedDocs.length === 0) {
         res.status(400).json({
           error: 'No valid documents uploaded',
-          failed_files: failedFiles
+          failed_files: failedFiles,
+          failed_reasons: failedReasons,
         });
         return;
       }
