@@ -17,6 +17,10 @@ import { processPDF } from '../services/ingestion.js';
 
 const router = express.Router();
 
+// Minimum non-whitespace characters required for a PDF to be considered machine-readable.
+// Files below this threshold are treated as scanned/image-only and surfaced as gap items.
+const MIN_EXTRACTABLE_CHARS = 50;
+
 // In-memory store for crew review results (keyed by assessmentId)
 // In production this would use Redis or the database
 const crewReviewCache = new Map<string, { status: 'pending' | 'done' | 'error'; result?: any; error?: string }>();
@@ -176,14 +180,34 @@ async function runAssessmentBackground(
       })
     );
 
-    // RAG indexing is optional — skip gracefully if OPENAI_API_KEY is absent
+    // Partition documents: scanned/image-only PDFs yield fewer than MIN_EXTRACTABLE_CHARS
+    // non-whitespace characters and must not be passed to the assessment engine —
+    // they would appear as filename-only evidence while contributing zero actual content.
+    const scannedDocs = packDocs.filter(
+      d => d.extractedText.replace(/\s/g, '').length < MIN_EXTRACTABLE_CHARS
+    );
+    const processableDocs = packDocs.filter(
+      d => d.extractedText.replace(/\s/g, '').length >= MIN_EXTRACTABLE_CHARS
+    );
+    if (scannedDocs.length > 0) {
+      console.warn(
+        `[assess] ${scannedDocs.length} scanned/image PDF(s) detected and excluded from assessment: ` +
+        scannedDocs.map(d => d.filename).join(', ')
+      );
+    }
+
+    // RAG indexing is optional — skip gracefully if OPENAI_API_KEY is absent.
+    // Only index processable docs; scanned PDFs produce no meaningful chunks.
     try {
       setProgress('Indexing documents for semantic search…');
+      const processableFiles = files.filter(f =>
+        processableDocs.some(d => d.filename === f.originalname)
+      );
       const chunkedDocs = await chunkDocuments(
-        files.map((file, idx) => ({
+        processableFiles.map(file => ({
           filepath: file.path,
           filename: file.originalname,
-          docType: packDocs[idx].docType,
+          docType: processableDocs.find(d => d.filename === file.originalname)?.docType ?? null,
         }))
       );
       const allChunks = chunkedDocs.flatMap(doc => doc.chunks);
@@ -195,11 +219,79 @@ async function runAssessmentBackground(
     }
 
     setProgress('Running Phase 1: deterministic rules…');
-    const fullAssessment = await assessPackAgainstMatrix(packDocs, context);
+    // Only processable docs are passed to the engine — scanned files must never appear
+    // as evidence under any criterion (SM-029 or otherwise).
+    // Guard: if every uploaded file is scanned/image-only, skip the engine entirely
+    // rather than running it against zero evidence (Rule 2 violation).
+    let fullAssessment: Awaited<ReturnType<typeof assessPackAgainstMatrix>>;
+    if (processableDocs.length === 0) {
+      console.warn('[assess] All uploaded documents are scanned/image-only — engine skipped, gap items only.');
+      fullAssessment = {
+        project_name: context.projectName ?? null,
+        pack_context: context,
+        reference_standards_applied: [],
+        criteria_summary: {
+          total_applicable: 0,
+          assessed: 0,
+          not_assessed: scannedDocs.length,
+          meets: 0,
+          partial: 0,
+          does_not_meet: 0,
+          missing_information: 0,
+        },
+        flagged_by_severity: { high: scannedDocs.length, medium: 0, low: 0 },
+        results: [],
+        assessment_phases: {
+          deterministic: { total_rules: 0, passed: 0, failed: 0, needs_review: 0, results: [] },
+          llm_analysis: { total_criteria: 0, assessed: 0, results_count: 0 },
+        },
+        readiness_score: 0,
+        assessment_date: new Date().toISOString(),
+        guardrail_stats: {
+          corpus_backed_criteria: 0,
+          criteria_with_reference_anchors: 0,
+          reference_anchor_rate: 0,
+          deterministic_rule_count: 0,
+          llm_criteria_count: 0,
+        },
+        api_usage: { api_calls_made: 0, tokens_input: 0, tokens_output: 0 },
+        integrity_issues: [],
+      };
+    } else {
+      fullAssessment = await assessPackAgainstMatrix(processableDocs, context);
+    }
+
+    // Inject explicit gap items for scanned/unprocessable documents so they are
+    // always visible in the report and never silently omitted.
+    for (const doc of scannedDocs) {
+      fullAssessment.results.push({
+        matrix_id: `UNPROCESSED_DOC_${doc.filename.replace(/[^a-zA-Z0-9]/g, '_')}`,
+        matrix_title: `Unprocessed Document: ${doc.filename}`,
+        category: 'Document Processing',
+        status: 'not_assessed',
+        severity: 'high',
+        reasoning:
+          `"${doc.filename}" could not be read — it appears to be a scanned or image-only PDF ` +
+          `with no machine-readable text layer. Fewer than ${MIN_EXTRACTABLE_CHARS} non-whitespace ` +
+          `characters were extracted. This file was not used as evidence for any criteria.`,
+        success_definition: 'Document is a searchable PDF with fully extractable text.',
+        pack_evidence: { found: false, document: doc.filename, page: null, quote: null },
+        reference_evidence: { found: false, doc_id: null, doc_title: null, page: null, quote: null },
+        gaps_identified: [`"${doc.filename}" has no text layer — its content could not be assessed.`],
+        actions_required: [{
+          action: `Re-upload a machine-readable (text-based) version of "${doc.filename}", or obtain an OCR-processed copy.`,
+          owner: 'Principal Designer',
+          effort: 'S' as const,
+          expected_benefit: 'Document content will be included in the assessment.',
+        }],
+      });
+    }
 
     const processingTimeSeconds = Math.round((Date.now() - startTime) / 1000);
     const tempData = {
       assessmentId,
+      // Keep all packDocs (including scanned) so the save handler creates document
+      // records for every uploaded file — zero-chunk detection handles them there.
       packDocs: packDocs.map(d => ({ filename: d.filename, docType: d.docType, filepath: d.filepath, extractedText: d.extractedText })),
       context,
       results: fullAssessment,
