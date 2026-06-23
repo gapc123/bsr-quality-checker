@@ -3283,7 +3283,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasBSM = containsAnyKeyword(allText, ['building safety manager', 'bsm', 'safety manager']);
       const hasAP = containsAnyKeyword(allText, ['accountable person', 'responsible person', 'duty holder']);
-      const hasHandover = containsAnyKeyword(allText, ['handover', 'operational', 'management']);
+      const hasHandover = containsAnyKeyword(allText, ['handover', 'operational handover', 'handover pack', 'building manual']);
 
       if (hasBSM || (hasAP && hasHandover)) {
         return {
