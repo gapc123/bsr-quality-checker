@@ -1567,7 +1567,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     check: (docs) => {
       const combinedText = docs.map(d => d.extractedText).join(' ');
 
-      const hasChangeControl = containsAnyKeyword(combinedText, ['change control', 'change management', 'design change', 'variation', 'amendment']);
+      const hasChangeControl = containsAnyKeyword(combinedText, ['change control', 'change management', 'design change', 'change control process', 'change control log']);
 
       if (!hasChangeControl) {
         return {
