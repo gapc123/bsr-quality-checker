@@ -3559,7 +3559,7 @@ export const DETERMINISTIC_RULES: DeterministicRule[] = [
     check: (docs) => {
       const allText = docs.map(d => d.extractedText).join(' ');
       const hasCorridorVent = containsAnyKeyword(allText, ['corridor ventilation', 'common area ventilation', 'lobby ventilation']);
-      const hasSmokeVent = containsAnyKeyword(allText, ['smoke shaft', 'aov', 'automatic opening vent', 'smoke ventilation']);
+      const hasSmokeVent = containsAnyKeyword(allText, ['smoke shaft', 'aov', 'automatic opening vent']);
       const hasNaturalVent = containsAnyKeyword(allText, ['natural ventilation corridor', 'openable window corridor']);
 
       if (hasCorridorVent || hasSmokeVent || hasNaturalVent) {
