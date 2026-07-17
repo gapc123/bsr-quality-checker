@@ -117,7 +117,11 @@ export default function FileUpload({
                   <div>
                     <p className="text-sm font-medium text-slate-900">{file.name}</p>
                     <p className="text-xs text-slate-500">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                      {file.size === 0
+                        ? 'PDF'
+                        : file.size < 1024 * 1024
+                          ? `${(file.size / 1024).toFixed(0)} KB`
+                          : `${(file.size / 1024 / 1024).toFixed(1)} MB`}
                     </p>
                   </div>
                 </div>

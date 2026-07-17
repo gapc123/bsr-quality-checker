@@ -36,18 +36,43 @@ const TIER_STYLES = {
   verify:  { borderLeft: '3px solid #d97706', bg: '#fffbeb', idColor: '#b45309' },
 };
 
-const IssueCard: React.FC<{ issue: AssessmentResult; tier: 'action' | 'verify'; defaultExpanded?: boolean }> = ({ issue, tier, defaultExpanded = false }) => {
+const VERIFY_FALLBACK_GUIDANCE: Record<string, string> = {
+  FIRE_SAFETY:       'Have a Chartered Fire Engineer review the evidence in your pack against Approved Document B and BS 9991. Confirm the document explicitly addresses this criterion.',
+  VENTILATION:       'Confirm your ventilation strategy document explicitly states compliance with the applicable standards. A mechanical/building services engineer should sign off.',
+  PACK_COMPLETENESS: 'Check your document schedule against the BSR Gateway 2 checklist. Commission or obtain any missing documents before resubmitting.',
+  GOLDEN_THREAD:     'Ensure design intent, decisions, and changes are traceable across all documents. Your Principal Designer should confirm the golden thread is intact.',
+  HRB_DUTIES:        'Your Accountable Person and Principal Designer should confirm in writing that all statutory dutyholder obligations have been discharged.',
+  CONSISTENCY:       'Have your design team reconcile any conflicting figures across drawings, reports, and specifications. Issue a coordinated revision.',
+  STRUCTURAL:        'A Chartered Structural Engineer should confirm the structural fire resistance evidence meets the BSR\'s requirements.',
+  DEFAULT:           'A qualified professional with expertise in this area should manually review the relevant sections of your pack and confirm compliance in writing.',
+};
+
+function verifyGuidance(category?: string): string {
+  if (!category) return VERIFY_FALLBACK_GUIDANCE.DEFAULT;
+  return VERIFY_FALLBACK_GUIDANCE[category] ?? VERIFY_FALLBACK_GUIDANCE.DEFAULT;
+}
+
+const IssueCard: React.FC<{ issue: AssessmentResult; tier: 'action' | 'verify'; defaultExpanded?: boolean; isCritical?: boolean }> = ({ issue, tier, defaultExpanded = false, isCritical = false }) => {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const s = TIER_STYLES[tier];
   const gap = issue.gaps_identified?.[0];
   const action = issue.actions_required?.[0];
   const evidence = issue.pack_evidence;
+  const actionText = action?.action;
+  const verifyGuidanceText = (!actionText && tier === 'verify') ? verifyGuidance(issue.category) : null;
   return (
-    <div style={{ borderLeft: s.borderLeft, background: s.bg, borderRadius: '6px', marginBottom: '8px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.06)' }}>
+    <div style={{ borderLeft: isCritical ? '3px solid #7c0000' : s.borderLeft, background: isCritical ? '#fff0f0' : s.bg, borderRadius: '6px', marginBottom: '8px', overflow: 'hidden', border: isCritical ? '1px solid #fca5a5' : '1px solid rgba(0,0,0,0.06)' }}>
       <button onClick={() => setExpanded(!expanded)}
         style={{ width: '100%', display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px 14px', textAlign: 'left', background: 'transparent', border: 'none', cursor: 'pointer' }}>
-        <span style={{ fontFamily: 'monospace', fontSize: '11px', color: s.idColor, minWidth: '60px', paddingTop: '1px', fontWeight: 600 }}>{issue.matrix_id}</span>
-        <span style={{ flex: 1, fontSize: '13px', fontWeight: 600, color: '#1a1a2e', lineHeight: 1.4 }}>{issue.matrix_title}</span>
+        <span style={{ fontFamily: 'monospace', fontSize: '11px', color: isCritical ? '#7c0000' : s.idColor, minWidth: '60px', paddingTop: '1px', fontWeight: 600 }}>{issue.matrix_id}</span>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {isCritical && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '10px', fontWeight: 700, color: '#7c0000', background: '#fecaca', padding: '2px 8px', borderRadius: '4px', letterSpacing: '0.04em', width: 'fit-content' }}>
+              ⛔ CRITICAL — automatic rejection risk
+            </span>
+          )}
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a2e', lineHeight: 1.4 }}>{issue.matrix_title}</span>
+        </div>
         <span style={{ fontSize: '11px', color: '#9ca3af', flexShrink: 0 }}>{expanded ? '▼' : '▶'}</span>
       </button>
       {expanded && (
@@ -55,7 +80,13 @@ const IssueCard: React.FC<{ issue: AssessmentResult; tier: 'action' | 'verify'; 
           {gap && <div><p style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>What's wrong</p><p style={{ fontSize: '12px', color: '#374151' }}>{gap}</p></div>}
           {issue.reasoning && <div><p style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>Assessment</p><p style={{ fontSize: '12px', color: '#374151' }}>{issue.reasoning}</p></div>}
           {evidence && <div><p style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>Evidence</p><p style={{ fontSize: '12px', color: '#374151' }}>{evidence.document}{evidence.page ? ` · p.${evidence.page}` : ''}</p></div>}
-          {action && <div><p style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>Action</p><p style={{ fontSize: '12px', color: '#374151' }}>{action.action}</p></div>}
+          {actionText && <div><p style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>What to do</p><p style={{ fontSize: '12px', color: '#374151' }}>{actionText}</p></div>}
+          {verifyGuidanceText && (
+            <div style={{ background: '#fefce8', border: '1px solid #fde68a', borderRadius: '4px', padding: '8px 10px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 700, color: '#92400e', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>What to do</p>
+              <p style={{ fontSize: '12px', color: '#78350f' }}>{verifyGuidanceText}</p>
+            </div>
+          )}
           {(action?.owner || action?.effort) && (
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '2px' }}>
               {action?.owner && <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '20px', background: '#dbeafe', color: '#1d4ed8', fontWeight: 500 }}>{action.owner}</span>}
@@ -140,16 +171,22 @@ export default function QuickAssessResults() {
 
   const analysis = useMemo(() => {
     if (!assessment) return null;
+    const isCriticalItem = (i: AssessmentResult) =>
+      i.triage?.urgency === 'CRITICAL_BLOCKER' || i.triage?.blocks_submission === true;
     const tierOf = (i: AssessmentResult): 'action' | 'verify' | 'advisory' => {
       if (i.confidence_tier) return i.confidence_tier;
-      if (i.triage?.urgency === 'CRITICAL_BLOCKER' || i.triage?.blocks_submission) return 'action';
+      if (isCriticalItem(i)) return 'action';
       if (i.status === 'does_not_meet' && (i.gaps_identified?.length ?? 0) > 0) return 'action';
       if (i.status === 'partial') return 'verify';
       return 'advisory';
     };
     const nonPassing = assessment.results.filter(r => r.status === 'does_not_meet' || r.status === 'partial');
     const passItems  = assessment.results.filter(r => r.status === 'meets');
-    const actionItems = nonPassing.filter(i => tierOf(i) === 'action');
+    const allActionItems = nonPassing.filter(i => tierOf(i) === 'action');
+    // Critical blockers (auto-rejection risk) sorted to the top
+    const criticalItems = allActionItems.filter(isCriticalItem);
+    const normalActionItems = allActionItems.filter(i => !isCriticalItem(i));
+    const actionItems = [...criticalItems, ...normalActionItems];
     const verifyItems = nonPassing.filter(i => tierOf(i) === 'verify');
     const categoryCounts: Record<string, { action: number; verify: number }> = {};
     for (const i of nonPassing) {
@@ -158,9 +195,10 @@ export default function QuickAssessResults() {
       const t = tierOf(i); if (t === 'action') categoryCounts[cat].action++; else categoryCounts[cat].verify++;
     }
     let statusColor = '#16a34a', statusText = 'Ready to submit', statusBg = '#f0fdf4';
-    if (actionItems.length > 0) { statusColor = '#dc2626'; statusText = 'Not ready'; statusBg = '#fff5f5'; }
+    if (criticalItems.length > 0) { statusColor = '#7c0000'; statusText = 'Not ready — critical blockers'; statusBg = '#fff0f0'; }
+    else if (actionItems.length > 0) { statusColor = '#dc2626'; statusText = 'Not ready'; statusBg = '#fff5f5'; }
     else if (verifyItems.length > 0) { statusColor = '#d97706'; statusText = 'Needs verification'; statusBg = '#fffbeb'; }
-    return { passing: passItems.length, passItems, total: assessment.results.length, actionItems, verifyItems, categoryCounts, statusColor, statusText, statusBg };
+    return { passing: passItems.length, passItems, total: assessment.results.length, actionItems, criticalItems, verifyItems, categoryCounts, statusColor, statusText, statusBg, isCriticalItem };
   }, [assessment]);
 
   if (!assessment || !analysis) return null;
@@ -301,7 +339,40 @@ export default function QuickAssessResults() {
           {activeTab === 'action' && (
             analysis.actionItems.length === 0
               ? <div style={{ textAlign: 'center', padding: '48px', color: '#9ca3af' }}><div style={{ fontSize: '32px', marginBottom: '12px' }}>✅</div><p>No action required items.</p></div>
-              : analysis.actionItems.map(i => <IssueCard key={i.matrix_id} issue={i} tier="action" defaultExpanded={true} />)
+              : (
+                <>
+                  {/* UX-06: Submission readiness summary card */}
+                  <div style={{ marginBottom: '16px', padding: '14px 16px', borderRadius: '8px', background: analysis.criticalItems.length > 0 ? '#fff0f0' : '#fff5f5', border: `1px solid ${analysis.criticalItems.length > 0 ? '#fca5a5' : '#fecaca'}` }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                      <span style={{ fontSize: '16px' }}>{analysis.criticalItems.length > 0 ? '⛔' : '✕'}</span>
+                      <span style={{ fontWeight: 700, fontSize: '13px', color: analysis.criticalItems.length > 0 ? '#7c0000' : '#991b1b' }}>
+                        Not ready to submit
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', fontSize: '12px', color: '#374151' }}>
+                      {analysis.criticalItems.length > 0 && (
+                        <span style={{ padding: '3px 10px', borderRadius: '20px', background: '#fecaca', color: '#7c0000', fontWeight: 600 }}>
+                          {analysis.criticalItems.length} critical — automatic rejection risk
+                        </span>
+                      )}
+                      <span style={{ padding: '3px 10px', borderRadius: '20px', background: '#fee2e2', color: '#991b1b', fontWeight: 500 }}>
+                        {analysis.actionItems.length} items require action
+                      </span>
+                      {analysis.verifyItems.length > 0 && (
+                        <span style={{ padding: '3px 10px', borderRadius: '20px', background: '#fef3c7', color: '#92400e', fontWeight: 500 }}>
+                          {analysis.verifyItems.length} items need verification
+                        </span>
+                      )}
+                    </div>
+                    {analysis.criticalItems.length > 0 && (
+                      <p style={{ marginTop: '8px', fontSize: '11px', color: '#7c0000' }}>
+                        Critical items (⛔) will cause automatic rejection regardless of other criteria. These must be resolved first.
+                      </p>
+                    )}
+                  </div>
+                  {analysis.actionItems.map(i => <IssueCard key={i.matrix_id} issue={i} tier="action" defaultExpanded={analysis.actionItems.length <= 5} isCritical={analysis.isCriticalItem(i)} />)}
+                </>
+              )
           )}
 
           {activeTab === 'verify' && (
