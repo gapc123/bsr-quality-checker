@@ -333,13 +333,16 @@ model BsrRejectionReason {
 // Persists status across server restarts / Railway container cycling.
 // Expires after 2 hours (cleaned up by background job or next deploy).
 model QuickAssessJob {
-  id        String   @id // assessmentId (UUID)
-  status    String   // 'pending' | 'done' | 'error'
-  progress  String?
-  result    String?  // JSON blob of full assessment payload
-  error     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id // assessmentId (UUID)
+  status      String   // 'pending' | 'done' | 'error'
+  progress    String?
+  result      String?  // JSON blob of full assessment payload
+  error       String?
+  crewStatus  String?  // 'pending' | 'done' | 'error'
+  crewReview  String?  // JSON blob of DomainReviews
+  crewError   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("quick_assess_jobs")
 }

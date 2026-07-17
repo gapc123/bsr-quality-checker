@@ -86,18 +86,33 @@ function readStatusFile(id: string) {
   } catch { return null; }
 }
 
-async function triggerCrewReview(assessmentId: string, context: any, results: any[]) {
+async function triggerCrewReview(assessmentId: string, context: any, results: any[], attempt = 1) {
   crewReviewCache.set(assessmentId, { status: 'pending' });
   try {
     const domainReviews = await runSpecialistReview(context, results);
     crewReviewCache.set(assessmentId, { status: 'done', result: domainReviews });
+    // Persist to DB so it survives server restarts and Railway container cycling
+    await prisma.quickAssessJob.update({
+      where: { id: assessmentId },
+      data: { crewStatus: 'done', crewReview: JSON.stringify(domainReviews) },
+    }).catch(e => console.warn('[crew] DB persist failed (non-fatal):', e instanceof Error ? e.message : e));
     console.log(`✅ Specialist review complete for ${assessmentId}`);
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
-    console.error(`❌ Specialist review failed for ${assessmentId}: ${msg}`);
+    console.error(`❌ Specialist review failed for ${assessmentId} (attempt ${attempt}): ${msg}`);
+    if (attempt < 2) {
+      // Retry once after 15s — handles transient API errors
+      console.log(`[crew] Retrying specialist review for ${assessmentId} in 15s…`);
+      setTimeout(() => triggerCrewReview(assessmentId, context, results, attempt + 1), 15_000);
+      return;
+    }
     crewReviewCache.set(assessmentId, { status: 'error', error: msg });
+    await prisma.quickAssessJob.update({
+      where: { id: assessmentId },
+      data: { crewStatus: 'error', crewError: msg },
+    }).catch(() => {});
   }
-  // Clean up after 2 hours
+  // Clean up memory after 2 hours (DB row cleaned up separately)
   setTimeout(() => crewReviewCache.delete(assessmentId), 7_200_000);
 }
 
@@ -429,21 +444,40 @@ router.get('/:assessmentId/status', async (req: Request, res: Response) => {
 });
 
 /**
- * Poll for CrewAI specialist review result
+ * Poll for specialist review result
+ * L1: in-memory cache (same process, fast path)
+ * L2: DB (survives server restarts and Railway container cycling)
  * Returns { status: 'pending' | 'done' | 'error', domain_reviews? }
  */
-router.get('/crew-review/:assessmentId', (req: Request, res: Response) => {
-  const entry = crewReviewCache.get(String(req.params['assessmentId']));
-  if (!entry) {
+router.get('/crew-review/:assessmentId', async (req: Request, res: Response) => {
+  const id = String(req.params['assessmentId']);
+
+  // L1: in-memory
+  const memEntry = crewReviewCache.get(id);
+  if (memEntry) {
+    if (memEntry.status === 'pending') return res.json({ status: 'pending' });
+    if (memEntry.status === 'error')   return res.json({ status: 'error', error: memEntry.error });
+    return res.json({ status: 'done', domain_reviews: memEntry.result });
+  }
+
+  // L2: DB fallback (page refresh / server restart scenario)
+  try {
+    const row = await prisma.quickAssessJob.findUnique({ where: { id } });
+    if (!row) return res.status(404).json({ error: 'No crew review found for this assessment' });
+
+    if (row.crewStatus === 'done' && row.crewReview) {
+      const parsed = JSON.parse(row.crewReview);
+      crewReviewCache.set(id, { status: 'done', result: parsed }); // warm L1
+      return res.json({ status: 'done', domain_reviews: parsed });
+    }
+    if (row.crewStatus === 'error') {
+      return res.json({ status: 'error', error: row.crewError ?? 'Specialist review failed' });
+    }
+    // Assessment exists in DB but crew review not yet done — still pending
+    return res.json({ status: 'pending' });
+  } catch {
     return res.status(404).json({ error: 'No crew review found for this assessment' });
   }
-  if (entry.status === 'pending') {
-    return res.json({ status: 'pending' });
-  }
-  if (entry.status === 'error') {
-    return res.json({ status: 'error', error: entry.error });
-  }
-  return res.json({ status: 'done', domain_reviews: entry.result });
 });
 
 /**

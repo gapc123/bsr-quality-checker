@@ -63,15 +63,18 @@ function summarise(domainResults: AssessmentResult[]): string {
 async function callSpecialist(
   client: Anthropic,
   systemPrompt: string,
-  userPrompt: string
+  userPrompt: string,
+  maxTokens = 700
 ): Promise<string> {
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 600,
+    model: 'claude-sonnet-4-6',
+    max_tokens: maxTokens,
     system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
   });
-  return (response.content[0] as { text: string }).text.trim();
+  const block = response.content[0];
+  if (!block || block.type !== 'text') throw new Error('Unexpected response content type from specialist model');
+  return block.text.trim();
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -175,7 +178,8 @@ export async function runSpecialistReview(
     `3. **Quick wins** — issues that can be resolved in under a week\n` +
     `4. **Estimated timeline** to get the application submission-ready\n` +
     `5. **Recommended immediate next steps** — who needs to be called today\n\n` +
-    `Write in plain English. Be direct and actionable.`
+    `Write in plain English. Be direct and actionable.`,
+    1000
   );
 
   return {
